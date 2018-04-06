@@ -1,0 +1,9 @@
+E:\workspace\ProviderHub\ProviderHub\ProviderHubService\bin\ProviderHubService.dll.config
+E:\workspace\ProviderHub\ProviderHub\ProviderHubService\bin\ProviderHubService.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubService\bin\ProviderHubService.pdb
+E:\workspace\ProviderHub\ProviderHub\ProviderHubService\bin\GHCDataAccess.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.csproj.CoreCompileInputs.cache
+E:\workspace\ProviderHub\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.csproj.CopyComplete
+E:\workspace\ProviderHub\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.pdb
+E:\workspace\ProviderHub\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.csprojResolveAssemblyReference.cache

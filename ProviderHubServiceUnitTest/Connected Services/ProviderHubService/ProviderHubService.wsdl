@@ -1,0 +1,1405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ProviderHubService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/ProviderHubService" />
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xs:element name="GetData">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="value" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetDataResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="GetDataResult" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetProviderByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="providerID" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetProviderByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetProviderByIDResult" nillable="true" type="q1:Provider" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetProviderLanguageByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="providerID" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetProviderLanguageByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetProviderLanguageByIDResult" nillable="true" type="q2:ArrayOfLanguage" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetProviderCredentialByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="providerID" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetProviderCredentialByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetProviderCredentialByIDResult" nillable="true" type="q3:ArrayOfCredential" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetFacilityByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetFacilityByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetFacilityByIDResult" nillable="true" type="q4:Facility" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAddressByFacilityID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAddressByFacilityIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetAddressByFacilityIDResult" nillable="true" type="q5:Address" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetProviderList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetProviderListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetProviderListResult" nillable="true" type="q6:ArrayOfProvider" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetFacilityList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetFacilityListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetFacilityListResult" nillable="true" type="q7:ArrayOfFacility" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SearchForValue">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SearchForValueResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="SearchForValueResult" nillable="true" type="q8:SearchResults" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetFacilityProviderRelationshipList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetFacilityProviderRelationshipListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetFacilityProviderRelationshipListResult" nillable="true" type="q9:ArrayOfFacilityProviderRelationship" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetFacilityProviderRelationshipByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="relationshipID" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetFacilityProviderRelationshipByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetFacilityProviderRelationshipByIDResult" nillable="true" type="q10:FacilityProviderRelationship" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveProviderDetail">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="provider" nillable="true" type="q11:Provider" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveProviderDetailResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SaveProviderDetailResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveFacility">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="facility" nillable="true" type="q12:Facility" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveFacilityResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SaveFacilityResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveFacilityProviderRelationship">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="relationship" nillable="true" type="q13:FacilityProviderRelationship" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveFacilityProviderRelationshipResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SaveFacilityProviderRelationshipResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveAddress">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="address" nillable="true" type="q14:Address" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveAddressResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SaveAddressResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MapAddressToFacility">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+            <xs:element minOccurs="0" name="addressID" type="xs:int" />
+            <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MapAddressToFacilityResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="MapAddressToFacilityResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetLanguageList">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetLanguageListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetLanguageListResult" nillable="true" type="q15:ArrayOfLanguage" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetCredentialList">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetCredentialListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetCredentialListResult" nillable="true" type="q16:ArrayOfCredential" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetVendorList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetVendorListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetVendorListResult" nillable="true" type="q17:ArrayOfVendor" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveVendor">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="vendor" nillable="true" type="q18:Vendor" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveVendorResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SaveVendorResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MapAddressToVendor">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="vendorID" type="xs:int" />
+            <xs:element minOccurs="0" name="addressID" type="xs:int" />
+            <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MapAddressToVendorResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="MapAddressToVendorResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetVendorByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="vendorID" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetVendorByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetVendorByIDResult" nillable="true" type="q19:Vendor" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAddressByVendorID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="vendorID" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAddressByVendorIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetAddressByVendorIDResult" nillable="true" type="q20:ArrayOfAddress" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MapFacilityToVendor">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+            <xs:element minOccurs="0" name="vendorID" type="xs:int" />
+            <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MapFacilityToVendorResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="MapFacilityToVendorResult" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveLanguageByProviderID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="providerID" type="xs:int" />
+            <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="languages" nillable="true" type="q21:ArrayOfLanguage" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveLanguageByProviderIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SaveLanguageByProviderIDResult" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveCredentialByProviderID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="providerID" type="xs:int" />
+            <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="credentials" nillable="true" type="q22:ArrayOfCredential" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveCredentialByProviderIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SaveCredentialByProviderIDResult" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AdvancedSearch">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q23="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="args" nillable="true" type="q23:ArrayOfKeyValueOfstringArrayOfstringty7Ep6D1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AdvancedSearchResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="AdvancedSearchResult" nillable="true" type="q24:ArrayOfFacilityProviderRelationship" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetBehavioralHealthAttributeByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="bHAttributeType" type="q25:BHAttributeType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetBehavioralHealthAttributeByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetBehavioralHealthAttributeByIDResult" nillable="true" type="q26:ArrayOfBehavioralHealthAttribute" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetBHAttributeByRelationshipID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="relationshipID" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetBHAttributeByRelationshipIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetBHAttributeByRelationshipIDResult" nillable="true" type="q27:ArrayOfBehavioralHealthAttribute" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveBHAttributeToRelationship">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="relationshipID" type="xs:int" />
+            <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="bhAttributeList" nillable="true" type="q28:ArrayOfBehavioralHealthAttribute" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveBHAttributeToRelationshipResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="SaveBHAttributeToRelationshipResult" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="anyType" nillable="true" type="xs:anyType" />
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+      <xs:element name="boolean" nillable="true" type="xs:boolean" />
+      <xs:element name="byte" nillable="true" type="xs:byte" />
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="decimal" nillable="true" type="xs:decimal" />
+      <xs:element name="double" nillable="true" type="xs:double" />
+      <xs:element name="float" nillable="true" type="xs:float" />
+      <xs:element name="int" nillable="true" type="xs:int" />
+      <xs:element name="long" nillable="true" type="xs:long" />
+      <xs:element name="QName" nillable="true" type="xs:QName" />
+      <xs:element name="short" nillable="true" type="xs:short" />
+      <xs:element name="string" nillable="true" type="xs:string" />
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+      <xs:element name="char" nillable="true" type="tns:char" />
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int" />
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration" />
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid" />
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName" />
+      <xs:attribute name="Id" type="xs:ID" />
+      <xs:attribute name="Ref" type="xs:IDREF" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ProviderHubService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ProviderHubService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xs:complexType name="Provider">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CSP_Indicator" type="xs:boolean" />
+          <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="CredentialList" nillable="true" type="tns:ArrayOfCredential" />
+          <xs:element minOccurs="0" name="Credentials" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DateOfBirth" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EpicProviderID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ExternalProviderID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ExternalProviderName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FullName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Gender" type="tns:ProviderGender" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
+          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LanguageList" nillable="true" type="tns:ArrayOfLanguage" />
+          <xs:element minOccurs="0" name="Languages" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastUpdatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="MedicaidIndicator" type="xs:boolean" />
+          <xs:element minOccurs="0" name="MedicaidProviderID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MedicareEffectiveDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="MedicareIndicator" type="xs:boolean" />
+          <xs:element minOccurs="0" name="MedicarePTAN" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MedicareTerminationDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="MiddleName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="NPI" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProviderSpecialties" nillable="true" type="tns:ArrayOfSpecialty" />
+          <xs:element minOccurs="0" name="TerminationDate" nillable="true" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Provider" nillable="true" type="tns:Provider" />
+      <xs:complexType name="ArrayOfCredential">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Credential" nillable="true" type="tns:Credential" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCredential" nillable="true" type="tns:ArrayOfCredential" />
+      <xs:complexType name="Credential">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
+          <xs:element minOccurs="0" name="MappingID" type="xs:int" />
+          <xs:element minOccurs="0" name="SequenceNumber" type="xs:int" />
+          <xs:element minOccurs="0" name="Status" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Credential" nillable="true" type="tns:Credential" />
+      <xs:simpleType name="ProviderGender">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Female">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Male">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Unknown">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ProviderGender" nillable="true" type="tns:ProviderGender" />
+      <xs:complexType name="ArrayOfLanguage">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Language" nillable="true" type="tns:Language" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfLanguage" nillable="true" type="tns:ArrayOfLanguage" />
+      <xs:complexType name="Language">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
+          <xs:element minOccurs="0" name="MappingID" type="xs:int" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SequenceNumber" type="xs:int" />
+          <xs:element minOccurs="0" name="Status" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Language" nillable="true" type="tns:Language" />
+      <xs:complexType name="ArrayOfSpecialty">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Specialty" nillable="true" type="tns:Specialty" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfSpecialty" nillable="true" type="tns:ArrayOfSpecialty" />
+      <xs:complexType name="Specialty">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
+          <xs:element minOccurs="0" name="MappingID" type="xs:int" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SequenceNumber" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Specialty" nillable="true" type="tns:Specialty" />
+      <xs:complexType name="Facility">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ExternalID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FacilityAddress" nillable="true" type="tns:Address" />
+          <xs:element minOccurs="0" name="FacilityName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
+          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastUpdatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="NPI" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Facility" nillable="true" type="tns:Facility" />
+      <xs:complexType name="Address">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AddressLine1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AddressLine2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AddressType" type="tns:AddressType" />
+          <xs:element minOccurs="0" name="AlternatePhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ContactFirstName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ContactLastName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="County" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FaxNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
+          <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastUpdatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="PhoneExtension" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Region" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Website" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ZipCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Address" nillable="true" type="tns:Address" />
+      <xs:simpleType name="AddressType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ClinicalPracticeServiceLocation">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="BusinessAdmin">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Mail">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="AddressType" nillable="true" type="tns:AddressType" />
+      <xs:complexType name="ArrayOfProvider">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Provider" nillable="true" type="tns:Provider" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfProvider" nillable="true" type="tns:ArrayOfProvider" />
+      <xs:complexType name="ArrayOfFacility">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Facility" nillable="true" type="tns:Facility" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfFacility" nillable="true" type="tns:ArrayOfFacility" />
+      <xs:complexType name="SearchResults">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Facilities" nillable="true" type="tns:ArrayOfFacility" />
+          <xs:element minOccurs="0" name="FacilityProviderRelationships" nillable="true" type="tns:ArrayOfFacilityProviderRelationship" />
+          <xs:element minOccurs="0" name="Providers" nillable="true" type="tns:ArrayOfProvider" />
+          <xs:element minOccurs="0" name="Vendors" nillable="true" type="tns:ArrayOfVendor" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="SearchResults" nillable="true" type="tns:SearchResults" />
+      <xs:complexType name="ArrayOfFacilityProviderRelationship">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="FacilityProviderRelationship" nillable="true" type="tns:FacilityProviderRelationship" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfFacilityProviderRelationship" nillable="true" type="tns:ArrayOfFacilityProviderRelationship" />
+      <xs:complexType name="FacilityProviderRelationship">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AcceptingNewPatientIndicator" type="xs:boolean" />
+          <xs:element minOccurs="0" name="BehavioralHealthAttributes" nillable="true" type="tns:ArrayOfBehavioralHealthAttribute" />
+          <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EffectiveDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ExternalProviderIndicator" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Facility" nillable="true" type="tns:Facility" />
+          <xs:element minOccurs="0" name="FloatProviderIndicator" type="xs:boolean" />
+          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastUpdatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="PrescriberIndicator" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Provider" nillable="true" type="tns:Provider" />
+          <xs:element minOccurs="0" name="ProviderEmail" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProviderExtensionNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProviderPhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReferralIndicator" type="xs:boolean" />
+          <xs:element minOccurs="0" name="RelationshipID" type="xs:int" />
+          <xs:element minOccurs="0" name="RelationshipStatus" type="xs:boolean" />
+          <xs:element minOccurs="0" name="TerminationDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Vendor" nillable="true" type="tns:Vendor" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="FacilityProviderRelationship" nillable="true" type="tns:FacilityProviderRelationship" />
+      <xs:complexType name="ArrayOfBehavioralHealthAttribute">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="BehavioralHealthAttribute" nillable="true" type="tns:BehavioralHealthAttribute" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfBehavioralHealthAttribute" nillable="true" type="tns:ArrayOfBehavioralHealthAttribute" />
+      <xs:complexType name="BehavioralHealthAttribute">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BHSpecialtyType" type="tns:BHAttributeType" />
+          <xs:element minOccurs="0" name="MappingID" type="xs:int" />
+          <xs:element minOccurs="0" name="SetID" type="xs:int" />
+          <xs:element minOccurs="0" name="Status" type="xs:boolean" />
+          <xs:element minOccurs="0" name="TextValue" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ValueID" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BehavioralHealthAttribute" nillable="true" type="tns:BehavioralHealthAttribute" />
+      <xs:simpleType name="BHAttributeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Ages">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Modes">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Conditions">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="TherapeuticApproaches">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Other">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="BHAttributeType" nillable="true" type="tns:BHAttributeType" />
+      <xs:complexType name="Vendor">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AddressesList" nillable="true" type="tns:ArrayOfAddress" />
+          <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EPICVendorID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ExternalID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
+          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastUpdatedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LastUpdatedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="NPI" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TaxID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VendorFacilityMappingID" type="xs:int" />
+          <xs:element minOccurs="0" name="VendorName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Vendor" nillable="true" type="tns:Vendor" />
+      <xs:complexType name="ArrayOfAddress">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Address" nillable="true" type="tns:Address" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAddress" nillable="true" type="tns:ArrayOfAddress" />
+      <xs:complexType name="ArrayOfVendor">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Vendor" nillable="true" type="tns:Vendor" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfVendor" nillable="true" type="tns:ArrayOfVendor" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ArrayOfKeyValueOfstringArrayOfstringty7Ep6D1">
+        <xs:annotation>
+          <xs:appinfo>
+            <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfstringArrayOfstringty7Ep6D1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Key" nillable="true" type="xs:string" />
+                <xs:element name="Value" nillable="true" type="tns:ArrayOfstring" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfKeyValueOfstringArrayOfstringty7Ep6D1" nillable="true" type="tns:ArrayOfKeyValueOfstringArrayOfstringty7Ep6D1" />
+      <xs:complexType name="ArrayOfstring">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IProviderHubService_GetData_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetData" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderLanguageByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderLanguageByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderLanguageByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderLanguageByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderCredentialByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderCredentialByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderCredentialByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderCredentialByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetAddressByFacilityID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressByFacilityID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetAddressByFacilityID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressByFacilityIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SearchForValue_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchForValue" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SearchForValue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchForValueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityProviderRelationshipList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityProviderRelationshipList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityProviderRelationshipList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityProviderRelationshipListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityProviderRelationshipByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityProviderRelationshipByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityProviderRelationshipByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityProviderRelationshipByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveProviderDetail_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveProviderDetail" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveProviderDetail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveProviderDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacility_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacility" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacility_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacilityResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacilityProviderRelationship_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacilityProviderRelationship" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacilityProviderRelationship_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacilityProviderRelationshipResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveAddress_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveAddress" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveAddress_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapAddressToFacility_InputMessage">
+    <wsdl:part name="parameters" element="tns:MapAddressToFacility" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapAddressToFacility_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MapAddressToFacilityResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetLanguageList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLanguageList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetLanguageList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLanguageListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetCredentialList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCredentialList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetCredentialList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCredentialListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetVendorList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVendorList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetVendorList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVendorListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveVendor_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveVendor" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveVendor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveVendorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapAddressToVendor_InputMessage">
+    <wsdl:part name="parameters" element="tns:MapAddressToVendor" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapAddressToVendor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MapAddressToVendorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetVendorByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVendorByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetVendorByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVendorByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetAddressByVendorID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressByVendorID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetAddressByVendorID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressByVendorIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapFacilityToVendor_InputMessage">
+    <wsdl:part name="parameters" element="tns:MapFacilityToVendor" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapFacilityToVendor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MapFacilityToVendorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveLanguageByProviderID_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveLanguageByProviderID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveLanguageByProviderID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveLanguageByProviderIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveCredentialByProviderID_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCredentialByProviderID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveCredentialByProviderID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCredentialByProviderIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_AdvancedSearch_InputMessage">
+    <wsdl:part name="parameters" element="tns:AdvancedSearch" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_AdvancedSearch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AdvancedSearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetBehavioralHealthAttributeByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBehavioralHealthAttributeByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetBehavioralHealthAttributeByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBehavioralHealthAttributeByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetBHAttributeByRelationshipID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBHAttributeByRelationshipID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetBHAttributeByRelationshipID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBHAttributeByRelationshipIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveBHAttributeToRelationship_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveBHAttributeToRelationship" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveBHAttributeToRelationship_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveBHAttributeToRelationshipResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IProviderHubService">
+    <wsdl:operation name="GetData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetData" message="tns:IProviderHubService_GetData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetDataResponse" message="tns:IProviderHubService_GetData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderByID" message="tns:IProviderHubService_GetProviderByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderByIDResponse" message="tns:IProviderHubService_GetProviderByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderLanguageByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderLanguageByID" message="tns:IProviderHubService_GetProviderLanguageByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderLanguageByIDResponse" message="tns:IProviderHubService_GetProviderLanguageByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderCredentialByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderCredentialByID" message="tns:IProviderHubService_GetProviderCredentialByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderCredentialByIDResponse" message="tns:IProviderHubService_GetProviderCredentialByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityByID" message="tns:IProviderHubService_GetFacilityByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityByIDResponse" message="tns:IProviderHubService_GetFacilityByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressByFacilityID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetAddressByFacilityID" message="tns:IProviderHubService_GetAddressByFacilityID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetAddressByFacilityIDResponse" message="tns:IProviderHubService_GetAddressByFacilityID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderList" message="tns:IProviderHubService_GetProviderList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderListResponse" message="tns:IProviderHubService_GetProviderList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityList" message="tns:IProviderHubService_GetFacilityList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityListResponse" message="tns:IProviderHubService_GetFacilityList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchForValue">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SearchForValue" message="tns:IProviderHubService_SearchForValue_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SearchForValueResponse" message="tns:IProviderHubService_SearchForValue_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityProviderRelationshipList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipList" message="tns:IProviderHubService_GetFacilityProviderRelationshipList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipListResponse" message="tns:IProviderHubService_GetFacilityProviderRelationshipList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityProviderRelationshipByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipByID" message="tns:IProviderHubService_GetFacilityProviderRelationshipByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipByIDResponse" message="tns:IProviderHubService_GetFacilityProviderRelationshipByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveProviderDetail">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveProviderDetail" message="tns:IProviderHubService_SaveProviderDetail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveProviderDetailResponse" message="tns:IProviderHubService_SaveProviderDetail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacility">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacility" message="tns:IProviderHubService_SaveFacility_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacilityResponse" message="tns:IProviderHubService_SaveFacility_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacilityProviderRelationship">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacilityProviderRelationship" message="tns:IProviderHubService_SaveFacilityProviderRelationship_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacilityProviderRelationshipResponse" message="tns:IProviderHubService_SaveFacilityProviderRelationship_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveAddress">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveAddress" message="tns:IProviderHubService_SaveAddress_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveAddressResponse" message="tns:IProviderHubService_SaveAddress_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MapAddressToFacility">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/MapAddressToFacility" message="tns:IProviderHubService_MapAddressToFacility_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/MapAddressToFacilityResponse" message="tns:IProviderHubService_MapAddressToFacility_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLanguageList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetLanguageList" message="tns:IProviderHubService_GetLanguageList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetLanguageListResponse" message="tns:IProviderHubService_GetLanguageList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCredentialList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetCredentialList" message="tns:IProviderHubService_GetCredentialList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetCredentialListResponse" message="tns:IProviderHubService_GetCredentialList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVendorList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetVendorList" message="tns:IProviderHubService_GetVendorList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetVendorListResponse" message="tns:IProviderHubService_GetVendorList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveVendor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveVendor" message="tns:IProviderHubService_SaveVendor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveVendorResponse" message="tns:IProviderHubService_SaveVendor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MapAddressToVendor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/MapAddressToVendor" message="tns:IProviderHubService_MapAddressToVendor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/MapAddressToVendorResponse" message="tns:IProviderHubService_MapAddressToVendor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVendorByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetVendorByID" message="tns:IProviderHubService_GetVendorByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetVendorByIDResponse" message="tns:IProviderHubService_GetVendorByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressByVendorID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetAddressByVendorID" message="tns:IProviderHubService_GetAddressByVendorID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetAddressByVendorIDResponse" message="tns:IProviderHubService_GetAddressByVendorID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MapFacilityToVendor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/MapFacilityToVendor" message="tns:IProviderHubService_MapFacilityToVendor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/MapFacilityToVendorResponse" message="tns:IProviderHubService_MapFacilityToVendor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveLanguageByProviderID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveLanguageByProviderID" message="tns:IProviderHubService_SaveLanguageByProviderID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveLanguageByProviderIDResponse" message="tns:IProviderHubService_SaveLanguageByProviderID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveCredentialByProviderID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveCredentialByProviderID" message="tns:IProviderHubService_SaveCredentialByProviderID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveCredentialByProviderIDResponse" message="tns:IProviderHubService_SaveCredentialByProviderID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AdvancedSearch">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/AdvancedSearch" message="tns:IProviderHubService_AdvancedSearch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/AdvancedSearchResponse" message="tns:IProviderHubService_AdvancedSearch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBehavioralHealthAttributeByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetBehavioralHealthAttributeByID" message="tns:IProviderHubService_GetBehavioralHealthAttributeByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetBehavioralHealthAttributeByIDResponse" message="tns:IProviderHubService_GetBehavioralHealthAttributeByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBHAttributeByRelationshipID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetBHAttributeByRelationshipID" message="tns:IProviderHubService_GetBHAttributeByRelationshipID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetBHAttributeByRelationshipIDResponse" message="tns:IProviderHubService_GetBHAttributeByRelationshipID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveBHAttributeToRelationship">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationship" message="tns:IProviderHubService_SaveBHAttributeToRelationship_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationshipResponse" message="tns:IProviderHubService_SaveBHAttributeToRelationship_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IProviderHubService" type="tns:IProviderHubService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetData">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetProviderByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderLanguageByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetProviderLanguageByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderCredentialByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetProviderCredentialByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetFacilityByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressByFacilityID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetAddressByFacilityID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetProviderList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetFacilityList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchForValue">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SearchForValue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityProviderRelationshipList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityProviderRelationshipByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveProviderDetail">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveProviderDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacility">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveFacility" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacilityProviderRelationship">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveFacilityProviderRelationship" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveAddress">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MapAddressToFacility">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/MapAddressToFacility" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLanguageList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetLanguageList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCredentialList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetCredentialList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendorList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetVendorList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveVendor">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveVendor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MapAddressToVendor">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/MapAddressToVendor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendorByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetVendorByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressByVendorID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetAddressByVendorID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MapFacilityToVendor">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/MapFacilityToVendor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveLanguageByProviderID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveLanguageByProviderID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveCredentialByProviderID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveCredentialByProviderID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvancedSearch">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/AdvancedSearch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBehavioralHealthAttributeByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetBehavioralHealthAttributeByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBHAttributeByRelationshipID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetBHAttributeByRelationshipID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveBHAttributeToRelationship">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationship" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProviderHubService">
+    <wsdl:port name="BasicHttpBinding_IProviderHubService" binding="tns:BasicHttpBinding_IProviderHubService">
+      <soap:address location="http://10.32.0.86/ProviderHubService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,15 @@
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\obj\Debug\ProviderHubServiceUnitTest.csprojResolveAssemblyReference.cache
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\obj\Debug\ProviderHubServiceUnitTest.csproj.CoreCompileInputs.cache
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\ProviderHubServiceUnitTest.dll.config
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\ProviderHubServiceUnitTest.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\ProviderHubServiceUnitTest.pdb
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\obj\Debug\ProviderHubServiceUnitTest.csproj.CopyComplete
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\obj\Debug\ProviderHubServiceUnitTest.dll
+E:\workspace\ProviderHub\ProviderHub\ProviderHubServiceUnitTest\obj\Debug\ProviderHubServiceUnitTest.pdb

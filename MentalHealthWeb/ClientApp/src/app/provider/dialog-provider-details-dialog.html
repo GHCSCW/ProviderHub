@@ -1,0 +1,111 @@
+<h1 mat-dialog-title>Provider Details -  {{data.provider.lastName}} - {{data.provider.firstName}}</h1>
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="First name" [(ngModel)]="data.provider.firstName" name="firstName">
+  </mat-form-field>
+  <mat-form-field>
+    <input placeholder="Last Name" matInput [(ngModel)]="data.provider.lastName" name="lastName">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Gender" [(ngModel)]="data.provider.gender">
+      <mat-option *ngFor="let option of genders" [value]="option.value">
+        {{ option.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!--<mat-form-field>
+    <mat-select placeholder="Toppings" [formControl]="toppings" multiple>
+      <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+    </mat-select>
+  </mat-form-field>-->
+
+  <!--<div>
+    <mat-form-field class="demo-chip-list">
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
+                  [removable]="removable" (remove)="remove(fruit)">
+          {{fruit.name}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="New fruit..."
+               [matChipInputFor]="chipList"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="addOnBlur"
+               (matChipInputTokenEnd)="add($event)" />
+      </mat-chip-list>
+    </mat-form-field>
+  </div>-->
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="pickerDOB" placeholder="DOB" [(ngModel)]="data.provider.dateOfBirth" name="dateOfBirth">
+    <mat-datepicker-toggle matSuffix [for]="pickerDOB"></mat-datepicker-toggle>
+    <mat-datepicker #pickerDOB></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input id="number" type="number" placeholder="NPI" matInput [(ngModel)]="data.provider.npi" name="npi">
+  </mat-form-field>
+  <mat-form-field>
+    <input id="number" type="number" placeholder="EPIC Prov Id" matInput [(ngModel)]="data.provider.epicProviderID" name="epicProviderID">
+  </mat-form-field>
+  <div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="pickerMedEffDate" placeholder="Medicare Effective Date" [(ngModel)]="data.provider.medicareEffectiveDate" name="medicareEffectiveDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerMedEffDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerMedEffDate></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="pickerMedTermDate" placeholder="Medicare Termination Date" [(ngModel)]="data.provider.medicareTerminationDate" name="medicareTerminationDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerMedTermDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerMedTermDate></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-checkbox [(ngModel)]="data.provider.medicareIndicator" name="medicareIndicator">Medicare Indicator</mat-checkbox>
+    <mat-checkbox [(ngModel)]="data.provider.csP_Indicator" name="csP_Indicator">CSP Indicator</mat-checkbox>
+    <!--<mat-checkbox [(ngModel)]="data.provider.medicaidIndicator" name="medicaidIndicator">Medicaid Indicator</mat-checkbox>-->
+
+  </div>
+</mat-dialog-content>
+<div mat-dialog-actions class="pull-right">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.provider" (click)="onSubmit()" cdkFocusInitial>Save and Close</button>
+<!--  <button mat-button (click)="onSubmit()" cdkFocusInitial>Save and Close</button>-->
+</div>
+
+
+
+<!--<mat-form-field class="example-full-width">
+  <input placeholder="Gender" matInput [(ngModel)]="data.provider.gender" name="gender">
+</mat-form-field>-->
+<!--<mat-form-field class="example-full-width">
+ <input  {{data.provider.gender}}>
+</mat-form-field>-->
+<!--<mat-form-field class="example-full-width">
+  <textarea matInput placeholder="Address 2"></textarea>
+</mat-form-field>-->
+<!--<mat-form-field class="example-full-width">
+  <input type="text" placeholder="Language" aria-label="Language" matInput [formControl]="language" [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{ option.name }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+<table class="example-full-width" cellspacing="0">
+  <tr>
+    <td>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Medicare Provider">
+      </mat-form-field>
+    </td>
+    <td>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Language">
+      </mat-form-field>
+    </td>
+    <td>
+
+    </td>
+  </tr>-->

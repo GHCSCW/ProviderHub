@@ -1,0 +1,98 @@
+<facility-provider-relationship *ngIf="facilityProviderRelationship != 0">
+</facility-provider-relationship>
+<div class="card">
+  <div class="card-header vendor">
+    <h5>Vendor Name: {{vendor.vendorName}}</h5>
+    <span class="pull-right">
+      <dialog-vendor [vendor]="edittedVendor">loading</dialog-vendor>
+    </span>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+
+        <div class="form-row">
+          <div class="col-md-5"><label> Vendor Tax ID: </label> </div>
+          <div class="col-md-7"> {{vendor.taxId}}</div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-5"><label>Facility Adddress Line 1: </label></div>
+          <div class="col-md-7"></div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-5"><label>Facility Adddress Line 2: </label></div>
+          <div class="col-md-7"></div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-5"><label>Phone Number: </label> </div>
+          <div class="col-md-7"></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-row">
+          <div class="col-md-5"><label>  Vendor NPI: </label> </div>
+          <div class="col-md-7"> {{vendor.npi}}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-2"><label>City: </label></div>
+          <div class="col-md-10"></div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-2"><label> State: </label> </div>
+          <div class="col-md-10"></div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-2"><label>Zip: </label></div>
+          <div class="col-md-10"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <small class="text-muted">
+      Last Updated: {{vendor.lastUpdatedDate| date: 'M/d/yyyy'}} - Updated By: {{vendor.lastUpdatedBy}}
+    </small>
+  </div>
+</div>
+<div class="card vendor">
+  <div class="card-header">
+    <h5>All Facilites under Journey Mental Health:</h5>
+  </div>
+  <div class="row">
+  </div>
+</div>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Facility Name</th>
+      <th>Address</th>
+      <th>Region</th>
+      <th>Phone Number</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+
+

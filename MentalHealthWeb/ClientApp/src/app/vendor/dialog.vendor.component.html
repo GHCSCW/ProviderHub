@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Vendor Details - {{data.vendor.vendorName}}</h1>
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="Vendor Name" [(ngModel)]="data.vendor.vendorName" name="vendorName">
+  </mat-form-field>
+</mat-dialog-content>
+<div mat-dialog-actions class="pull-right">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.vendor" (click)="onSubmit()" cdkFocusInitial>Save and Close</button>
+  <!--  <button mat-button (click)="onSubmit()" cdkFocusInitial>Save and Close</button>-->
+</div>

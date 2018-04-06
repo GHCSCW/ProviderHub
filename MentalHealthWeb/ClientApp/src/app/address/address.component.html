@@ -1,0 +1,71 @@
+<h1 mat-dialog-title>Create New Address</h1>
+<mat-dialog-content mat-dialog-content>
+  <form [formGroup]="regiForm" (ngSubmit)="onFormSubmit(regiForm.value)">
+    <mat-form-field>
+      <mat-select placeholder="Address Type"  formControlName="addressType" [(ngModel)]="addressType" required>
+        <mat-option *ngFor="let option of addressTypes" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="addressLine1" matInput placeholder="Address Line 1" required>
+    </mat-form-field>
+    <mat-error>
+      <span *ngIf="!regiForm.get('addressLine1').valid && regiForm.get('addressLine1').touched">Please enter Address Line 1!</span>
+    </mat-error>
+    <mat-form-field>
+      <input formControlName="addressLine2" matInput placeholder="Address Line 2">
+    </mat-form-field>
+    <div>
+      <mat-form-field>
+        <input formControlName="city" matInput placeholder="City" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="state" matInput placeholder="State" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="zipCode" matInput placeholder="Zip Code" required>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input formControlName="county" matInput placeholder="County">
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="region" matInput placeholder="Region">
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input formControlName="phoneNumber" matInput placeholder="Phone Number">
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="phoneExtension" matInput placeholder="Phone Extension">
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="alternatePhoneNumber" matInput placeholder="AlternatePhoneNumber">
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="faxNumber" matInput placeholder="Fax Number">
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <input formControlName="email" matInput placeholder="Email">
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="website" matInput placeholder="Website">
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="contactFirstName" matInput placeholder="Contact First Name">
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="contactLastName" matInput placeholder="Contact Last Name">
+    </mat-form-field>
+    <div>
+      <button mat-raised-button color="accent" [disabled]="!regiForm.valid">Save</button>
+    </div>
+  </form>
+</mat-dialog-content>
+<div mat-dialog-actions class="pull-right">
+</div>

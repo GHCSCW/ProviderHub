@@ -1,0 +1,218 @@
+<div *ngIf="facilityProviderRelationship != 0">
+  <facility-provider-relationship></facility-provider-relationship>
+</div>
+
+<!--Provider Details card-->
+<div>
+  <div class="card">
+    <div class="card-header provider_title">
+      <div class="row">
+        <div class="col">
+          <b>Provider Name: </b>{{provider.fullName}}
+        </div>
+        <div class="col">
+          <b>Credentials: {{provider.credentials}}</b>
+        </div>
+        <a href="#">
+          <i class="fa fa-link pull-right" aria-hidden="true"></i>
+        </a>
+        <span class="pull-right">
+          <dialog-provider-details [provider]="provider" [originalProvider]="originalProvider">loading</dialog-provider-details>
+        </span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col card-block">
+          <div class="form-row">
+            <div class="col-md-8"><label> Gender: </label></div>
+            <div class="col">{{gender}}</div>
+
+          </div>
+          <div class="form-row">
+            <div class="col-md-8"><label>Medicare Provider:</label> </div>
+            <div class="col">{{originalProvider.medicareIndicator | Boolean}}</div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-8"><label>Medicare Effective Date:  </label> </div>
+            <div class="col">{{originalProvider.medicareEffectiveDate| date: 'M/d/yyyy'}}</div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-8"><label>Medicare Termination Date:  </label></div>
+            <div class="col">{{originalProvider.medicareTerminationDate| date: 'M/d/yyyy'}}</div>
+          </div>
+        </div>
+        <div class="col card-block">
+          <div class="form-row">
+            <div class="col-md-8"><label>EPIC Provider ID: </label></div>
+            <div class="col">{{originalProvider.epicProviderID}}</div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-8"><label>Medicaid (BadgerCare) Provider: </label></div>
+            <div class="col">{{originalProvider.medicaidIndicator | Boolean}}</div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-8"><label>CSP Indicator:</label></div>
+            <div class="col">{{originalProvider.csP_Indicator | Boolean}}</div>
+          </div>
+        </div>
+        <div class="col card-block">
+          <div class="form-row">
+
+            <div class="col"><label>Languages:</label></div>
+            <div class="col">
+              {{provider.languages}}
+            </div>
+            <!--TODO
+                <div class="col">
+              <ul *ngFor="let language of provider.languageList">
+                <li>{{language.id}}</li>
+                <li>{{language.mappingID}}</li>
+                <li>{{language.name}}</li>
+                <li>{{language.sequenceNumber}}</li>
+                <li>{{language.createdDate}}</li>
+              </ul>
+            </div>-->
+          </div>
+          <div class="form-row">
+            <div class="col"><label>NPI: </label></div>
+            <div class="col">{{originalProvider.npi}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">
+        Last Updated: {{provider.lastUpdatedDate| date: 'M/d/yyyy'}} - Updated By: {{provider.lastUpdatedBy}}
+      </small>
+
+    </div>
+  </div>
+</div>
+
+<!--Faciltiy Relationship Card-->
+<div *ngIf="facilityProviderRelationship != 0" class="card">
+  <div class="card-header facilityProviderRelationship">
+    <span><b>Facility Provider Profile:</b> </span>
+    <span class="pull-right"><dialog-facility-provider-relationship [facilityProviderRelationship]="originalFacilityProviderRelationship"></dialog-facility-provider-relationship></span>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col card-block">
+        <div class="form-row">
+          <div class="col-md-8"><label>Accepting New Patients:</label> </div>
+          <div class="col-md-4">{{facilityProviderRelationship?.acceptingNewPatientIndicator | Boolean}} </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-8"><label>External Provider Indicator:</label></div>
+          <div class="col">{{facilityProviderRelationship?.externalProviderIndicator | Boolean}}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-8"><label>Prescribing Provider: </label></div>
+          <div class="col">{{facilityProviderRelationship?.prescriberIndicator | Boolean}}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-8"><label>Referring to Specialist Indicator: </label> </div>
+          <div class="col">{{facility?.referralIndicator | Boolean}}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-8"><label>Relationship Status: </label> </div>
+          <div class="col">{{facility?.relationshipStatus | Boolean}}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-8"><label>Float Provider:</label></div>
+          <div class="col">{{originalProvider.floatProviderIndicator | Boolean}}</div>
+        </div>
+      </div>
+      <div class="col card-block">
+        <div class="form-row">
+          <div class="col"><label>Effective Date:</label></div>
+          <div class="col">{{facilityProviderRelationship?.effectiveDate| date: 'M/d/yy'}}</div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Term Date: </label> </div>
+          <div class="col">{{facilityProviderRelationship?.terminationDate| date: 'M/d/yy'}}</div>
+        </div>
+
+      </div>
+      <div class="col card-block">
+        <div class="form-row">
+          <div class="col"><label>Provider Office Phone Number: </label> </div>
+          <div class="col">{{facilityProviderRelationship?.providerPhoneNumber}} - </div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Provider Office Extension: </label> </div>
+          <div class="col">{{facilityProviderRelationship?.providerExtensionNumber}} </div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Provider Email: </label> </div>
+          <div class="col">{{facilityProviderRelationship?.providerEmail}}</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="row facilityProviderRelationship">
+      <div>
+        <label>Behavioral Health Specialty: </label> <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col card-block">
+        <div class="form-row">
+          <div class="col"><label> Therapeutic Approaches/Treatments:</label> </div>
+          <div class="col"></div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Age Group:</label> </div>
+          <div class="col"></div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Modes</label> </div>
+          <div class="col"></div>
+        </div>
+        <div class="form-row">
+          <div class="col"><label>Other:</label> </div>
+          <div class="col"></div>
+        </div>
+        <ul *ngFor="let specialty of  mentalHealthProviderSpecialties">
+          <li>
+            {{specialty.Name}}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-row" style="background-color:#f6f6f6">
+          <div class="col-md-2"><label>Internal Notes: </label></div>
+          <div class="col-md-10">{{provider.internalNotes}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <small class="text-muted">
+      Last Updated:{{facilityProviderRelationship?.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By:{{facilityProviderRelationship?.lastUpdatedBy}}
+    </small>
+  </div>
+</div>
+<!--Other Facilites under the current Vendor-->
+<div class="card">
+  <div class="card-header facilityProviderRelationship">
+
+  </div>
+  <div class="row">
+    <div class="col">
+      <p style="background-color:#c7d247">{{provider.fullName}} at other facilities</p>
+      <table class="table facilityProviderRelationship">
+        <tr>
+          <th>ID</th>
+          <th> Provider Name</th>
+          <th>Facility Name</th>
+          <th>Facililty Address</th>
+          <th>Phone Number</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

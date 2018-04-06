@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>New Vendor</h1>
+<mat-dialog-content>
+  <form [formGroup]="createVendorForm" (ngSubmit)="onFormSubmit(createVendorForm.value)">
+    <mat-form-field>
+      <input matInput formControlName="VendorName" placeholder="Vendor Name" required>
+    </mat-form-field>
+    <div>
+      <mat-form-field>
+        <input id="number" type="number" formControlName="NPI" placeholder="Vendor NPI" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <input id="number" type="number" formControlName="ExternalId" placeholder="Exeternal Id" matInput>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input id="number" type="number" formControlName="TaxId" placeholder="Vendor Tax Id" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <input id="number" type="number" formControlName="VendorEpicId" placeholder="Vendor Epic ID" matInput>
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <textarea matInput placeholder="Internal Notes" formControlName="InternalNotes"> </textarea>
+    </mat-form-field>
+   <div>
+     <button mat-raised-button color="accent" [disabled]="!createVendorForm.valid">Create Vendor</button>
+     </div> 
+  </form>
+</mat-dialog-content>

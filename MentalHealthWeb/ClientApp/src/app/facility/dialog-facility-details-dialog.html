@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>Facility Details -  {{data.facility.facilityName}}</h1>
+<mat-dialog-content class="mat-container">
+  <mat-form-field>
+    <input matInput placeholder="Facility Name" [(ngModel)]="data.facility.facilityName" name="facilityName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Address Line 1" [(ngModel)]="data.facility.facilityAddress.addressLine1" name="facilityAddress.addressLine1">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Address Line 2" [(ngModel)]="data.facility.facilityAddress.addressLine2" name="facilityAddress.addressLine2">
+  </mat-form-field>
+
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="City" [(ngModel)]="data.facility.facilityAddress.city" name="facilityAddress.city">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="State" [(value)]="data.facility.facilityAddress.state">
+        <mat-option *ngFor="let state of states" [value]="state">{{state}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Zip" [(ngModel)]="data.facility.facilityAddress.zipCode" name="facilityAddress.zipCode">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Region" [(ngModel)]="data.facility.facilityAddress.region" name="facilityAddress.region">
+    </mat-form-field>
+  </div>
+  <mat-form-field>
+    <input matInput placeholder="Phone Number" [(ngModel)]="data.facility.facilityAddress.phoneNumber" name="facilityAddress.phoneNumber">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Alternate Phone Number" [(ngModel)]="data.facility.facilityAddress.alternatePhoneNumber" name="facilityAddress.alternatePhoneNumber">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Contact First Name" [(ngModel)]="data.facility.facilityAddress.contactFirstName" name="facilityAddress.facilityAddress.contactFirstName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Contact Last Name" [(ngModel)]="data.facility.facilityAddress.contactLastName" name="facilityAddress.facilityAddress.contactLastName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Website" [(ngModel)]="data.facility.facilityAddress.website" name="facilityAddress.website">
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea matInput placeholder="Internal Notes" [(ngModel)]="data.facility.internalNotes" name="internalNotes"> </textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<div mat-dialog-actions class="pull-right">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSubmit()" cdkFocusInitial>Save and Close</button>
+</div>
+
