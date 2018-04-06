@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProviderHubServiceUnitTest"
 		{C3DE06FA-B0DA-4D09-A552-1253A0276B89} = {C3DE06FA-B0DA-4D09-A552-1253A0276B89}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MentalHealthWeb", "C:\Users\apeasley\AngularTemplate\MentalHealthWeb.csproj", "{595FDA31-1639-49E1-B200-81849C2D4460}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MentalHealthWeb", "MentalHealthWeb\MentalHealthWeb.csproj", "{DC2521CB-3919-478B-B1E5-16C3A385B8D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,30 +26,15 @@ Global
 		{0AE6C792-7E29-4A64-96BF-BF21D003E3E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AE6C792-7E29-4A64-96BF-BF21D003E3E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AE6C792-7E29-4A64-96BF-BF21D003E3E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{595FDA31-1639-49E1-B200-81849C2D4460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{595FDA31-1639-49E1-B200-81849C2D4460}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{595FDA31-1639-49E1-B200-81849C2D4460}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{595FDA31-1639-49E1-B200-81849C2D4460}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC2521CB-3919-478B-B1E5-16C3A385B8D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC2521CB-3919-478B-B1E5-16C3A385B8D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC2521CB-3919-478B-B1E5-16C3A385B8D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC2521CB-3919-478B-B1E5-16C3A385B8D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D306610B-4291-4BA9-BF70-574CCB34B47C}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs:8080/tfs/ghc%20enterprise%20collection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ProviderHubService\\ProviderHubService.csproj
-		SccProjectName1 = ProviderHubService
-		SccLocalPath1 = ProviderHubService
-		SccProjectUniqueName2 = ProviderHubServiceUnitTest\\ProviderHubServiceUnitTest.csproj
-		SccProjectName2 = ProviderHubServiceUnitTest
-		SccLocalPath2 = ProviderHubServiceUnitTest
-		SccProjectUniqueName3 = C:\\Users\\apeasley\\AngularTemplate\\MentalHealthWeb.csproj
-		SccProjectName3 = MentalHealthWeb
-		SccLocalPath3 = C:\\Users\\apeasley\\AngularTemplate
 	EndGlobalSection
 EndGlobal
