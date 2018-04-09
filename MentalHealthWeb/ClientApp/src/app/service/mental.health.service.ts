@@ -17,6 +17,7 @@ import 'rxjs/add/operator/toPromise';
 
 
 export class MentalHealthService {
+
   therapeuticApproaches: any;
   others: any;
   modes: any;
@@ -43,6 +44,7 @@ export class MentalHealthService {
   advancedSearchQuery: any = [];
   items: Array<any>;
   searchResults: any = [];
+  advancedSearchResults: any = [];
   states: any = [];
   constructor(public http: Http, public httpClient: HttpClient) {
 
@@ -102,6 +104,17 @@ export class MentalHealthService {
   getSearchResults() {
     return this.searchResults;
   }
+
+  insertAdvancedSearchResults(results) {
+    this.advancedSearchResults = [];
+    this.advancedSearchResults.push(results);
+
+  }
+
+  getAdvancedSearchResults() {
+    return this.advancedSearchResults;
+  }
+
 
   resetBaseData() {
     this.facility = [];

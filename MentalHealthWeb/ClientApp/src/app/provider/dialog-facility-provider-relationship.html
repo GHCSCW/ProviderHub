@@ -1,7 +1,7 @@
 <h1 mat-dialog-title> {{data.facilityProviderRelationship.provider.firstName}} {{data.facilityProviderRelationship.provider.LastName}} - {{data.facilityProviderRelationship.facility.facilityName}}</h1>
 <mat-dialog-content>
 
- 
+
   <div>
     <mat-form-field>
       <input matInput [matDatepicker]="pickerEffDate" placeholder="Effective Date" [(ngModel)]="data.facilityProviderRelationship.effectiveDate" name="effectiveDate">
@@ -22,6 +22,16 @@
     <mat-checkbox [(ngModel)]="data.facilityProviderRelationship.referralIndicator" name="referralIndicator">Referral Indicator</mat-checkbox>
     <mat-checkbox [(ngModel)]="data.facilityProviderRelationship.prescriberIndicator" name="prescriberIndicator">Presciber Indicator</mat-checkbox>
   </div>
+  <mat-form-field>
+    <input matInput placeholder="Provider Email" [(ngModel)]="data.facilityProviderRelationship.providerEmail"  [formControl]="email" name="providerEmail" />
+    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="number" placeholder="Phone Number" [(ngModel)]="data.facilityProviderRelationship.providerPhoneNumber" name="providerPhoneNumber" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput  type="number" placeholder="Phone Extension" [(ngModel)]="data.facilityProviderRelationship.providerExtensionNumber" name="providerExtensionNumber" />
+  </mat-form-field>
   <mat-form-field>
     <textarea matInput placeholder="Internal Notes" [(ngModel)]="data.facilityProviderRelationship.internalNotes" name="internalNotes"> </textarea>
   </mat-form-field>

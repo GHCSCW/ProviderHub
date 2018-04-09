@@ -19,7 +19,7 @@ export class SearchComponent implements OnInit {
  
   
 
-  facilityRelationshipColumns = ['firstName', 'lastName', 'facilityName','region', 'address', 'city', 'zip', 'phoneNumber'];
+  facilityRelationshipColumns = ['firstName', 'lastName', 'credentials', 'relationshipStatus','facilityName','region', 'address', 'city', 'zip', 'phoneNumber'];
   facilityColumns = ['facilityName', 'address', 'city', 'zip','phoneNumber'];
   providerColumns = ['firstName', 'lastName'];
   vendorColumns = ['vendorName'];

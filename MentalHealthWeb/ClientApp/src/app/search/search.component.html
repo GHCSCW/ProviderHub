@@ -38,8 +38,8 @@
     {{message}}
   </div>
   <div class="example-container mat-elevation-z8">
-    <h5 style="margin-left:10px"> Facility Relationships</h5>
-    <mat-table #table [dataSource]="facilityProviderRelationships"  matSort>
+    <h5 style="margin-left:10px"> Facility Provider Profile</h5>
+    <mat-table #table [dataSource]="facilityProviderRelationships" matSort>
       Position Column
       <ng-container matColumnDef="firstName">
         <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
@@ -48,6 +48,15 @@
       <ng-container matColumnDef="lastName">
         <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.lastName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="credentials">
+        <mat-header-cell *matHeaderCellDef> Credentials </mat-header-cell>
+        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.credentials}} </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="relationshipStatus">
+        <mat-header-cell *matHeaderCellDef> Relationship Status</mat-header-cell>
+        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.relationshipStatus}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="facilityName">
         <mat-header-cell *matHeaderCellDef> Facility Name </mat-header-cell>

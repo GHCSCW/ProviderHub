@@ -1,7 +1,7 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MentalHealthService } from '../service/mental.health.service';
-import { FormControl } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
@@ -30,7 +30,7 @@ export class DialogFacilityProviderRelationship{
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogFacilityProviderRelationshipDialog, {
       width: '500px',
-        height: '425px',
+        height: '550px',
         data: { facilityProviderRelationship: this.facilityProviderRelationship, orginalFacilityProviderRelationship: this.originalFacilityProviderRelationship }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -45,13 +45,18 @@ export class DialogFacilityProviderRelationship{
   templateUrl: 'dialog-facility-provider-relationship.html',
 })
 export class DialogFacilityProviderRelationshipDialog {
+  email = new FormControl('', [Validators.required, Validators.email]);
+
 
   constructor(private mentalHealthService: MentalHealthService,
     public dialogRef: MatDialogRef<DialogFacilityProviderRelationshipDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
-
+  getErrorMessage() {
+    return this.email.hasError('email') ? 'Not a valid email' :
+        '';
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

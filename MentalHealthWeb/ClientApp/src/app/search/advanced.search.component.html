@@ -122,10 +122,10 @@
   <br />
 </div>
 <div class="mat-elevation-z8">
-  <h5 style="margin-left:10px"> Facility Relationships</h5>
+  <h5 style="margin-left:10px"> Facility Provider Profile</h5>
   <mat-table #table [dataSource]="dataSource">
     <ng-container matColumnDef="fullName">
-      <mat-header-cell *matHeaderCellDef> Provider Name </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Provider Name/Credentials </mat-header-cell>
       <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.fullName}} - {{facilityProviderRelationships.provider.credentials}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="facilityName">
@@ -133,7 +133,7 @@
       <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityName}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="facilityAddress">
-      <mat-header-cell *matHeaderCellDef> Facility Address </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Facility Address/City </mat-header-cell>
       <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
         {{facilityProviderRelationships.facility.facilityAddress.addressLine1}} {{facilityProviderRelationships.facility.facilityAddress.addressLine2}} -
         {{facilityProviderRelationships.facility.facilityAddress.city}}
@@ -156,8 +156,8 @@
     <ng-container matColumnDef="therapeuticApproaches">
       <mat-header-cell *matHeaderCellDef> Therapeutic Approaches </mat-header-cell>
       <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
-        <li *ngFor="let conditions of facilityProviderRelationships.therapeauticApproachesList">
-          {{conditions}}
+        <li *ngFor="let therapeuticApproaches of facilityProviderRelationships.therapeuticApproachesList">
+          {{therapeuticApproaches}}
         </li>
       </mat-cell>
     </ng-container>

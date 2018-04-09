@@ -24,20 +24,10 @@ import { AbstractControl } from '@angular/forms/src/model';
 
 export class AdvancedSearchComponent implements OnInit {
 
-
-
-  //credentialsList = [
-  //  { value: '1', viewValue: 'APNP' },
-  //  { value: '2', viewValue: 'LPC' },
-  //  { value: '3', viewValue: 'LCSW' }
-  //];
-
   results: any;
   loading: boolean = false;
   showVar: boolean = true;
   facilityProviderRelationships: any = [];
-  //TODO :previousSearchResults: any[];
-
   searchForm: FormGroup;
   message: string;
   provider: any = [];
@@ -46,7 +36,7 @@ export class AdvancedSearchComponent implements OnInit {
   regions: any = [];
   languages: any = [];
   facilityList: any = [];
-  testArray: any = [];
+  previousResultsArray: any = [];
   providerName: string;
   genders: any = [];
   ages: any = [];
@@ -85,12 +75,10 @@ export class AdvancedSearchComponent implements OnInit {
 
   ngOnInit() {
 
-    this.mentalHealthService.getSearchResults().map(results => {
-      //  this.nav.resetIDs();
-
-      //  this.provider = new MatTableDataSource<any>(results.providers);
+    this.mentalHealthService.getAdvancedSearchResults().map(results => {
       this.dataSource = new MatTableDataSource<any>(results);
 
+     // this.dataSource.paginator = this.paginator; this was clearing the data???
     });
     this.nav.hide();
     this.setAges();
@@ -108,9 +96,9 @@ export class AdvancedSearchComponent implements OnInit {
       this.facilityList = data;
     });
 
-    this.testArray = this.mentalHealthService.getAdvancedSearchQuery();
+    this.previousResultsArray = this.mentalHealthService.getAdvancedSearchQuery();
 
-    if (this.testArray.length == 0) {
+    if (this.previousResultsArray.length == 0) {
       this.advancedSearchForm = this.fb.group({
         'gender': [],
         'formLanguage': [],
@@ -150,40 +138,23 @@ export class AdvancedSearchComponent implements OnInit {
       })
 
       this.advancedSearchForm.patchValue({
-          gender: this.testArray[0].gender,
-          formLanguage: this.testArray[0].formLanguage,
-          region: this.testArray[0].region,
-          age: this.testArray[0].age,
-          condition: this.testArray[0].condition,
-          theraApporaceh: this.testArray[0].theraApproach,
-          mode: this.testArray[0].mode,
-          city: this.testArray[0].city,
-          other: this.testArray[0].other,
-          cspIndicator: this.testArray[0].cspIndicator,
-          medicareIndicator:this.testArray[0].medicareIndicator,
-          badgercareIndicator: this.testArray[0].badgercareIndicator,
-          prescribingProvider: this.testArray[0].prescribingProvider,
-          acceptingNewPatients: this.testArray[0].acceptingNewPatients,
-          facilityId: this.testArray[0].facilityId
+          gender: this.previousResultsArray[0].gender,
+          formLanguage: this.previousResultsArray[0].formLanguage,
+          region: this.previousResultsArray[0].region,
+          age: this.previousResultsArray[0].age,
+          condition: this.previousResultsArray[0].condition,
+          theraApporaceh: this.previousResultsArray[0].theraApproach,
+          mode: this.previousResultsArray[0].mode,
+          city: this.previousResultsArray[0].city,
+          other: this.previousResultsArray[0].other,
+          cspIndicator: this.previousResultsArray[0].cspIndicator,
+          medicareIndicator:this.previousResultsArray[0].medicareIndicator,
+          badgercareIndicator: this.previousResultsArray[0].badgercareIndicator,
+          prescribingProvider: this.previousResultsArray[0].prescribingProvider,
+          acceptingNewPatients: this.previousResultsArray[0].acceptingNewPatients,
+          facilityId: this.previousResultsArray[0].facilityId
 
       });
-      //this.advancedSearchForm.setValue({
-      //  'gender': [],
-      //  'formLanguage': [],
-      //  'region': [],
-      //  'age': [],
-      //  'condition': [],
-      //  'theraApproach': [],
-      //  'mode': [],
-      //  'city': [],
-      //  'other': [],
-      //  'cspIndicator': true,
-      //  'medicareIndicator': true,
-      //  'badgercareIndicator': true,
-      //  'prescribingProvider': true,
-      //  'acceptingNewPatients': true,
-      //  'facilityID': []
-      //})
     }
 
     this.filteredOptions = this.myControl.valueChanges
@@ -226,7 +197,6 @@ export class AdvancedSearchComponent implements OnInit {
 
     this.mentalHealthService.insertFacilityProviderRelationshipData(provRelationship);
     this.nav.addFacilityRelationshipProviderID(provRelationship);
-    //this.provider = provRelationship.id;
     this.router.navigate(["/facility/" + provRelationship.facility.id]);
 
   }
@@ -250,7 +220,7 @@ export class AdvancedSearchComponent implements OnInit {
     //Build all array key values
     searchObject.push({ key: "Gender", value: form.gender });
     searchObject.push({ key: "Language", value: form.formLanguage });
-    searchObject.push({ key: "Region", value: form.region });
+    //searchObject.push({ key: "Region", value: form.region });
     searchObject.push({ key: "BHAttributeSet", value: form.age });
     searchObject.push({ key: "BHAttributeSet", value: form.condition });
     searchObject.push({ key: "BHAttributeSet", value: form.theraApproach });
@@ -263,6 +233,10 @@ export class AdvancedSearchComponent implements OnInit {
 
     var city = new Array(form.city);
     searchObject.push({ key: "City", value: city });
+
+    var region = new Array(form.region);
+    searchObject.push({ key: "Region", value: region});
+
     //Build CSP Indicator Key Value
     var i = form.cspIndicator ? 1 : null;
     var cspIndicatorArray = [];
@@ -274,13 +248,13 @@ export class AdvancedSearchComponent implements OnInit {
     var i = form.badgercareIndicator ? 1 : null;
     var badgercareIndicatorArray = [];
     badgercareIndicatorArray.push(i);
-    // searchObject.push({ key: "MedicaidIndicator", value: badgercareIndicatorArray });
+    searchObject.push({ key: "MedicaidIndicator", value: badgercareIndicatorArray });
 
     //Build Medicare Indicator Key Value
     var i = form.medicareIndicator ? 1 : null;
     var medicareIndicatorArray = [];
     medicareIndicatorArray.push(i);
-    // searchObject.push({ key: "MedicareIndicator", value: medicareIndicatorArray });
+    searchObject.push({ key: "MedicareIndicator", value: medicareIndicatorArray });
 
 
   
@@ -288,15 +262,14 @@ export class AdvancedSearchComponent implements OnInit {
     var i = form.acceptingNewPatients ? 1 : null;
     var prescriberArray = [];
     prescriberArray.push(i);
-    //searchObject.push({ key: "Prescriber", value: prescriberArray });
+    searchObject.push({ key: "Prescriber", value: prescriberArray });
 
 
     //Build Accepting New Patients
     var i = form.acceptigNewPatients ? 1 : null;
     var acceptigNewPatientsArray = [];
-
     acceptigNewPatientsArray.push(i);
-    // searchObject.push({ key: "AcceptingNewPatient", value: acceptigNewPatientsArray });
+    searchObject.push({ key: "AcceptingNewPatient", value: acceptigNewPatientsArray });
 
     //searchObject.filter(x => x != null)
     searchObject = searchObject.filter(x => x.value != null && x.value.length > 0)
@@ -346,7 +319,7 @@ export class AdvancedSearchComponent implements OnInit {
 
 
     
-      this.mentalHealthService.insertSearchResults(results);
+      this.mentalHealthService.insertAdvancedSearchResults(results);
       this.dataSource.paginator = this.paginator;
       if (results.length == 0) {
         this.message = 'No Results were found.';

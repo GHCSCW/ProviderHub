@@ -107,7 +107,7 @@ export class DialogProviderDetailsDialog {
   }
 
   onNoClick(): void {
-
+    Object.assign(this.data.provider, this.data.originalProvider);
     this.dialogRef.close();
   }
   
