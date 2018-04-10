@@ -167,12 +167,14 @@ export class MentalHealthService {
       .map(this.extractData);
   }
 
-  //getProviderList2(): Observable<any> {
-  //  return this.http.get(this.server_url + '/getProviderList');
-  //}
-
-
-
+  getCredentialList(): Observable<any> {
+    return this.httpClient.get(this.server_url + '/getCredentialList');
+  }
+  getCredentialListByProvID(id): Observable<any> {
+    return this.http.get(this.server_url + '/getCredentialListByProviderId/' + id)
+      .map(this.extractData);
+  }
+ 
   getFacilityProviderRelationshipById(id: number): Observable<any> {
     return this.http.get(this.server_url + '/getfacilityproviderrelationshipbyid/' + id)
       .map(this.extractData);
@@ -209,6 +211,14 @@ export class MentalHealthService {
       }
     );
   }
+  updateCredentials(body, providerID) {
+    const url = `${this.server_url}/updateCredentials/` + providerID;
+    return this.httpClient.post(url, body).map((res: any) => {
+      let data = res;
+      return data;
+    }).catch(this.handleError)
+  }
+
 
   updateProvider(body) {
     const url = `${this.server_url}/updateProvider/`;

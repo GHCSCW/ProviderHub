@@ -46,14 +46,20 @@ export class DialogProviderDetails {
   templateUrl: 'dialog-provider-details-dialog.html',
 })
 export class DialogProviderDetailsDialog {
+  newitem: any;
+  credentialList: any = [];
   language = new FormControl();
   toppings = new FormControl();
+  credentials = new FormControl();
   toppingList = ['English', 'Spanish', 'Hmong'];
   newProvider: any = []; 
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
   addOnBlur: boolean = true;
+  selectedValue: any = [];
+  baseCredentials: any = [];
+
 
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
@@ -64,6 +70,21 @@ export class DialogProviderDetailsDialog {
     { name: 'Apple' },
   ];
 
+
+  public items = [
+    {
+      id: 1,
+      value: "AA"
+    },
+    {
+      id: 2,
+      value: "BB"
+    },
+    {
+      id: 3,
+      value: "LCSW"
+    }
+  ];
 
   add(event: MatChipInputEvent): void {
     let input = event.input;
@@ -95,18 +116,36 @@ export class DialogProviderDetailsDialog {
 
   constructor(private mentalHealthService: MentalHealthService,
     public dialogRef: MatDialogRef<DialogProviderDetailsDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+
+    this.mentalHealthService.getCredentialList().subscribe(credList =>
+      this.credentialList = credList
+    );
+
+    this.mentalHealthService.getCredentialListByProvID(this.data.originalProvider.id).subscribe(credList =>
+      this.selectedValue = this.items
+    );
+  }
 
 
   onSubmit() {
     this.mentalHealthService.updateProvider(this.data.provider).subscribe(updatedProvider => {
       Object.assign(this.data.originalProvider, updatedProvider);
-      this.dialogRef.close();
+      
     });
+    this.mentalHealthService.updateCredentials(this.data.originalProvider.id, this.selectedValue).subscribe(updatedCredentials => {
+      //update credential object
+      this.dialogRef.close();
+    }
+
+
+      )
  
   }
 
   onNoClick(): void {
+
+    this.newitem = this.credentials.value;
     Object.assign(this.data.provider, this.data.originalProvider);
     this.dialogRef.close();
   }

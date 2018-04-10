@@ -22,11 +22,7 @@ namespace AngularTemplate.Controllers
             public string[] Value { get; set; }
             //public string languages  { get; set; }
         }
-        //public List<Credential> CredentialList { get; set; }
-        //public class values
-        //{
-        //    public string id { get; set; }
-        //}
+        
 
         public HomeController()
         {
@@ -47,6 +43,24 @@ namespace AngularTemplate.Controllers
 
             return facility;
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetCredentialList()
+        {
+            Credential[] credentials = await ProviderHubService.GetCredentialListAsync();
+
+            return Json(credentials);
+        }
+
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> getCredentialListByProviderId(int id)
+        {
+            Credential[] credentials = await ProviderHubService.GetProviderCredentialByIDAsync(id);
+
+            return Json(credentials);
+        }
+
+
 
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetVendorById(int id)
@@ -236,6 +250,21 @@ namespace AngularTemplate.Controllers
             }
         }
 
+        [HttpPost("[action]/{id}")]
+        public async Task<IActionResult> UpdateCredentials([FromBody]Credential[] credentialUpdate)
+        {
+            int providerID = 4;
+            bool x = await ProviderHubService.SaveCredentialByProviderIDAsync(providerID, credentialUpdate);
+            if (x == true)
+            {
+                return Ok(credentialUpdate);
+            }
+            else
+            {
+                return NotFound("Credential Update failed");
+            }
+
+        }
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {

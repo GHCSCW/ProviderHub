@@ -27,6 +27,7 @@ export class ProviderComponent implements OnInit {
   facility: any = [];
   facilityAddress: any = [];
   toppingList: any = []
+  credentialList: any = []; 
   isOffline: boolean;
   gender: string;
   test: string;
@@ -52,6 +53,7 @@ export class ProviderComponent implements OnInit {
         languageID: 3, languageName: 'Hmong'
       }];
 
+ 
  
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       if (results.provider == undefined) {
