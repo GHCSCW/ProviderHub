@@ -4,10 +4,10 @@
 <div class="card">
   <div class="card-header" style="background-color:#5e7ad5">
     <h5>
-      Facility: {{facility.facilityName}}
+      Facility: {{originalFacility.facilityName}}
       <a href="#" class="btn btn-primary pull-right">Link to Provider</a>
       <a href="#" class="btn btn-primary pull-right">Link to Vendor</a>
-      <dialog-facility-details [facility]="edittedFacility">loading</dialog-facility-details>
+      <dialog-facility-details [facility]="facility" [originalFacility]="originalFacility">loading</dialog-facility-details>
     </h5>
   </div>
   <div class="card-body">
@@ -97,11 +97,11 @@
     </div>
     <div class="card-footer">
       <small class="text-muted">
-        Last Updated: {{facility.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By: {{facility.lastUpdatedBy}}
+        Last Updated: {{originalFacility.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By: {{facility.lastUpdatedBy}}
       </small>
     </div>
   </div>
-<p style="background-color:#c7d247">All Providers at {{facility.facilityName}} </p>
+<p style="background-color:#c7d247">All Providers at {{originalFacility.facilityName}} </p>
 
 <!--<mat-form-field fxFlex="33" class="mr-20 mt-20"> (under Vendor Journey Mental Health)
   <input matInput placeholder="Facility" aria-label="Facility" [matAutocomplete]="auto" [formControl]="facilityName">

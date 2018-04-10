@@ -16,12 +16,13 @@ import { AddressType } from '../service/enum-service';
 })
 export class FacilityComponent  {
   addressType: string;
-  edittedFacility: any;
+ 
   inputFormControl: any;
   public autocompleteOptions$: Observable<string[]>;
   states: any [];
   today: number = Date.now();
-  facility: any = []; 
+  facility: any = [];
+  originalFacility: any = [];
   providerList: any;
   facilityList: any;
   facilityProviderRelationship: any = [];
@@ -39,14 +40,14 @@ export class FacilityComponent  {
 
       if (results.facility == undefined) {
         this.facility = this.mentalHealthService.getFacilityData();
-        this.edittedFacility = JSON.parse(JSON.stringify(this.facility));
+        this.originalFacility = JSON.parse(JSON.stringify(this.facility));
        
       }
       else {
         this.provider = results.provider;
         this.facility = results.facility;
         this.facilityAddress = results.facility.facilityAddress;
-        this.edittedFacility = JSON.parse(JSON.stringify(results.facility));
+        this.originalFacility = JSON.parse(JSON.stringify(results.facility));
         this.facilityProviderRelationship = results;
       }
 
@@ -88,7 +89,7 @@ export class FacilityComponent  {
         this.mentalHealthService.getFacility(params['id']).subscribe(data => {
           this.facility = data;
           this.facilityAddress = data.facilityAddress;
-          this.edittedFacility = data;
+          this.originalFacility = JSON.parse(JSON.stringify(data));
           this.nav.addFacilityID(this.facility.id);
         })
       }

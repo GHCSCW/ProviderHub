@@ -14,7 +14,7 @@ import {MentalHealthService } from '../service/mental.health.service';
 export class DialogFacilityDetails {
 
   @Input() facility: any[];
-
+  @Input() originalFacility: any[];
   constructor(public dialog: MatDialog) { }
 
   openDialog(): void {
@@ -22,7 +22,7 @@ export class DialogFacilityDetails {
       width: '500px',
       height: '850px',
 
-      data: { facility: this.facility}
+      data: { facility: this.facility, originalFacility: this.originalFacility }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -41,17 +41,21 @@ export class DialogFacilityDetailsDialog {
     public dialogRef: MatDialogRef<DialogFacilityDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
+  states = this.mentalHealthService.getStates();
+
   onNoClick(): void {
+
+    Object.assign(this.data.facility, this.data.originalFacility);
     this.dialogRef.close();
   }
 
   onSubmit() {
-    this.updatefacility(this.data.facility);
+
+    this.mentalHealthService.updateFacility(this.data.facility).subscribe(updateFacility => {
+      Object.assign(this.data.originalFacility, updateFacility);
+
+    });
     this.dialogRef.close();
   }
-  states = this.mentalHealthService.getStates();
-  updatefacility(data)
-  {
-    this.mentalHealthService.updateFacility(data);
-  }
+
 }

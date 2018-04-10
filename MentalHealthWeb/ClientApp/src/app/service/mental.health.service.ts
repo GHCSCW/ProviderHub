@@ -229,13 +229,12 @@ export class MentalHealthService {
   }
 
 
-  updateFacility(body: Object): Promise<Object> {
+  updateFacility(body){
     const url = `${this.server_url}/updateFacility/`;
-    return this.http
-      .post(url, JSON.stringify(body), { headers: this.headers })
-      .toPromise()
-      .then(() => body)
-      .catch(this.handleError);
+    return this.httpClient.post(url, body).map((res: any) => {
+      let data = res;
+      return data;
+    }).catch(this.handleError)
   }
 
   //TODO mapAddressToFacility(facilityID, addressID)
