@@ -52,11 +52,7 @@ export class ProviderComponent implements OnInit {
         languageID: 3, languageName: 'Hmong'
       }];
 
-    var mappingLanguages: IProviderLanguageMapping[] = [
-      { providerLanguageMappingId: 1, providerId: 1, languageId: 1, sequenceNumber: 1 },
-      {  providerLanguageMappingId: 2, providerId:2, languageId:1, sequenceNumber:1 },
-      { providerLanguageMappingId: 3, providerId: 3, languageId: 1, sequenceNumber: 1}
-    ]
+ 
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       if (results.provider == undefined) {
         this.provider = this.mentalHealthService.getProviderData();

@@ -24,14 +24,16 @@ export class DialogFacilityProviderRelationship{
     @Input() originalFacilityProviderRelationship: any[];
 
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private mentalHealthService: MentalHealthService) {
   }
 
+
+ 
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogFacilityProviderRelationshipDialog, {
       width: '500px',
         height: '650px',
-        data: { facilityProviderRelationship: this.facilityProviderRelationship, orginalFacilityProviderRelationship: this.originalFacilityProviderRelationship }
+        data: { facilityProviderRelationship: this.facilityProviderRelationship, originalFacilityProviderRelationship: this.originalFacilityProviderRelationship }
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
@@ -59,6 +61,7 @@ export class DialogFacilityProviderRelationshipDialog {
   }
 
   onNoClick(): void {
+    Object.assign(this.data.facilityProviderRelationship, this.data.originalFacilityProviderRelationship);
     this.dialogRef.close();
   }
 
@@ -68,12 +71,6 @@ export class DialogFacilityProviderRelationshipDialog {
           Object.assign(this.data.originalFacilityProviderRelationship, updateFacilityProviderRelationship);
    
       });
-   // this.dialogRef.close();
-    // alert("Thanks for submitting! Data: " + JSON.stringify(this.data.providerNew));
-
-      //this.mentalHealthService.updateProvider(this.data.provider).subscribe(updatedProvider => {
-      //    Object.assign(this.data.originalProvider, updatedProvider);
-      //    this.dialogRef.close();
-      //});
+    this.dialogRef.close();
   }
 }

@@ -94,18 +94,18 @@
 <div *ngIf="facilityProviderRelationship != 0" class="card">
   <div class="card-header facilityProviderRelationship">
     <span><b>Facility Provider Profile:</b> </span>
-    <span class="pull-right"><dialog-facility-provider-relationship [facilityProviderRelationship]="originalFacilityProviderRelationship"></dialog-facility-provider-relationship></span>
+    <span class="pull-right"><dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship" [originalFacilityProviderRelationship]="originalFacilityProviderRelationship"></dialog-facility-provider-relationship></span>
   </div>
   <div class="card-body">
     <div class="row">
       <div class="col card-block">
         <div class="form-row">
           <div class="col-md-8"><label>Accepting New Patients:</label> </div>
-          <div class="col-md-4">{{facilityProviderRelationship?.acceptingNewPatientIndicator | Boolean}} </div>
+          <div class="col-md-4">{{originalFacilityProviderRelationship?.acceptingNewPatientIndicator | Boolean}} </div>
         </div>
         <div class="form-row">
           <div class="col-md-8"><label>External Provider Indicator:</label></div>
-          <div class="col">{{facilityProviderRelationship?.externalProviderIndicator | Boolean}}</div>
+          <div class="col">{{originalFacilityProviderRelationship?.externalProviderIndicator | Boolean}}</div>
         </div>
         <div class="form-row">
           <div class="col-md-8"><label>Prescribing Provider: </label></div>
@@ -127,26 +127,26 @@
       <div class="col card-block">
         <div class="form-row">
           <div class="col"><label>Effective Date:</label></div>
-          <div class="col">{{facilityProviderRelationship?.effectiveDate| date: 'M/d/yy'}}</div>
+          <div class="col">{{originalFacilityProviderRelationship?.effectiveDate| date: 'M/d/yy'}}</div>
         </div>
         <div class="form-row">
           <div class="col"><label>Term Date: </label> </div>
-          <div class="col">{{facilityProviderRelationship?.terminationDate| date: 'M/d/yy'}}</div>
+          <div class="col">{{originalFacilityProviderRelationship?.terminationDate| date: 'M/d/yy'}}</div>
         </div>
 
       </div>
       <div class="col card-block">
         <div class="form-row">
           <div class="col"><label>Provider Office Phone Number: </label> </div>
-          <div class="col">{{facilityProviderRelationship?.providerPhoneNumber}} - </div>
+          <div class="col">{{originalFacilityProviderRelationship?.providerPhoneNumber}} - </div>
         </div>
         <div class="form-row">
           <div class="col"><label>Provider Office Extension: </label> </div>
-          <div class="col">{{facilityProviderRelationship?.providerExtensionNumber}} </div>
+          <div class="col">{{originalFacilityProviderRelationship?.providerExtensionNumber}} </div>
         </div>
         <div class="form-row">
           <div class="col"><label>Provider Email: </label> </div>
-          <div class="col">{{facilityProviderRelationship?.providerEmail}}</div>
+          <div class="col">{{originalFacilityProviderRelationship?.providerEmail}}</div>
         </div>
       </div>
 
@@ -192,7 +192,7 @@
   </div>
   <div class="card-footer">
     <small class="text-muted">
-      Last Updated:{{facilityProviderRelationship?.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By:{{facilityProviderRelationship?.lastUpdatedBy}}
+      Last Updated:{{originalFacilityProviderRelationship?.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By:{{facilityProviderRelationship?.lastUpdatedBy}}
     </small>
   </div>
 </div>
