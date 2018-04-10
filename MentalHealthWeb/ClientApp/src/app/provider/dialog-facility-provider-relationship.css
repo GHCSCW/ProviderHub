@@ -1,1 +1,8 @@
-﻿
+.mat-container {
+  display: flex;
+  flex-direction: column;
+}
+
+  .mat-container > * {
+    width: 30%;
+  }

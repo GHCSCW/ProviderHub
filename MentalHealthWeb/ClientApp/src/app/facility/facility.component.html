@@ -26,26 +26,6 @@
           <div class="col-md-5"><label>Facility Address Line 2: </label></div>
           <div class="col-md-7">{{facilityAddress?.addressLine2}}</div>
         </div>
-        <div class="form-row">
-          <div class="col-md-5"><label>Phone Number: </label> </div>
-          <div class="col-md-7">{{facilityAddress?.phoneNumber}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-5"><label>Alternate Phone Number: </label> </div>
-          <div class="col-md-7">{{facilityAddress?.alternatePhoneNumber}}</div>
-        </div>
-       
-      </div>
-      <div class="col">
-        <div class="form-row">
-          <div class="col-md-5"><label>Contact Name: </label> </div>
-          <div class="col-md-7">
-            {{facilityAddress?.contactFirstName}} - {{facilityAddress?.contactLastName}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-5"><label>Website: </label> </div>
-          <div class="col-md-7">{{facilityAddress?.website}}</div>
-        </div>
       </div>
       <div class="col">
         <div class="form-row">
@@ -60,29 +40,69 @@
           <div class="col-md-5"><label>Zip: </label></div>
           <div class="col-md-7">{{facilityAddress?.zipCode}}</div>
         </div>
+      </div>
+      <div class="col">
+
         <div class="form-row">
           <div class="col-md-5"><label>Region: </label></div>
           <div class="col-md-7">{{facilityAddress?.region}}</div>
         </div>
       </div>
-
     </div>
-    <div class="row">
-      <div class="col" >
-        <div class="form-row" style="background-color:#f6f6f6">
-          <div class="col-md-2"><label>Internal Notes: </label></div>
-          <div class="col-md-10">{{facility.internalNotes}}</div>
+    <div class="form-row center_div" ><b>Contact Information</b></div>
+      <div class="row">
+        <div class="col">
+          <div class="form-row">
+            <div class="col-md-5"><label>Contact Name: </label> </div>
+            <div class="col-md-7">
+              {{facilityAddress?.contactFirstName}} - {{facilityAddress?.contactLastName}}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-5"><label>Phone Number: </label> </div>
+            <div class="col-md-7">{{facilityAddress?.phoneNumber}}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-row">
+            <div class="col-md-5"><label>Fax Number </label></div>
+            <div class="col-md-7">  {{facilityAddress?.faxNumber }}</div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-5"><label>Alternate Phone Number: </label> </div>
+            <div class="col-md-7">{{facilityAddress?.alternatePhoneNumber}}</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-row">
+            <div class="col-md-5"><label>Website: </label> </div>
+            <div class="col-md-7">
+              <a target="_blank" href="{{facilityAddress?.website}}">{{facilityAddress?.website}}</a>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-5"><label>Email: </label> </div>
+            <div class="col-md-7">{{facilityAddress?.email}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-row" style="background-color:#f6f6f6">
+            <div class="col-md-2"><label>Internal Notes: </label></div>
+            <div class="col-md-10">{{facility.internalNotes}}</div>
+          </div>
         </div>
       </div>
     </div>
+    <div class="card-footer">
+      <small class="text-muted">
+        Last Updated: {{facility.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By: {{facility.lastUpdatedBy}}
+      </small>
+    </div>
   </div>
-  <div class="card-footer">
-    <small class="text-muted">
-      Last Updated: {{facility.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By: {{facility.lastUpdatedBy}}
-    </small>
-  </div>
-</div>
 <p style="background-color:#c7d247">All Providers at {{facility.facilityName}} </p>
+
 <!--<mat-form-field fxFlex="33" class="mr-20 mt-20"> (under Vendor Journey Mental Health)
   <input matInput placeholder="Facility" aria-label="Facility" [matAutocomplete]="auto" [formControl]="facilityName">
   <mat-autocomplete #auto="matAutocomplete">

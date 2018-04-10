@@ -20,7 +20,7 @@ export class DialogFacilityDetails {
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogFacilityDetailsDialog, {
       width: '500px',
-      height: '750px',
+      height: '850px',
 
       data: { facility: this.facility}
     });

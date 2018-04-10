@@ -30,7 +30,7 @@ export class DialogFacilityProviderRelationship{
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogFacilityProviderRelationshipDialog, {
       width: '500px',
-        height: '550px',
+        height: '650px',
         data: { facilityProviderRelationship: this.facilityProviderRelationship, orginalFacilityProviderRelationship: this.originalFacilityProviderRelationship }
     });
     dialogRef.afterClosed().subscribe(result => {
