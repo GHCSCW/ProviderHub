@@ -251,13 +251,14 @@ namespace AngularTemplate.Controllers
         }
 
         [HttpPost("[action]/{id}")]
-        public async Task<IActionResult> UpdateCredentials([FromBody]Credential[] credentialUpdate)
+        public async Task<IActionResult> UpdateCredentials([FromBody]Credential[] credentialUpdate, int id)
         {
-            int providerID = 4;
-            bool x = await ProviderHubService.SaveCredentialByProviderIDAsync(providerID, credentialUpdate);
+        
+            bool x = await ProviderHubService.SaveCredentialByProviderIDAsync(id, credentialUpdate);
             if (x == true)
             {
                 return Ok(credentialUpdate);
+             
             }
             else
             {

@@ -47,6 +47,8 @@ export class DialogProviderDetails {
 })
 export class DialogProviderDetailsDialog {
   newitem: any;
+  selectedValue: any = [];
+  selectedItem: any = [];
   credentialList: any = [];
   language = new FormControl();
   toppings = new FormControl();
@@ -57,7 +59,6 @@ export class DialogProviderDetailsDialog {
   selectable: boolean = true;
   removable: boolean = true;
   addOnBlur: boolean = true;
-  selectedValue: any = [];
   baseCredentials: any = [];
 
 
@@ -71,20 +72,7 @@ export class DialogProviderDetailsDialog {
   ];
 
 
-  public items = [
-    {
-      id: 1,
-      value: "AA"
-    },
-    {
-      id: 2,
-      value: "BB"
-    },
-    {
-      id: 3,
-      value: "LCSW"
-    }
-  ];
+
 
   add(event: MatChipInputEvent): void {
     let input = event.input;
@@ -118,13 +106,16 @@ export class DialogProviderDetailsDialog {
     public dialogRef: MatDialogRef<DialogProviderDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
+
+
+    this.mentalHealthService.getCredentialListByProvID(this.data.originalProvider.id).subscribe(credList =>
+      this.selectedItem = credList
+    );
+  
     this.mentalHealthService.getCredentialList().subscribe(credList =>
       this.credentialList = credList
     );
 
-    this.mentalHealthService.getCredentialListByProvID(this.data.originalProvider.id).subscribe(credList =>
-      this.selectedValue = this.items
-    );
   }
 
 
@@ -133,7 +124,7 @@ export class DialogProviderDetailsDialog {
       Object.assign(this.data.originalProvider, updatedProvider);
       
     });
-    this.mentalHealthService.updateCredentials(this.data.originalProvider.id, this.selectedValue).subscribe(updatedCredentials => {
+    this.mentalHealthService.updateCredentials(this.selectedItem, this.data.originalProvider.id).subscribe(updatedCredentials => {
       //update credential object
       this.dialogRef.close();
     }
@@ -149,7 +140,38 @@ export class DialogProviderDetailsDialog {
     Object.assign(this.data.provider, this.data.originalProvider);
     this.dialogRef.close();
   }
-  
+
+
+  items = [
+    {
+
+      createdDate:"2018-03-29T16:16:03.03",
+      description: "Advanced Practice Nurse Practitioner",
+      id: 31,
+      mappingID: 80,
+      sequenceNumber:1,
+      status:false,
+      value:"APNP"
+    },
+    {
+      createdDate: "2018-03-29T16:16:03.03",
+      description: "Advanced HUH",
+      id: 345,
+      mappingID: 80,
+      sequenceNumber: 1,
+      status: false,
+      value: "MD"
+    },
+    {
+      createdDate: "2018-03-29T16:16:03.03",
+      description: "Advanced Practice Nurse HUHHH",
+      id: 1,
+      mappingID: 344,
+      sequenceNumber: 1,
+      status: false,
+      value: "AA"
+    }
+  ];
   genders = [
     {
       value: 1,

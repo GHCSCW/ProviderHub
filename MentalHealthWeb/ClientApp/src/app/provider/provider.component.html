@@ -105,7 +105,7 @@
       <div class="col card-block">
         <div class="form-row">
           <div class="col-md-8"><label>Accepting New Patients:</label> </div>
-          <div class="col-md-4">{{originalFacilityProviderRelationship?.acceptingNewPatientIndicator | Boolean}} </div>
+          <div class="col">{{originalFacilityProviderRelationship?.acceptingNewPatientIndicator | Boolean}} </div>
         </div>
         <div class="form-row">
           <div class="col-md-8"><label>External Provider Indicator:</label></div>
@@ -113,19 +113,19 @@
         </div>
         <div class="form-row">
           <div class="col-md-8"><label>Prescribing Provider: </label></div>
-          <div class="col">{{facilityProviderRelationship?.prescriberIndicator | Boolean}}</div>
+          <div class="col">{{originalFacilityProviderRelationship?.prescriberIndicator | Boolean}}</div>
         </div>
         <div class="form-row">
           <div class="col-md-8"><label>Referring to Specialist Indicator: </label> </div>
-          <div class="col">{{facility?.referralIndicator | Boolean}}</div>
+          <div class="col">{{originalFacilityProviderRelationship?.referralIndicator | Boolean}}</div>
         </div>
         <div class="form-row">
           <div class="col-md-8"><label>Relationship Status: </label> </div>
-          <div class="col">{{facility?.relationshipStatus | Boolean}}</div>
+          <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | Boolean}}</div>
         </div>
         <div class="form-row">
           <div class="col-md-8"><label>Float Provider:</label></div>
-          <div class="col">{{originalProvider.floatProviderIndicator | Boolean}}</div>
+          <div class="col">{{originalFacilityProviderRelationship?.floatProviderIndicator | Boolean}}</div>
         </div>
       </div>
       <div class="col card-block">

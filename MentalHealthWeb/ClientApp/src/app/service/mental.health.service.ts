@@ -211,8 +211,8 @@ export class MentalHealthService {
       }
     );
   }
-  updateCredentials(body, providerID) {
-    const url = `${this.server_url}/updateCredentials/` + providerID;
+  updateCredentials(body, id) {
+    const url = `${this.server_url}/updateCredentials/` + id;
     return this.httpClient.post(url, body).map((res: any) => {
       let data = res;
       return data;
