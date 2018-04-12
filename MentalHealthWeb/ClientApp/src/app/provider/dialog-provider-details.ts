@@ -8,12 +8,9 @@ import { Observable } from "rxjs/Observable";
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { Gender } from '../service/enum-service'
-import 'rxjs/Rx'; 
-
-export class Language {
-  constructor(public name: string) { }
-}
-
+import 'rxjs/Rx';
+import { ArrayService } from '../service/array.service';
+import { Language } from '../models/language';
 
 @Component({
   selector: 'dialog-provider-details',
@@ -26,7 +23,7 @@ export class DialogProviderDetails {
   @Input() provider: any[];
   @Input() originalProvider: any[];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) { }
 
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogProviderDetailsDialog, {
@@ -35,7 +32,7 @@ export class DialogProviderDetails {
       data: { provider: this.provider, originalProvider: this.originalProvider }
     });
     dialogRef.afterClosed().subscribe(result => {
-     // this.provider = this.originalProvider;
+      // this.provider = this.originalProvider;
     });
   }
 
@@ -46,15 +43,15 @@ export class DialogProviderDetails {
   templateUrl: 'dialog-provider-details-dialog.html',
 })
 export class DialogProviderDetailsDialog {
+  provID: any;
   newitem: any;
   selectedValue: any = [];
   selectedItem: any = [];
   credentialList: any = [];
-  language = new FormControl();
   toppings = new FormControl();
   credentials = new FormControl();
   toppingList = ['English', 'Spanish', 'Hmong'];
-  newProvider: any = []; 
+  newProvider: any = [];
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
@@ -62,56 +59,24 @@ export class DialogProviderDetailsDialog {
   baseCredentials: any = [];
 
 
-  // Enter, comma
-  separatorKeysCodes = [ENTER, COMMA];
-
-  fruits = [
-    { name: 'Lemon' },
-    { name: 'Lime' },
-    { name: 'Apple' },
-  ];
-
-
-
-
-  add(event: MatChipInputEvent): void {
-    let input = event.input;
-    let value = event.value;
-
-    // Add our fruit
-    if ((value || '').trim()) {
-      this.fruits.push({ name: value.trim() });
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  remove(fruit: any): void {
-    let index = this.fruits.indexOf(fruit);
-
-    if (index >= 0) {
-      this.fruits.splice(index, 1);
-    }
-  }
-
 
   genderSelected = Gender[this.data.provider.gender];
-  filteredOptions: Observable<Language[]>;
   errors = [];
+  languages: Language[];
 
   constructor(private mentalHealthService: MentalHealthService,
+    private arrayService: ArrayService,
     public dialogRef: MatDialogRef<DialogProviderDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
 
-
+    this.mentalHealthService.getLanguages().subscribe(
+      result => this.languages = result
+    );
     this.mentalHealthService.getCredentialListByProvID(this.data.originalProvider.id).subscribe(credList =>
       this.selectedItem = credList
     );
-  
+
     this.mentalHealthService.getCredentialList().subscribe(credList =>
       this.credentialList = credList
     );
@@ -120,18 +85,24 @@ export class DialogProviderDetailsDialog {
 
 
   onSubmit() {
+
+    this.provID = this.data.originalProvider.id;
+
     this.mentalHealthService.updateProvider(this.data.provider).subscribe(updatedProvider => {
       Object.assign(this.data.originalProvider, updatedProvider);
-      
+
     });
-    this.mentalHealthService.updateCredentials(this.selectedItem, this.data.originalProvider.id).subscribe(updatedCredentials => {
+    this.mentalHealthService.updateCredentials(this.selectedItem, this.provID).subscribe(updatedCredentials => {
       //update credential object
+    }
+    )
+    this.mentalHealthService.updateLanguage(this.data.provider.languageList, this.provID).subscribe(updatedLanguage => {
       this.dialogRef.close();
     }
 
+    )
 
-      )
- 
+
   }
 
   onNoClick(): void {
@@ -145,13 +116,13 @@ export class DialogProviderDetailsDialog {
   items = [
     {
 
-      createdDate:"2018-03-29T16:16:03.03",
+      createdDate: "2018-03-29T16:16:03.03",
       description: "Advanced Practice Nurse Practitioner",
       id: 31,
       mappingID: 80,
-      sequenceNumber:1,
-      status:false,
-      value:"APNP"
+      sequenceNumber: 1,
+      status: false,
+      value: "APNP"
     },
     {
       createdDate: "2018-03-29T16:16:03.03",
@@ -189,8 +160,16 @@ export class DialogProviderDetailsDialog {
 
   selectedGender = this.data.provider.gender;
 
- 
 
+
+  // filter(name: string): Language[] {
+  //  return this.options.filter(option =>
+  //    option.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
+  //}
+
+  //displayFn(user?: Language): string | undefined {
+  //  return user ? user.name : undefined;
+  //}
 
 
 
@@ -210,11 +189,3 @@ export class DialogProviderDetailsDialog {
     //  map(name => name ? this.filter(name) : this.options.slice())
     //  );
 
-  //filter(name: string): Language[] {
-  //  return this.options.filter(option =>
-  //    option.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
-  //}
-
-  //displayFn(user?: Language): string | undefined {
-  //  return user ? user.name : undefined;
-  //}

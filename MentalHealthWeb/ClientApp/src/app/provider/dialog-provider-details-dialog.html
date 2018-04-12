@@ -21,7 +21,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>-->
-  <mat-form-field> 
+  <mat-form-field>
     <mat-select placeholder="Credential List" [(ngModel)]="selectedItem" multiple>
       <mat-option *ngFor="let option of credentialList" [value]="option">
         {{ option.value }}
@@ -29,28 +29,13 @@
     </mat-select>
   </mat-form-field>
 
-  <!--<mat-form-field>
-    <mat-select placeholder="Toppings" [formControl]="toppings" multiple>
-      <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+  <mat-form-field>
+    <mat-select placeholder="Language" [(ngModel)]="data.provider.languageList" multiple>
+      <mat-option *ngFor="let option of languages" [value]="option">
+        {{ option.name}}
+      </mat-option>
     </mat-select>
-  </mat-form-field>-->
-  <!--<div>
-    <mat-form-field class="demo-chip-list">
-      <mat-chip-list #chipList>
-        <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
-                  [removable]="removable" (remove)="remove(fruit)">
-          {{fruit.name}}
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-        </mat-chip>
-        <input placeholder="New fruit..."
-               [matChipInputFor]="chipList"
-               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-               [matChipInputAddOnBlur]="addOnBlur"
-               (matChipInputTokenEnd)="add($event)" />
-      </mat-chip-list>
-    </mat-form-field>
-  </div>-->
-
+  </mat-form-field>
   <mat-form-field>
     <input matInput [matDatepicker]="pickerDOB" placeholder="DOB" [(ngModel)]="data.provider.dateOfBirth" name="dateOfBirth">
     <mat-datepicker-toggle matSuffix [for]="pickerDOB"></mat-datepicker-toggle>
@@ -80,7 +65,6 @@
     <mat-checkbox [(ngModel)]="data.provider.medicaidIndicator" name="medicareIndicator">Medicaid Indicator</mat-checkbox>
     <mat-checkbox [(ngModel)]="data.provider.csP_Indicator" name="csP_Indicator">CSP Indicator</mat-checkbox>
     <!--<mat-checkbox [(ngModel)]="data.provider.medicaidIndicator" name="medicaidIndicator">Medicaid Indicator</mat-checkbox>-->
-
   </div>
 </mat-dialog-content>
 <div mat-dialog-actions class="pull-right">
@@ -100,27 +84,5 @@
 <!--<mat-form-field class="example-full-width">
   <textarea matInput placeholder="Address 2"></textarea>
 </mat-form-field>-->
-<!--<mat-form-field class="example-full-width">
-  <input type="text" placeholder="Language" aria-label="Language" matInput [formControl]="language" [matAutocomplete]="auto">
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-      {{ option.name }}
-    </mat-option>
-  </mat-autocomplete>
-</mat-form-field>
-<table class="example-full-width" cellspacing="0">
-  <tr>
-    <td>
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Medicare Provider">
-      </mat-form-field>
-    </td>
-    <td>
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Language">
-      </mat-form-field>
-    </td>
-    <td>
 
-    </td>
-  </tr>-->
+

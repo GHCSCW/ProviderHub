@@ -10,6 +10,7 @@ import { Gender } from '../service/enum-service'
 import 'rxjs/add/operator/map';
 import { IProviderLanguageMapping } from '../interfaces/IProviderLanguageMapping';
 import { ILanguage } from '../interfaces/ILanguage';
+import { Language } from '../service/enum-service';
 
 @Component({
   selector: 'provider',

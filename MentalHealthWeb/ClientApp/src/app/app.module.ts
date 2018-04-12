@@ -28,7 +28,8 @@ import { AppMaterialModule } from './app-material/app-material.module';
 import { NavbarService } from './service/navbarservice';
 import { EnumService } from './service/enum-service';
 import { MentalHealthService } from './service/mental.health.service';
-import { InterfaceService} from './service/interface.service';
+import { InterfaceService } from './service/interface.service';
+import { ArrayService } from './service/array.service';
 //Components
 import { NotFoundComponent } from './not-found/not-found.component';
 
@@ -70,7 +71,8 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
     MentalHealthService,
     NavbarService,
     EnumService,
-    InterfaceService
+    InterfaceService,
+    ArrayService
   ],
   bootstrap: [AppComponent]
 })

@@ -11,6 +11,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/toPromise';
+import { Language } from '../models/language';
 
 
 @Injectable()
@@ -181,6 +182,10 @@ export class MentalHealthService {
   }
 
 
+  getLanguages(): Observable<any> {
+    return this.httpClient.get(this.server_url + '/getLanguageList');
+  }
+
   //TO DO
   getVendor(id: number): Observable<any> {
     return this.http.get(this.server_url + '/getvendorbyid/' + id)
@@ -214,6 +219,14 @@ export class MentalHealthService {
   updateCredentials(body, id) {
     const url = `${this.server_url}/updateCredentials/` + id;
     return this.httpClient.post(url, body).map((res: any) => {
+      let data = res;
+      return data;
+    }).catch(this.handleError)
+  }
+
+  updateLanguage(body, id) {
+    const url = `${this.server_url}/updateLanguage/` + id;
+    return this.httpClient.put(url, body).map((res: any) => {
       let data = res;
       return data;
     }).catch(this.handleError)
@@ -393,9 +406,7 @@ export class MentalHealthService {
     ];
   }
 
-  getLanguages() {
-    return this.languages;
-  }
+ 
   getGenders() {
     return this.genders;
   }

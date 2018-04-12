@@ -89,6 +89,16 @@ namespace AngularTemplate.Controllers
             return Json(vendor);
         }
 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetLanguageList()
+        {
+            // int id = 5;
+            Language[] languages = await ProviderHubService.GetLanguageListAsync();
+
+            return Json(languages);
+        }
+
+
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetFacilityProviderRelationshipById(int id)
         {
@@ -266,6 +276,23 @@ namespace AngularTemplate.Controllers
             }
 
         }
+        [HttpPut("[action]/{id}")]
+        public async Task<IActionResult> UpdateLanguage([FromBody]Language[] languageUpdate, int id)
+        {
+
+            bool x = await ProviderHubService.SaveLanguageByProviderIDAsync(id, languageUpdate);
+            if (x == true)
+            {
+                return Ok(languageUpdate);
+
+            }
+            else
+            {
+                return NotFound("Language Update failed");
+            }
+
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {

@@ -10,7 +10,7 @@ export enum AddressType {
     'Clinical Practice Service Location' = 1,
     'Main Address' = 2,
     'Mail Address' = 3,
-    ' Business Administration' = 4
+    'Business Administration' = 4
 }
 
 export enum Language {
