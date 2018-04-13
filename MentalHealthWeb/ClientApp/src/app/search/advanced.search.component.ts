@@ -158,15 +158,15 @@ export class AdvancedSearchComponent implements OnInit {
       });
     }
 
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-      startWith(null),
-      debounceTime(200),
-      distinctUntilChanged(),
-      switchMap(val => {
-        return this.filter(val || '')
-      })
-      );
+    //this.filteredOptions = this.myControl.valueChanges
+    //  .pipe(
+    //  startWith(null),
+    //  debounceTime(200),
+    //  distinctUntilChanged(),
+    //  switchMap(val => {
+    //    return this.filter(val || '')
+    //  })
+    //  );
 
 
   }
@@ -221,16 +221,12 @@ export class AdvancedSearchComponent implements OnInit {
     //Build all array key values
     searchObject.push({ key: "Gender", value: form.gender });
     searchObject.push({ key: "Language", value: form.formLanguage });
-    //searchObject.push({ key: "Region", value: form.region });
     searchObject.push({ key: "BHAttributeSet", value: form.age });
     searchObject.push({ key: "BHAttributeSet", value: form.condition });
     searchObject.push({ key: "BHAttributeSet", value: form.theraApproach });
     searchObject.push({ key: "BHAttributeSet", value: form.mode });
-   
     searchObject.push({ key: "BHAttributeSet", value: form.other });
     searchObject.push({ key: "FacilityID", value: form.facilityID })
-
-
 
     var city = new Array(form.city);
     searchObject.push({ key: "City", value: city });
@@ -256,15 +252,12 @@ export class AdvancedSearchComponent implements OnInit {
     var medicareIndicatorArray = [];
     medicareIndicatorArray.push(i);
     searchObject.push({ key: "MedicareIndicator", value: medicareIndicatorArray });
-
-
   
     //Build Prescribing Provider Key Value
     var i = form.acceptingNewPatients ? 1 : null;
     var prescriberArray = [];
     prescriberArray.push(i);
     searchObject.push({ key: "Prescriber", value: prescriberArray });
-
 
     //Build Accepting New Patients
     var i = form.acceptigNewPatients ? 1 : null;
@@ -278,7 +271,6 @@ export class AdvancedSearchComponent implements OnInit {
     this.mentalHealthService.advancedSearch(searchObject).subscribe(results => {
       this.newResults = [];
       this.facilityProviderRelationships = results;
-    
 
       for (var category of results) {
         this.provConditionsList = [];
@@ -288,12 +280,10 @@ export class AdvancedSearchComponent implements OnInit {
           conditions.bhSpecialtyType == 3
         );
 
-
         for (var list of providerConditions) {
           this.provConditionsList.push(list.textValue)
         }
         category["providerConditionsList"] = this.provConditionsList;
-
 
         var therapeuticApproaches = category.behavioralHealthAttributes.filter(conditions =>
           conditions.bhSpecialtyType == 4
@@ -305,14 +295,12 @@ export class AdvancedSearchComponent implements OnInit {
         category["therapeuticApproachesList"] = this.therapeuticApproachesList;
 
         this.newResults.push(category);
-      //  category.push(this.provConditionsList);
       }
 
-
       this.dataSource = new MatTableDataSource<any>(this.newResults);
-
       this.mentalHealthService.insertAdvancedSearchResults(results);
       this.dataSource.paginator = this.paginator;
+
       if (results.length == 0) {
         this.message = 'No Results were found.';
       }

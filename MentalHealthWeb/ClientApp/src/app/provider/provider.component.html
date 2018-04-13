@@ -110,7 +110,7 @@
           <div class="col-md-10"><label>Referring to Specialist Indicator: </label> </div>
           <div class="col">{{originalFacilityProviderRelationship?.referralIndicator | Boolean}}</div>
         </div>
-     
+
         <div class="form-row">
           <div class="col-md-10"><label>Float Provider:</label></div>
           <div class="col">{{originalFacilityProviderRelationship?.floatProviderIndicator | Boolean}}</div>
@@ -149,7 +149,9 @@
     </div>
     <div class="row facilityProviderRelationship">
       <div>
-        <label>Behavioral Health Specialty: </label> <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        <label>Behavioral Health Specialty: </label>
+        <dialog-edit-bhAttribute>
+        </dialog-edit-bhAttribute>
       </div>
     </div>
     <div class="row">

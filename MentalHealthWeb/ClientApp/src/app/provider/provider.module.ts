@@ -13,6 +13,7 @@ import { MatDialogRef } from '@angular/material';
 import { FacilityProviderRelationshipComponent } from './facility-provider-relationship.component'
 import { BooleanPipe } from '../service/pipe-service';
 import { CreateProvider } from './create-provider.component';
+import { DialogEditbhAttribute, DialogEditbhAttributeDialog } from './editbhAttributes/dialog-edit-bhAttributes';
 
 @NgModule({
   imports: [
@@ -29,6 +30,8 @@ import { CreateProvider } from './create-provider.component';
     DialogProviderDetailsDialog,
     DialogFacilityProviderRelationship,
     DialogFacilityProviderRelationshipDialog,
+    DialogEditbhAttribute,
+    DialogEditbhAttributeDialog,
     CreateProvider,
     BooleanPipe
   ],
@@ -36,7 +39,9 @@ import { CreateProvider } from './create-provider.component';
     DialogProviderDetails,
     DialogProviderDetailsDialog,
     DialogFacilityProviderRelationship,
-    DialogFacilityProviderRelationshipDialog],
+    DialogFacilityProviderRelationshipDialog,
+    DialogEditbhAttribute,
+    DialogEditbhAttributeDialog,],
   exports: [
     ProviderComponent,
     FacilityProviderRelationshipComponent,
@@ -44,6 +49,8 @@ import { CreateProvider } from './create-provider.component';
     DialogProviderDetailsDialog,
     DialogFacilityProviderRelationship,
     DialogFacilityProviderRelationshipDialog,
+    DialogEditbhAttribute,
+    DialogEditbhAttributeDialog,
     CreateProvider
   ],
   providers: []
