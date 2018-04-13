@@ -49,7 +49,6 @@ export class AdvancedSearchComponent implements OnInit {
   removable: boolean = true;
   addOnBlur: boolean = true;
   acceptingNewPatients: boolean;
-  myControl = new FormControl();
   filteredOptions: Observable<any[]>;
   provConditionsList: any = [];
   therapeuticApproachesList: any = [];
@@ -90,7 +89,9 @@ export class AdvancedSearchComponent implements OnInit {
 
     this.cities = this.mentalHealthService.getCities();
     this.regions = this.mentalHealthService.getRegions();
-    this.languages = this.mentalHealthService.getLanguages();
+    this.mentalHealthService.getLanguages().subscribe(
+      result => this.languages = result
+    );
     this.genders = this.mentalHealthService.getGenders();
     this.mentalHealthService.getFacilityList().subscribe(data => {
       this.facilityList = data;
@@ -310,15 +311,6 @@ export class AdvancedSearchComponent implements OnInit {
 
       this.dataSource = new MatTableDataSource<any>(this.newResults);
 
-
-        //var providerTherapeuticTreatments = results.behavioralHealthAttributes.filter(function (item) {
-        //  return item.bhSpecialtyType = 4;
-        //});
-     
-      
-
-
-    
       this.mentalHealthService.insertAdvancedSearchResults(results);
       this.dataSource.paginator = this.paginator;
       if (results.length == 0) {
@@ -329,7 +321,6 @@ export class AdvancedSearchComponent implements OnInit {
 
       }
     });
-    //  console.log(searchObject);
   }
 
   setAges() {
@@ -359,6 +350,7 @@ export class AdvancedSearchComponent implements OnInit {
       this.otherList = val
     );
   }
+
   setTherapeuticApproaches() {
     this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.TherapeuticApproaches).subscribe(val =>
       this.therapeuticApproaches = val

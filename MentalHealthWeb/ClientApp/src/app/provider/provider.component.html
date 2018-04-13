@@ -63,23 +63,14 @@
             <div class="col">
               {{provider.languages}}
             </div>
-            <!--TODO
-                <div class="col">
-              <ul *ngFor="let language of provider.languageList">
-                <li>{{language.id}}</li>
-                <li>{{language.mappingID}}</li>
-                <li>{{language.name}}</li>
-                <li>{{language.sequenceNumber}}</li>
-                <li>{{language.createdDate}}</li>
-              </ul>
-            </div>-->
+
           </div>
           <div class="form-row">
             <div class="col"><label>NPI: </label></div>
             <div class="col">{{originalProvider.npi}}</div>
           </div>
           <div class="form-row">
-           
+
 
           </div>
         </div>
@@ -104,31 +95,32 @@
     <div class="row">
       <div class="col card-block">
         <div class="form-row">
-          <div class="col-md-8"><label>Accepting New Patients:</label> </div>
+          <div class="col-md-10"><label>Accepting New Patients:</label> </div>
           <div class="col">{{originalFacilityProviderRelationship?.acceptingNewPatientIndicator | Boolean}} </div>
         </div>
         <div class="form-row">
-          <div class="col-md-8"><label>External Provider Indicator:</label></div>
+          <div class="col-md-10"><label>External Provider Indicator:</label></div>
           <div class="col">{{originalFacilityProviderRelationship?.externalProviderIndicator | Boolean}}</div>
         </div>
         <div class="form-row">
-          <div class="col-md-8"><label>Prescribing Provider: </label></div>
+          <div class="col-md-10"><label>Prescribing Provider: </label></div>
           <div class="col">{{originalFacilityProviderRelationship?.prescriberIndicator | Boolean}}</div>
         </div>
         <div class="form-row">
-          <div class="col-md-8"><label>Referring to Specialist Indicator: </label> </div>
+          <div class="col-md-10"><label>Referring to Specialist Indicator: </label> </div>
           <div class="col">{{originalFacilityProviderRelationship?.referralIndicator | Boolean}}</div>
         </div>
+     
         <div class="form-row">
-          <div class="col-md-8"><label>Relationship Status: </label> </div>
-          <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | Boolean}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-8"><label>Float Provider:</label></div>
+          <div class="col-md-10"><label>Float Provider:</label></div>
           <div class="col">{{originalFacilityProviderRelationship?.floatProviderIndicator | Boolean}}</div>
         </div>
       </div>
       <div class="col card-block">
+        <div class="form-row">
+          <div class="col"><label>Relationship Status: </label> </div>
+          <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | Boolean}}</div>
+        </div>
         <div class="form-row">
           <div class="col"><label>Effective Date:</label></div>
           <div class="col">{{originalFacilityProviderRelationship?.effectiveDate| date: 'M/d/yy'}}</div>
@@ -163,26 +155,55 @@
     <div class="row">
       <div class="col card-block">
         <div class="form-row">
-          <div class="col"><label> Therapeutic Approaches/Treatments:</label> </div>
-          <div class="col"></div>
+          <div class="col-md-3"><label> Conditions:</label> </div>
+          <div class="col-md-9">
+            <ul>
+              <li *ngFor="let option of bhaConditions">
+                {{option.textValue}}
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="form-row">
-          <div class="col"><label>Age Group:</label> </div>
-          <div class="col"></div>
+          <div class="col-md-3"><label> Therapeutic Approaches/Treatments:</label> </div>
+          <div class="col-md-9">
+            <ul>
+              <li *ngFor="let option of bhaTherapeuticApproaches">
+                {{option.textValue}}
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="form-row">
-          <div class="col"><label>Modes</label> </div>
-          <div class="col"></div>
+          <div class="col-md-3"><label>Age Group:</label> </div>
+          <div class="col-md-9">
+            <ul>
+              <li *ngFor="let option of bhaAges">
+                {{option.textValue}}
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="form-row">
-          <div class="col"><label>Other:</label> </div>
-          <div class="col"></div>
+          <div class="col-md-3"><label>Modes</label> </div>
+          <div class="col-md-9">
+            <ul>
+              <li *ngFor="let option of bhaModes">
+                {{option.textValue}}
+              </li>
+            </ul>
+          </div>
         </div>
-        <ul *ngFor="let specialty of  mentalHealthProviderSpecialties">
-          <li>
-            {{specialty.Name}}
-          </li>
-        </ul>
+        <div class="form-row">
+          <div class="col-md-3"><label>Other:</label> </div>
+          <div class="col-md-9">
+            <ul>
+              <li *ngFor="let option of bhaOthers">
+                {{option.textValue}}
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">

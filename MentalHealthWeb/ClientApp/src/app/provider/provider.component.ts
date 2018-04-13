@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import { IProviderLanguageMapping } from '../interfaces/IProviderLanguageMapping';
 import { ILanguage } from '../interfaces/ILanguage';
 import { Language } from '../service/enum-service';
-
+import { BHAttributeType } from '../service/enum-service';
 @Component({
   selector: 'provider',
   templateUrl: './provider.component.html',
@@ -19,7 +19,19 @@ import { Language } from '../service/enum-service';
 })
 
 export class ProviderComponent implements OnInit {
-    originalFacilityProviderRelationship: any;
+
+  bhaAges: any[];
+  bhaModes: any[];
+  bhaConditions: any[];
+  bhaTherapeuticApproaches: any[];
+  bhaOthers: any[];
+  
+  ages: any;
+  therapeuticApproaches: any;
+  otherList: any;
+  modes: any;
+  conditions: any;
+  originalFacilityProviderRelationship: any;
 
   facilityProviderRelationship: any = [];
   edittedFacilityProviderRelationship: any[];
@@ -28,7 +40,7 @@ export class ProviderComponent implements OnInit {
   facility: any = [];
   facilityAddress: any = [];
   toppingList: any = []
-  credentialList: any = []; 
+  credentialList: any = [];
   isOffline: boolean;
   gender: string;
   test: string;
@@ -40,13 +52,18 @@ export class ProviderComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     public nav: NavbarService
-  )
-  {
+  ) {
     this.showHide = false;
   }
 
   ngOnInit() {
     this.nav.show();
+    this.setAges();
+    this.setConditions();
+    this.setModes();
+    this.setOthers();
+    this.setTherapeuticApproaches();
+
     var languages: ILanguage[] = [
       { languageID: 1, languageName: 'English' },
       { languageID: 2, languageName: 'Spanish' },
@@ -54,8 +71,8 @@ export class ProviderComponent implements OnInit {
         languageID: 3, languageName: 'Hmong'
       }];
 
- 
- 
+
+
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       if (results.provider == undefined) {
         this.provider = this.mentalHealthService.getProviderData();
@@ -65,6 +82,7 @@ export class ProviderComponent implements OnInit {
         this.provider = results.provider;
         this.originalProvider = results.provider;
         this.facilityProviderRelationship = results;
+        this.createBHSpecialtyLists(results);
         this.originalFacilityProviderRelationship = JSON.parse(JSON.stringify(results));
         this.edittedFacilityProviderRelationship = results;
         this.gender = Gender[this.provider.gender];
@@ -72,12 +90,12 @@ export class ProviderComponent implements OnInit {
     });
 
     if (this.provider == undefined || this.facilityProviderRelationship.length == 0) {
-      this.fillProviderData()
+      this.fillProviderData();
     }
   }
 
-  fillProviderData (){
-   return this.route.params.subscribe(params => {
+  fillProviderData() {
+    return this.route.params.subscribe(params => {
       console.log(params);
       if (params['id']) {
         this.mentalHealthService.getFacilityProviderRelationshipById(params['id']).subscribe(data => {
@@ -88,9 +106,10 @@ export class ProviderComponent implements OnInit {
           this.facility = data.facility;
           this.facilityAddress = data.facility.facilityAddress;
           this.gender = Gender[this.provider.gender];
+          this.createBHSpecialtyLists(this.facilityProviderRelationship);
           this.mentalHealthService.insertFacilityProviderRelationshipData(data);
           this.nav.addFacilityRelationshipProviderID(data);
-        
+
         })
       }
       else if (params['provid']) {
@@ -104,6 +123,60 @@ export class ProviderComponent implements OnInit {
       }
 
     });
+  }
+
+  createBHSpecialtyLists(facilityProviderRelationship): any {
+
+    this.bhaAges = facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
+      conditions.bhSpecialtyType == 1
+    );
+
+    this.bhaModes = facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
+      conditions.bhSpecialtyType == 2
+    );
+
+    this.bhaConditions = facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
+      conditions.bhSpecialtyType == 3
+    );
+
+    this.bhaTherapeuticApproaches= facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
+      conditions.bhSpecialtyType == 4
+    );
+
+    this.bhaOthers = facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
+      conditions.bhSpecialtyType == 5
+    );
+  }
+
+
+  setAges() {
+    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Ages).subscribe(val =>
+      this.ages = val
+    );
+  }
+
+  setConditions() {
+    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Conditions).subscribe(val =>
+      this.conditions = val
+    );
+  }
+
+  setModes() {
+    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Models).subscribe(val =>
+      this.modes = val
+    );
+  }
+
+  setOthers() {
+    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Other).subscribe(val =>
+      this.otherList = val
+    );
+  }
+
+  setTherapeuticApproaches() {
+    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.TherapeuticApproaches).subscribe(val =>
+      this.therapeuticApproaches = val
+    );
   }
 }
 

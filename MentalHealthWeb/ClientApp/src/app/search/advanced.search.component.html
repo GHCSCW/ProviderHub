@@ -5,8 +5,8 @@
     <div class="col-md-2">
       <mat-form-field>
         <mat-select placeholder="Language" formControlName="formLanguage" multiple>
-          <mat-option *ngFor="let language of languages" [value]="language.value">
-            {{ language.viewValue }}
+          <mat-option *ngFor="let language of languages" [value]="language.id">
+            {{ language.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
