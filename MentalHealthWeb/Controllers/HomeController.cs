@@ -17,33 +17,25 @@ namespace AngularTemplate.Controllers
 
         public class AdvancedSearch
         {
-
             public string Key { get; set; }
             public string[] Value { get; set; }
-            //public string languages  { get; set; }
         }
-        
-
         public HomeController()
         {
-            // System.Security.Claims.ClaimsPrincipal currentUser = User;
-            //System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             username = Environment.UserName;
         }
-
-
         ProviderHubService.IProviderHubService ProviderHubService = new ProviderHubServiceClient();
 
-
+        #region FUNCTION: GetFacilityByID(int id)   
         [HttpGet("[action]/{id}")]
         public async Task<Facility> GetFacilityById(int id)
         {
             Facility facility = await ProviderHubService.GetFacilityByIDAsync(id);
-
-
             return facility;
         }
+        #endregion
 
+        #region FUNCTION: GetCredentialList  
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCredentialList()
         {
@@ -51,44 +43,49 @@ namespace AngularTemplate.Controllers
 
             return Json(credentials);
         }
+        #endregion
 
+        #region FUNCTION: GetCredentialListByProviderId(int id)
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> getCredentialListByProviderId(int id)
         {
             Credential[] credentials = await ProviderHubService.GetProviderCredentialByIDAsync(id);
-
             return Json(credentials);
         }
 
+        #endregion
 
-
+        #region FUNCTION: GetVendorById(int id)
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetVendorById(int id)
         {
-            // int id = 5;
             Vendor vendor = await ProviderHubService.GetVendorByIDAsync(id);
-
             return Json(vendor);
         }
+        #endregion
 
+        #region FUNCTION: GetFacilityList(string search)
         [HttpGet("[action]")]
         public async Task<IActionResult> GetFacilityList(string search)
         {
             search = "";
             Facility[] list = await ProviderHubService.GetFacilityListAsync(search);
-
             return Json(list);
         }
 
+        #endregion
+
+        #region FUNCTION: GetVendorList(string search)
         [HttpGet("[action]")]
         public async Task<IActionResult> GetVendorList(string search)
         {
-            // int id = 5;
             Vendor[] vendor = await ProviderHubService.GetVendorListAsync(search);
-
             return Json(vendor);
         }
 
+        #endregion
+
+        #region FUNCTION: GetLanguageList()
         [HttpGet("[action]")]
         public async Task<IActionResult> GetLanguageList()
         {
@@ -98,14 +95,18 @@ namespace AngularTemplate.Controllers
             return Json(languages);
         }
 
+        #endregion
 
+        #region FUNCTION: GetFacilityProviderRelationshipId(int id)
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetFacilityProviderRelationshipById(int id)
         {
             FacilityProviderRelationship facilityProviderRelationship = await ProviderHubService.GetFacilityProviderRelationshipByIDAsync(id);
-
             return Json(facilityProviderRelationship);
         }
+        #endregion
+
+        #region FUNCTION: GetProviderById(int id)
 
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetProviderById(int id)
@@ -114,6 +115,10 @@ namespace AngularTemplate.Controllers
             return Json(provider);
         }
 
+        #endregion
+
+        #region FUNCTION: GetProviderList()
+
         [HttpGet("[action]")]
         public async Task<IActionResult> GetProviderList(string search)
         {
@@ -121,6 +126,9 @@ namespace AngularTemplate.Controllers
             return Json(list);
         }
 
+        #endregion
+
+        #region FUNCTION: GetBehavioralHealthAttributeById(BHAttributeType id)
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetBehavioralHealthAttributeByID(ProviderHubService.BHAttributeType id)
         {
@@ -128,31 +136,31 @@ namespace AngularTemplate.Controllers
             return Json(list);
         }
 
+        #endregion
 
+        #region FUNCTION: SearchForValues(string values)
         [HttpGet("[action]/{values}")]
         public async Task<IActionResult> SearchForValues(string values)
         {
             SearchResults list = await ProviderHubService.SearchForValueAsync(values);
             return Json(list);
         }
+        #endregion
 
+        #region FUNCTION: AdvancedSearchMethod(List<AdvancedSearch> values)
         [HttpPost("[action]")]
         public async Task<IActionResult> AdvancedSearchMethod([FromBody]List<AdvancedSearch> values)
         {
-
             Dictionary<string, string[]> SearchList = new Dictionary<string, string[]>();
-
             foreach (AdvancedSearch val in values)
             {
                 if (val.Value[0] == null)
                 {
-
                 }
                 else
                 {
                     SearchList.Add(val.Key, val.Value);
                 }
-
             }
 
             //string[] gender = new string[] { "1" };
@@ -167,17 +175,12 @@ namespace AngularTemplate.Controllers
             //};
 
             // FacilityProviderRelationship[] list2 = await ProviderHubService.AdvancedSearchAsync(argList);
-
             FacilityProviderRelationship[] list = await ProviderHubService.AdvancedSearchAsync(SearchList);
-            
             return Json(list);
-
-
-
-
         }
+        #endregion
 
-
+        #region FUNCTION: MapAddressToFacility(facilityId,addressID,createdBy)
         //TODO
         [HttpPost("[action]")]
         public async Task<IActionResult> MapAddressToFacility()
@@ -189,7 +192,9 @@ namespace AngularTemplate.Controllers
             return Json(x);
 
         }
+        #endregion
 
+        #region FUNCTION: MapAddressToVendor(vendorID,addressID,createdBy)
         //TODO
         [HttpPost("[action]")]
         public async Task<IActionResult> MapAddressToVendor()
@@ -201,7 +206,9 @@ namespace AngularTemplate.Controllers
             return Json(x);
 
         }
+        #endregion
 
+        #region FUNCTION: MapFaciltyToVendor(faciltiyID,vendorID,createdBy))
         //TODO
         [HttpPost("[action]")]
         public async Task<IActionResult> MapFacilityToVendor()
@@ -213,8 +220,9 @@ namespace AngularTemplate.Controllers
             return Json(x);
 
         }
+        #endregion
 
-
+        #region FUNCTION: AllFacilityProviderRelationships()
         [HttpGet("[action]")]
         public async Task<IActionResult> AllFacilityProviderRelationships()
         {
@@ -222,11 +230,12 @@ namespace AngularTemplate.Controllers
             SearchResults list = await ProviderHubService.SearchForValueAsync(blank);
             return Json(list);
         }
+        #endregion
 
+        #region FUNCTION: Create Address(Address address)
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateAddress([FromBody]Address address)
         {
-
             address.CreatedBy = username;
             address.LastUpdatedBy = username;
             address.LastUpdatedDate = DateTime.Now;
@@ -241,6 +250,9 @@ namespace AngularTemplate.Controllers
                 return NotFound("There was an error creating the Address");
             }
         }
+        #endregion
+
+        #region FUNCTION: CreateProvider(Provider provider)
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateProvider([FromBody]Provider provider)
         {
@@ -248,7 +260,6 @@ namespace AngularTemplate.Controllers
             provider.LastUpdatedBy = username;
             provider.LastUpdatedDate = DateTime.Now;
             provider.CreatedDate = DateTime.Now;
-
             int x = await ProviderHubService.SaveProviderDetailAsync(provider);
             if (x > 0)
             {
@@ -259,46 +270,47 @@ namespace AngularTemplate.Controllers
                 return NotFound("There was an error Creating the Provider");
             }
         }
+        #endregion
 
+        #region FUNCTION: UpdateCredentials(Credentia[] credentialUpdate, int id)
         [HttpPost("[action]/{id}")]
         public async Task<IActionResult> UpdateCredentials([FromBody]Credential[] credentialUpdate, int id)
         {
-        
             bool x = await ProviderHubService.SaveCredentialByProviderIDAsync(id, credentialUpdate);
             if (x == true)
             {
                 return Ok(credentialUpdate);
-             
             }
             else
             {
                 return NotFound("Credential Update failed");
             }
-
         }
+        #endregion
+
+        #region FUNCTION: UpdateLanguage(Language[] languageUpdate, int id)
         [HttpPut("[action]/{id}")]
         public async Task<IActionResult> UpdateLanguage([FromBody]Language[] languageUpdate, int id)
         {
-
             bool x = await ProviderHubService.SaveLanguageByProviderIDAsync(id, languageUpdate);
             if (x == true)
             {
                 return Ok(languageUpdate);
-
             }
             else
             {
                 return NotFound("Language Update failed");
             }
-
         }
 
+        #endregion
+
+        #region FUNCTION: UpdateProvider(Provider providerUpdate)
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {
             providerUpdate.LastUpdatedBy = username;
             int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
-
             if (x > 0)
             {
                 return Ok(providerUpdate);
@@ -309,13 +321,14 @@ namespace AngularTemplate.Controllers
             }
         }
 
+        #endregion
+
+        #region FUNCTION: UpdateFacility(Facility facilityUpdate)
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateFacility([FromBody]Facility facilityUpdate)
         {
             facilityUpdate.LastUpdatedBy = username;
-
             int x = await ProviderHubService.SaveFacilityAsync(facilityUpdate);
-
             if (x > 0)
             {
                 return Ok(facilityUpdate);
@@ -326,6 +339,9 @@ namespace AngularTemplate.Controllers
             }
         }
 
+        #endregion
+
+        #region FUNCTION: CreateFacility(Facility facilityUpdate)
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateFacility([FromBody]Facility facilityUpdate)
         {
@@ -333,9 +349,7 @@ namespace AngularTemplate.Controllers
             facilityUpdate.LastUpdatedDate = DateTime.Now;
             facilityUpdate.CreatedBy = username;
             facilityUpdate.CreatedDate = DateTime.Now;
-
             int x = await ProviderHubService.SaveFacilityAsync(facilityUpdate);
-
             if (x > 0)
             {
                 return Ok(facilityUpdate);
@@ -346,14 +360,14 @@ namespace AngularTemplate.Controllers
             }
         }
 
+        #endregion
+
+        #region FUNCTION: UpdateFacilityProviderRelationship(FacilityProviderRelationship facilityProvUpdate)
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateFacilityProviderRelationship([FromBody]FacilityProviderRelationship facilityProvUpdate)
         {
-
             facilityProvUpdate.LastUpdatedBy = username;
-
             int x = await ProviderHubService.SaveFacilityProviderRelationshipAsync(facilityProvUpdate);
-
             if (x > 0)
             {
                 return Ok(facilityProvUpdate);
@@ -364,6 +378,9 @@ namespace AngularTemplate.Controllers
             }
         }
 
+        #endregion
+
+        #region FUNCTION: UpdateVendor(Vendor vendorUpdate)
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateVendor([FromBody]Vendor vendorUpdate)
         {
@@ -380,6 +397,9 @@ namespace AngularTemplate.Controllers
             }
         }
 
+        #endregion
+
+        #region FUNCTION: CreateVendor(Vendor vendor)
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateVendor([FromBody]Vendor vendor)
         {
@@ -387,9 +407,7 @@ namespace AngularTemplate.Controllers
             vendor.LastUpdatedDate = DateTime.Now;
             vendor.CreatedBy = username;
             vendor.CreatedDate = DateTime.Now;
-
             int x = await ProviderHubService.SaveVendorAsync(vendor);
-
             if (x > 0)
             {
                 return Ok(vendor);
@@ -399,41 +417,8 @@ namespace AngularTemplate.Controllers
                 return NotFound("There was an error creating the Vendor");
             }
         }
-
+        #endregion
 
     }
 }
-//   //  = await ProviderHubService.GetProviderByIDAsync(id);
-//    return null;
-//    // return Json(provider);
-//}
-
-//[HttpPost("[action]")]
-//public async Task<IActionResult> UpdateFacility()
-//{
-
-//    // Provider provider = await ProviderHubService.GetProviderByIDAsync(id);
-//    return null;
-//    // return Json(provider);
-//}
-
-//[HttpPut("[action]")]
-//public async Task<IActionResult> LinkToProvider()
-//{
-
-//    // Provider provider = await ProviderHubService.GetProviderByIDAsync(id);
-//    return null;
-//    // return Json(provider);
-//}
-//[HttpPut("[action]")]
-//public async Task<IActionResult> LinkToVendor()
-//{
-
-//    // Provider provider = await ProviderHubService.GetProviderByIDAsync(id);
-//    return null;
-//    // return Json(provider);
-//}
-
-
-
 
