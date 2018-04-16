@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import { IProviderLanguageMapping } from '../interfaces/IProviderLanguageMapping';
 import { ILanguage } from '../interfaces/ILanguage';
 import { Language } from '../service/enum-service';
-import { BHAttributeType } from '../service/enum-service';
+
 @Component({
   selector: 'provider',
   templateUrl: './provider.component.html',
@@ -26,11 +26,7 @@ export class ProviderComponent implements OnInit {
   bhaTherapeuticApproaches: any[];
   bhaOthers: any[];
   
-  ages: any;
-  therapeuticApproaches: any;
-  otherList: any;
-  modes: any;
-  conditions: any;
+
   originalFacilityProviderRelationship: any;
 
   facilityProviderRelationship: any = [];
@@ -58,11 +54,7 @@ export class ProviderComponent implements OnInit {
 
   ngOnInit() {
     this.nav.show();
-    this.setAges();
-    this.setConditions();
-    this.setModes();
-    this.setOthers();
-    this.setTherapeuticApproaches();
+
 
     var languages: ILanguage[] = [
       { languageID: 1, languageName: 'English' },
@@ -127,56 +119,28 @@ export class ProviderComponent implements OnInit {
 
   createBHSpecialtyLists(facilityProviderRelationship): any {
 
-    this.bhaAges = facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
-      conditions.bhSpecialtyType == 1
+    this.bhaAges = facilityProviderRelationship.behavioralHealthAttributes.filter(ages =>
+      ages.bhSpecialtyType == 1
     );
 
-    this.bhaModes = facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
-      conditions.bhSpecialtyType == 2
+    this.bhaModes = facilityProviderRelationship.behavioralHealthAttributes.filter(modes =>
+      modes.bhSpecialtyType == 2
     );
 
     this.bhaConditions = facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
       conditions.bhSpecialtyType == 3
+    )
+
+
+    this.bhaTherapeuticApproaches= facilityProviderRelationship.behavioralHealthAttributes.filter(theraApproaches =>
+      theraApproaches.bhSpecialtyType == 4
     );
 
-    this.bhaTherapeuticApproaches= facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
-      conditions.bhSpecialtyType == 4
-    );
-
-    this.bhaOthers = facilityProviderRelationship.behavioralHealthAttributes.filter(conditions =>
-      conditions.bhSpecialtyType == 5
-    );
-  }
-
-
-  setAges() {
-    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Ages).subscribe(val =>
-      this.ages = val
+    this.bhaOthers = facilityProviderRelationship.behavioralHealthAttributes.filter(others =>
+     others.bhSpecialtyType == 5
     );
   }
 
-  setConditions() {
-    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Conditions).subscribe(val =>
-      this.conditions = val
-    );
-  }
 
-  setModes() {
-    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Models).subscribe(val =>
-      this.modes = val
-    );
-  }
-
-  setOthers() {
-    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Other).subscribe(val =>
-      this.otherList = val
-    );
-  }
-
-  setTherapeuticApproaches() {
-    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.TherapeuticApproaches).subscribe(val =>
-      this.therapeuticApproaches = val
-    );
-  }
 }
 

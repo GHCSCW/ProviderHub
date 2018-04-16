@@ -14,7 +14,6 @@ export class Language {
   selector: 'create-provider',
   styleUrls: ['./create-provider.component.css'],
   templateUrl: './create-provider.component.html'
-  //template: '<a class="btn"><i (click)="openDialog()" class="fa fa-pencil-square-o pull-right" aria-hidden="true"></i></a>'
 
 })
 
