@@ -85,144 +85,172 @@
   </div>
 </div>
 
-<!--Faciltiy Relationship Card-->
-<div *ngIf="facilityProviderRelationship != 0" class="card">
-  <div class="card-header facilityProviderRelationship">
-    <span><b>Facility Provider Profile:</b> </span>
-    <span class="pull-right"><dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship" [originalFacilityProviderRelationship]="originalFacilityProviderRelationship"></dialog-facility-provider-relationship></span>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col card-block">
-        <div class="form-row">
-          <div class="col-md-10"><label>Accepting New Patients:</label> </div>
-          <div class="col">{{originalFacilityProviderRelationship?.acceptingNewPatientIndicator | Boolean}} </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-10"><label>External Provider Indicator:</label></div>
-          <div class="col">{{originalFacilityProviderRelationship?.externalProviderIndicator | Boolean}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-10"><label>Prescribing Provider: </label></div>
-          <div class="col">{{originalFacilityProviderRelationship?.prescriberIndicator | Boolean}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-10"><label>Referring to Specialist Indicator: </label> </div>
-          <div class="col">{{originalFacilityProviderRelationship?.referralIndicator | Boolean}}</div>
-        </div>
+<mat-accordion multi="true">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header class="facilityProviderRelationship">
+      <mat-panel-title>
+          <span><b>Facility Provider Profile:</b> </span>
+          <span class="pull-right"><dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship" [originalFacilityProviderRelationship]="originalFacilityProviderRelationship"></dialog-facility-provider-relationship></span>
+      </mat-panel-title>
+      <mat-panel-description>
+        All data in regards to the Facility Provider Relationship
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-        <div class="form-row">
-          <div class="col-md-10"><label>Float Provider:</label></div>
-          <div class="col">{{originalFacilityProviderRelationship?.floatProviderIndicator | Boolean}}</div>
+    <!--Faciltiy Relationship Card-->
+    <div *ngIf="facilityProviderRelationship != 0" class="card">
+   
+      <div class="card-body">
+        <div class="row">
+          <div class="col card-block">
+            <div class="form-row">
+              <div class="col-md-10"><label>Accepting New Patients:</label> </div>
+              <div class="col">{{originalFacilityProviderRelationship?.acceptingNewPatientIndicator | Boolean}} </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-10"><label>External Provider Indicator:</label></div>
+              <div class="col">{{originalFacilityProviderRelationship?.externalProviderIndicator | Boolean}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-10"><label>Prescribing Provider: </label></div>
+              <div class="col">{{originalFacilityProviderRelationship?.prescriberIndicator | Boolean}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-10"><label>Referring to Specialist Indicator: </label> </div>
+              <div class="col">{{originalFacilityProviderRelationship?.referralIndicator | Boolean}}</div>
+            </div>
+
+            <div class="form-row">
+              <div class="col-md-10"><label>Float Provider:</label></div>
+              <div class="col">{{originalFacilityProviderRelationship?.floatProviderIndicator | Boolean}}</div>
+            </div>
+          </div>
+          <div class="col card-block">
+            <div class="form-row">
+              <div class="col"><label>Relationship Status: </label> </div>
+              <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | Boolean}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col"><label>Effective Date:</label></div>
+              <div class="col">{{originalFacilityProviderRelationship?.effectiveDate| date: 'M/d/yy'}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col"><label>Term Date: </label> </div>
+              <div class="col">{{originalFacilityProviderRelationship?.terminationDate| date: 'M/d/yy'}}</div>
+            </div>
+
+          </div>
+          <div class="col card-block">
+            <div class="form-row">
+              <div class="col"><label>Provider Office Phone Number: </label> </div>
+              <div class="col">{{originalFacilityProviderRelationship?.providerPhoneNumber}} - </div>
+            </div>
+            <div class="form-row">
+              <div class="col"><label>Provider Office Extension: </label> </div>
+              <div class="col">{{originalFacilityProviderRelationship?.providerExtensionNumber}} </div>
+            </div>
+            <div class="form-row">
+              <div class="col"><label>Provider Email: </label> </div>
+              <div class="col">{{originalFacilityProviderRelationship?.providerEmail}}</div>
+            </div>
+          </div>
+
+        </div>
+     
+
+        <div class="row">
+          <div class="col">
+            <div class="form-row" style="background-color:#f6f6f6">
+              <div class="col-md-2"><label>Internal Notes: </label></div>
+              <div class="col-md-10">{{provider.internalNotes}}</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col card-block">
-        <div class="form-row">
-          <div class="col"><label>Relationship Status: </label> </div>
-          <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | Boolean}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col"><label>Effective Date:</label></div>
-          <div class="col">{{originalFacilityProviderRelationship?.effectiveDate| date: 'M/d/yy'}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col"><label>Term Date: </label> </div>
-          <div class="col">{{originalFacilityProviderRelationship?.terminationDate| date: 'M/d/yy'}}</div>
-        </div>
-
+      <div class="card-footer">
+        <small class="text-muted">
+          Last Updated:{{originalFacilityProviderRelationship?.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By:{{facilityProviderRelationship?.lastUpdatedBy}}
+        </small>
       </div>
-      <div class="col card-block">
-        <div class="form-row">
-          <div class="col"><label>Provider Office Phone Number: </label> </div>
-          <div class="col">{{originalFacilityProviderRelationship?.providerPhoneNumber}} - </div>
-        </div>
-        <div class="form-row">
-          <div class="col"><label>Provider Office Extension: </label> </div>
-          <div class="col">{{originalFacilityProviderRelationship?.providerExtensionNumber}} </div>
-        </div>
-        <div class="form-row">
-          <div class="col"><label>Provider Email: </label> </div>
-          <div class="col">{{originalFacilityProviderRelationship?.providerEmail}}</div>
-        </div>
-      </div>
-
     </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div>
+          <label>Behavioral Health Specialty: </label>
+          <dialog-edit-bhAttribute [bhaConditions]="bhaConditions" [bhaModes]="bhaModes" [bhaAges]="bhaAges" [bhaOthers]="bhaOthers" [bhaTherapeuticApproaches]="bhaTherapeuticApproaches">
+          </dialog-edit-bhAttribute>
+        </div>
+      </mat-panel-title>
+      <mat-panel-description>
+
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
     <div class="row facilityProviderRelationship">
-      <div>
-        <label>Behavioral Health Specialty: </label>
-        <dialog-edit-bhAttribute [bhaConditions]="bhaConditions" [bhaModes]="bhaModes"  [bhaAges]="bhaAges"  [bhaOthers]="bhaOthers" [bhaTherapeuticApproaches]="bhaTherapeuticApproaches"  >
-        </dialog-edit-bhAttribute>
-      </div>
+     
     </div>
-    <div class="row">
-      <div class="col card-block">
-        <div class="form-row">
-          <div class="col-md-3"><label> Conditions:</label> </div>
-          <div class="col-md-9">
-            <ul>
-              <li *ngFor="let option of bhaConditions">
-                {{option.textValue}}
-              </li>
-            </ul>
+    <div class="card-body">
+      <div class="row">
+        <div class="col card-block">
+          <div class="form-row">
+            <div class="col-md-3"><label> Conditions:</label> </div>
+            <div class="col-md-9">
+              <ul>
+                <li *ngFor="let option of bhaConditions">
+                  {{option.textValue}}
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-3"><label> Therapeutic Approaches/Treatments:</label> </div>
-          <div class="col-md-9">
-            <ul>
-              <li *ngFor="let option of bhaTherapeuticApproaches">
-                {{option.textValue}}
-              </li>
-            </ul>
+          <div class="form-row">
+            <div class="col-md-3"><label> Therapeutic Approaches/Treatments:</label> </div>
+            <div class="col-md-9">
+              <ul>
+                <li *ngFor="let option of bhaTherapeuticApproaches">
+                  {{option.textValue}}
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-3"><label>Age Group:</label> </div>
-          <div class="col-md-9">
-            <ul>
-              <li *ngFor="let option of bhaAges">
-                {{option.textValue}}
-              </li>
-            </ul>
+          <div class="form-row">
+            <div class="col-md-3"><label>Age Group:</label> </div>
+            <div class="col-md-9">
+              <ul>
+                <li *ngFor="let option of bhaAges">
+                  {{option.textValue}}
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-3"><label>Modes</label> </div>
-          <div class="col-md-9">
-            <ul>
-              <li *ngFor="let option of bhaModes">
-                {{option.textValue}}
-              </li>
-            </ul>
+          <div class="form-row">
+            <div class="col-md-3"><label>Modes</label> </div>
+            <div class="col-md-9">
+              <ul>
+                <li *ngFor="let option of bhaModes">
+                  {{option.textValue}}
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-3"><label>Other:</label> </div>
-          <div class="col-md-9">
-            <ul>
-              <li *ngFor="let option of bhaOthers">
-                {{option.textValue}}
-              </li>
-            </ul>
+          <div class="form-row">
+            <div class="col-md-3"><label>Other:</label> </div>
+            <div class="col-md-9">
+              <ul>
+                <li *ngFor="let option of bhaOthers">
+                  {{option.textValue}}
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <div class="form-row" style="background-color:#f6f6f6">
-          <div class="col-md-2"><label>Internal Notes: </label></div>
-          <div class="col-md-10">{{provider.internalNotes}}</div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="card-footer">
-    <small class="text-muted">
-      Last Updated:{{originalFacilityProviderRelationship?.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By:{{facilityProviderRelationship?.lastUpdatedBy}}
-    </small>
-  </div>
-</div>
+    <!--<p>I'm visible because I am open</p>-->
+  </mat-expansion-panel>
+</mat-accordion>
+
 <!--Other Facilites under the current Vendor-->
 <div class="card">
   <div class="card-header facilityProviderRelationship">

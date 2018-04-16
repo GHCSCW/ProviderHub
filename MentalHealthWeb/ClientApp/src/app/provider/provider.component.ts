@@ -25,7 +25,7 @@ export class ProviderComponent implements OnInit {
   bhaConditions: any[];
   bhaTherapeuticApproaches: any[];
   bhaOthers: any[];
-  
+  panelOpenState: boolean = false;
 
   originalFacilityProviderRelationship: any;
 
