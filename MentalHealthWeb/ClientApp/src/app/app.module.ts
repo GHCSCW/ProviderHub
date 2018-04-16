@@ -30,8 +30,11 @@ import { EnumService } from './service/enum-service';
 import { MentalHealthService } from './service/mental.health.service';
 import { InterfaceService } from './service/interface.service';
 import { ArrayService } from './service/array.service';
-//Components
+import { LogService} from './service/log.service'
+import { LogPublishersService } from './service/log-publisher.service';
+//Componentsng
 import { NotFoundComponent } from './not-found/not-found.component';
+import { LogTestComponent} from './log-component/log-test.component';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -60,7 +63,9 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
   declarations: [
     AppComponent,
     NavMenuComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LogTestComponent
+
   ],
   exports: [
     CommonModule,
@@ -72,7 +77,9 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
     NavbarService,
     EnumService,
     InterfaceService,
-    ArrayService
+    ArrayService,
+    LogPublishersService,
+    LogService
   ],
   bootstrap: [AppComponent]
 })

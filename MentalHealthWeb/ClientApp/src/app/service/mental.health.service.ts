@@ -12,7 +12,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/toPromise';
 import { Language } from '../models/language';
-
+import { LogService,LogLevel } from './log.service';
 
 @Injectable()
 
@@ -47,7 +47,7 @@ export class MentalHealthService {
   searchResults: any = [];
   advancedSearchResults: any = [];
   states: any = [];
-  constructor(public http: Http, public httpClient: HttpClient) {
+  constructor(public http: Http, public httpClient: HttpClient, private logger: LogService) {
 
     this.setStates();
     this.setCities();
@@ -59,11 +59,16 @@ export class MentalHealthService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
-
+    testLog()
+    {
+      this.logger.level = LogLevel.Off;
+      this.logger.log("Test that log method");
+    }
   saveAdvancedSearchQuery(form) {
     this.advancedSearchQuery = [];
     this.advancedSearchQuery.push(form);
   }
+
   getAdvancedSearchQuery() {
     return this.advancedSearchQuery;
   }
@@ -146,6 +151,8 @@ export class MentalHealthService {
 
 
   getProvider(id: number): Observable<any> {
+    this.logger.level = LogLevel.Off;
+      this.logger.log("Test that log method");
     return this.http.get(this.server_url + '/getproviderbyid/' + id)
       .map(this.extractData);
   }

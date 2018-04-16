@@ -2,12 +2,14 @@ import { NgModule }             from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SearchComponent } from "./search/search.component";
 import { NotFoundComponent } from './not-found/not-found.component';
+import { LogTestComponent } from './log-component/log-test.component';
 //import { AddressComponent } from './address/address.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/search', pathMatch: 'full' },
   { path: 'provider', redirectTo: '/provider', pathMatch: 'full' },
   { path: 'facility', redirectTo: '/facility', pathMatch: 'full' },
+  {path:'logtest',component:LogTestComponent},
   {
     path: '**', component: NotFoundComponent,
     data: {
