@@ -158,15 +158,15 @@ export class AdvancedSearchComponent implements OnInit {
       });
     }
 
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-      startWith(null),
-      debounceTime(200),
-      distinctUntilChanged(),
-      switchMap(val => {
-        return this.filter(val || '')
-      })
-      );
+    // this.filteredOptions = this.myControl.valueChanges
+    //   .pipe(
+    //   startWith(null),
+    //   debounceTime(200),
+    //   distinctUntilChanged(),
+    //   switchMap(val => {
+    //     return this.filter(val || '')
+    //   })
+    //   );
 
 
   }

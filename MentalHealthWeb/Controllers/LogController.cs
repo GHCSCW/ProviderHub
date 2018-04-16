@@ -15,14 +15,14 @@ namespace AngularTemplate.Controllers
     [Authorize]
     public class LogController : Controller
     {
-       [HttpPost]
-       public IHttpActionResult Post([FromBody]LogEntry value)
-       {
-           //write scome code to log this data to a table. 
-           IHttpActionResult ret;
+    //    [HttpPost]
+    //    public IHttpActionResult Post([FromBody]LogEntry value)
+    //    {
+    //        //write scome code to log this data to a table. 
+    //        IHttpActionResult ret;
 
-           ret = Ok(true);
-          return ret;
-       }
+    //        ret = Ok(true);
+    //       return ret;
+    //    }
     }
 }
