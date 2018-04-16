@@ -32,7 +32,7 @@ export class LogWebApi extends LogPublisher {
   constructor(private http: Http) {
     super();
 
-    this.location = "http://localhost:56590/api/log";
+    this.location = "http://localhost:57931/api/log";
   }
 
   log(record: LogEntry): Observable<boolean> {
