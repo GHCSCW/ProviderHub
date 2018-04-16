@@ -22,16 +22,16 @@
     </mat-select>
   </mat-form-field>-->
   <mat-form-field>
-    <mat-select placeholder="Credential List" [(ngModel)]="selectedItem" multiple>
-      <mat-option *ngFor="let option of credentialList" [value]="option">
+    <mat-select placeholder="Credential List" [(ngModel)]="providerCredentials" multiple>
+      <mat-option *ngFor="let option of credentialList" [value]="option.id">
         {{ option.value }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Language" [(ngModel)]="data.provider.languageList" multiple>
-      <mat-option *ngFor="let option of languages" [value]="option">
+    <mat-select placeholder="Language" [(ngModel)]="providerLanguages" multiple>
+      <mat-option *ngFor="let option of languages" [value]="option.id">
         {{ option.name}}
       </mat-option>
     </mat-select>

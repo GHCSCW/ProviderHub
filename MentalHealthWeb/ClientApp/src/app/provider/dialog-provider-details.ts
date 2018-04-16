@@ -44,9 +44,9 @@ export class DialogProviderDetails {
 })
 export class DialogProviderDetailsDialog {
   provID: any;
-  newitem: any;
-  selectedValue: any = [];
-  selectedItem: any = [];
+
+  providerLanguages: any = [];
+  providerCredentials: any = [];
   credentialList: any = [];
   toppings = new FormControl();
   credentials = new FormControl();
@@ -73,8 +73,21 @@ export class DialogProviderDetailsDialog {
     this.mentalHealthService.getLanguages().subscribe(
       result => this.languages = result
     );
+
+
+    var result = this.data.provider.languageList.filter(function (obj) {
+      return obj;
+    });
+
+    this.providerLanguages = result.map(function (obj) {
+      return obj.id;
+    })
+
+
     this.mentalHealthService.getCredentialListByProvID(this.data.originalProvider.id).subscribe(credList =>
-      this.selectedItem = credList
+      this.providerCredentials = credList.map(function (credList) {
+        return credList.id
+      })
     );
 
     this.mentalHealthService.getCredentialList().subscribe(credList =>
@@ -92,22 +105,21 @@ export class DialogProviderDetailsDialog {
       Object.assign(this.data.originalProvider, updatedProvider);
 
     });
-    this.mentalHealthService.updateCredentials(this.selectedItem, this.provID).subscribe(updatedCredentials => {
-      //update credential object
-    }
-    )
-    this.mentalHealthService.updateLanguage(this.data.provider.languageList, this.provID).subscribe(updatedLanguage => {
-      this.dialogRef.close();
-    }
+    //this.mentalHealthService.updateCredentials(this.providerCredentials, this.provID).subscribe(updatedCredentials => {
+    //  //update credential object
+    //}
+    //)
+    //this.mentalHealthService.updateLanguage(this.data.provider.languageList, this.provID).subscribe(updatedLanguage => {
+    //  this.dialogRef.close();
+    //}
 
-    )
+   // )
 
 
   }
 
   onNoClick(): void {
 
-    this.newitem = this.credentials.value;
     Object.assign(this.data.provider, this.data.originalProvider);
     this.dialogRef.close();
   }

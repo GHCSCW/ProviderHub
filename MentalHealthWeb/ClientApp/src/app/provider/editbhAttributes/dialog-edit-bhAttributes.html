@@ -8,20 +8,49 @@
     <input matInput placeholder="TherapeuticApproaches" name="TherapeuticApproaches">
   </mat-form-field>-->
     <!--<ul>
-      Conditions
-      <li *ngFor="let option of conditionsCopy">
-        {{option.textValue}}
-      </li>
-    </ul>
-    <ul>
-      Conditions
-      <li *ngFor="let option of ages">
-        {{option.textValue}}
-      </li>
-    </ul>-->
+    Conditions
+    <li *ngFor="let option of conditionsCopy">
+      {{option.textValue}}
+    </li>
+  </ul>
+  <ul>
+    Conditions
+    <li *ngFor="let option of ages">
+      {{option.textValue}}
+    </li>
+  </ul>-->
     <mat-form-field>
-      <mat-select placeholder="Conditions List" formControlName="condition" multiple>
+      <mat-select placeholder="Ages" formControlName="ages" multiple>
+        <mat-option *ngFor="let option of ages" [value]="option.setID">
+          {{ option.textValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!--<mat-form-field>-->
+    <mat-form-field>
+      <mat-select placeholder="Therapeautic Approaches" formControlName="theraApproaches" multiple>
+        <mat-option *ngFor="let option of therapeuticApproaches" [value]="option.setID">
+          {{ option.textValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Conditions" formControlName="conditions" multiple>
         <mat-option *ngFor="let option of conditions" [value]="option.setID">
+          {{ option.textValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Modes" formControlName="modes" multiple>
+        <mat-option *ngFor="let option of modes" [value]="option.setID">
+          {{ option.textValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Others" formControlName="others" multiple>
+        <mat-option *ngFor="let option of others" [value]="option.setID">
           {{ option.textValue}}
         </mat-option>
       </mat-select>
@@ -29,9 +58,9 @@
     <div class="container">
       <div class="row">
         <!--<div class="col">
-          <button type="button" class="btn btn-info" (click)="bhaSpecialties.reset()">Clear Form</button>
+        <button type="button" class="btn btn-info" (click)="bhaSpecialties.reset()">Clear Form</button>
 
-        </div>-->
+      </div>-->
         <div class="col">
           <button mat-raised-button color="accent">Save</button>
         </div>

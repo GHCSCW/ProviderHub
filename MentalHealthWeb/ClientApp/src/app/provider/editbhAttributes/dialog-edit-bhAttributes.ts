@@ -29,9 +29,9 @@ export class DialogEditbhAttribute {
 
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogEditbhAttributeDialog, {
-      width: '500px',
-      height: '600px',
-      data: { bhaConditions: this.bhaConditions, bhaModes: this.bhaModes, bhaAges: this.bhaAges, bhaOther: this.bhaOthers, bhaTherapeuticApproaches: this.bhaTherapeuticApproaches }
+      width: '750px',
+      height: '400px',
+      data: { bhaConditions: this.bhaConditions, bhaModes: this.bhaModes, bhaAges: this.bhaAges, bhaOthers: this.bhaOthers, bhaTherapeuticApproaches: this.bhaTherapeuticApproaches }
     });
     dialogRef.afterClosed().subscribe(result => {
     });
@@ -45,9 +45,13 @@ export class DialogEditbhAttribute {
   styleUrls: ['./dialog-edit-bhAttributes.css'],
 })
 export class DialogEditbhAttributeDialog {
+  othersCopy: any;
+  therapeuticApproachesCopy: any;
+  modesCopy: any;
+  agesCopy: any;
   ages: any = [];
   therapeuticApproaches: any = [];
-  otherList: any = [];
+  others: any = [];
   modes: any = [];
   conditions: any = [];
   conditionsCopy: any = [];
@@ -65,23 +69,41 @@ export class DialogEditbhAttributeDialog {
     this.setOthers();
     this.setTherapeuticApproaches();
     this.conditionsCopy = JSON.parse(JSON.stringify(data.bhaConditions));
+    this.agesCopy = JSON.parse(JSON.stringify(data.bhaAges));
+    this.modesCopy = JSON.parse(JSON.stringify(data.bhaModes));
+    this.othersCopy = JSON.parse(JSON.stringify(data.bhaOthers));
+    this.therapeuticApproachesCopy = JSON.parse(JSON.stringify(data.bhaTherapeuticApproaches));
     //this.data.bhaConditions[0].textValue = 'TEST';
     this.bhaSpecialties = this.fb.group({
-      // 'ages': [],
-      'condition': []
-      //'theraApproachs': [],
-      //'modes': [],
-      //'others': []
+      'ages': [],
+      'conditions': [],
+      'theraApproaches': [],
+      'modes': [],
+      'others': []
     })
 
-    this.conditionsCopy = this.conditionsCopy.filter(conditions =>
-      conditions.bhSpecialtyType == 3
-    ).map(function (conditions) {
+    this.conditionsCopy = this.conditionsCopy.map(function (conditions) {
       return conditions.setID
+    });
+    this.agesCopy = this.agesCopy.map(function (ages) {
+      return ages.setID
+    });
+    this.modesCopy = this.modesCopy.map(function (modes) {
+      return modes.setID
+    });
+    this.othersCopy = this.othersCopy.map(function (others) {
+      return others.setID
+    });
+    this.therapeuticApproachesCopy = this.therapeuticApproachesCopy.map(function (theraApproach) {
+      return theraApproach.setID
     });
 
     this.bhaSpecialties.patchValue({
-      condition: this.conditionsCopy
+      ages: this.agesCopy,
+      conditions: this.conditionsCopy,
+      modes: this.modesCopy,
+      therapeuticApproaches: this.therapeuticApproaches,
+      others: this.othersCopy
     });
   }
 
@@ -111,7 +133,7 @@ export class DialogEditbhAttributeDialog {
 
   setOthers() {
     this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Other).subscribe(val =>
-      this.otherList = val
+      this.others = val
     );
   }
 
