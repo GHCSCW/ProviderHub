@@ -1,24 +1,6 @@
-<h1 mat-dialog-title>Edit Behaverial Types</h1>
+<h1 mat-dialog-title>Edit Behavoiral Types</h1>
 <mat-dialog-content>
   <form [formGroup]="bhaSpecialties" (ngSubmit)="onFormSubmit(bhaSpecialties.value)">
-    <!--<mat-form-field>
-    <input matInput placeholder="Conditions" name="Conditions">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="TherapeuticApproaches" name="TherapeuticApproaches">
-  </mat-form-field>-->
-    <!--<ul>
-    Conditions
-    <li *ngFor="let option of conditionsCopy">
-      {{option.textValue}}
-    </li>
-  </ul>
-  <ul>
-    Conditions
-    <li *ngFor="let option of ages">
-      {{option.textValue}}
-    </li>
-  </ul>-->
     <mat-form-field>
       <mat-select placeholder="Ages" formControlName="ages" multiple>
         <mat-option *ngFor="let option of ages" [value]="option.setID">
@@ -59,7 +41,6 @@
       <div class="row">
         <!--<div class="col">
         <button type="button" class="btn btn-info" (click)="bhaSpecialties.reset()">Clear Form</button>
-
       </div>-->
         <div class="col">
           <button mat-raised-button color="accent">Save</button>

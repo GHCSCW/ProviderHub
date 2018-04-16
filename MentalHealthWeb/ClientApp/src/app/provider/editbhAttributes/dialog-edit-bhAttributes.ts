@@ -29,7 +29,7 @@ export class DialogEditbhAttribute {
 
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogEditbhAttributeDialog, {
-      width: '750px',
+      width: '650px',
       height: '400px',
       data: { bhaConditions: this.bhaConditions, bhaModes: this.bhaModes, bhaAges: this.bhaAges, bhaOthers: this.bhaOthers, bhaTherapeuticApproaches: this.bhaTherapeuticApproaches }
     });
