@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MentalHealthService } from '../service/mental.health.service'
 import { ActivatedRoute } from "@angular/router";
-import { NavbarService } from "../service/navbarservice";
 import { HttpClient } from "@angular/common/http";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { catchError, map, tap, filter, startWith, switchMap, debounceTime, distinctUntilChanged, takeWhile, first } from 'rxjs/operators';
-import { AddressType } from '../service/enum-service';
+
+import { AddressType } from '../services/enum-service';
+import { MentalHealthService } from '../services/mental.health.service'
+import { NavbarService } from "../services/navbarservice";
 
 
 @Component({

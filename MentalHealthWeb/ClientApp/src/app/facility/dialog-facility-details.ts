@@ -1,6 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import {MentalHealthService } from '../service/mental.health.service';
+import {MentalHealthService } from '../services/mental.health.service';
 
 /**
  * @title Dialog Overview

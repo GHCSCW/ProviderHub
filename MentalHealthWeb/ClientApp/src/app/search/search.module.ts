@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common'
 import { ProviderModule } from '../provider/provider.module';
 import { AdvancedSearchComponent } from './advanced.search.component';
 import { AppMaterialModule } from '../app-material/app-material.module';
-import { FilterPipe, ProviderSearchPipe } from '../service/pipe-service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
@@ -23,9 +22,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     ],
   declarations: [
     SearchComponent,
-    AdvancedSearchComponent,
-    FilterPipe,
-    ProviderSearchPipe
+    AdvancedSearchComponent
   ],
   exports: [
     SearchComponent,

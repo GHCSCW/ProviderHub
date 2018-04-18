@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { LogService, LogLevel } from '../service/log.service';
-import { AthenticationServiceService } from '../service/AthenticationService'
-import { DataServiceService } from "../service/DataServices";
+import { LogService, LogLevel } from '../services/log.service';
+import { AthenticationServiceService } from '../services/AthenticationService'
+import { DataServiceService } from "../services/DataServices";
 import { PostDataModel } from '../models/PostData';
 @Component({
   selector: "log-test",

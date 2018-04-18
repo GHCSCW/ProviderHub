@@ -1,15 +1,18 @@
 import { Component, ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { MatPaginator, MatTableDataSource, MatSort, MatChipInputEvent } from '@angular/material';
-import { Router } from "@angular/router";
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { FormControl, FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
-import { MentalHealthService } from "../service/mental.health.service";
-import { NavbarService } from '../service/navbarservice';
-import { facilityRelationship } from '../models/facilityRelationship';
+import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
+
+import { MentalHealthService } from "../services/mental.health.service";
+import { BHAttributeType } from '../services/enum-service';
+import { NavbarService } from '../services/navbarservice';
+import { facilityRelationship } from '../models/facilityRelationship';
+
 import { DataSource } from '@angular/cdk/collections';
 //import { Pipe, PipeTransform } from '@angular/core';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { BHAttributeType } from '../service/enum-service';
+
+
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap, filter, startWith, switchMap, debounceTime, distinctUntilChanged, takeWhile, first } from 'rxjs/operators';
 import { AbstractControl } from '@angular/forms/src/model';
@@ -157,22 +160,10 @@ export class AdvancedSearchComponent implements OnInit {
 
       });
     }
-
-    //this.filteredOptions = this.myControl.valueChanges
-    //  .pipe(
-    //  startWith(null),
-    //  debounceTime(200),
-    //  distinctUntilChanged(),
-    //  switchMap(val => {
-    //    return this.filter(val || '')
-    //  })
-    //  );
-
-
   }
 
   ngAfterViewInit() {
-
+  
   }
 
 

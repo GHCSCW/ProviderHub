@@ -2,9 +2,9 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { Router } from "@angular/router";
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MentalHealthService } from "../service/mental.health.service";
+import { MentalHealthService } from "../services/mental.health.service";
 import { Subject } from "rxjs/Subject";
-import { NavbarService } from '../service/navbarservice';
+import { NavbarService } from '../services/navbarservice';
 import { facilityRelationship } from '../models/facilityRelationship'
 
 @Component({

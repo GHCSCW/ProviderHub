@@ -26,15 +26,15 @@ import { AppMaterialModule } from './app-material/app-material.module';
 //import { SharedModule } from './SharedModule';
 
 //Services
-import { NavbarService } from './service/navbarservice';
-import { EnumService } from './service/enum-service';
-import { MentalHealthService } from './service/mental.health.service';
-import { InterfaceService } from './service/interface.service';
-import { ArrayService } from './service/array.service';
-import { LogService} from './service/log.service'
-import { LogPublishersService } from './service/log-publisher.service';
-import { AthenticationServiceService } from './service/AthenticationService';
-import { DataServiceService} from './service/DataServices';
+import { NavbarService } from './services/navbarservice';
+import { EnumService } from './services/enum-service';
+import { MentalHealthService } from './services/mental.health.service';
+import { InterfaceService } from './services/interface.service';
+import { ArrayService } from './services/array.service';
+import { LogService} from './services/log.service'
+import { LogPublishersService } from './services/log-publisher.service';
+import { AthenticationServiceService } from './services/AthenticationService';
+import { DataServiceService} from './services/DataServices';
 //Componentsng
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LogTestComponent} from './log-component/log-test.component';

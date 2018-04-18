@@ -1,11 +1,12 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MentalHealthService } from '../service/mental.health.service';
 import { FormControl, Validators } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
-import { Gender } from '../service/enum-service'
+
+import { Gender } from '../services/enum-service'
+import { MentalHealthService } from '../services/mental.health.service';
 
 export class Language {
   constructor(public name: string) { }

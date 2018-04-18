@@ -1,6 +1,6 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MentalHealthService } from '../../service/mental.health.service';
+
 import { MatChipInputEvent } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
@@ -8,8 +8,9 @@ import { Observable } from "rxjs/Observable";
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import 'rxjs/Rx';
-import { ArrayService } from '../../service/array.service';
-import { BHAttributeType } from '../../service/enum-service';
+import { ArrayService } from '../../services/array.service';
+import { BHAttributeType } from '../../services/enum-service';
+import { MentalHealthService } from '../../services/mental.health.service';
 
 @Component({
   selector: 'dialog-edit-bhAttribute',
@@ -111,8 +112,9 @@ export class DialogEditbhAttributeDialog {
     //save specalties
   }
 
-
-
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
   setAges() {
     this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Ages).subscribe(val =>
       this.ages = val

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { InterfaceService } from '../service/interface.service';
-import { Address } from '../interfaces/Address';
+import { MatInputModule } from '@angular/material';
 import { FormBuilder, Validators, FormsModule, NgForm } from '@angular/forms';
-import { MentalHealthService } from '../service/mental.health.service';
-import {MatInputModule} from '@angular/material';
+
+import { MentalHealthService } from '../services/mental.health.service';
+import { InterfaceService } from '../services/interface.service';
+import { Address } from '../interfaces/Address';
 
 
 @Component({

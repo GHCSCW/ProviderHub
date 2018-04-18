@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AddressType } from '../service/enum-service'
+import { AddressType } from '../services/enum-service'
 /*
 
 */

@@ -1,15 +1,17 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MentalHealthService } from '../service/mental.health.service'
 import { FormGroup, FormControl } from "@angular/forms";
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from "@angular/router";
 import { MatDialogModule } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/map';
-import { NavbarService } from '../service/navbarservice';
+
+import { NavbarService } from '../services/navbarservice';
+import { MentalHealthService } from '../services/mental.health.service'
+import { Language, Gender } from '../services/enum-service';
 import { IProviderLanguageMapping } from '../interfaces/IProviderLanguageMapping';
 import { ILanguage } from '../interfaces/ILanguage';
-import { Language, Gender } from '../service/enum-service';
+
 
 @Component({
   selector: 'provider',
@@ -53,17 +55,6 @@ export class ProviderComponent implements OnInit {
 
   ngOnInit() {
     this.nav.show();
-
-
-    var languages: ILanguage[] = [
-      { languageID: 1, languageName: 'English' },
-      { languageID: 2, languageName: 'Spanish' },
-      {
-        languageID: 3, languageName: 'Hmong'
-      }];
-
-
-
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       if (results.provider == undefined) {
         this.provider = this.mentalHealthService.getProviderData();

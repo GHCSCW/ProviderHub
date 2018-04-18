@@ -1,8 +1,9 @@
 import { Component, Inject, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MentalHealthService } from '../service/mental.health.service';
 import { FormControl } from "@angular/forms";
 import { FormBuilder, Validators, FormsModule, NgForm, FormGroup } from '@angular/forms';
+
+import { MentalHealthService } from '../services/mental.health.service';
 
 import 'rxjs/Rx';
 export class Language {

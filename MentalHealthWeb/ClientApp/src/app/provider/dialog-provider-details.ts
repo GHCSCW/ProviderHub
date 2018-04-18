@@ -1,15 +1,16 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MentalHealthService } from '../service/mental.health.service';
+import 'rxjs/Rx';
 import { MatChipInputEvent } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { FormControl } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
-import { Gender } from '../service/enum-service'
-import 'rxjs/Rx';
-import { ArrayService } from '../service/array.service';
+
+import { Gender } from '../services/enum-service'
+import { MentalHealthService } from '../services/mental.health.service';
+import { ArrayService } from '../services/array.service';
 import { Language } from '../models/language';
 
 @Component({

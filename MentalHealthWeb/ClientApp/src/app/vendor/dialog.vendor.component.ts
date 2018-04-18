@@ -1,6 +1,6 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MentalHealthService } from '../service/mental.health.service';
+import { MentalHealthService } from '../services/mental.health.service';
 import { FormControl } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { startWith } from 'rxjs/operators/startWith';

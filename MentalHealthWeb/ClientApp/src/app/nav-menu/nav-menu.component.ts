@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarService } from '../service/navbarservice';
-import { MentalHealthService } from '../service/mental.health.service';
-import { AthenticationServiceService } from '../service/AthenticationService';
+import { NavbarService } from '../services/navbarservice';
+import { MentalHealthService } from '../services/mental.health.service';
+import { AthenticationServiceService } from '../services/AthenticationService';
 
 
 @Component({
