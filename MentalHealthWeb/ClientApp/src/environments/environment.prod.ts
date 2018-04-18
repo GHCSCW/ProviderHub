@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serviceBaseUrl: 'http://localhost:200/'
+  serviceBaseUrl: 'http://webappd1:200/'
 };
