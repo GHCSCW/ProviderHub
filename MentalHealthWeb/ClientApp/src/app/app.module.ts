@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule} from "@angular/common";
+import { CommonModule } from "@angular/common";
+
 //3rd party
 import 'hammerjs';
 
@@ -32,6 +33,8 @@ import { InterfaceService } from './service/interface.service';
 import { ArrayService } from './service/array.service';
 import { LogService} from './service/log.service'
 import { LogPublishersService } from './service/log-publisher.service';
+import { AthenticationServiceService } from './service/AthenticationService';
+import { DataServiceService} from './service/DataServices';
 //Componentsng
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LogTestComponent} from './log-component/log-test.component';
@@ -39,6 +42,9 @@ import { LogTestComponent} from './log-component/log-test.component';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 //import { BooleanPipe } from './service/pipe-service';
+
+import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
+
 
 @NgModule({
  
@@ -73,13 +79,20 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
     AppMaterialModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: WinAuthInterceptor,
+      multi: true
+    },
     MentalHealthService,
     NavbarService,
     EnumService,
     InterfaceService,
     ArrayService,
     LogPublishersService,
-    LogService
+    LogService,
+    AthenticationServiceService,
+    DataServiceService
   ],
   bootstrap: [AppComponent]
 })

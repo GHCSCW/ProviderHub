@@ -5,12 +5,11 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angu
 import { ActivatedRoute } from "@angular/router";
 import { MatDialogModule } from '@angular/material/dialog';
 import { Location } from '@angular/common';
-import { NavbarService } from '../service/navbarservice';
-import { Gender } from '../service/enum-service'
 import 'rxjs/add/operator/map';
+import { NavbarService } from '../service/navbarservice';
 import { IProviderLanguageMapping } from '../interfaces/IProviderLanguageMapping';
 import { ILanguage } from '../interfaces/ILanguage';
-import { Language } from '../service/enum-service';
+import { Language, Gender } from '../service/enum-service';
 
 @Component({
   selector: 'provider',

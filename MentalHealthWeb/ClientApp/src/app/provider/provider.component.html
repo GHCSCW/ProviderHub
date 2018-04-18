@@ -115,10 +115,10 @@
               <div class="col-md-10"><label>Prescribing Provider: </label></div>
               <div class="col">{{originalFacilityProviderRelationship?.prescriberIndicator | Boolean}}</div>
             </div>
-            <div class="form-row">
+            <!--<div class="form-row">
               <div class="col-md-10"><label>Referring to Specialist Indicator: </label> </div>
               <div class="col">{{originalFacilityProviderRelationship?.referralIndicator | Boolean}}</div>
-            </div>
+            </div>-->
 
             <div class="form-row">
               <div class="col-md-10"><label>Float Provider:</label></div>
@@ -128,7 +128,7 @@
           <div class="col card-block">
             <div class="form-row">
               <div class="col"><label>Relationship Status: </label> </div>
-              <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | Boolean}}</div>
+              <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | ActiveInactivePipe}}</div>
             </div>
             <div class="form-row">
               <div class="col"><label>Effective Date:</label></div>
