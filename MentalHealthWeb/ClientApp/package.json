@@ -28,6 +28,7 @@
     "@angular/router": "^5.0.0",
     "@nguniversal/module-map-ngfactory-loader": "^5.0.0-beta.1",
     "angular-basic-modal": "^4.1.0",
+    "angular2-multiselect-dropdown": "^2.8.0",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.0.0-beta.2",
     "classlist.js": "^1.1.20150312",

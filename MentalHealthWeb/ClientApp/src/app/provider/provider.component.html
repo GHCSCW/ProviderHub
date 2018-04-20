@@ -1,7 +1,6 @@
 <div *ngIf="facilityProviderRelationship != 0">
   <facility-provider-relationship></facility-provider-relationship>
 </div>
-
 <!--Provider Details card-->
 <div>
   <div class="card">
@@ -11,7 +10,10 @@
           <b>Provider Name: </b>{{provider.fullName}}
         </div>
         <div class="col">
-          <b>Credentials: {{provider.credentials}}</b>
+          <b>Credentials:</b>
+          <b *ngFor="let option of provider.credentialList">
+            {{option.value}},
+          </b>
         </div>
         <a href="#">
           <i class="fa fa-link pull-right" aria-hidden="true"></i>
@@ -58,20 +60,18 @@
         </div>
         <div class="col card-block">
           <div class="form-row">
-
             <div class="col"><label>Languages:</label></div>
             <div class="col">
-              {{provider.languages}}
+              <span *ngFor="let option of provider.languageList">
+                {{option.name}},
+              </span>
             </div>
-
           </div>
           <div class="form-row">
             <div class="col"><label>NPI: </label></div>
             <div class="col">{{originalProvider.npi}}</div>
           </div>
           <div class="form-row">
-
-
           </div>
         </div>
       </div>
@@ -80,7 +80,6 @@
       <small class="text-muted">
         Last Updated: {{provider.lastUpdatedDate| date: 'M/d/yyyy'}} - Updated By: {{provider.lastUpdatedBy}}
       </small>
-
     </div>
   </div>
 </div>
@@ -89,17 +88,16 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header class="facilityProviderRelationship">
       <mat-panel-title>
-          <span><b>Facility Provider Profile:</b> </span>
-          <span class="pull-right"><dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship" [originalFacilityProviderRelationship]="originalFacilityProviderRelationship"></dialog-facility-provider-relationship></span>
+        <span><b>Facility Provider Profile:</b> </span>
+        <span class="pull-right"><dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship" [originalFacilityProviderRelationship]="originalFacilityProviderRelationship"></dialog-facility-provider-relationship></span>
       </mat-panel-title>
       <mat-panel-description>
-        All data in regards to the Facility Provider Relationship
       </mat-panel-description>
     </mat-expansion-panel-header>
 
     <!--Faciltiy Relationship Card-->
     <div *ngIf="facilityProviderRelationship != 0" class="card">
-   
+
       <div class="card-body">
         <div class="row">
           <div class="col card-block">
@@ -127,7 +125,8 @@
           </div>
           <div class="col card-block">
             <div class="form-row">
-              <div class="col"><label>Relationship Status: </label> </div>
+              v>
+              <div class="col"><label>Relationship Status: v></label>v></div>
               <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | ActiveInactivePipe}}</div>
             </div>
             <div class="form-row">
@@ -156,7 +155,7 @@
           </div>
 
         </div>
-     
+
 
         <div class="row">
           <div class="col">
@@ -189,7 +188,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <div class="row facilityProviderRelationship">
-     
+
     </div>
     <div class="card-body">
       <div class="row">

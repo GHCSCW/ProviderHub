@@ -42,7 +42,9 @@ export class ProviderComponent implements OnInit {
   gender: string;
   test: string;
   showHide: boolean;
-
+  dropdownList: any = [];
+  selectedItems: any = [];
+  dropdownSettings = {};
   constructor(
     private mentalHealthService: MentalHealthService,
     private fb: FormBuilder,
@@ -69,13 +71,26 @@ export class ProviderComponent implements OnInit {
         this.edittedFacilityProviderRelationship = results;
         this.gender = Gender[this.provider.gender];
       }
-    });
+    }); 
 
     if (this.provider == undefined || this.facilityProviderRelationship.length == 0) {
       this.fillProviderData();
     }
   }
-
+  onItemSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+    console.log(this.selectedItems);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  onDeSelectAll(items: any) {
+    console.log(items);
+  }
   fillProviderData() {
     return this.route.params.subscribe(params => {
       console.log(params);

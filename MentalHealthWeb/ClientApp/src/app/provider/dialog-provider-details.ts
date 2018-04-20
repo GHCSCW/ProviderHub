@@ -11,7 +11,6 @@ import { map } from 'rxjs/operators/map';
 import { Gender } from '../services/enum-service'
 import { MentalHealthService } from '../services/mental.health.service';
 import { ArrayService } from '../services/array.service';
-import { Language } from '../models/language';
 
 @Component({
   selector: 'dialog-provider-details',
@@ -29,11 +28,10 @@ export class DialogProviderDetails {
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogProviderDetailsDialog, {
       width: '500px',
-      height: '600px',
+      height: '800px',
       data: { provider: this.provider, originalProvider: this.originalProvider }
     });
     dialogRef.afterClosed().subscribe(result => {
-      // this.provider = this.originalProvider;
     });
   }
 
@@ -49,6 +47,7 @@ export class DialogProviderDetailsDialog {
   providerLanguages: any = [];
   providerCredentials: any = [];
   credentialList: any = [];
+  languageList: any = [];
   toppings = new FormControl();
   credentials = new FormControl();
   toppingList = ['English', 'Spanish', 'Hmong'];
@@ -58,12 +57,12 @@ export class DialogProviderDetailsDialog {
   removable: boolean = true;
   addOnBlur: boolean = true;
   baseCredentials: any = [];
-
-
+  credentialDropdownSettings: {};
+  languageDropdownSettings: {};
 
   genderSelected = Gender[this.data.provider.gender];
   errors = [];
-  languages: Language[];
+
 
   constructor(private mentalHealthService: MentalHealthService,
     private arrayService: ArrayService,
@@ -71,24 +70,27 @@ export class DialogProviderDetailsDialog {
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
 
-    this.mentalHealthService.getLanguages().subscribe(
-      result => this.languages = result
-    );
+    this.credentialDropdownSettings = {
+      singleSelection: false,
+      text: "Select Credential(s)",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      maxHeight: 500,
+      labelKey: 'value'
+    };
+
+    this.languageDropdownSettings = {
+      singleSelection: false,
+      text: "Select Language(s)",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      maxHeight: 500,
+      labelKey: 'name'
+    };
 
 
-    var result = this.data.provider.languageList.filter(function (obj) {
-      return obj;
-    });
-
-    this.providerLanguages = result.map(function (obj) {
-      return obj.id;
-    })
-
-
-    this.mentalHealthService.getCredentialListByProvID(this.data.originalProvider.id).subscribe(credList =>
-      this.providerCredentials = credList.map(function (credList) {
-        return credList.id
-      })
+    this.mentalHealthService.getLanguages().subscribe(result =>
+      this.languageList = result
     );
 
     this.mentalHealthService.getCredentialList().subscribe(credList =>
@@ -96,7 +98,20 @@ export class DialogProviderDetailsDialog {
     );
 
   }
+  onItemSelect(item: any) {
+    console.log(item);
 
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  onDeSelectAll(items: any) {
+    console.log(items);
+  }
 
   onSubmit() {
 
@@ -106,15 +121,16 @@ export class DialogProviderDetailsDialog {
       Object.assign(this.data.originalProvider, updatedProvider);
 
     });
-    //this.mentalHealthService.updateCredentials(this.providerCredentials, this.provID).subscribe(updatedCredentials => {
-    //  //update credential object
-    //}
-    //)
-    //this.mentalHealthService.updateLanguage(this.data.provider.languageList, this.provID).subscribe(updatedLanguage => {
-    //  this.dialogRef.close();
-    //}
-
-   // )
+    this.mentalHealthService.updateCredentials(this.data.provider.credentialList, this.provID).subscribe(updatedCredentials => {
+      //update credential object
+    }
+    )
+    this.mentalHealthService.updateLanguage(this.data.provider.languageList, this.provID)
+      .subscribe(
+      updatedLanguage => {
+        this.dialogRef.close();
+      }
+      )
 
 
   }
@@ -125,37 +141,6 @@ export class DialogProviderDetailsDialog {
     this.dialogRef.close();
   }
 
-
-  items = [
-    {
-
-      createdDate: "2018-03-29T16:16:03.03",
-      description: "Advanced Practice Nurse Practitioner",
-      id: 31,
-      mappingID: 80,
-      sequenceNumber: 1,
-      status: false,
-      value: "APNP"
-    },
-    {
-      createdDate: "2018-03-29T16:16:03.03",
-      description: "Advanced HUH",
-      id: 345,
-      mappingID: 80,
-      sequenceNumber: 1,
-      status: false,
-      value: "MD"
-    },
-    {
-      createdDate: "2018-03-29T16:16:03.03",
-      description: "Advanced Practice Nurse HUHHH",
-      id: 1,
-      mappingID: 344,
-      sequenceNumber: 1,
-      status: false,
-      value: "AA"
-    }
-  ];
   genders = [
     {
       value: 1,

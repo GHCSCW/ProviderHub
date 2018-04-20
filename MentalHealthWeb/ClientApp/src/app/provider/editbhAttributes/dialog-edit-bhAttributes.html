@@ -1,53 +1,70 @@
-<h1 mat-dialog-title>Edit Behavoiral Types</h1>
-<mat-dialog-content>
-  <form [formGroup]="bhaSpecialties" (ngSubmit)="onFormSubmit(bhaSpecialties.value)">
-    <mat-form-field>
-      <mat-select placeholder="Ages" formControlName="ages" multiple>
-        <mat-option *ngFor="let option of ages" [value]="option.setID">
-          {{ option.textValue}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <!--<mat-form-field>-->
-    <mat-form-field>
-      <mat-select placeholder="Therapeautic Approaches" formControlName="theraApproaches" multiple>
-        <mat-option *ngFor="let option of therapeuticApproaches" [value]="option.setID">
-          {{ option.textValue}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="Conditions" formControlName="conditions" multiple>
-        <mat-option *ngFor="let option of conditions" [value]="option.setID">
-          {{ option.textValue}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="Modes" formControlName="modes" multiple>
-        <mat-option *ngFor="let option of modes" [value]="option.setID">
-          {{ option.textValue}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="Others" formControlName="others" multiple>
-        <mat-option *ngFor="let option of others" [value]="option.setID">
-          {{ option.textValue}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div class="container">
-      <div class="row">
-        <!--<div class="col">
+<h1 mat-dialog-title>Edit Behavorial Types</h1>
+
+<form [formGroup]="bhaSpecialties" novalidate (ngSubmit)="onFormSubmit(bhaSpecialties.value)">
+
+  <div class="form-group col-md-12">
+    <label for="ages">Ages</label>
+    <angular2-multiselect [data]="ages" [(ngModel)]="data.bhaAges"
+                          [settings]="agesDropdownSettings"
+                          (onSelect)="onItemSelect($event)"
+                          (onDeSelect)="OnItemDeSelect($event)"
+                          (onSelectAll)="onSelectAll($event)"
+                          (onDeSelectAll)="onDeSelectAll($event)" formControlName="ages">
+    </angular2-multiselect>
+  </div>
+  <div class="form-group col-md-12">
+    <label for="conditions">Conditions</label>
+    <angular2-multiselect [data]="conditions" [(ngModel)]="data.bhaConditions"
+                          [settings]="conditionsDropdownSettings"
+                          (onSelect)="onItemSelect($event)"
+                          (onDeSelect)="OnItemDeSelect($event)"
+                          (onSelectAll)="onSelectAll($event)"
+                          (onDeSelectAll)="onDeSelectAll($event)" formControlName="conditions">
+    </angular2-multiselect>
+  </div>
+  <div class="form-group col-md-12">
+    <label for="therapeuticApproaches">Therapeutic Approaches</label>
+    <angular2-multiselect [data]="therapeuticApproaches" [(ngModel)]="data.bhaTherapeuticApproaches"
+                          [settings]="therapeuticApproachesDrodownSettings"
+                          (onSelect)="onItemSelect($event)"
+                          (onDeSelect)="OnItemDeSelect($event)"
+                          (onSelectAll)="onSelectAll($event)"
+                          (onDeSelectAll)="onDeSelectAll($event)" formControlName="therapeuticApproaches">
+    </angular2-multiselect>
+  </div>
+  <div class="form-group col-md-12">
+    <label for="modes">Modes</label>
+    <angular2-multiselect [data]="modes" [(ngModel)]="data.bhaModes"
+                          [settings]="modesDropdownSettings"
+                          (onSelect)="onItemSelect($event)"
+                          (onDeSelect)="OnItemDeSelect($event)"
+                          (onSelectAll)="onSelectAll($event)"
+                          (onDeSelectAll)="onDeSelectAll($event)" formControlName="modes">
+    </angular2-multiselect>
+  </div>
+  <div class="form-group col-md-12">
+    <label for="others">Other</label>
+    <angular2-multiselect [data]="others" [(ngModel)]="data.bhaOthers"
+                          [settings]="othersDropdownSettings"
+                          (onSelect)="onItemSelect($event)"
+                          (onDeSelect)="OnItemDeSelect($event)"
+                          (onSelectAll)="onSelectAll($event)"
+                          (onDeSelectAll)="onDeSelectAll($event)" formControlName="others">
+    </angular2-multiselect>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <!--<div class="col">
         <button type="button" class="btn btn-info" (click)="bhaSpecialties.reset()">Clear Form</button>
       </div>-->
-        <div class="col">
-          <button mat-button (click)="onNoClick()">Cancel</button>
-          <button mat-raised-button color="accent">Save and Close</button>
-        </div>
+      <div class="col">
+        <button mat-button (click)="onNoClick()">Cancel</button>
+        <button mat-raised-button color="accent">Save and Close</button>
       </div>
     </div>
-  </form>
+  </div>
 
-</mat-dialog-content>
+
+
+</form>

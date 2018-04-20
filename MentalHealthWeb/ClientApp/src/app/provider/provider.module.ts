@@ -15,6 +15,7 @@ import { BooleanPipe } from '../pipes/BooleanPipe';
 import { ActiveInactivePipe } from '../pipes/ActiveInactivePipe';
 import { CreateProvider } from './create-provider.component';
 import { DialogEditbhAttribute, DialogEditbhAttributeDialog } from './editbhAttributes/dialog-edit-bhAttributes';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { DialogEditbhAttribute, DialogEditbhAttributeDialog } from './editbhAttr
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AppMaterialModule
+    AppMaterialModule,
+    AngularMultiSelectModule 
   ],
   declarations: [
     ProviderComponent,

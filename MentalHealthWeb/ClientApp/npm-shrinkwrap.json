@@ -485,6 +485,14 @@
       "resolved": "https://registry.npmjs.org/angular-basic-modal/-/angular-basic-modal-4.1.0.tgz",
       "integrity": "sha1-RXl+8JCETILiUkkONJkG85pUpN0="
     },
+    "angular2-multiselect-dropdown": {
+      "version": "2.8.0",
+      "resolved": "https://registry.npmjs.org/angular2-multiselect-dropdown/-/angular2-multiselect-dropdown-2.8.0.tgz",
+      "integrity": "sha1-eDnkPHmdPMk2oxduIipqgy6EYA8=",
+      "requires": {
+        "font-awesome": "4.7.0"
+      }
+    },
     "ansi-html": {
       "version": "0.0.7",
       "resolved": "https://registry.npmjs.org/ansi-html/-/ansi-html-0.0.7.tgz",

@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from "@angular/common";
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 //3rd party
 import 'hammerjs';
@@ -63,7 +64,8 @@ import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
    // SharedModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AppMaterialModule
+    AppMaterialModule,
+    AngularMultiSelectModule,
     
   ],
   declarations: [
@@ -76,7 +78,8 @@ import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
   exports: [
     CommonModule,
     FormsModule,
-    AppMaterialModule
+    AppMaterialModule,
+    AngularMultiSelectModule
   ],
   providers: [
     {

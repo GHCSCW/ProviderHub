@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { MatChipInputEvent } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
+import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
@@ -30,8 +30,8 @@ export class DialogEditbhAttribute {
 
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogEditbhAttributeDialog, {
-      width: '650px',
-      height: '400px',
+      width: '500px',
+      height: '900px',
       data: { bhaConditions: this.bhaConditions, bhaModes: this.bhaModes, bhaAges: this.bhaAges, bhaOthers: this.bhaOthers, bhaTherapeuticApproaches: this.bhaTherapeuticApproaches }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -46,6 +46,7 @@ export class DialogEditbhAttribute {
   styleUrls: ['./dialog-edit-bhAttributes.css'],
 })
 export class DialogEditbhAttributeDialog {
+
   othersCopy: any;
   therapeuticApproachesCopy: any;
   modesCopy: any;
@@ -58,6 +59,12 @@ export class DialogEditbhAttributeDialog {
   conditionsCopy: any = [];
   bhaSpecialties: FormGroup;
 
+
+  agesDropdownSettings = {};
+  othersDropdownSettings: {};
+  modesDropdownSettings: {};
+  therapeuticApproachesDrodownSettings: {};
+  conditionsDropdownSettings: {};
 
   constructor(
     private fb: FormBuilder,
@@ -78,44 +85,97 @@ export class DialogEditbhAttributeDialog {
     this.bhaSpecialties = this.fb.group({
       'ages': [],
       'conditions': [],
-      'theraApproaches': [],
+      'therapeuticApproaches': [],
       'modes': [],
       'others': []
     })
 
-    this.conditionsCopy = this.conditionsCopy.map(function (conditions) {
-      return conditions.setID
-    });
-    this.agesCopy = this.agesCopy.map(function (ages) {
-      return ages.setID
-    });
-    this.modesCopy = this.modesCopy.map(function (modes) {
-      return modes.setID
-    });
-    this.othersCopy = this.othersCopy.map(function (others) {
-      return others.setID
-    });
-    this.therapeuticApproachesCopy = this.therapeuticApproachesCopy.map(function (theraApproach) {
-      return theraApproach.setID
-    });
+    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Ages).subscribe(val =>
+      this.ages.push(val)
+    );
+ 
+    this.agesDropdownSettings = {
+      singleSelection: false,
+      text: "Select Ages",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      maxHeight: 500,
+      primaryKey: 'setID',
+      labelKey:'textValue'
+    };
+    this.conditionsDropdownSettings = {
+      singleSelection: false,
+      text: "Select Ages",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      maxHeight: 500,
+      primaryKey: 'setID',
+      labelKey: 'textValue'
+    };
+    this.therapeuticApproachesDrodownSettings = {
+      singleSelection: false,
+      text: "Select Ages",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      maxHeight: 500,
+      primaryKey: 'setID',
+      labelKey: 'textValue'
+    };
+    this.modesDropdownSettings = {
+      singleSelection: false,
+      text: "Select Ages",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      maxHeight: 500,
+      primaryKey: 'setID',
+      labelKey: 'textValue'
+    };
+    this.othersDropdownSettings = {
+      singleSelection: false,
+      text: "Select Ages",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      maxHeight: 500,
+      primaryKey: 'setID',
+      labelKey: 'textValue'
+    };     
 
-    this.bhaSpecialties.patchValue({
-      ages: this.agesCopy,
-      conditions: this.conditionsCopy,
-      modes: this.modesCopy,
-      therapeuticApproaches: this.therapeuticApproaches,
-      others: this.othersCopy
+
+    this.bhaSpecialties = this.fb.group({
+      ages: [[], Validators.required],
+      conditions: [[], Validators.required],
+      therapeuticApproaches: [[], Validators.required],
+      modes: [[], Validators.required],
+      others: [[], Validators.required],
     });
   }
 
+  onItemSelect(item: any) {
+    console.log(item);
+   
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  onDeSelectAll(items: any) {
+    console.log(items);
+  }
+ onClick() {
+
+}
   onFormSubmit(form) {
-    //save specalties
+    //this.mentalHealthService. SAVE ON CHANGE
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-  setAges() {
+
+   setAges() {
     this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Ages).subscribe(val =>
       this.ages = val
     );
@@ -145,3 +205,4 @@ export class DialogEditbhAttributeDialog {
     );
   }
 }
+
