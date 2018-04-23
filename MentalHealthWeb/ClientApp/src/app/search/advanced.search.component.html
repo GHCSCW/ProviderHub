@@ -64,21 +64,13 @@
       </mat-form-field>
     </div>
     <div class="col-md-5">
-
-
       <mat-form-field>
         <input matInput placeholder="City" formControlName="city">
       </mat-form-field>
       <mat-form-field>
         <input matInput placeholder="Region" formControlName="region">
       </mat-form-field>
-      <!--<div>
-        <mat-form-field>
-          <input matInput placeholder="Facility Name" formControlName="facilityName">
-        </mat-form-field>
-      </div>-->
       <div>
-      
         <mat-form-field class="mat-container">
           <mat-select placeholder="Facility Name" formControlName="facilityID" multiple>
             <mat-option *ngFor="let facility of facilityList" [value]="facility.id">
@@ -87,26 +79,12 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <!--<div>
-        Option #2
-        <mat-form-field class="mat-container">
-          <input matInput [matAutocomplete]="auto" [formControl]="myControl">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let facilityList of filteredOptions | async"
-                        [value]="facilityList.facilityName">
-              <span>{{ facilityList.facilityName }}</span>
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>-->
-
     </div>
   </div>
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-1">
         <button type="button" class="btn btn-info" (click)="clearDataSource();advancedSearchForm.reset()">Clear Form</button>
-
       </div>
       <div class="col-sm-11">
         <button mat-raised-button color="accent">Search</button>
@@ -122,7 +100,7 @@
   <br />
 </div>
 <div class="mat-elevation-z8">
-  <h5 style="margin-left:10px"> Facility Provider Profile</h5>
+  <h5 style="margin-left:10px">Provider - Clinic Relationship</h5>
   <mat-table #table [dataSource]="dataSource">
     <ng-container matColumnDef="fullName">
       <mat-header-cell *matHeaderCellDef> Provider Name/Credentials </mat-header-cell>

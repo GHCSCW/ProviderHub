@@ -15,12 +15,20 @@
           <label> Facility Name: </label>  {{facility.facilityName}}
         </div>
         <div class="form-group">
-          <label>Phone Number:</label> {{facilityAddress.phoneNumber}} 
+          <span *ngIf="facilityProviderRelationship.providerPhoneNumber">
+            <label> Provider Phone Number:</label> {{facilityProviderRelationship.providerPhoneNumber}} Ext: {{facilityProviderRelationship.providerExtensionNumber}}
+          </span>
+          <span *ngIf="facilityAddress.phoneNumber">
+            <label> Facility Phone Number:</label> {{facilityAddress.phoneNumber}}
+          </span>
         </div>
       </div>
       <div class="col">
         <div class="form-group">
           <label>Provider Name:</label> {{provider.fullName}}
+          <span *ngFor="let option of provider.credentialList">
+            {{option.value}},
+          </span>
         </div>
         <div class="form-group">
           <label>Region:</label> {{facilityAddress.region}}

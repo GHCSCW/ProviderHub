@@ -11,9 +11,9 @@
         </div>
         <div class="col">
           <b>Credentials:</b>
-          <b *ngFor="let option of provider.credentialList">
+          <span *ngFor="let option of provider.credentialList">
             {{option.value}},
-          </b>
+          </span>
         </div>
         <a href="#">
           <i class="fa fa-link pull-right" aria-hidden="true"></i>
@@ -88,7 +88,7 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header class="facilityProviderRelationship">
       <mat-panel-title>
-        <span><b>Facility Provider Profile:</b> </span>
+        <span><b>Provider - Clinic Relationship:</b> </span>
         <span class="pull-right"><dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship" [originalFacilityProviderRelationship]="originalFacilityProviderRelationship"></dialog-facility-provider-relationship></span>
       </mat-panel-title>
       <mat-panel-description>
@@ -113,10 +113,6 @@
               <div class="col-md-10"><label>Prescribing Provider: </label></div>
               <div class="col">{{originalFacilityProviderRelationship?.prescriberIndicator | Boolean}}</div>
             </div>
-            <!--<div class="form-row">
-              <div class="col-md-10"><label>Referring to Specialist Indicator: </label> </div>
-              <div class="col">{{originalFacilityProviderRelationship?.referralIndicator | Boolean}}</div>
-            </div>-->
 
             <div class="form-row">
               <div class="col-md-10"><label>Float Provider:</label></div>
@@ -125,8 +121,8 @@
           </div>
           <div class="col card-block">
             <div class="form-row">
-              v>
-              <div class="col"><label>Relationship Status: v></label>v></div>
+            
+              <div class="col"><label>Relationship Status:</label></div>
               <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | ActiveInactivePipe}}</div>
             </div>
             <div class="form-row">

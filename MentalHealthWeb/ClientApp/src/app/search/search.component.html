@@ -25,11 +25,9 @@
       <mat-checkbox>External</mat-checkbox>
     </div>
     <div class="col"></div>
-    <!--<button class="col-sm-8" mat-button [disabled]="!searchForm.valid">Advanced Search</button>-->
     <div class="col">
       <button class="btn" [routerLink]="['/advanced-search']">Advanced Search</button>
     </div>
-
   </div>
   <div>
     <i class="fa fa-spinner fa-2x" aria-hidden="true" *ngIf="loading"></i>
@@ -38,7 +36,7 @@
     {{message}}
   </div>
   <div class="example-container mat-elevation-z8">
-    <h5 style="margin-left:10px"> Facility Provider Profile</h5>
+    <h5 style="margin-left:10px"> Provider - Clinic Relationship</h5>
     <mat-table #table [dataSource]="facilityProviderRelationships" matSort>
       Position Column
       <ng-container matColumnDef="firstName">
