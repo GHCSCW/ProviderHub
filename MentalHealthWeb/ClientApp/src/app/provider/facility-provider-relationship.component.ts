@@ -31,6 +31,7 @@ export class FacilityProviderRelationshipComponent  implements OnInit {
         this.provider = results.provider;
         this.facility = results.facility;
         this.facilityAddress = results.facility.facilityAddress;
+        this.facilityProviderRelationship = results;
       }
 
     });
