@@ -116,7 +116,7 @@ export class DialogEditbhAttributeDialog {
     };
     this.therapeuticApproachesDrodownSettings = {
       singleSelection: false,
-      text: "Select Ages",
+      text: "Select Thereapeutic Approaches",
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       maxHeight: 500,
