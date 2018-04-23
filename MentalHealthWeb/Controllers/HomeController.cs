@@ -288,6 +288,22 @@ namespace AngularTemplate.Controllers
         }
         #endregion
 
+        #region FUNCTION: UpdateBhAttributes(BehavioralHealthAttribute[] attribute, int id)
+        [HttpPut("[action]/{id}")]
+        public async Task<IActionResult> UpdateBhAttributes([FromBody]BehavioralHealthAttribute[] attribute, int id)
+        {
+            bool x = await ProviderHubService.SaveBHAttributeToRelationshipAsync(id, attribute);
+            if (x == true)
+            {
+                return Ok(attribute);
+            }
+            else
+            {
+                return NotFound("Credential Update failed");
+            }
+        }
+        #endregion
+
         #region FUNCTION: UpdateLanguage(Language[] languageUpdate, int id)
         [HttpPut("[action]/{id}")]
         public async Task<IActionResult> UpdateLanguage([FromBody]Language[] languageUpdate, int id)

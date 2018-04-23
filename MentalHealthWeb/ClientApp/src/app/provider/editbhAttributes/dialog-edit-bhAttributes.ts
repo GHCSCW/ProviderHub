@@ -11,6 +11,7 @@ import 'rxjs/Rx';
 import { ArrayService } from '../../services/array.service';
 import { BHAttributeType } from '../../services/enum-service';
 import { MentalHealthService } from '../../services/mental.health.service';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'dialog-edit-bhAttribute',
@@ -58,7 +59,7 @@ export class DialogEditbhAttributeDialog {
   conditions: any = [];
   conditionsCopy: any = [];
   bhaSpecialties: FormGroup;
-
+  bhAttributeArray: any = [];
 
   agesDropdownSettings = {};
   othersDropdownSettings: {};
@@ -93,7 +94,7 @@ export class DialogEditbhAttributeDialog {
     this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Ages).subscribe(val =>
       this.ages.push(val)
     );
- 
+
     this.agesDropdownSettings = {
       singleSelection: false,
       text: "Select Ages",
@@ -101,11 +102,12 @@ export class DialogEditbhAttributeDialog {
       unSelectAllText: 'UnSelect All',
       maxHeight: 500,
       primaryKey: 'setID',
-      labelKey:'textValue'
+      labelKey: 'textValue'
     };
     this.conditionsDropdownSettings = {
       singleSelection: false,
-      text: "Select Ages",
+      enableSearch: true,
+      text: "Select Conditions",
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       maxHeight: 500,
@@ -123,7 +125,7 @@ export class DialogEditbhAttributeDialog {
     };
     this.modesDropdownSettings = {
       singleSelection: false,
-      text: "Select Ages",
+      text: "Select Modes",
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       maxHeight: 500,
@@ -132,13 +134,13 @@ export class DialogEditbhAttributeDialog {
     };
     this.othersDropdownSettings = {
       singleSelection: false,
-      text: "Select Ages",
+      text: "Select Other",
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       maxHeight: 500,
       primaryKey: 'setID',
       labelKey: 'textValue'
-    };     
+    };
 
 
     this.bhaSpecialties = this.fb.group({
@@ -152,7 +154,7 @@ export class DialogEditbhAttributeDialog {
 
   onItemSelect(item: any) {
     console.log(item);
-   
+
   }
   OnItemDeSelect(item: any) {
     console.log(item);
@@ -164,18 +166,42 @@ export class DialogEditbhAttributeDialog {
   onDeSelectAll(items: any) {
     console.log(items);
   }
- onClick() {
+  onClick() {
 
-}
-  onFormSubmit(form) {
-    //this.mentalHealthService. SAVE ON CHANGE
   }
+  onFormSubmit(form) {
+
+    for (var key of form.ages) {
+      this.bhAttributeArray.push(key)
+    }
+    for (var key of form.conditions) {
+      this.bhAttributeArray.push(key)
+    }
+    for (var key of form.therapeuticApproaches) {
+      this.bhAttributeArray.push(key)
+    }
+    for (var key of form.modes) {
+      this.bhAttributeArray.push(key)
+    }
+    for (var key of form.others) {
+      this.bhAttributeArray.push(key)
+    }
+
+
+    this.mentalHealthService.updateBHAttribute(this.bhAttributeArray, this.mentalHealthService.facilityProviderRelationship[0].relationshipID)
+      .subscribe(
+      updatedLanguage => {
+        this.dialogRef.close();
+      }
+      )
+  }
+
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-   setAges() {
+  setAges() {
     this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Ages).subscribe(val =>
       this.ages = val
     );

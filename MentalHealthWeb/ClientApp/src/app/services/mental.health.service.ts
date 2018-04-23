@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -239,6 +239,13 @@ export class MentalHealthService {
     }).catch(this.handleError)
   }
 
+  updateBHAttribute(body, id) {
+    const url = `${this.server_url}/UpdateBhAttributes/` + id;
+    return this.httpClient.put(url, body).map((res: any) => {
+      let data = res;
+      return data;
+    }).catch(this.handleError)
+  }
 
   updateProvider(body) {
     const url = `${this.server_url}/updateProvider/`;
