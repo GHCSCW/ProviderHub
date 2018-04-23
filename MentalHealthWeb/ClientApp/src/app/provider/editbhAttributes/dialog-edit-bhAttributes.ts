@@ -48,16 +48,11 @@ export class DialogEditbhAttribute {
 })
 export class DialogEditbhAttributeDialog {
 
-  othersCopy: any;
-  therapeuticApproachesCopy: any;
-  modesCopy: any;
-  agesCopy: any;
   ages: any = [];
   therapeuticApproaches: any = [];
   others: any = [];
   modes: any = [];
   conditions: any = [];
-  conditionsCopy: any = [];
   bhaSpecialties: FormGroup;
   bhAttributeArray: any = [];
 
@@ -77,12 +72,6 @@ export class DialogEditbhAttributeDialog {
     this.setModes();
     this.setOthers();
     this.setTherapeuticApproaches();
-    this.conditionsCopy = JSON.parse(JSON.stringify(data.bhaConditions));
-    this.agesCopy = JSON.parse(JSON.stringify(data.bhaAges));
-    this.modesCopy = JSON.parse(JSON.stringify(data.bhaModes));
-    this.othersCopy = JSON.parse(JSON.stringify(data.bhaOthers));
-    this.therapeuticApproachesCopy = JSON.parse(JSON.stringify(data.bhaTherapeuticApproaches));
-    //this.data.bhaConditions[0].textValue = 'TEST';
     this.bhaSpecialties = this.fb.group({
       'ages': [],
       'conditions': [],
