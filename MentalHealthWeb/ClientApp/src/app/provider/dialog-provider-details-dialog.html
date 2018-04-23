@@ -1,3 +1,6 @@
+<button type="button" class="close" aria-label="Close" (click)="onNoClick()">
+  <span aria-hidden="true">&times;</span>
+</button>
 <h1 mat-dialog-title>Provider Details -  {{data.provider.lastName}} - {{data.provider.firstName}}</h1>
 <mat-form-field>
   <input matInput placeholder="First name" [(ngModel)]="data.provider.firstName" name="firstName">

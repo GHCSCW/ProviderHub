@@ -1,5 +1,12 @@
-<h1 mat-dialog-title>Facility Details -  {{data.facility.facilityName}}</h1>
+<button type="button" class="close" aria-label="Close" (click)="onNoClick()">
+  <span aria-hidden="true">&times;</span>
+</button>
+<h1 mat-dialog-title>
+  Facility Details -  {{data.facility.facilityName}}
+</h1>
+
 <mat-dialog-content class="mat-container">
+
   <mat-form-field>
     <input matInput placeholder="Facility Name" [(ngModel)]="data.facility.facilityName" name="facilityName">
   </mat-form-field>
@@ -47,7 +54,7 @@
   </mat-form-field>
 </mat-dialog-content>
 <div mat-dialog-actions class="pull-right">
-  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button type="button" mat-button (click)="onNoClick()">Cancel</button>
   <button mat-button (click)="onSubmit()" cdkFocusInitial>Save and Close</button>
 </div>
 

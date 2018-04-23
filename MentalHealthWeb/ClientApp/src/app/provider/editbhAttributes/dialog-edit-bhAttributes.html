@@ -1,5 +1,7 @@
+<button type="button" class="close" aria-label="Close" (click)="onNoClick()">
+  <span aria-hidden="true">&times;</span>
+</button>
 <h1 mat-dialog-title>Edit Behavorial Types</h1>
-
 <form [formGroup]="bhaSpecialties" novalidate (ngSubmit)="onFormSubmit(bhaSpecialties.value)">
 
   <div class="form-group col-md-12">
