@@ -64,11 +64,8 @@ export class ProviderComponent implements OnInit {
       }
       else {
         this.provider = results.provider;
-       // this.originalProvider = results.provider;
         this.facilityProviderRelationship = results;
         this.createBHSpecialtyLists(results);
-        this.originalFacilityProviderRelationship = JSON.parse(JSON.stringify(results));
-        this.edittedFacilityProviderRelationship = results;
         this.gender = Gender[this.provider.gender];
       }
     }); 
@@ -97,9 +94,7 @@ export class ProviderComponent implements OnInit {
       if (params['id']) {
         this.mentalHealthService.getFacilityProviderRelationshipById(params['id']).subscribe(data => {
           this.facilityProviderRelationship = data;
-          this.originalFacilityProviderRelationship = JSON.parse(JSON.stringify(data));
           this.provider = data.provider;
-         // this.originalProvider = JSON.parse(JSON.stringify(data.provider));
           this.facility = data.facility;
           this.facilityAddress = data.facility.facilityAddress;
           this.gender = Gender[this.provider.gender];
@@ -111,9 +106,7 @@ export class ProviderComponent implements OnInit {
       }
       else if (params['provid']) {
         this.mentalHealthService.getProvider(params['provid']).subscribe(data => {
-          //this.facilityProviderRelationship = data;
           this.provider = data;
-          //this.originalProvider = JSON.parse(JSON.stringify(data));
           this.gender = Gender[this.provider.gender];
           this.mentalHealthService.insertFacilityProviderRelationshipData(data);
         })

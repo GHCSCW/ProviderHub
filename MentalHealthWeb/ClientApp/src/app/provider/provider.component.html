@@ -88,8 +88,13 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header class="facilityProviderRelationship">
       <mat-panel-title>
-        <span><b>Provider - Clinic Relationship:</b> </span>
-        <span class="pull-right"><dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship" [originalFacilityProviderRelationship]="originalFacilityProviderRelationship"></dialog-facility-provider-relationship></span>
+        <span>
+          <b>Provider - Clinic Relationship:</b>
+        </span>
+        <span class="pull-right">
+          <dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship">
+          </dialog-facility-provider-relationship>
+        </span>
       </mat-panel-title>
       <mat-panel-description>
       </mat-panel-description>
@@ -121,7 +126,7 @@
           </div>
           <div class="col card-block">
             <div class="form-row">
-            
+
               <div class="col"><label>Relationship Status:</label></div>
               <div class="col">{{originalFacilityProviderRelationship?.relationshipStatus | ActiveInactivePipe}}</div>
             </div>

@@ -22,8 +22,6 @@ export class Language {
 export class DialogFacilityProviderRelationship{
 
     @Input() facilityProviderRelationship: any[];
-    @Input() originalFacilityProviderRelationship: any[];
-
 
   constructor(public dialog: MatDialog, private mentalHealthService: MentalHealthService) {
   }
@@ -34,7 +32,7 @@ export class DialogFacilityProviderRelationship{
     let dialogRef = this.dialog.open(DialogFacilityProviderRelationshipDialog, {
       width: '500px',
         height: '650px',
-        data: { facilityProviderRelationship: this.facilityProviderRelationship, originalFacilityProviderRelationship: this.originalFacilityProviderRelationship }
+        data: { facilityProviderRelationship: this.facilityProviderRelationship }
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
@@ -49,28 +47,29 @@ export class DialogFacilityProviderRelationship{
 })
 export class DialogFacilityProviderRelationshipDialog {
   email = new FormControl('', [Validators.required, Validators.email]);
-
+  originalFacilityProviderRelationship: any = []; 
 
   constructor(private mentalHealthService: MentalHealthService,
     public dialogRef: MatDialogRef<DialogFacilityProviderRelationshipDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
 
+    this.originalFacilityProviderRelationship = JSON.parse(JSON.stringify(this.data.facilityProviderRelationship));
+  }
+  
   getErrorMessage() {
     return this.email.hasError('email') ? 'Not a valid email' :
         '';
   }
 
   onNoClick(): void {
-    Object.assign(this.data.facilityProviderRelationship, this.data.originalFacilityProviderRelationship);
+    Object.assign(this.data.facilityProviderRelationship, this.originalFacilityProviderRelationship);
     this.dialogRef.close();
   }
 
   onSubmit() {
 
       this.mentalHealthService.updateFacilityProviderRelationship(this.data.facilityProviderRelationship).subscribe(updateFacilityProviderRelationship => {
-          Object.assign(this.data.originalFacilityProviderRelationship, updateFacilityProviderRelationship);
-   
+          Object.assign(this.data.facilityProviderRelationship, updateFacilityProviderRelationship);
       });
     this.dialogRef.close();
   }
