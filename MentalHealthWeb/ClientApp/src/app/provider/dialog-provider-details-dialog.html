@@ -3,7 +3,10 @@
 </button>
 <h1 mat-dialog-title>Provider Details -  {{data.provider.lastName}} - {{data.provider.firstName}}</h1>
 <mat-form-field>
-  <input matInput placeholder="First name" [(ngModel)]="data.provider.firstName" name="firstName">
+  <input matInput placeholder="First Name" [(ngModel)]="data.provider.firstName" name="firstName">
+</mat-form-field>
+<mat-form-field>
+  <input matInput placeholder="Middle Name" [(ngModel)]="data.provider.middleName" name="middleName">
 </mat-form-field>
 <mat-form-field>
   <input placeholder="Last Name" matInput [(ngModel)]="data.provider.lastName" name="lastName">

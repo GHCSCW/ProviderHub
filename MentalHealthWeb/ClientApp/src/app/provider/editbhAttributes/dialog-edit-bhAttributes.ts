@@ -80,10 +80,6 @@ export class DialogEditbhAttributeDialog {
       'others': []
     })
 
-    this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Ages).subscribe(val =>
-      this.ages.push(val)
-    );
-
     this.agesDropdownSettings = {
       singleSelection: false,
       text: "Select Ages",
@@ -95,7 +91,7 @@ export class DialogEditbhAttributeDialog {
     };
     this.conditionsDropdownSettings = {
       singleSelection: false,
-      enableSearch: true,
+      enableSearchFilter: true,
       text: "Select Conditions",
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
@@ -114,6 +110,7 @@ export class DialogEditbhAttributeDialog {
     };
     this.modesDropdownSettings = {
       singleSelection: false,
+      enableSearchFilter: true,
       text: "Select Modes",
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',

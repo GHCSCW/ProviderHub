@@ -21,7 +21,6 @@ import { ArrayService } from '../services/array.service';
 export class DialogProviderDetails {
 
   @Input() provider: any[];
-  @Input() originalProvider: any[];
 
   constructor(public dialog: MatDialog) { }
 
@@ -29,7 +28,7 @@ export class DialogProviderDetails {
     let dialogRef = this.dialog.open(DialogProviderDetailsDialog, {
       width: '500px',
       height: '800px',
-      data: { provider: this.provider, originalProvider: this.originalProvider }
+      data: { provider: this.provider }
     });
     dialogRef.afterClosed().subscribe(result => {
     });
@@ -59,6 +58,8 @@ export class DialogProviderDetailsDialog {
   baseCredentials: any = [];
   credentialDropdownSettings: {};
   languageDropdownSettings: {};
+  originalProvider: any = []; 
+
 
   genderSelected = Gender[this.data.provider.gender];
   errors = [];
@@ -68,6 +69,8 @@ export class DialogProviderDetailsDialog {
     private arrayService: ArrayService,
     public dialogRef: MatDialogRef<DialogProviderDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
+
+    this.originalProvider = JSON.parse(JSON.stringify(data.provider));
 
 
     this.credentialDropdownSettings = {
@@ -115,10 +118,10 @@ export class DialogProviderDetailsDialog {
 
   onSubmit() {
 
-    this.provID = this.data.originalProvider.id;
+    this.provID = this.data.provider.id;
 
     this.mentalHealthService.updateProvider(this.data.provider).subscribe(updatedProvider => {
-      Object.assign(this.data.originalProvider, updatedProvider);
+      Object.assign(this.data.provider, updatedProvider);
 
     });
     this.mentalHealthService.updateCredentials(this.data.provider.credentialList, this.provID).subscribe(updatedCredentials => {
@@ -137,7 +140,7 @@ export class DialogProviderDetailsDialog {
 
   onNoClick(): void {
 
-    Object.assign(this.data.provider, this.data.originalProvider);
+    Object.assign(this.data.provider, this.originalProvider);
     this.dialogRef.close();
   }
 

@@ -344,8 +344,8 @@ namespace AngularTemplate.Controllers
         public async Task<IActionResult> UpdateFacility([FromBody]Facility facilityUpdate)
         {
             facilityUpdate.LastUpdatedBy = username;
-            int x = await ProviderHubService.SaveFacilityAsync(facilityUpdate);
-            if (x > 0)
+            Boolean x = await ProviderHubService.SaveFacilityAndAddressAsync(facilityUpdate);
+            if (x == true)
             {
                 return Ok(facilityUpdate);
             }

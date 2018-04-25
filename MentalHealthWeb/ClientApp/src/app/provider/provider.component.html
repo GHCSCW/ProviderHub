@@ -19,7 +19,7 @@
           <i class="fa fa-link pull-right" aria-hidden="true"></i>
         </a>
         <span class="pull-right">
-          <dialog-provider-details [provider]="provider" [originalProvider]="originalProvider">loading</dialog-provider-details>
+          <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
         </span>
       </div>
     </div>
@@ -33,29 +33,29 @@
           </div>
           <div class="form-row">
             <div class="col-md-8"><label>Medicare Provider:</label> </div>
-            <div class="col">{{originalProvider.medicareIndicator | Boolean}}</div>
+            <div class="col">{{provider.medicareIndicator | Boolean}}</div>
           </div>
           <div class="form-row">
             <div class="col-md-8"><label>Medicare Effective Date:  </label> </div>
-            <div class="col">{{originalProvider.medicareEffectiveDate| date: 'M/d/yyyy'}}</div>
+            <div class="col">{{provider.medicareEffectiveDate| date: 'M/d/yyyy'}}</div>
           </div>
           <div class="form-row">
             <div class="col-md-8"><label>Medicare Termination Date:  </label></div>
-            <div class="col">{{originalProvider.medicareTerminationDate| date: 'M/d/yyyy'}}</div>
+            <div class="col">{{provider.medicareTerminationDate| date: 'M/d/yyyy'}}</div>
           </div>
         </div>
         <div class="col card-block">
           <div class="form-row">
             <div class="col-md-8"><label>EPIC Provider ID: </label></div>
-            <div class="col">{{originalProvider.epicProviderID}}</div>
+            <div class="col">{{provider.epicProviderID}}</div>
           </div>
           <div class="form-row">
             <div class="col-md-8"><label>Medicaid (BadgerCare) Provider: </label></div>
-            <div class="col">{{originalProvider.medicaidIndicator | Boolean}}</div>
+            <div class="col">{{provider.medicaidIndicator | Boolean}}</div>
           </div>
           <div class="form-row">
             <div class="col-md-8"><label>CSP Indicator:</label></div>
-            <div class="col">{{originalProvider.csP_Indicator | Boolean}}</div>
+            <div class="col">{{provider.csP_Indicator | Boolean}}</div>
           </div>
         </div>
         <div class="col card-block">
@@ -69,7 +69,7 @@
           </div>
           <div class="form-row">
             <div class="col"><label>NPI: </label></div>
-            <div class="col">{{originalProvider.npi}}</div>
+            <div class="col">{{provider.npi}}</div>
           </div>
           <div class="form-row">
           </div>
@@ -157,14 +157,14 @@
           <div class="col">
             <div class="form-row" style="background-color:#f6f6f6">
               <div class="col-md-2"><label>Internal Notes: </label></div>
-              <div class="col-md-10">{{provider.internalNotes}}</div>
+              <div class="col-md-10">{{facilityProviderRelationship.internalNotes}}</div>
             </div>
           </div>
         </div>
       </div>
       <div class="card-footer">
         <small class="text-muted">
-          Last Updated:{{originalFacilityProviderRelationship?.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By:{{facilityProviderRelationship?.lastUpdatedBy}}
+          Last Updated Date:{{originalFacilityProviderRelationship?.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By:{{facilityProviderRelationship?.lastUpdatedBy}}
         </small>
       </div>
     </div>

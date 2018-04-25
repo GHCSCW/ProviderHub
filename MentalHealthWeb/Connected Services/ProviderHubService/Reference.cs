@@ -2104,6 +2104,9 @@ namespace ProviderHubService
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationship", ReplyAction="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationshipResponse")]
         System.Threading.Tasks.Task<bool> SaveBHAttributeToRelationshipAsync(int relationshipID, ProviderHubService.BehavioralHealthAttribute[] bhAttributeList);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/SaveFacilityAndAddress", ReplyAction="http://tempuri.org/IProviderHubService/SaveFacilityAndAddressResponse")]
+        System.Threading.Tasks.Task<bool> SaveFacilityAndAddressAsync(ProviderHubService.Facility facility);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.0")]
@@ -2304,6 +2307,11 @@ namespace ProviderHubService
         public System.Threading.Tasks.Task<bool> SaveBHAttributeToRelationshipAsync(int relationshipID, ProviderHubService.BehavioralHealthAttribute[] bhAttributeList)
         {
             return base.Channel.SaveBHAttributeToRelationshipAsync(relationshipID, bhAttributeList);
+        }
+        
+        public System.Threading.Tasks.Task<bool> SaveFacilityAndAddressAsync(ProviderHubService.Facility facility)
+        {
+            return base.Channel.SaveFacilityAndAddressAsync(facility);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
