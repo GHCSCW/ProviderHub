@@ -263,7 +263,17 @@ namespace AngularTemplate.Controllers
             int x = await ProviderHubService.SaveProviderDetailAsync(provider);
             if (x > 0)
             {
-                return Ok(provider);
+                bool y = await ProviderHubService.SaveCredentialByProviderIDAsync(x, provider.CredentialList);
+                bool z = await ProviderHubService.SaveLanguageByProviderIDAsync(x, provider.LanguageList);
+
+                if (y == true && z == true)
+                {
+                    return Ok(provider);
+                }
+                else
+                {
+                    return NotFound("There was an issue save credentials or languages");
+                }
             }
             else
             {

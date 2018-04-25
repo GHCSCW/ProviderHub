@@ -20,6 +20,10 @@ export class Language {
 
 export class CreateProvider implements OnInit {
 
+  credentialList: any = [];
+  languageList: any = [];
+  credentialDropdownSettings = {};
+  languageDropdownSettings = {}; 
   genders = [
     {
       value: 1,
@@ -37,28 +41,8 @@ export class CreateProvider implements OnInit {
 
 
   createProviderForm: FormGroup;
-  FirstName: string = '';
-  MiddleName: string = '';
-  LastName: string = '';
-  FullName: string = '';
-  CSP_Indicator: boolean = false;
-  DateOfBirth: Date;
-  //DelegateName: string = '';
-  //DelegateIndicator: boolean = false;
-  EpicProviderID:string = '';
-  NPI: number = null;
- // TaxonomyCode: string = '';
-  //UniquePhysicianId: string = '';
- // ExternalProviderName: string = '';
-  Gender: string = '';
- // HopsitalAffiliation: string = '';
-  //InternalNotes: string = '';
-  //LastUpdatedBy: string = '';
-  //LasteUpdateDate: Date;
-  //DateOfBirth: Date;
-  MedicaidIndicator: boolean = false;
-  MedicareEffectiveDate: Date;
-  MedicareTerminationDate: Date;
+  CredentialList: any = [];
+  LanguageList: any = [];
 
   constructor(private fb: FormBuilder, private mentalHealthService: MentalHealthService) {
 
@@ -67,9 +51,10 @@ export class CreateProvider implements OnInit {
       'MiddleName': [],
       'LastName': [],
       'FullName': [],
-      'CSP_Indicator': [],
+      'CSP_Indicator': false,
       'DateOfBirth':[],
-      //'credentials':[]
+      'CredentialList': [],
+      'LanguageList':[],
       //'DelegateName': [],
       //'DelegateIndicator': [],
       'EpicProviderID': [],
@@ -79,12 +64,13 @@ export class CreateProvider implements OnInit {
       //'ExternalProviderName': [],
       'Gender': [],
       //'HospitalAffiliation':[],
-      'InternalNotes': [],
-      //LanguageList
+     // 'InternalNotes': []
+     
       //Specialties List
       //'LastUpdateBy': [],
       //'LastUpdateDate': [],
-      'MedicaidIndicator': [],
+      'MedicareIndicator': false,
+      'MedicaidIndicator': false,
       'MedicareEffectiveDate': [],
       'MedicareTerminationDate': []
       
@@ -95,7 +81,47 @@ export class CreateProvider implements OnInit {
 
   ngOnInit() {
 
+    this.credentialDropdownSettings = {
+      singleSelection: false,
+      text: "Select Credential(s)",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      maxHeight: 500,
+      labelKey: 'value'
+    };
+
+    this.languageDropdownSettings = {
+      singleSelection: false,
+      text: "Select Language(s)",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      maxHeight: 500,
+      labelKey: 'name'
+    };
+    this.mentalHealthService.getLanguages().subscribe(result =>
+      this.languageList = result
+    );
+
+    this.mentalHealthService.getCredentialList().subscribe(credList =>
+      this.credentialList = credList
+    );
+
   }
+  onItemSelect(item: any) {
+    console.log(item);
+
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  onDeSelectAll(items: any) {
+    console.log(items);
+  }
+
   onFormSubmit(form: NgForm) {
     this.mentalHealthService.createProvider(form);
     console.log(form);
