@@ -353,7 +353,7 @@ namespace AngularTemplate.Controllers
             }
             else
             {
-                return NotFound("There was an error Creating the Provider");
+                return NotFound("There was an error Creating/Updating the Provider");
             }
         }
 
