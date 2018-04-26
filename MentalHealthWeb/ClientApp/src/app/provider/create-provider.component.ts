@@ -19,6 +19,7 @@ export class Language {
 })
 
 export class CreateProvider implements OnInit {
+  providerID: any;
 
   credentialList: any = [];
   languageList: any = [];
@@ -123,7 +124,9 @@ export class CreateProvider implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
-    this.mentalHealthService.createProvider(form);
+    this.mentalHealthService.updateProvider(form).subscribe(provider =>
+      this.providerID = provider.id
+      )
     console.log(form);
   }  
 }

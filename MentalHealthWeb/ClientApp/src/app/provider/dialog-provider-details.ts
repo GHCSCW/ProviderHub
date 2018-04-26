@@ -124,16 +124,16 @@ export class DialogProviderDetailsDialog {
       Object.assign(this.data.provider, updatedProvider);
 
     });
-    this.mentalHealthService.updateCredentials(this.data.provider.credentialList, this.provID).subscribe(updatedCredentials => {
-      //update credential object
-    }
-    )
-    this.mentalHealthService.updateLanguage(this.data.provider.languageList, this.provID)
-      .subscribe(
-      updatedLanguage => {
-        this.dialogRef.close();
-      }
-      )
+    //this.mentalHealthService.updateCredentials(this.data.provider.credentialList, this.provID).subscribe(updatedCredentials => {
+    //  //update credential object
+    //}
+    //)
+    //this.mentalHealthService.updateLanguage(this.data.provider.languageList, this.provID)
+    //  .subscribe(
+    //  updatedLanguage => {
+    //    this.dialogRef.close();
+    //  }
+    //  )
 
 
   }
