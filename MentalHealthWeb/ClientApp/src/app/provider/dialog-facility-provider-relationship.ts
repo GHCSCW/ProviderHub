@@ -52,7 +52,7 @@ export class DialogFacilityProviderRelationshipDialog {
   constructor(private mentalHealthService: MentalHealthService,
     public dialogRef: MatDialogRef<DialogFacilityProviderRelationshipDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-
+    dialogRef.disableClose = true;
     this.originalFacilityProviderRelationship = JSON.parse(JSON.stringify(this.data.facilityProviderRelationship));
   }
   

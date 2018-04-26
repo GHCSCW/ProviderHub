@@ -69,7 +69,7 @@ export class DialogProviderDetailsDialog {
     private arrayService: ArrayService,
     public dialogRef: MatDialogRef<DialogProviderDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-
+    dialogRef.disableClose = true;
     this.originalProvider = JSON.parse(JSON.stringify(data.provider));
 
 

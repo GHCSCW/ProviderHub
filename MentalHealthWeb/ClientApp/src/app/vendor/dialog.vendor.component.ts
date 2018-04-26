@@ -62,7 +62,9 @@ export class DialogVendorDialog {
 
   constructor(private mentalHealthService: MentalHealthService,
     public dialogRef: MatDialogRef<DialogVendorDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    dialogRef.disableClose = true;
+  }
 
   onSubmit() {
 
