@@ -26,10 +26,8 @@ export class ProviderComponent implements OnInit {
   bhaConditions: any[];
   bhaTherapeuticApproaches: any[];
   bhaOthers: any[];
-  panelOpenState: boolean = false;
 
-  originalFacilityProviderRelationship: any;
-
+  panelOpenState: boolean = true;
   facilityProviderRelationship: any = [];
   edittedFacilityProviderRelationship: any[];
   provider: any = [];
@@ -45,6 +43,7 @@ export class ProviderComponent implements OnInit {
   dropdownList: any = [];
   selectedItems: any = [];
   dropdownSettings = {};
+
   constructor(
     private mentalHealthService: MentalHealthService,
     private fb: FormBuilder,
