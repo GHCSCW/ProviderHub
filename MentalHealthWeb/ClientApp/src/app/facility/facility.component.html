@@ -42,10 +42,19 @@
         </div>
       </div>
       <div class="col">
-
         <div class="form-row">
           <div class="col-md-5"><label>Region: </label></div>
           <div class="col-md-7">{{facility.facilityAddress?.region}}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-5"><label>Website: </label> </div>
+          <div class="col-md-7">
+            <a target="_blank" href="{{facility.facilityAddress?.website}}">{{facility.facilityAddress?.website}}</a>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-5"><label>Email: </label> </div>
+          <div class="col-md-7">{{facility.facilityAddress?.email}}</div>
         </div>
       </div>
     </div>
@@ -53,38 +62,27 @@
       <div class="row">
         <div class="col">
           <div class="form-row">
-            <div class="col-md-5"><label>Contact Name: </label> </div>
-            <div class="col-md-7">
+            <div class="col-md-2"><label>Name: </label> </div>
+            <div class="col-md-10">
               {{facility.facilityAddress?.contactFirstName}} - {{facility.facilityAddress?.contactLastName}}
             </div>
           </div>
           <div class="form-row">
-            <div class="col-md-5"><label>Phone Number: </label> </div>
-            <div class="col-md-7">{{facility.facilityAddress?.phoneNumber}}</div>
+            <div class="col-md-2"><label>Phone Number: </label> </div>
+            <div class="col-md-10">{{facility.facilityAddress?.phoneNumber}}</div>
           </div>
         </div>
         <div class="col">
           <div class="form-row">
-            <div class="col-md-5"><label>Fax Number </label></div>
-            <div class="col-md-7">  {{facility.facilityAddress?.faxNumber }}</div>
+            <div class="col-md-2"><label>Fax Number </label></div>
+            <div class="col-md-10">  {{facility.facilityAddress?.faxNumber }}</div>
           </div>
           <div class="form-row">
-            <div class="col-md-5"><label>Alternate Phone Number: </label> </div>
-            <div class="col-md-7">{{facility.facilityAddress?.alternatePhoneNumber}}</div>
+            <div class="col-md-2"><label>Alternate Phone Number: </label> </div>
+            <div class="col-md-10">{{facility.facilityAddress?.alternatePhoneNumber}}</div>
           </div>
         </div>
-        <div class="col">
-          <div class="form-row">
-            <div class="col-md-5"><label>Website: </label> </div>
-            <div class="col-md-7">
-              <a target="_blank" href="{{facility.facilityAddress?.website}}">{{facility.facilityAddress?.website}}</a>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-5"><label>Email: </label> </div>
-            <div class="col-md-7">{{facility.facilityAddress?.email}}</div>
-          </div>
-        </div>
+     
       </div>
       <div class="row">
         <div class="col">

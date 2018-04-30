@@ -13,6 +13,7 @@ import { FacilityProviderRelationshipComponent } from './facility-provider-relat
 import { MentalHealthService } from '../services/mental.health.service'
 import { BooleanPipe } from '../pipes/BooleanPipe';
 import { ActiveInactivePipe } from '../pipes/ActiveInactivePipe';
+import { FormatTermDatePipe } from '../pipes/FormatTermDatePipe';
 import { CreateProvider } from './create-provider.component';
 import { DialogEditbhAttribute, DialogEditbhAttributeDialog } from './editbhAttributes/dialog-edit-bhAttributes';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
@@ -37,7 +38,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     DialogEditbhAttributeDialog,
     CreateProvider,
     BooleanPipe,
-    ActiveInactivePipe
+    ActiveInactivePipe,
+    FormatTermDatePipe
   ],
   entryComponents: [
     DialogProviderDetails,

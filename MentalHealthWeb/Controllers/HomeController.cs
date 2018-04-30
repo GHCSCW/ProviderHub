@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Cors;
+
 namespace AngularTemplate.Controllers
 {
 
