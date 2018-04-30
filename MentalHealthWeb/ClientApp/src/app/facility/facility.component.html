@@ -1,102 +1,123 @@
 <div *ngIf="facilityProviderRelationship != 0">
   <facility-provider-relationship></facility-provider-relationship>
 </div>
-<div class="card">
-  <div class="card-header" style="background-color:#5e7ad5">
-    <h5>
-      Facility: {{originalFacility.facilityName}}
-      <a href="#" class="btn btn-primary pull-right">Link to Provider</a>
-      <a href="#" class="btn btn-primary pull-right">Link to Vendor</a>
-      <dialog-facility-details [facility]="facility">loading</dialog-facility-details>
-    </h5>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col">
+<mat-accordion multi="true">
+  <mat-expansion-panel class="card-header facilty-background" [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Facility: {{originalFacility.facilityName}}
+        <!--<a href="#" class="btns btn-primary pull-right">Link to Provider</a>
+        <a href="#" class="btn btn-primary pull-right">Link to Vendor</a>-->
+        <dialog-facility-details [facility]="facility">loading</dialog-facility-details>
+      </mat-panel-title>
+      <!--<mat-panel-description>
+        This is a summary of the content
+      </mat-panel-description>-->
+    </mat-expansion-panel-header>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
 
-        <div class="form-row">
-          <div class="col-md-5"><label>Address Type: </label></div>
-          <div class="col-md-7">  {{facility.facilityAddress?.addressType | eNumAsString }}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-5"><label>Address Line 1: </label></div>
-          <div class="col-md-7">{{facility.facilityAddress?.addressLine1}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-5"><label>Address Line 2: </label></div>
-          <div class="col-md-7">{{facility.facilityAddress?.addressLine2}}</div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-row">
-          <div class="col-md-5"><label>City: </label></div>
-          <div class="col-md-7">{{facility.facilityAddress?.city}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-5"><label>State: </label> </div>
-          <div class="col-md-7">{{facility.facilityAddress?.state}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-5"><label>Zip: </label></div>
-          <div class="col-md-7">{{facility.facilityAddress?.zipCode}}</div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-row">
-          <div class="col-md-5"><label>Region: </label></div>
-          <div class="col-md-7">{{facility.facilityAddress?.region}}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-5"><label>Website: </label> </div>
-          <div class="col-md-7">
-            <a target="_blank" href="{{facility.facilityAddress?.website}}">{{facility.facilityAddress?.website}}</a>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-5"><label>Email: </label> </div>
-          <div class="col-md-7">{{facility.facilityAddress?.email}}</div>
-        </div>
-      </div>
-    </div>
-    <div class="form-row center_div" ><b>Contact Information</b></div>
-      <div class="row">
-        <div class="col">
-          <div class="form-row">
-            <div class="col-md-2"><label>Name: </label> </div>
-            <div class="col-md-10">
-              {{facility.facilityAddress?.contactFirstName}} - {{facility.facilityAddress?.contactLastName}}
+            <div class="form-row">
+              <div class="col-md-5"><label>Address Type: </label></div>
+              <div class="col-md-7">  {{facility.facilityAddress?.addressType | eNumAsString }}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Address Line 1: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.addressLine1}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Address Line 2: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.addressLine2}}</div>
             </div>
           </div>
-          <div class="form-row">
-            <div class="col-md-2"><label>Phone Number: </label> </div>
-            <div class="col-md-10">{{facility.facilityAddress?.phoneNumber}}</div>
+          <div class="col">
+            <div class="form-row">
+              <div class="col-md-5"><label>City: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.city}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>State: </label> </div>
+              <div class="col-md-7">{{facility.facilityAddress?.state}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Zip: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.zipCode}}</div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-row">
+              <div class="col-md-5"><label>Region: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.region}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Website: </label> </div>
+              <div class="col-md-7">
+                <a target="_blank" href="{{facility.facilityAddress?.website}}">{{facility.facilityAddress?.website}}</a>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Email: </label> </div>
+              <div class="col-md-7">{{facility.facilityAddress?.email}}</div>
+            </div>
           </div>
         </div>
-        <div class="col">
-          <div class="form-row">
-            <div class="col-md-2"><label>Fax Number </label></div>
-            <div class="col-md-10">  {{facility.facilityAddress?.faxNumber }}</div>
+        <div class="form-row center_div"><b>Contact Information</b></div>
+        <div class="row">
+          <div class="col">
+            <div class="form-row">
+              <div class="col-md-3"><label>Name: </label> </div>
+              <div class="col-md-9">
+                {{facility.facilityAddress?.contactFirstName}} - {{facility.facilityAddress?.contactLastName}}
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-3"><label>Phone Number: </label> </div>
+              <div class="col-md-9">{{facility.facilityAddress?.phoneNumber}}</div>
+            </div>
           </div>
-          <div class="form-row">
-            <div class="col-md-2"><label>Alternate Phone Number: </label> </div>
-            <div class="col-md-10">{{facility.facilityAddress?.alternatePhoneNumber}}</div>
+          <div class="col">
+            <div class="form-row">
+              <div class="col-md-3"><label>Fax Number: </label></div>
+              <div class="col-md-9">  {{facility.facilityAddress?.faxNumber }}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4"><label>Alternate Phone Number: </label> </div>
+              <div class="col-md-8">{{facility.facilityAddress?.alternatePhoneNumber}}</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-row" style="background-color:#f6f6f6">
+              <div class="col-md-2"><label>Internal Notes: </label></div>
+              <div class="col-md-10">{{facility.internalNotes}}</div>
+            </div>
           </div>
         </div>
-     
       </div>
-      <div class="row">
-        <div class="col">
-          <div class="form-row" style="background-color:#f6f6f6">
-            <div class="col-md-2"><label>Internal Notes: </label></div>
-            <div class="col-md-10">{{facility.internalNotes}}</div>
-          </div>
+      <div class="card-footer">
+        <div>
+          <small class="text-muted">
+            Last Updated: {{facility.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By: {{facility.lastUpdatedBy}}
+          </small>
         </div>
       </div>
     </div>
-    <div class="card-footer">
-      <small class="text-muted">
-        Last Updated: {{facility.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By: {{facility.lastUpdatedBy}}
-      </small>
-    </div>
-  </div>
-<p style="background-color:#c7d247">All Providers at {{facility.facilityName}} </p>
+  </mat-expansion-panel>
+  <mat-expansion-panel class="card-header facilty-background">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        All Providers at {{facility.facilityName}}
+      </mat-panel-title>
+      <!--<mat-panel-description>
+        This is a summary of the content
+      </mat-panel-description>-->
+    </mat-expansion-panel-header>
+    ---Content----
+  </mat-expansion-panel>
+</mat-accordion>
+
+

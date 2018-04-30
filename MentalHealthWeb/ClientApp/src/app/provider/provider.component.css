@@ -1,12 +1,5 @@
-.provider_title
-{
-  background-color: #3CC47C;
-  font-size:18px;
-}
-
 .facilityProviderRelationship {
   background-color: papayawhip;
-  font-size:18px;
 }
 .card {
  margin-bottom: 10px;
@@ -16,7 +9,7 @@
   color: red;
 }
 
-
-
-
+.facility-background {
+  background-color: #b3ebff;
+}
 

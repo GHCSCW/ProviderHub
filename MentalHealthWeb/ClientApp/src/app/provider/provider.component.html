@@ -4,10 +4,22 @@
 
 
 <mat-accordion multi="true">
-  <mat-expansion-panel>
+  <mat-expansion-panel class="facilityProviderRelationship" [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <b>Provider Details </b>
+        <b>Provider Name: </b>{{provider.fullName}}
+        <span>
+          <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
+        </span>
+        <b>Credentials:</b>
+        <span *ngFor="let option of provider.credentialList; let i= index">
+          <span *ngIf="i < provider.credentialList.length - 1">
+            {{option.value}},
+          </span>
+          <span *ngIf="i == (provider.credentialList.length - 1)">
+            {{option.value}}
+          </span>
+        </span>
       </mat-panel-title>
       <!--<mat-panel-description>
         This is a summary of the content
@@ -16,35 +28,12 @@
     <!--Provider Details card-->
     <div>
       <div class="card">
-        <div class="card-header provider_title">
-          <div class="row">
-            <div class="col">
-              <span>
-                <b>Provider Name: </b>{{provider.fullName}}
-              </span>
-              <!--<a href="#">
-                <i class="fa fa-link pull-right" aria-hidden="true"></i>
-              </a>-->
-              <span class="pull-right">
-                <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
-              </span>
-            </div>
-            <div class="col">
-              <b>Credentials:</b>
-              <span *ngFor="let option of provider.credentialList">
-                {{option.value}},
-              </span>
-            </div>
-          
-          </div>
-        </div>
         <div class="card-body">
           <div class="row">
             <div class="col card-block">
               <div class="form-row">
                 <div class="col-md-8"><label> Gender: </label></div>
                 <div class="col">{{gender}}</div>
-
               </div>
               <div class="form-row">
                 <div class="col-md-8"><label>Medicare Provider:</label> </div>
@@ -77,9 +66,14 @@
               <div class="form-row">
                 <div class="col"><label>Languages:</label></div>
                 <div class="col">
-                  <span *ngFor="let option of provider.languageList">
-                    {{option.name}},
-                  </span>
+                  <span *ngFor="let option of provider.languageList; let i= index">
+                    <span *ngIf="i < provider.languageList.length - 1">
+                      {{option.name}},
+                    </span>
+                    <span *ngIf="i == provider.languageList.length - 1">
+                      {{option.name}}
+                    </span>
+                    </span>
                 </div>
               </div>
               <div class="form-row">
@@ -101,8 +95,8 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="true">
-    <mat-expansion-panel-header class="facilityProviderRelationship">
+  <mat-expansion-panel class="facilityProviderRelationship" [expanded]="true">
+    <mat-expansion-panel-header>
       <mat-panel-title>
         <span>
           <b>Provider - Clinic Relationship:</b>
@@ -153,7 +147,6 @@
               <div class="col"><label>Term Date: </label> </div>
               <div class="col">{{facilityProviderRelationship?.terminationDate| FormatTermDatePipe }}</div>
             </div>
-
           </div>
           <div class="col card-block">
             <div class="form-row">
@@ -169,10 +162,7 @@
               <div class="col">{{facilityProviderRelationship?.providerEmail}}</div>
             </div>
           </div>
-
         </div>
-
-
         <div class="row">
           <div class="col">
             <div class="form-row" style="background-color:#f6f6f6">
@@ -189,7 +179,7 @@
       </div>
     </div>
   </mat-expansion-panel>
-  <mat-expansion-panel>
+  <mat-expansion-panel class="facilityProviderRelationship">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div>
@@ -199,90 +189,101 @@
         </div>
       </mat-panel-title>
       <mat-panel-description>
-
-
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div class="row facilityProviderRelationship">
-
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col card-block">
-          <div class="form-row">
-            <div class="col-md-3"><label> Conditions:</label> </div>
-            <div class="col-md-9">
-              <ul>
-                <li *ngFor="let option of bhaConditions">
-                  {{option.textValue}}
-                </li>
-              </ul>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col card-block">
+            <div class="form-row">
+              <div class="col-md-3"><label> Conditions:</label> </div>
+              <div class="col-md-9">
+                <ul>
+                  <li *ngFor="let option of bhaConditions">
+                    {{option.textValue}}
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-3"><label> Therapeutic Approaches/Treatments:</label> </div>
-            <div class="col-md-9">
-              <ul>
-                <li *ngFor="let option of bhaTherapeuticApproaches">
-                  {{option.textValue}}
-                </li>
-              </ul>
+            <div class="form-row">
+              <div class="col-md-3"><label> Therapeutic Approaches/Treatments:</label> </div>
+              <div class="col-md-9">
+                <ul>
+                  <li *ngFor="let option of bhaTherapeuticApproaches">
+                    {{option.textValue}}
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-3"><label>Age Group:</label> </div>
-            <div class="col-md-9">
-              <ul>
-                <li *ngFor="let option of bhaAges">
-                  {{option.textValue}}
-                </li>
-              </ul>
+            <div class="form-row">
+              <div class="col-md-3"><label>Age Group:</label> </div>
+              <div class="col-md-9">
+                <ul>
+                  <li *ngFor="let option of bhaAges">
+                    {{option.textValue}}
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-3"><label>Modes</label> </div>
-            <div class="col-md-9">
-              <ul>
-                <li *ngFor="let option of bhaModes">
-                  {{option.textValue}}
-                </li>
-              </ul>
+            <div class="form-row">
+              <div class="col-md-3"><label>Modes</label> </div>
+              <div class="col-md-9">
+                <ul>
+                  <li *ngFor="let option of bhaModes">
+                    {{option.textValue}}
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="col-md-3"><label>Other:</label> </div>
-            <div class="col-md-9">
-              <ul>
-                <li *ngFor="let option of bhaOthers">
-                  {{option.textValue}}
-                </li>
-              </ul>
+            <div class="form-row">
+              <div class="col-md-3"><label>Other:</label> </div>
+              <div class="col-md-9">
+                <ul>
+                  <li *ngFor="let option of bhaOthers">
+                    {{option.textValue}}
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="card-footer">
+      </div>
     </div>
     <!--<p>I'm visible because I am open</p>-->
   </mat-expansion-panel>
-</mat-accordion>
 
-<!--Other Facilites under the current Vendor-->
-<div class="card">
-  <div class="card-header facilityProviderRelationship">
 
-  </div>
-  <div class="row">
-    <div class="col">
-      <p style="background-color:#c7d247">{{provider.fullName}} at other facilities</p>
-      <table class="table facilityProviderRelationship">
-        <tr>
-          <th>ID</th>
-          <th> Provider Name</th>
-          <th>Facility Name</th>
-          <th>Facililty Address</th>
-          <th>Phone Number</th>
-        </tr>
-      </table>
+
+  <mat-expansion-panel class="facility-background">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div>
+          {{provider.fullName}} at other facilities
+
+        </div>
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col card-block">
+            <table class="table">
+              <tr>
+                <th>ID</th>
+                <th>Provider Name</th>
+                <th>Facility Name</th>
+                <th>Facililty Address</th>
+                <th>Phone Number</th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </mat-expansion-panel>
+</mat-accordion>
+<!--Other Facilites under the current Vendor-->
