@@ -9,6 +9,7 @@ import { ProviderModule } from '../provider/provider.module';
 import { AdvancedSearchComponent } from './advanced.search.component';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { SharedModule } from '../SharedModule';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     ReactiveFormsModule,
     ProviderModule,
     AppMaterialModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    SharedModule
     ],
   declarations: [
     SearchComponent,

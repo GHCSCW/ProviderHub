@@ -24,8 +24,6 @@ import { AddressModule} from "./address/address.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from './app-material/app-material.module';
 
-//import { SharedModule } from './SharedModule';
-
 //Services
 import { NavbarService } from './services/navbarservice';
 import { EnumService } from './services/enum-service';
@@ -36,15 +34,16 @@ import { LogService} from './services/log.service'
 import { LogPublishersService } from './services/log-publisher.service';
 import { AthenticationServiceService } from './services/AthenticationService';
 import { DataServiceService} from './services/DataServices';
-//Componentsng
+//Components
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LogTestComponent} from './log-component/log-test.component';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-//import { BooleanPipe } from './service/pipe-service';
+
 
 import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
+import { SharedModule } from './SharedModule';
 
 
 @NgModule({
@@ -61,11 +60,11 @@ import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
     VendorModule,
     SearchModule,
     AddressModule,
-   // SharedModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AppMaterialModule,
     AngularMultiSelectModule,
+    SharedModule
     
   ],
   declarations: [
@@ -79,7 +78,8 @@ import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
     CommonModule,
     FormsModule,
     AppMaterialModule,
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    SharedModule
   ],
   providers: [
     {

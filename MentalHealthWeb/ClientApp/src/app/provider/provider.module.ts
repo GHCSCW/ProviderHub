@@ -11,12 +11,10 @@ import { DialogProviderDetails, DialogProviderDetailsDialog } from './dialog-pro
 import { DialogFacilityProviderRelationship, DialogFacilityProviderRelationshipDialog } from './dialog-facility-provider-relationship'
 import { FacilityProviderRelationshipComponent } from './facility-provider-relationship.component'
 import { MentalHealthService } from '../services/mental.health.service'
-import { BooleanPipe } from '../pipes/BooleanPipe';
-import { ActiveInactivePipe } from '../pipes/ActiveInactivePipe';
-import { FormatTermDatePipe } from '../pipes/FormatTermDatePipe';
 import { CreateProvider } from './create-provider.component';
 import { DialogEditbhAttribute, DialogEditbhAttributeDialog } from './editbhAttributes/dialog-edit-bhAttributes';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { SharedModule } from '../SharedModule';
 
 @NgModule({
   imports: [
@@ -25,7 +23,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     FormsModule,
     ReactiveFormsModule,
     AppMaterialModule,
-    AngularMultiSelectModule 
+    AngularMultiSelectModule,
+    SharedModule
   ],
   declarations: [
     ProviderComponent,
@@ -36,10 +35,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     DialogFacilityProviderRelationshipDialog,
     DialogEditbhAttribute,
     DialogEditbhAttributeDialog,
-    CreateProvider,
-    BooleanPipe,
-    ActiveInactivePipe,
-    FormatTermDatePipe
+    CreateProvider
   ],
   entryComponents: [
     DialogProviderDetails,
@@ -59,6 +55,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     DialogEditbhAttribute,
     DialogEditbhAttributeDialog,
     CreateProvider
+
   ],
   providers: []
 })

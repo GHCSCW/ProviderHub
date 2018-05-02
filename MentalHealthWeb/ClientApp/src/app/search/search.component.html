@@ -54,7 +54,7 @@
       
       <ng-container matColumnDef="relationshipStatus">
         <mat-header-cell *matHeaderCellDef> Relationship Status</mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.relationshipStatus}} </mat-cell>
+        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.relationshipStatus | ActiveInactivePipe}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="facilityName">
         <mat-header-cell *matHeaderCellDef> Facility Name </mat-header-cell>

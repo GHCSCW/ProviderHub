@@ -1,26 +1,29 @@
-/*import { NgModule } from '@angular/core';
-import { AddressComponent } from './address/address.component';
+import { NgModule } from '@angular/core';
 import { FormGroup, FormControl } from "@angular/forms";
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AppMaterialModule } from './app-material/app-material.module';
+import { ActiveInactivePipe } from './pipes/ActiveInactivePipe';
+import { BooleanPipe } from './pipes/BooleanPipe';
+import { FormatTermDatePipe } from './pipes/FormatTermDatePipe';
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppMaterialModule
+    FormsModule
   ],
   exports: [
-    AddressComponent
+    ActiveInactivePipe,
+    BooleanPipe,
+    FormatTermDatePipe
   ],
   declarations: [
-  AddressComponent
+    ActiveInactivePipe,
+    BooleanPipe,
+    FormatTermDatePipe
 ]
 })
 
 export class SharedModule {
 
 
-}*/
+}

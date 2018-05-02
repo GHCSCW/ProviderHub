@@ -18,6 +18,10 @@
   </mat-form-field>
 
   <div>
+
+    <mat-form-field>
+      <input matInput placeholder="" [(ngModel)]="data.facility.facilityAddress.addressLine2" name="facilityAddress.addressLine2">
+    </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="City" [(ngModel)]="data.facility.facilityAddress.city" name="facilityAddress.city">
     </mat-form-field>
@@ -28,6 +32,9 @@
     </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="Zip" [(ngModel)]="data.facility.facilityAddress.zipCode" name="facilityAddress.zipCode">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="External ID" [(ngModel)]="data.facility.externalID" name="facility.externalID">
     </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="Region" [(ngModel)]="data.facility.facilityAddress.region" name="facilityAddress.region">
@@ -50,6 +57,9 @@
   </mat-form-field>
   <mat-form-field>
     <input matInput placeholder="Email Address" [(ngModel)]="data.facility.facilityAddress.emailAddress" name="facilityAddress.facilityAddress.emailAddress">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="NPI" [(ngModel)]="data.facility.npi" name="facility.npi">
   </mat-form-field>
   <mat-form-field>
     <input matInput placeholder="Website" [(ngModel)]="data.facility.facilityAddress.website" name="facilityAddress.website">
