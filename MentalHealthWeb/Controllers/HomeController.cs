@@ -43,7 +43,10 @@ namespace AngularTemplate.Controllers
         {
             Credential[] credentials = await ProviderHubService.GetCredentialListAsync();
 
-            return Json(credentials);
+            var allowedCredentials = new[] {31,32,100,128,185,188,202,239,242,244,279,286};
+            var filteredCredentials = credentials.Where(o => allowedCredentials.Contains(o.ID));
+
+            return Json(filteredCredentials);
         }
         #endregion
 
