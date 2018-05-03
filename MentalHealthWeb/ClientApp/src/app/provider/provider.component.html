@@ -1,17 +1,16 @@
-<div *ngIf="facilityProviderRelationship != 0">
+<div *ngIf="facilityProviderRelationship != 0" style="padding-bottom:1em">
   <facility-provider-relationship></facility-provider-relationship>
 </div>
 
 
 <mat-accordion multi="true">
-  <mat-expansion-panel class="facilityProviderRelationship" [expanded]="true">
+  <mat-expansion-panel class="facilityProviderRelationship">
+
     <mat-expansion-panel-header>
       <mat-panel-title>
         <b>Provider Name: </b>{{provider.fullName}}
-        <span>
-          <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
-        </span>
-        <b>Credentials:</b>
+        <br />
+        <b>Credentials: </b>
         <span *ngFor="let option of provider.credentialList; let i= index">
           <span *ngIf="i < provider.credentialList.length - 1">
             {{option.value}},
@@ -20,12 +19,17 @@
             {{option.value}}
           </span>
         </span>
+        <br />
+        <span>
+          <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
+        </span>
       </mat-panel-title>
       <!--<mat-panel-description>
-        This is a summary of the content
-      </mat-panel-description>-->
+      This is a summary of the content
+    </mat-panel-description>-->
     </mat-expansion-panel-header>
     <!--Provider Details card-->
+
     <div>
       <div class="card">
         <div class="card-body">
@@ -73,7 +77,7 @@
                     <span *ngIf="i == provider.languageList.length - 1">
                       {{option.name}}
                     </span>
-                    </span>
+                  </span>
                 </div>
               </div>
               <div class="form-row">
@@ -92,10 +96,17 @@
         </div>
       </div>
     </div>
+    <mat-action-row>
+      <button mat-button>
+        <span>
+          <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
+        </span>
+      </button>
+    </mat-action-row>
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel class="facilityProviderRelationship" [expanded]="true">
+  <mat-expansion-panel class="facilityProviderRelationship">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <span>
@@ -179,7 +190,7 @@
       </div>
     </div>
   </mat-expansion-panel>
-  <mat-expansion-panel class="facilityProviderRelationship">
+  <mat-expansion-panel class="facilityProviderRelationship" [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div>
@@ -196,26 +207,6 @@
         <div class="row">
           <div class="col card-block">
             <div class="form-row">
-              <div class="col-md-3"><label> Conditions:</label> </div>
-              <div class="col-md-9">
-                <ul>
-                  <li *ngFor="let option of bhaConditions">
-                    {{option.textValue}}
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col-md-3"><label> Therapeutic Approaches/Treatments:</label> </div>
-              <div class="col-md-9">
-                <ul>
-                  <li *ngFor="let option of bhaTherapeuticApproaches">
-                    {{option.textValue}}
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="form-row">
               <div class="col-md-3"><label>Age Group:</label> </div>
               <div class="col-md-9">
                 <ul>
@@ -230,6 +221,26 @@
               <div class="col-md-9">
                 <ul>
                   <li *ngFor="let option of bhaModes">
+                    {{option.textValue}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-3"><label> Conditions:</label> </div>
+              <div class="col-md-9">
+                <ul>
+                  <li *ngFor="let option of bhaConditions">
+                    {{option.textValue}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-3"><label> Therapeutic Approaches/Treatments:</label> </div>
+              <div class="col-md-9">
+                <ul>
+                  <li *ngFor="let option of bhaTherapeuticApproaches">
                     {{option.textValue}}
                   </li>
                 </ul>

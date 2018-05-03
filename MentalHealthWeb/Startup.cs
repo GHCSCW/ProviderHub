@@ -21,11 +21,17 @@ namespace MentalHealthWeb
         {
 
             services.AddCors(options =>
-                   {
-                       options.AddPolicy("AllowAll",
-               builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader()
-               .AllowAnyMethod());
-                   });
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    });
+            });
             services.AddMvcCore(options =>
              {
                  options.RequireHttpsPermanent = true; // does not affect api requests

@@ -2,7 +2,7 @@
   <div>
     <h5>Welcome to Behavioral  Health Web</h5>
   </div>
-  <form [formGroup]="searchForm" (ngSubmit)="providerSearch(search.value)">
+  <form  [formGroup]="searchForm" (ngSubmit)="providerSearch(search.value)">
     <div class="row">
       <div class="col-sm-8 form-group">
         <input type="search"
@@ -16,11 +16,9 @@
         <i class="fa fa-search"></i>
         <button type="submit" [disabled]="!searchForm.valid" class="btn btn-primary">Search</button>
       </div>
-
     </div>
-
   </form>
-  <div class="row">
+  <div style="padding-bottom:1em" class="row">
     <div class="col">
       <mat-checkbox>External</mat-checkbox>
     </div>

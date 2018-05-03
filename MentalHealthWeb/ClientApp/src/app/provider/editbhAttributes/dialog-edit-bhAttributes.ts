@@ -47,6 +47,11 @@ export class DialogEditbhAttribute {
   styleUrls: ['./dialog-edit-bhAttributes.css'],
 })
 export class DialogEditbhAttributeDialog {
+  originalAges: any = [];
+  originalModes: any = [];
+  originalConditions: any = [];
+  originalOthers: any = [];
+  originalTherapeuticApproaches: any = [];
 
   ages: any = [];
   therapeuticApproaches: any = [];
@@ -67,6 +72,14 @@ export class DialogEditbhAttributeDialog {
     private mentalHealthService: MentalHealthService,
     public dialogRef: MatDialogRef<DialogEditbhAttributeDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
+
+
+    this.originalAges = JSON.parse(JSON.stringify(this.data.bhaAges));
+    this.originalModes = JSON.parse(JSON.stringify(this.data.bhaModes));
+    this.originalConditions = JSON.parse(JSON.stringify(this.data.bhaConditions));
+    this.originalOthers = JSON.parse(JSON.stringify(this.data.bhaOthers));
+    this.originalTherapeuticApproaches = JSON.parse(JSON.stringify(this.data.bhaTherapeuticApproaches));
+
     this.setAges();
     this.setConditions();
     this.setModes();
@@ -99,7 +112,7 @@ export class DialogEditbhAttributeDialog {
       primaryKey: 'setID',
       labelKey: 'textValue'
     };
-    this.therapeuticApproachesDrodownSettings = {
+    this.therapeuticApproachesDropdownSettings = {
       singleSelection: false,
       text: "Select Thereapeutic Approaches",
       selectAllText: 'Select All',
@@ -184,6 +197,12 @@ export class DialogEditbhAttributeDialog {
 
 
   onNoClick(): void {
+    Object.assign(this.data.bhaConditions, this.originalConditions);
+    Object.assign(this.data.bhaAges, this.originalAges);
+    Object.assign(this.data.bhaModes, this.originalModes);
+    Object.assign(this.data.bhaOthers, this.originalOthers);
+    Object.assign(this.data.bhaTherapeauticApproaches, this.originalTherapeuticApproaches);
+
     this.dialogRef.close();
   }
 
