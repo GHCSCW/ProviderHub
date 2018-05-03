@@ -2,10 +2,11 @@ import { Component, Inject, Input, Output, EventEmitter, OnInit } from '@angular
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl } from "@angular/forms";
 import { FormBuilder, Validators, FormsModule, NgForm, FormGroup } from '@angular/forms';
-
 import { MentalHealthService } from '../services/mental.health.service';
 
 import 'rxjs/Rx';
+import { Router } from '@angular/router';
+import { NavbarService } from '../services/navbarservice';
 export class Language {
   constructor(public name: string) { }
 }
@@ -45,7 +46,7 @@ export class CreateProvider implements OnInit {
   CredentialList: any = [];
   LanguageList: any = [];
 
-  constructor(private fb: FormBuilder, private mentalHealthService: MentalHealthService) {
+  constructor(private fb: FormBuilder, private mentalHealthService: MentalHealthService, private router: Router, public nav: NavbarService) {
 
     this.createProviderForm = fb.group({
       'FirstName': [],
@@ -108,6 +109,15 @@ export class CreateProvider implements OnInit {
     );
 
   }
+
+  providerRoute(provider) {
+
+    this.mentalHealthService.insertProviderData(provider);
+    this.nav.addProviderID(provider.id);
+    this.router.navigate(["/provider/" + this.providerID]);
+
+  }
+
   onItemSelect(item: any) {
     console.log(item);
 
@@ -125,8 +135,10 @@ export class CreateProvider implements OnInit {
 
   onFormSubmit(form: NgForm) {
     this.mentalHealthService.updateProvider(form).subscribe(provider =>
-      this.providerID = provider.id
+      this.providerID = provider
       )
     console.log(form);
-  }  
+  }
+
+
 }

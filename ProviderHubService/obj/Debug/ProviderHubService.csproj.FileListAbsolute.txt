@@ -7,3 +7,12 @@ E:\workspace\ProviderHub\ProviderHub\ProviderHubService\obj\Debug\ProviderHubSer
 E:\workspace\ProviderHub\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.dll
 E:\workspace\ProviderHub\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.pdb
 E:\workspace\ProviderHub\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.csprojResolveAssemblyReference.cache
+E:\repositories\ProviderHub\ProviderHubService\bin\ProviderHubService.dll.config
+E:\repositories\ProviderHub\ProviderHubService\bin\ProviderHubService.dll
+E:\repositories\ProviderHub\ProviderHubService\bin\ProviderHubService.pdb
+E:\repositories\ProviderHub\ProviderHubService\bin\GHCDataAccess.dll
+E:\repositories\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.csprojResolveAssemblyReference.cache
+E:\repositories\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.csproj.CoreCompileInputs.cache
+E:\repositories\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.csproj.CopyComplete
+E:\repositories\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.dll
+E:\repositories\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.pdb

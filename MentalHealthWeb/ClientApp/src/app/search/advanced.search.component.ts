@@ -245,13 +245,13 @@ export class AdvancedSearchComponent implements OnInit {
     searchObject.push({ key: "MedicareIndicator", value: medicareIndicatorArray });
   
     //Build Prescribing Provider Key Value
-    var i = form.acceptingNewPatients ? 1 : null;
+    var i = form.prescribingProvider ? 1 : null;
     var prescriberArray = [];
     prescriberArray.push(i);
     searchObject.push({ key: "Prescriber", value: prescriberArray });
 
     //Build Accepting New Patients
-    var i = form.acceptigNewPatients ? 1 : null;
+    var i = form.acceptingNewPatients ? 1 : null;
     var acceptigNewPatientsArray = [];
     acceptigNewPatientsArray.push(i);
     searchObject.push({ key: "AcceptingNewPatient", value: acceptigNewPatientsArray });

@@ -70,5 +70,8 @@
   </div>
   <button type="button" routerLink="../" mat-raised-button color="accent">Cancel</button>
   <button mat-raised-button color="accent" [disabled]="!createProviderForm.valid">Save</button>
+  <div *ngIf="providerID"  type="button" (click)="providerRoute(providerID)" class="alert alert-success">
+    <strong>Success!</strong> Provider {{providerID}} was created Successfully. Click to go to the new Provider. 
+  </div>
 </form>
 
