@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace AngularTemplate.Controllers
 {
@@ -15,6 +17,7 @@ namespace AngularTemplate.Controllers
     public class HomeController : Controller
     {
         public string username;
+        public string user;
 
 
         public class AdvancedSearch
@@ -25,6 +28,7 @@ namespace AngularTemplate.Controllers
         public HomeController()
         {
             username = Environment.UserName;
+           
         }
         ProviderHubService.IProviderHubService ProviderHubService = new ProviderHubServiceClient();
 
@@ -122,6 +126,17 @@ namespace AngularTemplate.Controllers
 
         #endregion
 
+        #region FUNCTION: GetProviderFacilityRelationshipByProviderId(int id)
+
+        //[HttpGet("[action]/{id}")]
+        //public async Task<IActionResult> GetProviderFacilityRelationshipById(int id)
+        //{
+        //    Provider[] provider = await ProviderHubService.GetProviderFacilityRelationshipById(id);
+        //    return Json(provider);
+        //}
+
+        #endregion
+
         #region FUNCTION: GetProviderList()
 
         [HttpGet("[action]")]
@@ -147,6 +162,7 @@ namespace AngularTemplate.Controllers
         [HttpGet("[action]/{values}")]
         public async Task<IActionResult> SearchForValues(string values)
         {
+           
             SearchResults list = await ProviderHubService.SearchForValueAsync(values);
             return Json(list);
         }
@@ -340,7 +356,8 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {
-            providerUpdate.LastUpdatedBy = username;
+            providerUpdate.LastUpdatedBy = User.Identity.Name;
+           
             int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
             if (x > 0)
             {

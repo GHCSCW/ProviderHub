@@ -20,6 +20,7 @@ import { ILanguage } from '../interfaces/ILanguage';
 })
 
 export class ProviderComponent implements OnInit {
+  providerAtOtherFacilities: any;
 
   bhaAges: any[];
   bhaModes: any[];
@@ -100,6 +101,9 @@ export class ProviderComponent implements OnInit {
           this.createBHSpecialtyLists(this.facilityProviderRelationship);
           this.mentalHealthService.insertFacilityProviderRelationshipData(data);
           this.nav.addFacilityRelationshipProviderID(data);
+          //this.mentalHealthService.getProviderRelationshipById(this.provider.id).subscribe(data => {
+          //  this.providerAtOtherFacilities = data;
+          //})
 
         })
       }

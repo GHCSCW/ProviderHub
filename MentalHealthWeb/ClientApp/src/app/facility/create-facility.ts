@@ -5,6 +5,8 @@ import { FormBuilder, Validators, FormsModule, NgForm, FormGroup } from '@angula
 import 'rxjs/Rx';
 
 import { MentalHealthService } from '../services/mental.health.service';
+import { Facility } from '../models/facility';
+import { Address } from '../models/Address';
 
 
 
@@ -17,30 +19,39 @@ import { MentalHealthService } from '../services/mental.health.service';
 })
 
 export class CreateFacility implements OnInit {
+  address: any = [];
+  //facility: any = [];
 
-
+  public facility = new Facility();
   createFacilityForm: FormGroup;
-  FacilityName: string = '';
+  FacilityName: string = 'Alex';
   NPI: number = null;
   ExternalId: string = '';
-  ExternalNotes: string = '';
+  InternalNotes: string = '';
 
 
   constructor(private fb: FormBuilder, private mentalHealthService: MentalHealthService) {
 
     this.createFacilityForm = fb.group({
-      'FacilityName': [],
+      'FacilityName': '',
       'NPI': [],
       'ExternalId': [],
       'InternalNotes':[]
     });
   }
 
-
+  onNotify(form): void {
+    //this.address.push(form);
+    this.facility = this.createFacilityForm.value;
+    this.facility.FacilityAddress = form;
+    this.mentalHealthService.createFacility(this.facility);
+    //facility = this.createFacilityForm.value;
+    //facility.push(this.address);
+  }
   ngOnInit() {
 
   }
-  onFormSubmit(form: NgForm) {
+  onFormSubmit(form) {
     this.mentalHealthService.createFacility(form);
     console.log(form);
   }

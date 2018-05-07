@@ -14,9 +14,14 @@
   <mat-form-field>
     <textarea matInput placeholder="Internal Notes" formControlName="InternalNotes"> </textarea>
   </mat-form-field>
+
   <div>
     <button mat-raised-button color="accent" [disabled]="!createFacilityForm.valid">Create Facility</button>
   </div>
+  <div> 
+    <create-address (notify)='onNotify($event)'></create-address>
+  </div>
+ 
 </form>
-<create-address></create-address>
+
 

@@ -64,7 +64,7 @@ export class DialogEditbhAttributeDialog {
   agesDropdownSettings = {};
   othersDropdownSettings: {};
   modesDropdownSettings: {};
-  therapeuticApproachesDrodownSettings: {};
+  therapeuticApproachesDropdownSettings: {};
   conditionsDropdownSettings: {};
 
   constructor(

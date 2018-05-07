@@ -1,8 +1,10 @@
 <h1 mat-dialog-title>Create New Address</h1>
+
 <mat-dialog-content mat-dialog-content>
+  <button (click)='onClick()'>Create</button>
   <form [formGroup]="regiForm" (ngSubmit)="onFormSubmit(regiForm.value)">
     <mat-form-field>
-      <mat-select placeholder="Address Type"  formControlName="addressType" [(ngModel)]="addressType" required>
+      <mat-select placeholder="Address Type" formControlName="addressType" [(ngModel)]="addressType" required>
         <mat-option *ngFor="let option of addressTypes" [value]="option.value">
           {{ option.label }}
         </mat-option>

@@ -1,37 +1,39 @@
-<div class="card header">
-  <div class="card-body">
-    <div class="row">
-      <div class="col">
-        <div class="form-group">
-          <label> Vendor Name:</label>
+<div style="padding-bottom:1em" >
+  <div class="card header">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label> Vendor Name:</label>
+          </div>
+          <div class="form-group">
+            <label> Facility Address:</label>
+            {{facilityAddress.addressLine1}}  {{facilityAddress.addressLine2}} , {{facilityAddress.city}} , {{facilityAddress.state}} , {{facilityAddress.zipCode}}
+          </div>
         </div>
-        <div class="form-group">
-          <label> Facility Address:</label>
-          {{facilityAddress.addressLine1}}  {{facilityAddress.addressLine2}} , {{facilityAddress.city}} , {{facilityAddress.state}} , {{facilityAddress.zipCode}}
+        <div class="col">
+          <div class="form-group">
+            <label> Clinic Name: </label>  {{facility.facilityName}}
+          </div>
+          <div class="form-group">
+            <span *ngIf="facilityProviderRelationship.providerPhoneNumber">
+              <label> Provider Phone Number:</label> {{facilityProviderRelationship.providerPhoneNumber}} Ext: {{facilityProviderRelationship.providerExtensionNumber}}
+            </span>
+            <span *ngIf="facilityAddress.phoneNumber">
+              <label> Clinic Phone Number:</label> {{facilityAddress.phoneNumber}}
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label> Clinic Name: </label>  {{facility.facilityName}}
-        </div>
-        <div class="form-group">
-          <span *ngIf="facilityProviderRelationship.providerPhoneNumber">
-            <label> Provider Phone Number:</label> {{facilityProviderRelationship.providerPhoneNumber}} Ext: {{facilityProviderRelationship.providerExtensionNumber}}
-          </span>
-          <span *ngIf="facilityAddress.phoneNumber">
-            <label> Clinic Phone Number:</label> {{facilityAddress.phoneNumber}}
-          </span>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label>Provider Name:</label> {{provider.fullName}}
-          <span *ngFor="let option of provider.credentialList">
-            {{option.value}},
-          </span>
-        </div>
-        <div class="form-group">
-          <label>Region:</label> {{facilityAddress.region}}
+        <div class="col">
+          <div class="form-group">
+            <label>Provider Name:</label> {{provider.fullName}}
+            <span *ngFor="let option of provider.credentialList">
+              {{option.value}},
+            </span>
+          </div>
+          <div class="form-group">
+            <label>Region:</label> {{facilityAddress.region}}
+          </div>
         </div>
       </div>
     </div>

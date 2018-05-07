@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +17,12 @@ import { Address } from '../interfaces/Address';
   styleUrls: ['./address.component.css']
 })
 export class AddressComponent implements OnInit {
+ 
+
+  @Input() facility: string;
+  @Output() notify: EventEmitter<NgForm> = new EventEmitter<NgForm>();
+
+ 
   selected: string;
   //address: Address;
   myform: FormGroup;
@@ -38,8 +45,9 @@ export class AddressComponent implements OnInit {
   contactLastName: string = '';
 
 
-  constructor(public interfaceService: InterfaceService, private fb: FormBuilder,private mentalHealthService: MentalHealthService) {
 
+  constructor(public interfaceService: InterfaceService, private fb: FormBuilder, private mentalHealthService: MentalHealthService) {
+   
     this.regiForm = fb.group({
       'addressType': [null, Validators.required],
       'addressLine1': [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(500)])],
@@ -89,5 +97,7 @@ export class AddressComponent implements OnInit {
     this.mentalHealthService.createAddress(form);
     console.log(form);
   }  
-
+  onClick() {
+    this.notify.emit(this.regiForm.value);
+  }
 }
