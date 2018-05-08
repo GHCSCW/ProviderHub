@@ -2436,23 +2436,6 @@
         }
       }
     },
-    "datatables.net": {
-      "version": "1.10.16",
-      "resolved": "https://registry.npmjs.org/datatables.net/-/datatables.net-1.10.16.tgz",
-      "integrity": "sha1-SwUtEIKCQmG2ju2dInQbcR09JGk=",
-      "requires": {
-        "jquery": "3.2.1"
-      }
-    },
-    "datatables.net-dt": {
-      "version": "1.10.16",
-      "resolved": "https://registry.npmjs.org/datatables.net-dt/-/datatables.net-dt-1.10.16.tgz",
-      "integrity": "sha1-Z1ijCPueX5Yp+2VBzDAeSOyexVU=",
-      "requires": {
-        "datatables.net": "1.10.16",
-        "jquery": "3.2.1"
-      }
-    },
     "date-now": {
       "version": "0.1.4",
       "resolved": "https://registry.npmjs.org/date-now/-/date-now-0.1.4.tgz",
@@ -6924,14 +6907,6 @@
             "hoek": "4.2.1"
           }
         }
-      }
-    },
-    "ngx-mat-select-search": {
-      "version": "1.0.2",
-      "resolved": "https://registry.npmjs.org/ngx-mat-select-search/-/ngx-mat-select-search-1.0.2.tgz",
-      "integrity": "sha512-pbqgoLKKhFjZ9IVwEtuueVnrM3jugePDXKF4zXGoTllKGNsYtB4cDMT1dBtOJz49Wl7gzyyJIz6n8Gh8V0siUw==",
-      "requires": {
-        "tslib": "1.8.1"
       }
     },
     "no-case": {

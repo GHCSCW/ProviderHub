@@ -5,10 +5,10 @@
 
 <mat-accordion multi="true">
   <mat-expansion-panel class="facilityProviderRelationship">
-
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <b>Provider Name: </b>{{provider.fullName}}
+        <b>Provider Name: </b>
+        {{provider.fullName}}
         <br />
         <b>Credentials: </b>
         <span *ngFor="let option of provider.credentialList; let i= index">
@@ -25,8 +25,8 @@
         </span>
       </mat-panel-title>
       <!--<mat-panel-description>
-      This is a summary of the content
-    </mat-panel-description>-->
+        This is a summary of the content
+      </mat-panel-description>-->
     </mat-expansion-panel-header>
     <!--Provider Details card-->
 
@@ -96,13 +96,13 @@
         </div>
       </div>
     </div>
-    <mat-action-row>
+    <!--<mat-action-row>
       <button mat-button>
         <span>
           <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
         </span>
       </button>
-    </mat-action-row>
+    </mat-action-row>-->
 
   </mat-expansion-panel>
 
@@ -139,10 +139,10 @@
               <div class="col">{{facilityProviderRelationship?.prescriberIndicator | Boolean}}</div>
             </div>
 
-            <div class="form-row">
+            <!--<div class="form-row">
               <div class="col-md-10"><label>Float Provider:</label></div>
               <div class="col">{{facilityProviderRelationship?.floatProviderIndicator | Boolean}}</div>
-            </div>
+            </div>-->
           </div>
           <div class="col card-block">
             <div class="form-row">
@@ -194,7 +194,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div>
-          <label>Behavioral Health Specialty: </label>
+          <label>Behavioral Health Characteristics: </label>
           <dialog-edit-bhAttribute [bhaConditions]="bhaConditions" [bhaModes]="bhaModes" [bhaAges]="bhaAges" [bhaOthers]="bhaOthers" [bhaTherapeuticApproaches]="bhaTherapeuticApproaches">
           </dialog-edit-bhAttribute>
         </div>
@@ -271,7 +271,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div>
-          {{provider.fullName}} at other facilities
+          {{provider.fullName}} at other clinics
 
         </div>
       </mat-panel-title>

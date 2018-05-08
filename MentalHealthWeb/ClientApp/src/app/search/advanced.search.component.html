@@ -83,10 +83,10 @@
         <div class="card">
           <div class="card-body">
             <div class="card-header">
-              Facility
+              Clinic
             </div>
             <mat-form-field class="mat-container">
-              <mat-select placeholder="Facility Name" formControlName="facilityID" multiple>
+              <mat-select placeholder="Clinic Name" formControlName="facilityID" multiple>
                 <mat-option *ngFor="let facility of facilityList" [value]="facility.id">
                   {{ facility.facilityName }}
                 </mat-option>
@@ -146,17 +146,21 @@
       <ng-container matColumnDef="conditions">
         <mat-header-cell *matHeaderCellDef> Conditions </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
-          <li *ngFor="let conditions of facilityProviderRelationships.providerConditionsList">
-            {{conditions}}
-          </li>
+          <ul>
+            <li *ngFor="let conditions of facilityProviderRelationships.providerConditionsList">
+              {{conditions}}
+            </li>
+          </ul>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="therapeuticApproaches">
         <mat-header-cell *matHeaderCellDef> Therapeutic Approaches </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
-          <li *ngFor="let therapeuticApproaches of facilityProviderRelationships.therapeuticApproachesList">
-            {{therapeuticApproaches}}
-          </li>
+          <ul>
+            <li *ngFor="let therapeuticApproaches of facilityProviderRelationships.therapeuticApproachesList">
+              {{therapeuticApproaches}}
+            </li>
+          </ul>
         </mat-cell>
       </ng-container>
 

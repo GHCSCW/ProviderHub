@@ -60,7 +60,7 @@
       </ng-container>
       <ng-container matColumnDef="region">
         <mat-header-cell *matHeaderCellDef> Region </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.region}} </mat-cell>
+        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityAddress.region}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="address">
         <mat-header-cell *matHeaderCellDef> Clinic Address</mat-header-cell>
@@ -95,15 +95,15 @@
     </mat-paginator>
   </div>
   <div *ngIf="results?.facilities.length > 0" class="example-container mat-elevation-z8">
-    <h5> Facilities</h5>
+    <h5> Clinics</h5>
     <mat-table #table [dataSource]="facility">
       <!-- Position Column -->
       <ng-container matColumnDef="facilityName">
-        <mat-header-cell *matHeaderCellDef> Facility Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Clinic Name </mat-header-cell>
         <mat-cell *matCellDef="let facility" (click)="facilityRoute(facility)"> {{facility.facilityName}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="address">
-        <mat-header-cell *matHeaderCellDef> Facility Address</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Clinic Address</mat-header-cell>
         <mat-cell *matCellDef="let facility" (click)="facilityRoute(facility)">
           {{facility.facilityAddress.addressLine1}} {{facility.facilityAddress.addressLine2}}
         </mat-cell>

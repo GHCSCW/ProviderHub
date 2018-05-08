@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common'
 import { ProviderModule } from '../provider/provider.module';
 import { AdvancedSearchComponent } from './advanced.search.component';
 import { AppMaterialModule } from '../app-material/app-material.module';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SharedModule } from '../SharedModule';
 
 @NgModule({
@@ -19,7 +18,6 @@ import { SharedModule } from '../SharedModule';
     ReactiveFormsModule,
     ProviderModule,
     AppMaterialModule,
-    NgxMatSelectSearchModule,
     SharedModule
     ],
   declarations: [

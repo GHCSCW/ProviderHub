@@ -29,18 +29,11 @@ namespace AngularTemplate.Controllers
 
         public HomeController(ILoggerFactory logger)
         {
-
-          
-                username = Environment.UserName;
-               // username = User.Identity.Name;
-            
-            
+            //_logger.LogInformation("Controller TEST");
+            //username = User.Identity.Name;
             _logger = logger.CreateLogger("BehavorialHealthHomeController");
-            _logger.LogInformation("Controller {username}", username);
-           // string username2 = User.Identity.Name;
-            _logger.LogInformation("Controller 2 Test");
-          //  _logger.LogInformation("Controller 2 {username2}", username2);
-
+            //_logger.LogInformation("Controller {username}", username);
+        
         }
         ProviderHubService.IProviderHubService ProviderHubService = new ProviderHubServiceClient();
 
@@ -270,8 +263,8 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateAddress([FromBody]Address address)
         {
-            address.CreatedBy = username;
-            address.LastUpdatedBy = username;
+            address.CreatedBy = User.Identity.Name;
+            address.LastUpdatedBy = User.Identity.Name;
             address.LastUpdatedDate = DateTime.Now;
             address.CreatedDate = DateTime.Now;
             int x = await ProviderHubService.SaveAddressAsync(address);
@@ -290,8 +283,8 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateProvider([FromBody]Provider provider)
         {
-            provider.CreatedBy = username;
-            provider.LastUpdatedBy = username;
+            provider.CreatedBy = User.Identity.Name;
+            provider.LastUpdatedBy = User.Identity.Name;
             provider.LastUpdatedDate = DateTime.Now;
             provider.CreatedDate = DateTime.Now;
             int x = await ProviderHubService.SaveProviderDetailAsync(provider);
@@ -369,9 +362,8 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {
-            username = User.Identity.Name;
-            providerUpdate.LastUpdatedBy = username;
-            _logger.LogInformation("Controller {username}", username);
+            providerUpdate.LastUpdatedBy = User.Identity.Name;
+            _logger.LogInformation("Controller {username}", User.Identity.Name);
             _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.ID}", providerUpdate.ID);
             int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
             if (x > 0)
@@ -400,7 +392,7 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateFacility([FromBody]Facility facilityUpdate)
         {
-            facilityUpdate.LastUpdatedBy = username;
+            facilityUpdate.LastUpdatedBy = User.Identity.Name; ;
             int x = await ProviderHubService.SaveFacilityAndAddressAsync(facilityUpdate);
             if (x > 0)
             {
@@ -418,9 +410,9 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateFacility([FromBody]Facility facilityUpdate)
         {
-            facilityUpdate.LastUpdatedBy = username;
+            facilityUpdate.LastUpdatedBy = User.Identity.Name;
             facilityUpdate.LastUpdatedDate = DateTime.Now;
-            facilityUpdate.CreatedBy = username;
+            facilityUpdate.CreatedBy = User.Identity.Name;
             facilityUpdate.CreatedDate = DateTime.Now;
             int x = await ProviderHubService.SaveFacilityAsync(facilityUpdate);
             if (x > 0)
@@ -439,7 +431,7 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateFacilityProviderRelationship([FromBody]FacilityProviderRelationship facilityProvUpdate)
         {
-            facilityProvUpdate.LastUpdatedBy = username;
+            facilityProvUpdate.LastUpdatedBy = User.Identity.Name;
             int x = await ProviderHubService.SaveFacilityProviderRelationshipAsync(facilityProvUpdate);
             if (x > 0)
             {
@@ -457,7 +449,7 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateVendor([FromBody]Vendor vendorUpdate)
         {
-            vendorUpdate.LastUpdatedBy = username;
+            vendorUpdate.LastUpdatedBy = User.Identity.Name;
             int x = await ProviderHubService.SaveVendorAsync(vendorUpdate);
 
             if (x > 0)
@@ -476,9 +468,9 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateVendor([FromBody]Vendor vendor)
         {
-            vendor.LastUpdatedBy = username;
+            vendor.LastUpdatedBy = User.Identity.Name;
             vendor.LastUpdatedDate = DateTime.Now;
-            vendor.CreatedBy = username;
+            vendor.CreatedBy = User.Identity.Name;
             vendor.CreatedDate = DateTime.Now;
             int x = await ProviderHubService.SaveVendorAsync(vendor);
             if (x > 0)
