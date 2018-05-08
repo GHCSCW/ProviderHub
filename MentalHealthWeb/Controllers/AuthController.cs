@@ -1,9 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MentalHealthWeb.Models;
-using System.Diagnostics;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MentalHealthWeb.Controllers
@@ -12,17 +11,18 @@ namespace MentalHealthWeb.Controllers
     [Authorize]
     public class AuthController : Controller
     {
+        
+        public AuthController()
+        {
+
+        }
         [HttpGet("[action]")]
         public IActionResult GetUser()
         {
-            Debug.Write($"AuthenticationType: {User.Identity.AuthenticationType}");
-            Debug.Write($"IsAuthenticated: {User.Identity.IsAuthenticated}");
-            Debug.Write($"Name: {User.Identity.Name}");
-
+         
             if (User.Identity.IsAuthenticated)
             {
-                //return Ok($"Authenticated: {User.Identity.Name}");
-                return Ok($"{User.Identity.Name}");
+                return Ok(User.Identity.Name);
             }
             else
             {

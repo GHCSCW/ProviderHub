@@ -127,18 +127,18 @@
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.fullName}} - {{facilityProviderRelationships.provider.credentials}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="facilityName">
-        <mat-header-cell *matHeaderCellDef> Facility Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Clinic Name </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityName}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="facilityAddress">
-        <mat-header-cell *matHeaderCellDef> Facility Address/City </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Clinic Address/City </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
           {{facilityProviderRelationships.facility.facilityAddress.addressLine1}} {{facilityProviderRelationships.facility.facilityAddress.addressLine2}} -
           {{facilityProviderRelationships.facility.facilityAddress.city}}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="facilityPhoneNumber">
-        <mat-header-cell *matHeaderCellDef> Facility Phone Number </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Clinic Phone Number </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
           {{facilityProviderRelationships.facility.facilityAddress.phoneNumber}}
         </mat-cell>

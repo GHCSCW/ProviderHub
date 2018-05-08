@@ -6,7 +6,7 @@ import { CreateFacility } from './create-facility';
 const facilityRoutes: Routes = [
   { path: 'facility', component: FacilityComponent },
   { path: 'facility/:id', component: FacilityComponent },
-  { path: 'createfacility', component: CreateFacility}
+  { path: 'createclinic', component: CreateFacility}
 
 ];
 

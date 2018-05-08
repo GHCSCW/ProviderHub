@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using MentalHealthWeb.Core;
 
 namespace AngularTemplate.Controllers
 {
@@ -19,16 +18,29 @@ namespace AngularTemplate.Controllers
         public string username;
         public string user;
 
+        private readonly ILogger _logger;
+
 
         public class AdvancedSearch
         {
             public string Key { get; set; }
             public string[] Value { get; set; }
         }
-        public HomeController()
+
+        public HomeController(ILoggerFactory logger)
         {
-            username = Environment.UserName;
-           
+
+          
+                username = Environment.UserName;
+               // username = User.Identity.Name;
+            
+            
+            _logger = logger.CreateLogger("BehavorialHealthHomeController");
+            _logger.LogInformation("Controller {username}", username);
+           // string username2 = User.Identity.Name;
+            _logger.LogInformation("Controller 2 Test");
+          //  _logger.LogInformation("Controller 2 {username2}", username2);
+
         }
         ProviderHubService.IProviderHubService ProviderHubService = new ProviderHubServiceClient();
 
@@ -47,16 +59,16 @@ namespace AngularTemplate.Controllers
         {
             Credential[] credentials = await ProviderHubService.GetCredentialListAsync();
 
-            var allowedCredentials = new[] {31,32,100,128,185,188,202,239,242,244,279,286};
+            var allowedCredentials = new[] { 31, 32, 100, 128, 185, 188, 202, 239, 242, 244, 279, 286 };
             var filteredCredentials = credentials.Where(o => allowedCredentials.Contains(o.ID));
-
+            
             return Json(filteredCredentials);
         }
         #endregion
 
         #region FUNCTION: GetCredentialListByProviderId(int id)
         [HttpGet("[action]/{id}")]
-        public async Task<IActionResult> getCredentialListByProviderId(int id)
+        public async Task<IActionResult> GetCredentialListByProviderId(int id)
         {
             Credential[] credentials = await ProviderHubService.GetProviderCredentialByIDAsync(id);
             return Json(credentials);
@@ -110,6 +122,7 @@ namespace AngularTemplate.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetFacilityProviderRelationshipById(int id)
         {
+            _logger.LogInformation("GetFacilityProviderRelationship!!!");
             FacilityProviderRelationship facilityProviderRelationship = await ProviderHubService.GetFacilityProviderRelationshipByIDAsync(id);
             return Json(facilityProviderRelationship);
         }
@@ -162,7 +175,7 @@ namespace AngularTemplate.Controllers
         [HttpGet("[action]/{values}")]
         public async Task<IActionResult> SearchForValues(string values)
         {
-           
+
             SearchResults list = await ProviderHubService.SearchForValueAsync(values);
             return Json(list);
         }
@@ -356,22 +369,24 @@ namespace AngularTemplate.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {
-            providerUpdate.LastUpdatedBy = User.Identity.Name;
-           
+            username = User.Identity.Name;
+            providerUpdate.LastUpdatedBy = username;
+            _logger.LogInformation("Controller {username}", username);
+            _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.ID}", providerUpdate.ID);
             int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
             if (x > 0)
             {
-                //bool y = await ProviderHubService.SaveCredentialByProviderIDAsync(x, providerUpdate.CredentialList);
-                //bool z = await ProviderHubService.SaveLanguageByProviderIDAsync(x, providerUpdate.LanguageList);
+                bool y = await ProviderHubService.SaveCredentialByProviderIDAsync(x, providerUpdate.CredentialList);
+                bool z = await ProviderHubService.SaveLanguageByProviderIDAsync(x, providerUpdate.LanguageList);
 
-                //if (y == true && z == true)
-                //{
+                if (y == true && z == true)
+                {
                     return Ok(x);
-                //}
-                //else
-                //{
-                //    return NotFound("There was an issue save credentials or languages");
-                //}
+                }
+                else
+                {
+                    return NotFound("There was an issue save credentials or languages");
+                }
             }
             else
             {

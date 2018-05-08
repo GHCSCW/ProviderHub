@@ -14,7 +14,7 @@ export class AthenticationServiceService {
   getUser(): Observable<string> {
     console.log('Calling getUser');
     let serviceUrl: string = `${environment.serviceBaseUrl}api/auth/getuser`;
-    return this.http.get(serviceUrl, { responseType: 'text' })
+    return this.http.get(serviceUrl)
       .map((rslt: string) => {
         return rslt;
       });
