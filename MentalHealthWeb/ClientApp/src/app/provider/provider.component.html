@@ -271,7 +271,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div>
-          {{provider.fullName}} at other clinics
+          {{provider.fullName}} at other Clinics ({{relationshipDataByProvider.length}})
 
         </div>
       </mat-panel-title>
@@ -289,6 +289,13 @@
                 <th>Clinic Name</th>
                 <th>Clinic Address</th>
                 <th>Phone Number</th>
+              </tr>
+              <tr *ngFor="let data of relationshipDataByProvider">
+                <td>{{data.provider.id}}</td>
+                <td>{{data.provider.fullName}}</td>
+                <td>{{data.facility.facilityName}}</td>
+                <td>{{data.facility.facilityAddress.addressLine1}} - {{data.facility.facilityAddress.addressLine2}}</td>
+                <td>{{data.facility.facilityAddress.phoneNumber}}</td>
               </tr>
             </table>
           </div>

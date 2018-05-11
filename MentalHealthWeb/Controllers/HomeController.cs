@@ -154,6 +154,27 @@ namespace AngularTemplate.Controllers
 
         #endregion
 
+        #region FUNCTION: GetRelationshipDataByFacilityID(int facilityID)
+        [HttpGet("[action]/{facilityID}")]
+        public async Task<IActionResult> GetRelationshipDataByFacilityID(int facilityID)
+        {
+            FacilityProviderRelationship [] list = await ProviderHubService.GetRelationshipDataByFacilityIDAsync(facilityID);
+            return Json(list);
+        }
+
+        #endregion
+
+        #region FUNCTION: GetRelationshipDataByProviderID(int providerID)
+
+        [HttpGet("[action]/{providerID}")]
+        public async Task<IActionResult> GetRelationshipDataByProviderID(int providerID)
+        {
+            FacilityProviderRelationship[] list = await ProviderHubService.GetRelationshipDataByProviderIDAsync(providerID);
+            return Json(list);
+        }
+
+        #endregion
+
         #region FUNCTION: GetBehavioralHealthAttributeById(BHAttributeType id)
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetBehavioralHealthAttributeByID(ProviderHubService.BHAttributeType id)

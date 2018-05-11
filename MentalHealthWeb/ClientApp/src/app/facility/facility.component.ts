@@ -77,7 +77,7 @@ export class FacilityComponent  {
     return this.mentalHealthService.getFacilityList()
       .pipe(
       map(response => response.filter(option => {
-        return option.facilityName.toLowerCase().indexOf(val.toLowerCase()) >= 0
+        return option.FacilityName.toLowerCase().indexOf(val.toLowerCase()) >= 0
       }))
       )
   }

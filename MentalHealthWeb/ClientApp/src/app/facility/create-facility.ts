@@ -51,7 +51,7 @@ export class CreateFacility implements OnInit {
   onNotify(form): void {
 
     if (this.createFacilityForm.value.FacilityName === "") {
-      this.toastr.error('Invalid Entry', 'Please Entery a Valid Facility Name');
+      this.toastr.error('Invalid Entry', 'Please Enter a Valid Facility Name');
     }
     else {
       this.facility = this.createFacilityForm.value;

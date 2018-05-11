@@ -2107,6 +2107,12 @@ namespace ProviderHubService
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/SaveFacilityAndAddress", ReplyAction="http://tempuri.org/IProviderHubService/SaveFacilityAndAddressResponse")]
         System.Threading.Tasks.Task<int> SaveFacilityAndAddressAsync(ProviderHubService.Facility facility);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByFacilityID", ReplyAction="http://tempuri.org/IProviderHubService/GetRelationshipDataByFacilityIDResponse")]
+        System.Threading.Tasks.Task<ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByFacilityIDAsync(int facilityID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderID", ReplyAction="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderIDResponse")]
+        System.Threading.Tasks.Task<ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByProviderIDAsync(int providerID);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.0")]
@@ -2312,6 +2318,16 @@ namespace ProviderHubService
         public System.Threading.Tasks.Task<int> SaveFacilityAndAddressAsync(ProviderHubService.Facility facility)
         {
             return base.Channel.SaveFacilityAndAddressAsync(facility);
+        }
+        
+        public System.Threading.Tasks.Task<ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByFacilityIDAsync(int facilityID)
+        {
+            return base.Channel.GetRelationshipDataByFacilityIDAsync(facilityID);
+        }
+        
+        public System.Threading.Tasks.Task<ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByProviderIDAsync(int providerID)
+        {
+            return base.Channel.GetRelationshipDataByProviderIDAsync(providerID);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

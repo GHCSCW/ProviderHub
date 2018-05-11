@@ -11,6 +11,7 @@ import { MentalHealthService } from '../services/mental.health.service'
 import { Language, Gender } from '../services/enum-service';
 import { IProviderLanguageMapping } from '../interfaces/IProviderLanguageMapping';
 import { ILanguage } from '../interfaces/ILanguage';
+import { Facility } from '../models/facility';
 
 
 @Component({
@@ -20,8 +21,9 @@ import { ILanguage } from '../interfaces/ILanguage';
 })
 
 export class ProviderComponent implements OnInit {
-  providerAtOtherFacilities: any;
-
+  //facilityList: any;
+  public facilityList: Facility[] = [];
+  relationshipDataByProvider: any = [];
   bhaAges: any[];
   bhaModes: any[];
   bhaConditions: any[];
@@ -57,18 +59,27 @@ export class ProviderComponent implements OnInit {
 
   ngOnInit() {
     this.nav.show();
+    this.mentalHealthService.getFacilityList().subscribe(data => {
+      this.facilityList = data;
+    });
+
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       if (results.provider == undefined) {
         this.provider = this.mentalHealthService.getProviderData();
         this.gender = Gender[this.provider.gender];
+
       }
       else {
         this.provider = results.provider;
         this.facilityProviderRelationship = results;
         this.createBHSpecialtyLists(results);
         this.gender = Gender[this.provider.gender];
+        this.mentalHealthService.GetRelationshipDataByProviderID(this.provider.id).subscribe(results => {
+          this.relationshipDataByProvider = results
+        });
+
       }
-    }); 
+    });
 
     if (this.provider == undefined || this.facilityProviderRelationship.length == 0) {
       this.fillProviderData();
@@ -101,10 +112,9 @@ export class ProviderComponent implements OnInit {
           this.createBHSpecialtyLists(this.facilityProviderRelationship);
           this.mentalHealthService.insertFacilityProviderRelationshipData(data);
           this.nav.addFacilityRelationshipProviderID(data);
-          //this.mentalHealthService.getProviderRelationshipById(this.provider.id).subscribe(data => {
-          //  this.providerAtOtherFacilities = data;
-          //})
-
+          this.mentalHealthService.GetRelationshipDataByProviderID(this.provider.id).subscribe(results => {
+            this.relationshipDataByProvider = results
+          });
         })
       }
       else if (params['provid']) {
@@ -133,12 +143,12 @@ export class ProviderComponent implements OnInit {
     )
 
 
-    this.bhaTherapeuticApproaches= facilityProviderRelationship.behavioralHealthAttributes.filter(theraApproaches =>
+    this.bhaTherapeuticApproaches = facilityProviderRelationship.behavioralHealthAttributes.filter(theraApproaches =>
       theraApproaches.bhSpecialtyType == 4
     );
 
     this.bhaOthers = facilityProviderRelationship.behavioralHealthAttributes.filter(others =>
-     others.bhSpecialtyType == 5
+      others.bhSpecialtyType == 5
     );
   }
 
