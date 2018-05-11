@@ -363,6 +363,7 @@ namespace AngularTemplate.Controllers
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {
             providerUpdate.LastUpdatedBy = User.Identity.Name;
+          
             _logger.LogInformation("Controller {username}", User.Identity.Name);
             _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.ID}", providerUpdate.ID);
             int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
@@ -408,16 +409,18 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: CreateFacility(Facility facilityUpdate)
         [HttpPost("[action]")]
-        public async Task<IActionResult> CreateFacility([FromBody]Facility facilityUpdate)
+        public async Task<IActionResult> CreateFacility([FromBody]Facility newFacility)
         {
-            facilityUpdate.LastUpdatedBy = User.Identity.Name;
-            facilityUpdate.LastUpdatedDate = DateTime.Now;
-            facilityUpdate.CreatedBy = User.Identity.Name;
-            facilityUpdate.CreatedDate = DateTime.Now;
-            int x = await ProviderHubService.SaveFacilityAsync(facilityUpdate);
+            newFacility.LastUpdatedBy = User.Identity.Name;
+            newFacility.LastUpdatedDate = DateTime.Now;
+            newFacility.CreatedBy = User.Identity.Name;
+            newFacility.CreatedDate = DateTime.Now;
+            newFacility.FacilityAddress.LastUpdatedBy = User.Identity.Name;
+            newFacility.FacilityAddress.LastUpdatedDate = DateTime.Now;
+            int x = await ProviderHubService.SaveFacilityAndAddressAsync(newFacility);
             if (x > 0)
             {
-                return Ok(facilityUpdate);
+                return Ok(x);
             }
             else
             {

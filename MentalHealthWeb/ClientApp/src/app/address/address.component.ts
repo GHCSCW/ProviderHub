@@ -93,10 +93,10 @@ export class AddressComponent implements OnInit {
     },
   ];
 
-  onFormSubmit(form: NgForm) {
-    this.mentalHealthService.createAddress(form);
-    console.log(form);
-  }  
+  //onFormSubmit(form: NgForm) {
+  //  this.mentalHealthService.createAddress(form);
+  //  console.log(form);
+  //}  
   onClick() {
     this.notify.emit(this.regiForm.value);
   }

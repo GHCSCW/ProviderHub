@@ -1,8 +1,7 @@
-<h1 mat-dialog-title>Create New Address</h1>
 
 <mat-dialog-content mat-dialog-content>
-  <button (click)='onClick()'>Create</button>
-  <form [formGroup]="regiForm" (ngSubmit)="onFormSubmit(regiForm.value)">
+
+  <form [formGroup]="regiForm">
     <mat-form-field>
       <mat-select placeholder="Address Type" formControlName="addressType" [(ngModel)]="addressType" required>
         <mat-option *ngFor="let option of addressTypes" [value]="option.value">
@@ -27,7 +26,7 @@
         <input formControlName="state" matInput placeholder="State" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="zipCode" matInput placeholder="Zip Code" required>
+        <input type="number" formControlName="zipCode" matInput placeholder="Zip Code" required>
       </mat-form-field>
     </div>
     <div>
@@ -65,7 +64,7 @@
       <input formControlName="contactLastName" matInput placeholder="Contact Last Name">
     </mat-form-field>
     <div>
-      <button mat-raised-button color="accent" [disabled]="!regiForm.valid">Save</button>
+      <button mat-raised-button color="accent" [disabled]="!regiForm.valid" (click)='onClick()'>Create</button>
     </div>
   </form>
 </mat-dialog-content>

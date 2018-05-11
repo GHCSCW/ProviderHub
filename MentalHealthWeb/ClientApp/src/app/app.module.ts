@@ -44,7 +44,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
 import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
 import { SharedModule } from './SharedModule';
-
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
  
@@ -62,6 +62,7 @@ import { SharedModule } from './SharedModule';
     AddressModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot(), // ToastrModule added
     AppMaterialModule,
     AngularMultiSelectModule,
     SharedModule
@@ -95,7 +96,8 @@ import { SharedModule } from './SharedModule';
     LogPublishersService,
     LogService,
     AthenticationServiceService,
-    DataServiceService
+    DataServiceService,
+    ToastrModule
   ],
   bootstrap: [AppComponent]
 })

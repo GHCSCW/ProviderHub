@@ -13,6 +13,7 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/toPromise';
 import { Language } from '../models/language';
 import { LogService,LogLevel } from './log.service';
+import { Facility } from '../models/facility';
 
 @Injectable()
 
@@ -262,17 +263,17 @@ export class MentalHealthService {
     }).catch(this.handleError)
   }
 
-  createFacility(body: Object): Promise<Object> {
+  createFacility(body) {
     const url = `${this.server_url}/createFacility/`;
-    return this.http
-      .post(url, JSON.stringify(body), { headers: this.headers })
-      .toPromise()
-      .then(() => body)
-      .catch(this.handleError);
+ 
+    return this.httpClient.post(url, body).map((res: any) => {
+      let data = res;
+      return data;
+    }).catch(this.handleError)
   }
 
 
-  updateFacility(body){
+  updateFacility(body) {
     const url = `${this.server_url}/updateFacility/`;
     return this.httpClient.post(url, body).map((res: any) => {
       let data = res;

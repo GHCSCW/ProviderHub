@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,7 +23,13 @@ namespace MentalHealthWeb.Controllers
          
             if (User.Identity.IsAuthenticated)
             {
-                return Ok(User.Identity.Name);
+                //string hmo = "GHCHMO";
+                string username = User.Identity.Name;
+
+                Int32 max = username.Length-9;
+                 username = username.Substring(9, max);
+              
+                return Ok(username);
             }
             else
             {

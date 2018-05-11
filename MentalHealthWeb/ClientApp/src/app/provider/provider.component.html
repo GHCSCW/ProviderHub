@@ -7,10 +7,10 @@
   <mat-expansion-panel class="facilityProviderRelationship">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <b>Provider Name: </b>
-        {{provider.fullName}}
+        <b style="margin-right:1.0em">Provider Name:</b>
+        <span style="margin-right:1.0em">{{provider.fullName}}</span>
         <br />
-        <b>Credentials: </b>
+        <b style="margin-right:1.0em">Credentials: </b>
         <span *ngFor="let option of provider.credentialList; let i= index">
           <span *ngIf="i < provider.credentialList.length - 1">
             {{option.value}},
