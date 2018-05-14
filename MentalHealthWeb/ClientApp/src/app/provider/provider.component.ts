@@ -59,9 +59,9 @@ export class ProviderComponent implements OnInit {
 
   ngOnInit() {
     this.nav.show();
-    this.mentalHealthService.getFacilityList().subscribe(data => {
-      this.facilityList = data;
-    });
+    //this.mentalHealthService.getFacilityList().subscribe(data => {
+    //  this.facilityList = data;
+    //});
 
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       if (results.provider == undefined) {

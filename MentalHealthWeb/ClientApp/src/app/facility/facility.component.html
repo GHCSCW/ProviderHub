@@ -6,13 +6,8 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         Clinic: {{facility.facilityName}}
-        <!--<a href="#" class="btns btn-primary pull-right">Link to Provider</a>
-        <a href="#" class="btn btn-primary pull-right">Link to Vendor</a>-->
         <dialog-facility-details [facility]="facility">loading</dialog-facility-details>
       </mat-panel-title>
-      <!--<mat-panel-description>
-        This is a summary of the content
-      </mat-panel-description>-->
     </mat-expansion-panel-header>
     <div class="card">
       <div class="card-body">
@@ -115,16 +110,42 @@
       </div>
     </div>
   </mat-expansion-panel>
-  <mat-expansion-panel class="card-header facilty-background">
+
+  <mat-expansion-panel class="facilityProviderRelationship">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        All Providers at {{facility.facilityName}}
+        <div>
+          All Providers at {{facility.facilityName}} a ({{relationshipDataByProvider.length}})
+
+        </div>
       </mat-panel-title>
-      <!--<mat-panel-description>
-        This is a summary of the content
-      </mat-panel-description>-->
+      <mat-panel-description>
+      </mat-panel-description>
     </mat-expansion-panel-header>
-    ---Content----
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col card-block">
+            <table class="table">
+              <tr>
+                <th>ID</th>
+                <th>Provider Name</th>
+                <!--<th>Clinic Name</th>-->
+                <th>Clinic Address</th>
+                <th>Phone Number</th>
+              </tr>
+              <tr *ngFor="let data of relationshipDataByProvider">
+                <td>{{data.provider.id}}</td>
+                <td>{{data.provider.fullName}}</td>
+                <!--<td>{{data.facility.facilityName}}</td>-->
+                <td>{{data.facility.facilityAddress.addressLine1}} - {{data.facility.facilityAddress.addressLine2}}</td>
+                <td>{{data.facility.facilityAddress.phoneNumber}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>
 

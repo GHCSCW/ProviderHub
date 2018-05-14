@@ -159,7 +159,6 @@ export class MentalHealthService {
   }
 
   getProviderRelationshipById(id: number): Observable<any> {
-    this.logger.level = LogLevel.Off;
     return this.http.get(this.server_url + '/getProviderRelationshipById/' + id)
       .map(this.extractData);
   }

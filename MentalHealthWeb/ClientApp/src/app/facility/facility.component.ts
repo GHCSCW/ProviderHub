@@ -16,7 +16,7 @@ import { NavbarService } from "../services/navbarservice";
   styleUrls: ['./facility.component.css']
 })
 export class FacilityComponent  {
-  relationshipDataByProvider: any;
+  relationshipDataByProvider: any = [];
   addressType: string;
  
   inputFormControl: any;
@@ -42,18 +42,16 @@ export class FacilityComponent  {
 
       if (results.facility == undefined) {
         this.facility = this.mentalHealthService.getFacilityData();
-
       }
       else {
         this.provider = results.provider;
         this.facility = results.facility;
         this.facilityAddress = results.facility.facilityAddress;
         this.facilityProviderRelationship = results;
-        this.mentalHealthService.GetRelationshipDataByFacilityID(this.provider.id).subscribe(results => {
+        this.mentalHealthService.GetRelationshipDataByFacilityID(results.facility.id).subscribe(results => {
           this.relationshipDataByProvider = results
         });
       }
-
     });
     this.mentalHealthService.getProviderList().subscribe(data => {
       this.providerList = data;
@@ -65,26 +63,26 @@ export class FacilityComponent  {
     this.fillFacilityData();
 
 
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-      startWith(null),
-      debounceTime(200),
-      distinctUntilChanged(),
-      switchMap(val => {
-        return this.filter(val || '')
-      })
-      );
+    //this.filteredOptions = this.myControl.valueChanges
+    //  .pipe(
+    //  startWith(null),
+    //  debounceTime(200),
+    //  distinctUntilChanged(),
+    //  switchMap(val => {
+    //    return this.filter(val || '')
+    //  })
+    //  );
   
   }
  
-  filter(val: string): Observable<any[]> {
-    return this.mentalHealthService.getFacilityList()
-      .pipe(
-      map(response => response.filter(option => {
-        return option.FacilityName.toLowerCase().indexOf(val.toLowerCase()) >= 0
-      }))
-      )
-  }
+  //filter(val: string): Observable<any[]> {
+  //  return this.mentalHealthService.getFacilityList()
+  //    .pipe(
+  //    map(response => response.filter(option => {
+  //      return option.FacilityName.toLowerCase().indexOf(val.toLowerCase()) >= 0
+  //    }))
+  //    )
+  //}
   fillFacilityData() {
     return this.route.params.subscribe(params => {
       console.log(params);
@@ -94,7 +92,7 @@ export class FacilityComponent  {
           this.facilityAddress = data.facilityAddress;
           this.nav.addFacilityID(this.facility.id);
         })
-        this.mentalHealthService.GetRelationshipDataByFacilityID(this.provider.id).subscribe(results => {
+        this.mentalHealthService.GetRelationshipDataByFacilityID(this.facility.id).subscribe(results => {
           this.relationshipDataByProvider = results
         });
       }
