@@ -43,6 +43,7 @@ namespace AngularTemplate.Controllers
         {
             Facility facility = await ProviderHubService.GetFacilityByIDAsync(id);
             return facility;
+            
         }
         #endregion
 

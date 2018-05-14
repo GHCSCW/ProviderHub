@@ -16,6 +16,7 @@ import { NavbarService } from "../services/navbarservice";
   styleUrls: ['./facility.component.css']
 })
 export class FacilityComponent  {
+  relationshipDataByProvider: any;
   addressType: string;
  
   inputFormControl: any;
@@ -48,6 +49,9 @@ export class FacilityComponent  {
         this.facility = results.facility;
         this.facilityAddress = results.facility.facilityAddress;
         this.facilityProviderRelationship = results;
+        this.mentalHealthService.GetRelationshipDataByFacilityID(this.provider.id).subscribe(results => {
+          this.relationshipDataByProvider = results
+        });
       }
 
     });
@@ -90,6 +94,9 @@ export class FacilityComponent  {
           this.facilityAddress = data.facilityAddress;
           this.nav.addFacilityID(this.facility.id);
         })
+        this.mentalHealthService.GetRelationshipDataByFacilityID(this.provider.id).subscribe(results => {
+          this.relationshipDataByProvider = results
+        });
       }
     });
   }
