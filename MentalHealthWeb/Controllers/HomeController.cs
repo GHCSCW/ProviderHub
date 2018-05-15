@@ -155,23 +155,26 @@ namespace AngularTemplate.Controllers
 
         #endregion
 
-        #region FUNCTION: GetRelationshipDataByFacilityID(int facilityID)
-        [HttpGet("[action]/{facilityID}")]
-        public async Task<IActionResult> GetRelationshipDataByFacilityID(int facilityID)
+        #region FUNCTION: GetRelationshipDataByFacilityID(int facilityID,int relationshipID)
+        [HttpGet("[action]/{facilityID}/{relationshipID}")]
+        public async Task<IActionResult> GetRelationshipDataByFacilityID(int facilityID, int relationshipID)
         {
             FacilityProviderRelationship [] list = await ProviderHubService.GetRelationshipDataByFacilityIDAsync(facilityID);
-            return Json(list);
+            var filteredFacilityProviderRelationship = list.Where(o => relationshipID != o.RelationshipID);
+            return Json(filteredFacilityProviderRelationship);
         }
 
         #endregion
 
-        #region FUNCTION: GetRelationshipDataByProviderID(int providerID)
+        #region FUNCTION: GetRelationshipDataByProviderID(int providerID,int relationshipID)
 
-        [HttpGet("[action]/{providerID}")]
-        public async Task<IActionResult> GetRelationshipDataByProviderID(int providerID)
+        [HttpGet("[action]/{providerID}/{relationshipID}")]
+        public async Task<IActionResult> GetRelationshipDataByProviderID(int providerID, int relationshipID)
         {
             FacilityProviderRelationship[] list = await ProviderHubService.GetRelationshipDataByProviderIDAsync(providerID);
-            return Json(list);
+
+            var filteredFacilityProviderRelationship = list.Where(o => relationshipID != o.RelationshipID);
+            return Json(filteredFacilityProviderRelationship);
         }
 
         #endregion
@@ -283,6 +286,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: Create Address(Address address)
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
         public async Task<IActionResult> CreateAddress([FromBody]Address address)
         {
             address.CreatedBy = User.Identity.Name;
@@ -303,6 +307,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: CreateProvider(Provider provider)
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
         public async Task<IActionResult> CreateProvider([FromBody]Provider provider)
         {
             provider.CreatedBy = User.Identity.Name;
@@ -333,6 +338,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateCredentials(Credentia[] credentialUpdate, int id)
         [HttpPost("[action]/{id}")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
         public async Task<IActionResult> UpdateCredentials([FromBody]Credential[] credentialUpdate, int id)
         {
             bool x = await ProviderHubService.SaveCredentialByProviderIDAsync(id, credentialUpdate);
@@ -349,6 +355,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateBhAttributes(BehavioralHealthAttribute[] attribute, int id)
         [HttpPut("[action]/{id}")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
         public async Task<IActionResult> UpdateBhAttributes([FromBody]BehavioralHealthAttribute[] attribute, int id)
         {
             bool x = await ProviderHubService.SaveBHAttributeToRelationshipAsync(id, attribute);
@@ -365,6 +372,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateLanguage(Language[] languageUpdate, int id)
         [HttpPut("[action]/{id}")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
         public async Task<IActionResult> UpdateLanguage([FromBody]Language[] languageUpdate, int id)
         {
             bool x = await ProviderHubService.SaveLanguageByProviderIDAsync(id, languageUpdate);
@@ -382,6 +390,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateProvider(Provider providerUpdate)
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {
             providerUpdate.LastUpdatedBy = User.Identity.Name;

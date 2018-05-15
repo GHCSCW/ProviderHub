@@ -2,7 +2,6 @@
   <facility-provider-relationship></facility-provider-relationship>
 </div>
 
-
 <mat-accordion multi="true">
   <mat-expansion-panel class="facilityProviderRelationship">
     <mat-expansion-panel-header>
@@ -20,7 +19,8 @@
           </span>
         </span>
         <br />
-        <span>
+
+        <span *ngIf="canEdit">
           <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
         </span>
       </mat-panel-title>
@@ -112,7 +112,7 @@
         <span>
           <b>Provider - Clinic Relationship:</b>
         </span>
-        <span class="pull-right">
+        <span *ngIf="canEdit" class="pull-right">
           <dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship">
           </dialog-facility-provider-relationship>
         </span>
@@ -195,8 +195,10 @@
       <mat-panel-title>
         <div>
           <label>Behavioral Health Characteristics: </label>
-          <dialog-edit-bhAttribute [bhaConditions]="bhaConditions" [bhaModes]="bhaModes" [bhaAges]="bhaAges" [bhaOthers]="bhaOthers" [bhaTherapeuticApproaches]="bhaTherapeuticApproaches">
-          </dialog-edit-bhAttribute>
+          <span *ngIf="canEdit">
+            <dialog-edit-bhAttribute [bhaConditions]="bhaConditions" [bhaModes]="bhaModes" [bhaAges]="bhaAges" [bhaOthers]="bhaOthers" [bhaTherapeuticApproaches]="bhaTherapeuticApproaches">
+            </dialog-edit-bhAttribute>
+          </span>
         </div>
       </mat-panel-title>
       <mat-panel-description>

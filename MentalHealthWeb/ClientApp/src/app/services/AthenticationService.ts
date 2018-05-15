@@ -19,4 +19,12 @@ export class AthenticationServiceService {
         return rslt;
       });
   }
+  getUserRoles(): Observable<string[]> {
+    console.log('Calling getUserRoles');
+    let serviceUrl: string = `${environment.serviceBaseUrl}api/auth/getuserroles`;
+    return this.http.get(serviceUrl)
+      .map((rslt: string[]) => {
+        return rslt;
+      });
+  }
 }

@@ -96,9 +96,9 @@ export class AdvancedSearchComponent implements OnInit {
       result => this.languages = result
     );
     this.genders = this.mentalHealthService.getGenders();
-    this.mentalHealthService.getFacilityList().subscribe(data => {
-      this.facilityList = data;
-    });
+    //this.mentalHealthService.getFacilityList().subscribe(data => {
+    //  this.facilityList = data;
+    //});
 
     this.previousResultsArray = this.mentalHealthService.getAdvancedSearchQuery();
 

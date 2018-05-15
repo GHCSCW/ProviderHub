@@ -12,6 +12,8 @@ import { Language, Gender } from '../services/enum-service';
 import { IProviderLanguageMapping } from '../interfaces/IProviderLanguageMapping';
 import { ILanguage } from '../interfaces/ILanguage';
 import { Facility } from '../models/facility';
+import { AthenticationServiceService } from '../services/AthenticationService';
+import { AfterViewInit, AfterViewChecked } from '@angular/core/src/metadata/lifecycle_hooks';
 
 
 @Component({
@@ -20,7 +22,14 @@ import { Facility } from '../models/facility';
   styleUrls: ['./provider.component.css']
 })
 
-export class ProviderComponent implements OnInit {
+//export class Roles {
+//  RoleName: string;
+//  InRole: boolean;
+//}
+
+export class ProviderComponent implements OnInit, AfterViewChecked {
+  canEdit: boolean = false;
+  userRoles: any = [];
   //facilityList: any;
   public facilityList: Facility[] = [];
   relationshipDataByProvider: any = [];
@@ -52,13 +61,22 @@ export class ProviderComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private location: Location,
-    public nav: NavbarService
+    public nav: NavbarService,
+    private authSvc: AthenticationServiceService
   ) {
     this.showHide = false;
   }
-
+  ngAfterViewChecked() {
+    this.userRoles.forEach(item => {
+      if ((item.roleName == "SuperUser" && item.inRole == true )|| (item.roleName == "Editor" && item.inRole == true)) {
+        this.canEdit = true;
+      }
+    });
+  }
   ngOnInit() {
     this.nav.show();
+    this.AuthenticateUser();
+ 
     //this.mentalHealthService.getFacilityList().subscribe(data => {
     //  this.facilityList = data;
     //});
@@ -74,7 +92,7 @@ export class ProviderComponent implements OnInit {
         this.facilityProviderRelationship = results;
         this.createBHSpecialtyLists(results);
         this.gender = Gender[this.provider.gender];
-        this.mentalHealthService.GetRelationshipDataByProviderID(this.provider.id).subscribe(results => {
+        this.mentalHealthService.GetRelationshipDataByProviderID(this.provider.id, this.facilityProviderRelationship.relationshipID).subscribe(results => {
           this.relationshipDataByProvider = results
         });
 
@@ -84,6 +102,18 @@ export class ProviderComponent implements OnInit {
     if (this.provider == undefined || this.facilityProviderRelationship.length == 0) {
       this.fillProviderData();
     }
+  }
+
+
+ AuthenticateUser(): void {
+    this.authSvc.getUserRoles()
+      .subscribe(
+      r => { this.userRoles = r },
+      e => { console.log(e) }
+   );
+
+
+ 
   }
   onItemSelect(item: any) {
     console.log(item);
@@ -112,7 +142,7 @@ export class ProviderComponent implements OnInit {
           this.createBHSpecialtyLists(this.facilityProviderRelationship);
           this.mentalHealthService.insertFacilityProviderRelationshipData(data);
           this.nav.addFacilityRelationshipProviderID(data);
-          this.mentalHealthService.GetRelationshipDataByProviderID(this.provider.id).subscribe(results => {
+          this.mentalHealthService.GetRelationshipDataByProviderID(this.provider.id, this.facilityProviderRelationship.relationshipID).subscribe(results => {
             this.relationshipDataByProvider = results
           });
         })

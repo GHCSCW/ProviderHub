@@ -48,7 +48,7 @@ export class FacilityComponent  {
         this.facility = results.facility;
         this.facilityAddress = results.facility.facilityAddress;
         this.facilityProviderRelationship = results;
-        this.mentalHealthService.GetRelationshipDataByFacilityID(results.facility.id).subscribe(results => {
+        this.mentalHealthService.GetRelationshipDataByFacilityID(results.facility.id, this.facilityProviderRelationship.relationshipID).subscribe(results => {
           this.relationshipDataByProvider = results
         });
       }
@@ -92,7 +92,7 @@ export class FacilityComponent  {
           this.facilityAddress = data.facilityAddress;
           this.nav.addFacilityID(this.facility.id);
         })
-        this.mentalHealthService.GetRelationshipDataByFacilityID(this.facility.id).subscribe(results => {
+        this.mentalHealthService.GetRelationshipDataByFacilityID(this.facility.id,this.facilityProviderRelationship.relationshipID).subscribe(results => {
           this.relationshipDataByProvider = results
         });
       }

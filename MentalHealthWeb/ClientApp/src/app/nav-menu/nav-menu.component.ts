@@ -17,6 +17,7 @@ export class NavMenuComponent implements OnInit {
   facility: any = [];
   facilityAddress: any = [];
   authRslt: string = '';
+  userRoles: any = [];
 
   constructor(public nav: NavbarService, private mentalHealthService: MentalHealthService, private authSvc: AthenticationServiceService) {
 
@@ -31,7 +32,12 @@ export class NavMenuComponent implements OnInit {
       .subscribe(
       r => { this.authRslt = r },
       e => { console.log(e) }
-      );
+    );
+    //this.authSvc.getUserRoles()
+    //  .subscribe(
+    //  r => { this.userRoles = r },
+    //  e => { console.log(e) }
+    //  );
   }
 }
 
