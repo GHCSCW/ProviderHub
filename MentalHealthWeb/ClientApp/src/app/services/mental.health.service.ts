@@ -178,8 +178,8 @@ export class MentalHealthService {
       .map(this.extractData);
   }
 
-  getFacilityList(): Observable<Facility[]> {
-    return this.httpClient.get<Facility[]>(this.server_url + '/getFacilityList');
+  getFacilityList(): Observable<any> {
+    return this.httpClient.get(this.server_url + '/getFacilityList');
   }
 
   getProviderList(): Observable<any> {

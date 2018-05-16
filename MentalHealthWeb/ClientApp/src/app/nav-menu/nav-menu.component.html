@@ -23,11 +23,18 @@
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/createclinic">Add New Clinic</a>
-                <a class="dropdown-item" href="#">Link Provider to Clinic</a>
-                <!--<a class="dropdown-item" href="#">Link Vendor to Clinic</a>-->
+
+                <span *ngIf="!nav.facilityRelProviderID" class="nav-item" [routerLinkActive]="['link-active']">
+                  <a class="dropdown-item" [routerLink]="['/mapprovidertoclinic/',nav.providerID]">
+                    Link Provider to Clinic
+                  </a>
+                </span>
+
+                <!-- <a class="dropdown-item" href="#">Link Provider to Clinic</a>
+   <a class="dropdown-item" href="#">Link Vendor to Clinic</a>-->
                 <!--<div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Remove Provider & Facility Association</a>
-        <a class="dropdown-item" href="#">Remove Vendor & Facility Association</a>-->
+  <a class="dropdown-item" href="#">Remove Provider & Facility Association</a>
+  <a class="dropdown-item" href="#">Remove Vendor & Facility Association</a>-->
 
               </div>
             </li>

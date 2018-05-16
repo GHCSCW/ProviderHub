@@ -26,7 +26,7 @@ export class FacilityComponent  {
   facility: any = [];
   originalFacility: any = [];
   providerList: any;
-  facilityList: any;
+
   facilityProviderRelationship: any = [];
   provider: any = [];
   facilityAddress: any = [];
@@ -56,33 +56,12 @@ export class FacilityComponent  {
     this.mentalHealthService.getProviderList().subscribe(data => {
       this.providerList = data;
     });
-    //this.mentalHealthService.getFacilityList().subscribe(data => {
-    //  this.facilityList = data;
-    //});
 
     this.fillFacilityData();
 
-
-    //this.filteredOptions = this.myControl.valueChanges
-    //  .pipe(
-    //  startWith(null),
-    //  debounceTime(200),
-    //  distinctUntilChanged(),
-    //  switchMap(val => {
-    //    return this.filter(val || '')
-    //  })
-    //  );
   
   }
  
-  //filter(val: string): Observable<any[]> {
-  //  return this.mentalHealthService.getFacilityList()
-  //    .pipe(
-  //    map(response => response.filter(option => {
-  //      return option.FacilityName.toLowerCase().indexOf(val.toLowerCase()) >= 0
-  //    }))
-  //    )
-  //}
   fillFacilityData() {
     return this.route.params.subscribe(params => {
       console.log(params);

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -44,6 +45,7 @@ namespace MentalHealthWeb
                 options.AddPolicy("BehavorialHealthAnonymous", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Anonymous"));
 
             });
+ 
             services.AddMvcCore(options =>
              {
                  options.RequireHttpsPermanent = true; // does not affect api requests
@@ -68,6 +70,7 @@ namespace MentalHealthWeb
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
 
+            
             Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .WriteTo.File(
