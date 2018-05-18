@@ -112,7 +112,9 @@
       </div>
     </div>
   </form>
-
+  <div>
+    <i class="fa fa-spinner fa-2x" aria-hidden="true" *ngIf="loading"></i>
+  </div>
   <div class="text-danger" *ngIf="message">
     {{message}}
   </div>

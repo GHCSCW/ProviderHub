@@ -12,12 +12,14 @@ export class NavbarService {
   constructor()
   {
     this.visible = false;
+    this.providerID = 0; 
   
   }
   addFacilityRelationshipProviderID(provRelationship)
   {
     this.facilityRelProviderID = provRelationship.relationshipID;
     this.facilityID = provRelationship.facility.id;
+    this.providerID = provRelationship.provider.id;
   }
 
   addFacilityID(id) {
@@ -37,6 +39,9 @@ export class NavbarService {
     this.facilityRelProviderID = undefined;
     this.facilityID = undefined;
   }
+
+ 
+
 
   hide() { this.visible = false; }
 

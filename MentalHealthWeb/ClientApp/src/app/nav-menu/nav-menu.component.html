@@ -24,8 +24,8 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/createclinic">Add New Clinic</a>
 
-                <span *ngIf="!nav.facilityRelProviderID" class="nav-item" [routerLinkActive]="['link-active']">
-                  <a class="dropdown-item" [routerLink]="['/mapprovidertoclinic/',nav.providerID]">
+                <span *ngIf="nav.providerID" class="nav-item" [routerLinkActive]="['link-active']">
+                  <a class="dropdown-item" [routerLink]="['/mapprovidertoclinic/']">
                     Link Provider to Clinic
                   </a>
                 </span>
@@ -69,7 +69,7 @@
               <i class="fa fa-hospital-o" aria-hidden="true"></i> Provider
             </a>
           </li>
-          <li *ngIf="nav.providerID" class="nav-item" [routerLinkActive]="['link-active']">
+          <li *ngIf="nav.providerID && !nav.facilityRelProviderID" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link" [routerLink]="['/provider/',nav.providerID]">
               <i class="fa fa-hospital-o" aria-hidden="true"></i> Provider
             </a>

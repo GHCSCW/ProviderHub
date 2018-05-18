@@ -8,9 +8,9 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using MentalHealthWeb.Core;
 
+
 namespace AngularTemplate.Controllers
 {
-
     [Route("api/[controller]")]
     [Authorize]
     public class HomeController : Controller
@@ -33,7 +33,7 @@ namespace AngularTemplate.Controllers
             //username = User.Identity.Name;
             _logger = logger.CreateLogger("BehavorialHealthHomeController");
             //_logger.LogInformation("Controller {username}", username);
-        
+
         }
         ProviderHubService.IProviderHubService ProviderHubService = new ProviderHubServiceClient();
 
@@ -43,7 +43,7 @@ namespace AngularTemplate.Controllers
         {
             Facility facility = await ProviderHubService.GetFacilityByIDAsync(id);
             return facility;
-            
+
         }
         #endregion
 
@@ -55,7 +55,7 @@ namespace AngularTemplate.Controllers
 
             var allowedCredentials = new[] { 31, 32, 100, 128, 185, 188, 202, 239, 242, 244, 279, 286 };
             var filteredCredentials = credentials.Where(o => allowedCredentials.Contains(o.ID));
-            
+
             return Json(filteredCredentials);
         }
         #endregion
@@ -159,7 +159,7 @@ namespace AngularTemplate.Controllers
         [HttpGet("[action]/{facilityID}/{relationshipID}")]
         public async Task<IActionResult> GetRelationshipDataByFacilityID(int facilityID, int relationshipID)
         {
-            FacilityProviderRelationship [] list = await ProviderHubService.GetRelationshipDataByFacilityIDAsync(facilityID);
+            FacilityProviderRelationship[] list = await ProviderHubService.GetRelationshipDataByFacilityIDAsync(facilityID);
             var filteredFacilityProviderRelationship = list.Where(o => relationshipID != o.RelationshipID);
             return Json(filteredFacilityProviderRelationship);
         }
@@ -272,6 +272,26 @@ namespace AngularTemplate.Controllers
             return Json(x);
 
         }
+        #endregion
+
+        #region FUNCTION: MapProviderToFacility(providerID,facilityID,createdBy))
+        //TODO
+        [HttpGet("[action]/{providerID}/{facilityID}")]
+        public async Task<IActionResult> MapProviderToFacility(int providerID, int facilityID)
+        {
+            // facilityID = 2;
+            // providerID = 3;
+
+
+            string createdBy = User.Identity.Name;
+            int x = await ProviderHubService.MapProviderToFacilityAsync(providerID, facilityID, createdBy);
+            if (x == 0)
+            {
+                return NotFound("Map To Provider to Facility Failed");
+            }
+            return Json(x);
+        }
+
         #endregion
 
         #region FUNCTION: AllFacilityProviderRelationships()
@@ -394,7 +414,7 @@ namespace AngularTemplate.Controllers
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {
             providerUpdate.LastUpdatedBy = User.Identity.Name;
-          
+
             _logger.LogInformation("Controller {username}", User.Identity.Name);
             _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.ID}", providerUpdate.ID);
             int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);

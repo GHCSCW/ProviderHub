@@ -34,7 +34,7 @@ export class MentalHealthService {
   handleError: any;
   forecasts: any;
   private server_url: string = 'api/home';
-  baseUrl: string = 'localhost';
+ // baseUrl: string = 'http://localhost:57931/';
   queryUrl: string = '/SearchForValue/';
 
   serviceData: any = [];
@@ -293,6 +293,11 @@ export class MentalHealthService {
   //TODO mapAddressToFacility(facilityID, addressID)
   //TODO  mapAddressToVendor (vendorID, addressID)
   //TODO  mapFacilityToVendor(facilityID,vendorID )
+
+  MapProviderToFacility(providerID: number, facilityID): Observable<any> {
+    return this.http.get(this.server_url + '/MapProviderToFacility/' + providerID +'/'+ facilityID)
+      .map(this.extractData);
+  }
 
   updateFacilityProviderRelationship(body) {
     const url = `${this.server_url}/updateFacilityProviderRelationship/`;

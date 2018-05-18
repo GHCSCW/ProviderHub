@@ -2113,6 +2113,9 @@ namespace ProviderHubService
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderID", ReplyAction="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderIDResponse")]
         System.Threading.Tasks.Task<ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByProviderIDAsync(int providerID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/MapProviderToFacility", ReplyAction="http://tempuri.org/IProviderHubService/MapProviderToFacilityResponse")]
+        System.Threading.Tasks.Task<int> MapProviderToFacilityAsync(int providerID, int facilityID, string createdBy);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.0")]
@@ -2328,6 +2331,11 @@ namespace ProviderHubService
         public System.Threading.Tasks.Task<ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByProviderIDAsync(int providerID)
         {
             return base.Channel.GetRelationshipDataByProviderIDAsync(providerID);
+        }
+        
+        public System.Threading.Tasks.Task<int> MapProviderToFacilityAsync(int providerID, int facilityID, string createdBy)
+        {
+            return base.Channel.MapProviderToFacilityAsync(providerID, facilityID, createdBy);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

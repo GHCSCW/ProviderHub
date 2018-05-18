@@ -207,6 +207,7 @@ export class AdvancedSearchComponent implements OnInit {
   }
 
   onFormSubmit(form) {
+    this.loading = true;
     var searchObject = [];
     this.mentalHealthService.saveAdvancedSearchQuery(form);
     //Build all array key values
@@ -260,6 +261,8 @@ export class AdvancedSearchComponent implements OnInit {
     searchObject = searchObject.filter(x => x.value != null && x.value.length > 0)
 
     this.mentalHealthService.advancedSearch(searchObject).subscribe(results => {
+      
+      this.loading = false;
       this.newResults = [];
       this.facilityProviderRelationships = results;
 

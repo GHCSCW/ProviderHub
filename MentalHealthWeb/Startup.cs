@@ -45,7 +45,8 @@ namespace MentalHealthWeb
                 options.AddPolicy("BehavorialHealthAnonymous", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Anonymous"));
 
             });
- 
+
+         
             services.AddMvcCore(options =>
              {
                  options.RequireHttpsPermanent = true; // does not affect api requests
@@ -88,7 +89,7 @@ namespace MentalHealthWeb
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            
+
 
             app.UseCors("AllowAll");
             app.UseStaticFiles();
