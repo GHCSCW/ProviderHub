@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>New Facility</h1>
-<form [formGroup]="createFacilityForm" (ngSubmit)="onFormSubmit(createFacilityForm.value)">
+<form [formGroup]="createFacilityForm">
   <mat-form-field>
     <input matInput formControlName="FacilityName" placeholder="Facility Name" required>
   </mat-form-field>

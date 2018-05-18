@@ -57,20 +57,9 @@ export class CreateProvider implements OnInit {
       'DateOfBirth':[],
       'CredentialList': [],
       'LanguageList':[],
-      //'DelegateName': [],
-      //'DelegateIndicator': [],
       'EpicProviderID': [],
       'NPI': [],
-      //'TaxonomyCode': [],
-      //'UniquePhyscianId':[],
-      //'ExternalProviderName': [],
       'Gender': [],
-      //'HospitalAffiliation':[],
-     // 'InternalNotes': []
-     
-      //Specialties List
-      //'LastUpdateBy': [],
-      //'LastUpdateDate': [],
       'MedicareIndicator': false,
       'MedicaidIndicator': false,
       'MedicareEffectiveDate': [],

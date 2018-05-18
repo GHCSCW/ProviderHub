@@ -55,9 +55,7 @@ namespace MentalHealthWeb.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                //string hmo = "GHCHMO";
                 string username = User.Identity.Name;
-
                 Int32 max = username.Length - 8;
                 username = username.Substring(8, max);
 
@@ -69,7 +67,6 @@ namespace MentalHealthWeb.Controllers
             }
         }
         [HttpGet("[action]")]
-  
         public IActionResult GetUserRoles()
         {
             List<Roles> roles = new List<Roles>();
@@ -93,7 +90,6 @@ namespace MentalHealthWeb.Controllers
                     rolenames.RoleName = "Viewer";
                     rolenames.InRole = true;
                     roles.Add(rolenames);
-
                 }
                 if(User.IsInRole(@"GHC-HMO\App_BehavioralHealth_Anonymous"))
                 {

@@ -63,14 +63,12 @@ export class CreateFacility implements OnInit {
         this.facilityRoute(this.facilityID);
       }
     }
-
-
   }
  
-  onFormSubmit(form) {
-    this.mentalHealthService.createFacility(form);
-    console.log(form);
-  }
+  //onFormSubmit(form) {
+  //  this.mentalHealthService.createFacility(form);
+  //  console.log(form);
+  //}
   facilityRoute(facilityID) {
     this.toastr.success('Create Success', 'The Facility ' + this.facility.FacilityName + ' was created');
     this.nav.addFacilityID(facilityID);

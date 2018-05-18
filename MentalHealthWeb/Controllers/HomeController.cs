@@ -7,10 +7,11 @@ using System;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using MentalHealthWeb.Core;
-
+using Microsoft.AspNetCore.Cors;
 
 namespace AngularTemplate.Controllers
 {
+   
     [Route("api/[controller]")]
     [Authorize]
     public class HomeController : Controller
@@ -29,11 +30,7 @@ namespace AngularTemplate.Controllers
 
         public HomeController(ILoggerFactory logger)
         {
-            //_logger.LogInformation("Controller TEST");
-            //username = User.Identity.Name;
-            _logger = logger.CreateLogger("BehavorialHealthHomeController");
-            //_logger.LogInformation("Controller {username}", username);
-
+                _logger = logger.CreateLogger("BehavorialHealthHomeController"); 
         }
         ProviderHubService.IProviderHubService ProviderHubService = new ProviderHubServiceClient();
 
@@ -232,77 +229,17 @@ namespace AngularTemplate.Controllers
         }
         #endregion
 
-        #region FUNCTION: MapAddressToFacility(facilityId,addressID,createdBy)
-        //TODO
-        [HttpPost("[action]")]
-        public async Task<IActionResult> MapAddressToFacility()
-        {
-            int facilityID = 2;
-            int addressID = 3;
-            string createdBy = username;
-            int x = await ProviderHubService.MapAddressToFacilityAsync(facilityID, addressID, createdBy);
-            return Json(x);
-
-        }
-        #endregion
-
-        #region FUNCTION: MapAddressToVendor(vendorID,addressID,createdBy)
-        //TODO
-        [HttpPost("[action]")]
-        public async Task<IActionResult> MapAddressToVendor()
-        {
-            int vendorID = 2;
-            int addressID = 3;
-            string createdBy = username;
-            int x = await ProviderHubService.MapAddressToVendorAsync(vendorID, addressID, createdBy);
-            return Json(x);
-
-        }
-        #endregion
-
-        #region FUNCTION: MapFaciltyToVendor(faciltiyID,vendorID,createdBy))
-        //TODO
-        [HttpPost("[action]")]
-        public async Task<IActionResult> MapFacilityToVendor()
-        {
-            int facilityID = 2;
-            int vendorID = 3;
-            string createdBy = username;
-            int x = await ProviderHubService.MapFacilityToVendorAsync(facilityID, vendorID, createdBy);
-            return Json(x);
-
-        }
-        #endregion
-
-        #region FUNCTION: MapProviderToFacility(providerID,facilityID,createdBy))
-        //TODO
-        [HttpGet("[action]/{providerID}/{facilityID}")]
-        public async Task<IActionResult> MapProviderToFacility(int providerID, int facilityID)
-        {
-            // facilityID = 2;
-            // providerID = 3;
 
 
-            string createdBy = User.Identity.Name;
-            int x = await ProviderHubService.MapProviderToFacilityAsync(providerID, facilityID, createdBy);
-            if (x == 0)
-            {
-                return NotFound("Map To Provider to Facility Failed");
-            }
-            return Json(x);
-        }
-
-        #endregion
-
-        #region FUNCTION: AllFacilityProviderRelationships()
-        [HttpGet("[action]")]
-        public async Task<IActionResult> AllFacilityProviderRelationships()
-        {
-            string blank = "";
-            SearchResults list = await ProviderHubService.SearchForValueAsync(blank);
-            return Json(list);
-        }
-        #endregion
+        //#region FUNCTION: AllFacilityProviderRelationships()
+        //[HttpGet("[action]")]
+        //public async Task<IActionResult> AllFacilityProviderRelationships()
+        //{
+        //    string blank = "";
+        //    SearchResults list = await ProviderHubService.SearchForValueAsync(blank);
+        //    return Json(list);
+        //}
+        //#endregion
 
         #region FUNCTION: Create Address(Address address)
         [HttpPost("[action]")]
@@ -373,6 +310,200 @@ namespace AngularTemplate.Controllers
         }
         #endregion
 
+        
+        #region FUNCTION: UpdateProvider(Provider providerUpdate)
+        //Creates and Updates Provider
+        [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
+        public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
+        {
+            providerUpdate.LastUpdatedBy = User.Identity.Name;
+
+            _logger.LogInformation("Controller {username}", User.Identity.Name);
+            _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.ID}", providerUpdate.ID);
+            int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
+            if (x > 0)
+            {
+                bool y = await ProviderHubService.SaveCredentialByProviderIDAsync(x, providerUpdate.CredentialList);
+                bool z = await ProviderHubService.SaveLanguageByProviderIDAsync(x, providerUpdate.LanguageList);
+
+                if (y == true && z == true)
+                {
+                    return Ok(x);
+                }
+                else
+                {
+                    return NotFound("There was an issue save credentials or languages");
+                }
+            }
+            else
+            {
+                return NotFound("There was an error Creating/Updating the Provider");
+            }
+        }
+
+        #endregion
+
+        #region FUNCTION: CreateFacility(Facility facilityUpdate)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> CreateFacility([FromBody]Facility newFacility)
+        {
+            newFacility.LastUpdatedBy = User.Identity.Name;
+            newFacility.LastUpdatedDate = DateTime.Now;
+            newFacility.CreatedBy = User.Identity.Name;
+            newFacility.CreatedDate = DateTime.Now;
+            newFacility.FacilityAddress.LastUpdatedBy = User.Identity.Name;
+            newFacility.FacilityAddress.LastUpdatedDate = DateTime.Now;
+            int x = await ProviderHubService.SaveFacilityAndAddressAsync(newFacility);
+            if (x > 0)
+            {
+                return Ok(x);
+            }
+            else
+            {
+                return NotFound("There was an error creating the provider");
+            }
+        }
+
+        #endregion
+
+        #region FUNCTION: UpdateFacility(Facility facilityUpdate)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateFacility([FromBody]Facility facilityUpdate)
+        {
+            facilityUpdate.LastUpdatedBy = User.Identity.Name; ;
+            int x = await ProviderHubService.SaveFacilityAndAddressAsync(facilityUpdate);
+            if (x > 0)
+            {
+                return Ok(facilityUpdate);
+            }
+            else
+            {
+                return NotFound("There was an error Creating/Updating the Facility");
+            }
+        }
+
+        #endregion
+
+        #region FUNCTION: UpdateFacilityProviderRelationship(FacilityProviderRelationship facilityProvUpdate)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateFacilityProviderRelationship([FromBody]FacilityProviderRelationship facilityProvUpdate)
+        {
+            facilityProvUpdate.LastUpdatedBy = User.Identity.Name;
+            int x = await ProviderHubService.SaveFacilityProviderRelationshipAsync(facilityProvUpdate);
+            if (x > 0)
+            {
+                return Ok(facilityProvUpdate);
+            }
+            else
+            {
+                return NotFound(" There was an error updating the Provider Relationship" + facilityProvUpdate.RelationshipID);
+            }
+        }
+
+        #endregion
+
+        #region FUNCTION: CreateVendor(Vendor vendor)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> CreateVendor([FromBody]Vendor vendor)
+        {
+            vendor.LastUpdatedBy = User.Identity.Name;
+            vendor.LastUpdatedDate = DateTime.Now;
+            vendor.CreatedBy = User.Identity.Name;
+            vendor.CreatedDate = DateTime.Now;
+            int x = await ProviderHubService.SaveVendorAsync(vendor);
+            if (x > 0)
+            {
+                return Ok(vendor);
+            }
+            else
+            {
+                return NotFound("There was an error creating the Vendor");
+            }
+        }
+        #endregion
+
+        #region FUNCTION: UpdateVendor(Vendor vendorUpdate)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateVendor([FromBody]Vendor vendorUpdate)
+        {
+            vendorUpdate.LastUpdatedBy = User.Identity.Name;
+            int x = await ProviderHubService.SaveVendorAsync(vendorUpdate);
+
+            if (x > 0)
+            {
+                return Ok(vendorUpdate);
+            }
+            else
+            {
+                return NotFound("There was an error updating the Vendor");
+            }
+        }
+
+        #endregion
+
+        #region FUNCTION: MapAddressToFacility(facilityId,addressID,createdBy)
+        //TODO
+        [HttpPost("[action]")]
+        public async Task<IActionResult> MapAddressToFacility()
+        {
+            int facilityID = 2;
+            int addressID = 3;
+            string createdBy = username;
+            int x = await ProviderHubService.MapAddressToFacilityAsync(facilityID, addressID, createdBy);
+            return Json(x);
+
+        }
+        #endregion
+
+        #region FUNCTION: MapAddressToVendor(vendorID,addressID,createdBy)
+        //TODO
+        [HttpPost("[action]")]
+        public async Task<IActionResult> MapAddressToVendor()
+        {
+            int vendorID = 2;
+            int addressID = 3;
+            string createdBy = username;
+            int x = await ProviderHubService.MapAddressToVendorAsync(vendorID, addressID, createdBy);
+            return Json(x);
+
+        }
+        #endregion
+
+        #region FUNCTION: MapFaciltyToVendor(faciltiyID,vendorID,createdBy))
+        //TODO
+        [HttpPost("[action]")]
+        public async Task<IActionResult> MapFacilityToVendor()
+        {
+            int facilityID = 2;
+            int vendorID = 3;
+            string createdBy = username;
+            int x = await ProviderHubService.MapFacilityToVendorAsync(facilityID, vendorID, createdBy);
+            return Json(x);
+
+        }
+        #endregion
+
+        #region FUNCTION: MapProviderToFacility(providerID,facilityID,createdBy))
+        //TODO
+        [HttpGet("[action]/{providerID}/{facilityID}")]
+        public async Task<IActionResult> MapProviderToFacility(int providerID, int facilityID)
+        {
+            // facilityID = 2;
+            // providerID = 3;
+
+
+            string createdBy = User.Identity.Name;
+            int x = await ProviderHubService.MapProviderToFacilityAsync(providerID, facilityID, createdBy);
+            if (x == 0)
+            {
+                return NotFound("Map To Provider to Facility Failed");
+            }
+            return Json(x);
+        }
+
+        #endregion
+
         #region FUNCTION: UpdateBhAttributes(BehavioralHealthAttribute[] attribute, int id)
         [HttpPut("[action]/{id}")]
         [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
@@ -408,135 +539,6 @@ namespace AngularTemplate.Controllers
 
         #endregion
 
-        #region FUNCTION: UpdateProvider(Provider providerUpdate)
-        [HttpPost("[action]")]
-        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
-        public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
-        {
-            providerUpdate.LastUpdatedBy = User.Identity.Name;
-
-            _logger.LogInformation("Controller {username}", User.Identity.Name);
-            _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.ID}", providerUpdate.ID);
-            int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
-            if (x > 0)
-            {
-                bool y = await ProviderHubService.SaveCredentialByProviderIDAsync(x, providerUpdate.CredentialList);
-                bool z = await ProviderHubService.SaveLanguageByProviderIDAsync(x, providerUpdate.LanguageList);
-
-                if (y == true && z == true)
-                {
-                    return Ok(x);
-                }
-                else
-                {
-                    return NotFound("There was an issue save credentials or languages");
-                }
-            }
-            else
-            {
-                return NotFound("There was an error Creating/Updating the Provider");
-            }
-        }
-
-        #endregion
-
-        #region FUNCTION: UpdateFacility(Facility facilityUpdate)
-        [HttpPost("[action]")]
-        public async Task<IActionResult> UpdateFacility([FromBody]Facility facilityUpdate)
-        {
-            facilityUpdate.LastUpdatedBy = User.Identity.Name; ;
-            int x = await ProviderHubService.SaveFacilityAndAddressAsync(facilityUpdate);
-            if (x > 0)
-            {
-                return Ok(facilityUpdate);
-            }
-            else
-            {
-                return NotFound("There was an error Creating/Updating the Facility");
-            }
-        }
-
-        #endregion
-
-        #region FUNCTION: CreateFacility(Facility facilityUpdate)
-        [HttpPost("[action]")]
-        public async Task<IActionResult> CreateFacility([FromBody]Facility newFacility)
-        {
-            newFacility.LastUpdatedBy = User.Identity.Name;
-            newFacility.LastUpdatedDate = DateTime.Now;
-            newFacility.CreatedBy = User.Identity.Name;
-            newFacility.CreatedDate = DateTime.Now;
-            newFacility.FacilityAddress.LastUpdatedBy = User.Identity.Name;
-            newFacility.FacilityAddress.LastUpdatedDate = DateTime.Now;
-            int x = await ProviderHubService.SaveFacilityAndAddressAsync(newFacility);
-            if (x > 0)
-            {
-                return Ok(x);
-            }
-            else
-            {
-                return NotFound("There was an error creating the provider");
-            }
-        }
-
-        #endregion
-
-        #region FUNCTION: UpdateFacilityProviderRelationship(FacilityProviderRelationship facilityProvUpdate)
-        [HttpPost("[action]")]
-        public async Task<IActionResult> UpdateFacilityProviderRelationship([FromBody]FacilityProviderRelationship facilityProvUpdate)
-        {
-            facilityProvUpdate.LastUpdatedBy = User.Identity.Name;
-            int x = await ProviderHubService.SaveFacilityProviderRelationshipAsync(facilityProvUpdate);
-            if (x > 0)
-            {
-                return Ok(facilityProvUpdate);
-            }
-            else
-            {
-                return NotFound(" There was an error updating the Provider Relationship" + facilityProvUpdate.RelationshipID);
-            }
-        }
-
-        #endregion
-
-        #region FUNCTION: UpdateVendor(Vendor vendorUpdate)
-        [HttpPost("[action]")]
-        public async Task<IActionResult> UpdateVendor([FromBody]Vendor vendorUpdate)
-        {
-            vendorUpdate.LastUpdatedBy = User.Identity.Name;
-            int x = await ProviderHubService.SaveVendorAsync(vendorUpdate);
-
-            if (x > 0)
-            {
-                return Ok(vendorUpdate);
-            }
-            else
-            {
-                return NotFound("There was an error updating the Vendor");
-            }
-        }
-
-        #endregion
-
-        #region FUNCTION: CreateVendor(Vendor vendor)
-        [HttpPost("[action]")]
-        public async Task<IActionResult> CreateVendor([FromBody]Vendor vendor)
-        {
-            vendor.LastUpdatedBy = User.Identity.Name;
-            vendor.LastUpdatedDate = DateTime.Now;
-            vendor.CreatedBy = User.Identity.Name;
-            vendor.CreatedDate = DateTime.Now;
-            int x = await ProviderHubService.SaveVendorAsync(vendor);
-            if (x > 0)
-            {
-                return Ok(vendor);
-            }
-            else
-            {
-                return NotFound("There was an error creating the Vendor");
-            }
-        }
-        #endregion
 
     }
 }

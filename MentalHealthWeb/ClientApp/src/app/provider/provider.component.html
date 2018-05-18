@@ -292,7 +292,7 @@
                 <th>Clinic Address</th>
                 <th>Phone Number</th>
               </tr>
-              <tr *ngFor="let data of relationshipDataByProvider">
+              <tr *ngFor="let data of relationshipDataByProvider" (click)="RouteNewProvider(data)">
                 <td>{{data.provider.id}}</td>
                 <td>{{data.provider.fullName}}</td>
                 <td>{{data.facility.facilityName}}</td>

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl } from "@angular/forms";
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MatDialogModule } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/map';
@@ -62,7 +62,8 @@ export class ProviderComponent implements OnInit, AfterViewChecked {
     private route: ActivatedRoute,
     private location: Location,
     public nav: NavbarService,
-    private authSvc: AthenticationServiceService
+    private authSvc: AthenticationServiceService,
+    private router: Router
   ) {
     this.showHide = false;
   }
@@ -180,6 +181,12 @@ export class ProviderComponent implements OnInit, AfterViewChecked {
     this.bhaOthers = facilityProviderRelationship.behavioralHealthAttributes.filter(others =>
       others.bhSpecialtyType == 5
     );
+  }
+
+  RouteNewProvider(data) {
+    this.mentalHealthService.insertFacilityProviderRelationshipData(data);
+    this.nav.addFacilityRelationshipProviderID(data);
+    this.router.navigate(["/provider/facilityrel/" + data.relationshipID]);
   }
 
 
