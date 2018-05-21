@@ -89,9 +89,6 @@ namespace MentalHealthWeb
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-
-            app.UseCors("AllowAll");
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

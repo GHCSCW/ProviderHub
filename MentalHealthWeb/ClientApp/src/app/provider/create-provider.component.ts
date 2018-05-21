@@ -3,10 +3,13 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl } from "@angular/forms";
 import { FormBuilder, Validators, FormsModule, NgForm, FormGroup } from '@angular/forms';
 import { MentalHealthService } from '../services/mental.health.service';
+import 'rxjs/operators/map';
 
 import 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { NavbarService } from '../services/navbarservice';
+import { ToastrService } from 'ngx-toastr';
+import { provideRoutes } from '@angular/router/src/router_module';
 export class Language {
   constructor(public name: string) { }
 }
@@ -20,8 +23,7 @@ export class Language {
 })
 
 export class CreateProvider implements OnInit {
-  providerID: any;
-
+  provider: any =[];
   credentialList: any = [];
   languageList: any = [];
   credentialDropdownSettings = {};
@@ -46,7 +48,13 @@ export class CreateProvider implements OnInit {
   CredentialList: any = [];
   LanguageList: any = [];
 
-  constructor(private fb: FormBuilder, private mentalHealthService: MentalHealthService, private router: Router, public nav: NavbarService) {
+  constructor(
+    private fb: FormBuilder,
+    private mentalHealthService: MentalHealthService,
+    private router: Router,
+    public nav: NavbarService,
+    private toastr: ToastrService
+  ) {
 
     this.createProviderForm = fb.group({
       'FirstName': [],
@@ -99,13 +107,20 @@ export class CreateProvider implements OnInit {
 
   }
 
-  providerRoute(provider) {
-
-    this.mentalHealthService.insertProviderData(provider);
-    this.nav.addProviderID(provider.id);
-    this.router.navigate(["/provider/" + this.providerID]);
-
+  onFormSubmit(form: NgForm) {
+    this.provider = form;
+    this.mentalHealthService.createProvider(form).subscribe(providerId =>
+      this.providerRoute(providerId)
+      )
   }
+  providerRoute(providerId) {
+    if (providerId > 0) {
+      this.toastr.success('Create Success', 'Provider ' + this.provider.FirstName + ' , ' + this.provider.LastName + ' was created');
+      this.nav.addProviderID(providerId);
+      this.router.navigate(["/provider/" + providerId]);
+    }
+  }
+
 
   onItemSelect(item: any) {
     console.log(item);
@@ -121,13 +136,16 @@ export class CreateProvider implements OnInit {
   onDeSelectAll(items: any) {
     console.log(items);
   }
-
-  onFormSubmit(form: NgForm) {
-    this.mentalHealthService.updateProvider(form).subscribe(provider =>
-      this.providerID = provider
-      )
-    console.log(form);
-  }
+//onFormSubmit(form) {
+//  this.mentalHealthService.createFacility(form);
+//  console.log(form);
+////}
+//providerRoute(provider,form) {
+//  this.toastr.success('Create Success', 'The Provider ' + form.facility.FacilityName + ' was created');
+//  this.nav.addFacilityID(facilityID);
+ 
+//    console.log(form);
+//  }
 
 
 }

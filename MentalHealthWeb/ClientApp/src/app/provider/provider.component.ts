@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl } from "@angular/forms";
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, NavigationStart } from "@angular/router";
 import { MatDialogModule } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/map';
@@ -63,9 +63,18 @@ export class ProviderComponent implements OnInit, AfterViewChecked {
     private location: Location,
     public nav: NavbarService,
     private authSvc: AthenticationServiceService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.showHide = false;
+    this.router.events
+      .map(event => event instanceof NavigationStart)
+      .subscribe(() => {
+        // TODO
+      });
+    this.activatedRoute.url.subscribe(url => {
+      console.log(url);
+    });
   }
   ngAfterViewChecked() {
     this.userRoles.forEach(item => {
@@ -73,15 +82,13 @@ export class ProviderComponent implements OnInit, AfterViewChecked {
         this.canEdit = true;
       }
     });
+
   }
   ngOnInit() {
+
+  
     this.nav.show();
     this.AuthenticateUser();
- 
-    //this.mentalHealthService.getFacilityList().subscribe(data => {
-    //  this.facilityList = data;
-    //});
-
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       if (results.provider == undefined) {
         this.provider = this.mentalHealthService.getProviderData();

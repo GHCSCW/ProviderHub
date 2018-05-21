@@ -3,7 +3,7 @@
 </div>
 
 <mat-accordion multi="true">
-  <mat-expansion-panel class="facilityProviderRelationship">
+  <mat-expansion-panel  class="facilityProviderRelationship">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <b style="margin-right:1.0em">Provider Name:</b>
@@ -106,7 +106,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel class="facilityProviderRelationship">
+  <mat-expansion-panel *ngIf="facilityProviderRelationship != 0" class="facilityProviderRelationship">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <span>
@@ -190,7 +190,7 @@
       </div>
     </div>
   </mat-expansion-panel>
-  <mat-expansion-panel class="facilityProviderRelationship" [expanded]="true">
+  <mat-expansion-panel *ngIf="facilityProviderRelationship != 0" class="facilityProviderRelationship" [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div>
@@ -286,15 +286,15 @@
           <div class="col card-block">
             <table class="table">
               <tr>
-                <th>ID</th>
                 <th>Provider Name</th>
+                <th>Credentials</th>
                 <th>Clinic Name</th>
                 <th>Clinic Address</th>
-                <th>Phone Number</th>
+                <th>Clinic Phone Number</th>
               </tr>
               <tr *ngFor="let data of relationshipDataByProvider" (click)="RouteNewProvider(data)">
-                <td>{{data.provider.id}}</td>
                 <td>{{data.provider.fullName}}</td>
+                <td>{{data.provider.credentials}}</td>
                 <td>{{data.facility.facilityName}}</td>
                 <td>{{data.facility.facilityAddress.addressLine1}} - {{data.facility.facilityAddress.addressLine2}}</td>
                 <td>{{data.facility.facilityAddress.phoneNumber}}</td>

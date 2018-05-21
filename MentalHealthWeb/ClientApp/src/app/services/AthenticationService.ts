@@ -13,7 +13,7 @@ export class AthenticationServiceService {
 
   getUser(): Observable<string> {
     console.log('Calling getUser');
-    let serviceUrl: string = `${environment.serviceBaseUrl}api/auth/getuser`;
+    let serviceUrl: string = 'api/auth/getuser';
     return this.http.get(serviceUrl)
       .map((rslt: string) => {
         return rslt;
@@ -21,7 +21,7 @@ export class AthenticationServiceService {
   }
   getUserRoles(): Observable<string[]> {
     console.log('Calling getUserRoles');
-    let serviceUrl: string = `${environment.serviceBaseUrl}api/auth/getuserroles`;
+    let serviceUrl: string = 'api/auth/getuserroles';
     return this.http.get(serviceUrl)
       .map((rslt: string[]) => {
         return rslt;

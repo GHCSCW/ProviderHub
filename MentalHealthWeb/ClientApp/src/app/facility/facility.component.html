@@ -128,18 +128,14 @@
           <div class="col card-block">
             <table class="table">
               <tr>
-                <th>ID</th>
                 <th>Provider Name</th>
-                <!--<th>Clinic Name</th>-->
+                <th>Credentials</th>
                 <th>Clinic Address</th>
-                <th>Phone Number</th>
+                <th>Clinic Phone Number</th>
               </tr>
-
-
               <tr *ngFor="let data of relationshipDataByProvider" [routerLink]="['/facility',data.facility.id]">
-                <td>{{data.provider.id}}</td>
                 <td>{{data.provider.fullName}}</td>
-                <!--<td>{{data.facility.facilityName}}</td>-->
+                <td>{{data.provider.credentials}}</td>
                 <td>{{data.facility.facilityAddress.addressLine1}} - {{data.facility.facilityAddress.addressLine2}}</td>
                 <td>{{data.facility.facilityAddress.phoneNumber}}</td>
               </tr>

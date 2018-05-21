@@ -279,7 +279,7 @@ namespace AngularTemplate.Controllers
 
                 if (y == true && z == true)
                 {
-                    return Ok(provider);
+                    return Ok(x);
                 }
                 else
                 {
@@ -317,10 +317,12 @@ namespace AngularTemplate.Controllers
         [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {
+            providerUpdate.CreatedBy = User.Identity.Name;
             providerUpdate.LastUpdatedBy = User.Identity.Name;
+            
 
             _logger.LogInformation("Controller {username}", User.Identity.Name);
-            _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.ID}", providerUpdate.ID);
+            _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.id}", providerUpdate.ID);
             int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
             if (x > 0)
             {

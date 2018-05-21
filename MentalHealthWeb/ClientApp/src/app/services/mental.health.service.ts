@@ -34,7 +34,6 @@ export class MentalHealthService {
   handleError: any;
   forecasts: any;
   private server_url: string = 'api/home';
- // baseUrl: string = 'http://localhost:57931/';
   queryUrl: string = '/SearchForValue/';
 
   serviceData: any = [];
@@ -230,15 +229,20 @@ export class MentalHealthService {
 
   createProvider(body) {
     const url = `${this.server_url}/createProvider/`;
-    this.httpClient.post(url, body).subscribe(
-      body => {
-        console.log("Provider Create was successful", body);
-      },
-      error => {
-        console.log("Error", error);
-      }
-    );
+    return this.httpClient.post(url, body).map((res: any) => {
+      let data = res;
+      return data;
+    }).catch(this.handleError)
   }
+
+  updateProvider(body) {
+    const url = `${this.server_url}/updateProvider/`;
+    return this.httpClient.post(url, body).map((res: any) => {
+      let data = res;
+      return data;
+    }).catch(this.handleError)
+  }
+
   updateCredentials(body, id) {
     const url = `${this.server_url}/updateCredentials/` + id;
     return this.httpClient.post(url, body).map((res: any) => {
@@ -263,14 +267,6 @@ export class MentalHealthService {
     }).catch(this.handleError)
   }
 
-  updateProvider(body) {
-    const url = `${this.server_url}/updateProvider/`;
-
-    return this.httpClient.post(url, body).map((res: any) => {
-      let data = res;
-      return data;
-    }).catch(this.handleError)
-  }
 
   createFacility(body) {
     const url = `${this.server_url}/createFacility/`;

@@ -21,19 +21,22 @@ import { Address } from '../models/Address';
 })
 
 export class CreateFacility implements OnInit {
-  facilityID: number;
-  address: any = [];
-  //facility: any = [];
+
 
   public facility = new Facility();
-
+  address: any = [];
   createFacilityForm: FormGroup;
   NPI: number = null;
   ExternalId: string = '';
   InternalNotes: string = '';
 
 
-  constructor(private fb: FormBuilder, private mentalHealthService: MentalHealthService, private router: Router, public nav: NavbarService, private toastr: ToastrService) {
+  constructor(
+    private fb: FormBuilder,
+    private mentalHealthService: MentalHealthService,
+    private router: Router, public nav: NavbarService,
+    private toastr: ToastrService
+  ) {
 
     this.createFacilityForm = fb.group({
       'FacilityName': '',
@@ -57,11 +60,9 @@ export class CreateFacility implements OnInit {
       this.facility = this.createFacilityForm.value;
       this.facility.FacilityAddress = form;
       this.mentalHealthService.createFacility(this.facility).subscribe(facilityID =>
-        this.facilityID = facilityID
+        this.facilityRoute(facilityID)
       )
-      if (this.facilityID > 0) {
-        this.facilityRoute(this.facilityID);
-      }
+    
     }
   }
  
@@ -70,8 +71,10 @@ export class CreateFacility implements OnInit {
   //  console.log(form);
   //}
   facilityRoute(facilityID) {
-    this.toastr.success('Create Success', 'The Facility ' + this.facility.FacilityName + ' was created');
-    this.nav.addFacilityID(facilityID);
-    this.router.navigate(["/facility/" + facilityID]);
+    if (facilityID > 0) {
+      this.toastr.success('Create Success', 'The Facility ' + this.facility.FacilityName + ' was created');
+      this.nav.addFacilityID(facilityID);
+      this.router.navigate(["/facility/" + facilityID]);
+    }
   }
 }

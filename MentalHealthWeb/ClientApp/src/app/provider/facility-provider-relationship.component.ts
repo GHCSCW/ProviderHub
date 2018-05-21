@@ -22,6 +22,7 @@ export class FacilityProviderRelationshipComponent  implements OnInit {
    
   }
   ngOnInit() {
+
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       this.facilityProviderRelationship = results;
       if (results.provider == undefined) {
