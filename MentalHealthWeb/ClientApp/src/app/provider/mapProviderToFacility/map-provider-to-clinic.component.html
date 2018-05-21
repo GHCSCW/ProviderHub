@@ -1,51 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>map-provider-to-facility-component</title>
-</head>
-<body>
-  <div class="mat-container">
-    <!--<mat-form-field fxFlex="33" class="mr-20 mt-20">
-    <input matInput placeholder="Facility" aria-label="Facility" [matAutocomplete]="auto" [formControl]="facilityName">
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let facility of clinicList" [value]="facility.facilityName">
-        <span>{{ facility.facilityName }}</span>
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>-->
-    <!--<mat-form-field>
-    <input matInput [matAutocomplete]="auto" [(ngModel)]="selectedValue" name="food">
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let clinicList of filteredOptions | async"
-                  [value]="clinicList.facilityName">
-        <span>{{ clinicList.facilityName }}</span>
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>-->
-    <!--<mat-form-field>
-    <mat-select placeholder="Facility to Map" [(ngModel)]="selectedValue" name="facility">
-      <mat-option *ngFor="clinicList of clinicList" [value]="clinicList.id">
-        {{clinicList.facilityName}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>-->
-    <form [formGroup]="facilityNameGroup" novalidate (ngSubmit)="onFormSubmit(facilityNameGroup.value)">
-      <div class="form-group col-md-12">
-        <label for="ages">Pick a facility to map to:</label>
-        <angular2-multiselect [data]="clinicList" [(ngModel)]="selectedValue"
-                              [settings]="DropdownSettings"
-                              (onSelect)="onItemSelect($event)"
-                              (onDeSelect)="OnItemDeSelect($event)"
-                              (onSelectAll)="onSelectAll($event)"
-                              (onDeSelectAll)="onDeSelectAll($event)" formControlName="facility">
-        </angular2-multiselect>
+<div class="mat-container">
+  <form [formGroup]="facilityNameGroup" novalidate (ngSubmit)="onFormSubmit(facilityNameGroup.value)">
+    <div class="col">
+      <label for="ages">Pick a facility to map to:</label>
+      <angular2-multiselect [data]="clinicList" [(ngModel)]="selectedValue"
+                            [settings]="DropdownSettings"
+                            (onSelect)="onItemSelect($event)"
+                            (onDeSelect)="OnItemDeSelect($event)"
+                            (onSelectAll)="onSelectAll($event)"
+                            (onDeSelectAll)="onDeSelectAll($event)" formControlName="facility">
+      </angular2-multiselect>
+      <div style="padding-top:1em">
+        <button mat-raised-button color="accent">Map</button>
       </div>
-      <button mat-raised-button color="accent">Map</button>
-    </form>
-    <button (click)="SaveMapping()">Map</button>
+    </div>
+  </form>
+</div>
 
-
-  </div>
-
-</body>
-</html>
