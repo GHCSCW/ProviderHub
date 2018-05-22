@@ -8,6 +8,7 @@ import { catchError, map, tap, filter, startWith, switchMap, debounceTime, disti
 import { AddressType } from '../services/enum-service';
 import { MentalHealthService } from '../services/mental.health.service'
 import { NavbarService } from "../services/navbarservice";
+import { AthenticationServiceService } from "../services/AthenticationService";
 
 
 @Component({
@@ -16,6 +17,9 @@ import { NavbarService } from "../services/navbarservice";
   styleUrls: ['./facility.component.css']
 })
 export class FacilityComponent  {
+
+  canEdit: boolean = false;
+  userRoles: any = [];
   relationshipDataByProvider: any = [];
   addressType: string;
  
@@ -33,11 +37,15 @@ export class FacilityComponent  {
   myControl = new FormControl();
   filteredOptions: Observable<any[]>;
 
-  constructor(private mentalHealthService: MentalHealthService, private route: ActivatedRoute, public nav: NavbarService, private http: HttpClient)
+  constructor(
+    private mentalHealthService: MentalHealthService,
+    private route: ActivatedRoute,
+    public nav: NavbarService,
+    private authSvc: AthenticationServiceService)
   {
 
     this.nav.show();
-
+    this.AuthenticateUser();
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
 
       if (results.facility == undefined) {
@@ -61,7 +69,22 @@ export class FacilityComponent  {
 
   
   }
- 
+
+  ngAfterViewChecked() {
+    this.userRoles.forEach(item => {
+      if ((item.roleName == "SuperUser") || (item.roleName == "Editor")) {
+        this.canEdit = true;
+      }
+    });
+
+  }
+  AuthenticateUser(): void {
+    this.authSvc.getUserRoles()
+      .subscribe(
+      r => { this.userRoles = r },
+      e => { console.log(e) }
+      );
+  }
   fillFacilityData() {
     return this.route.params.subscribe(params => {
       console.log(params);

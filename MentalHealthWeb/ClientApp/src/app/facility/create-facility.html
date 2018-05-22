@@ -10,9 +10,13 @@
     <mat-form-field>
       <input id="number" type="number" formControlName="ExternalId" placeholder="External Id" matInput>
     </mat-form-field>
-    <mat-form-field>
-      <textarea matInput placeholder="Internal Notes" formControlName="InternalNotes"> </textarea>
-    </mat-form-field>
+
+    <div>
+      <mat-form-field>
+        <textarea matInput placeholder="Internal Notes" formControlName="InternalNotes"> </textarea>
+      </mat-form-field>
+
+    </div>
   </div>
   <div>
     <create-address (notify)='onNotify($event)'></create-address>

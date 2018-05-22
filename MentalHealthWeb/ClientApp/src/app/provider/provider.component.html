@@ -3,26 +3,28 @@
 </div>
 
 <mat-accordion multi="true">
-  <mat-expansion-panel  class="facilityProviderRelationship">
+  <mat-expansion-panel class="facilityProviderRelationship">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <b style="margin-right:1.0em">Provider Name:</b>
-        <span style="margin-right:1.0em">{{provider.fullName}}</span>
-        <br />
-        <b style="margin-right:1.0em">Credentials: </b>
-        <span *ngFor="let option of provider.credentialList; let i= index">
+
+        <div class="col-sm-3">
+          <b style="margin-right:1.0em">Provider Name:</b>
+          <span style="margin-right:1.0em">{{provider.fullName}}</span>
+        </div>
+        <div class="col-sm-8 float-left" *ngFor="let option of provider.credentialList; let i= index">
+          <b style="margin-right:1.0em">Credentials: </b>
           <span *ngIf="i < provider.credentialList.length - 1">
             {{option.value}},
           </span>
           <span *ngIf="i == (provider.credentialList.length - 1)">
             {{option.value}}
           </span>
-        </span>
-        <br />
+        </div>
 
-        <span *ngIf="canEdit">
+        <div class="col-sm-1" *ngIf="canEdit">
           <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
-        </span>
+        </div>
+
       </mat-panel-title>
       <!--<mat-panel-description>
         This is a summary of the content
@@ -96,26 +98,23 @@
         </div>
       </div>
     </div>
-    <!--<mat-action-row>
-      <button mat-button>
-        <span>
-          <dialog-provider-details [provider]="provider">loading</dialog-provider-details>
-        </span>
-      </button>
-    </mat-action-row>-->
-
   </mat-expansion-panel>
-
-  <mat-expansion-panel *ngIf="facilityProviderRelationship != 0" class="facilityProviderRelationship">
+  <mat-expansion-panel *ngIf="facilityProviderRelationship != 0"  class="card-header facilityProviderRelationship">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <span>
-          <b>Provider - Clinic Relationship:</b>
-        </span>
-        <span *ngIf="canEdit" class="pull-right">
-          <dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship">
-          </dialog-facility-provider-relationship>
-        </span>
+      
+          <div class="col-sm-11">
+            <b>Provider - Clinic Relationship:</b>
+          </div>
+          <!--<div class="col-sm-10">
+           
+          </div>-->
+          <div class="col-sm-1">
+            <div *ngIf="canEdit">
+              <dialog-facility-provider-relationship [facilityProviderRelationship]="facilityProviderRelationship">
+              </dialog-facility-provider-relationship>
+            </div>
+          </div>
       </mat-panel-title>
       <mat-panel-description>
       </mat-panel-description>
@@ -146,8 +145,11 @@
           </div>
           <div class="col card-block">
             <div class="form-row">
-
-              <div class="col"><label>Relationship Status:</label></div>
+              <div class="col">
+                <label>
+                  Relationship Status:
+                </label>
+              </div>
               <div class="col">{{facilityProviderRelationship?.relationshipStatus | ActiveInactivePipe}}</div>
             </div>
             <div class="form-row">
@@ -193,12 +195,18 @@
   <mat-expansion-panel *ngIf="facilityProviderRelationship != 0" class="facilityProviderRelationship" [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <div>
+        <div class="col-sm-12">
           <label>Behavioral Health Characteristics: </label>
-          <span *ngIf="canEdit">
+
+        </div>
+        <div class="col-sm-10">
+
+        </div>
+        <div class="col-sm-1">
+          <div *ngIf="canEdit">
             <dialog-edit-bhAttribute [bhaConditions]="bhaConditions" [bhaModes]="bhaModes" [bhaAges]="bhaAges" [bhaOthers]="bhaOthers" [bhaTherapeuticApproaches]="bhaTherapeuticApproaches">
             </dialog-edit-bhAttribute>
-          </span>
+          </div>
         </div>
       </mat-panel-title>
       <mat-panel-description>
@@ -269,7 +277,7 @@
 
 
 
-  <mat-expansion-panel class="facility-background">
+  <mat-expansion-panel *ngIf="relationshipDataByProvider.length > 0" class="facility-background">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div>

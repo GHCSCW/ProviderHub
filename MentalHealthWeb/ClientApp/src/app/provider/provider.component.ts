@@ -64,7 +64,7 @@ export class ProviderComponent implements OnInit, AfterViewChecked {
     public nav: NavbarService,
     private authSvc: AthenticationServiceService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute : ActivatedRoute
   ) {
     this.showHide = false;
     this.router.events
@@ -85,8 +85,6 @@ export class ProviderComponent implements OnInit, AfterViewChecked {
 
   }
   ngOnInit() {
-
-  
     this.nav.show();
     this.AuthenticateUser();
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {

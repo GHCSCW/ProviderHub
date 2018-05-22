@@ -5,8 +5,14 @@
   <mat-expansion-panel class="card-header facilty-background" [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Clinic: {{facility.facilityName}}
-        <dialog-facility-details [facility]="facility">loading</dialog-facility-details>
+        <div class="col-sm-11">
+          <b>Clinic: </b>{{facility.facilityName}}
+        </div>
+        <div class="col-md-1">
+          <span *ngIf="canEdit">
+            <dialog-facility-details [facility]="facility">loading</dialog-facility-details>
+          </span>
+        </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div class="card">
@@ -115,8 +121,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div>
-          All Providers at {{facility.facilityName}} a ({{relationshipDataByProvider.length}})
-
+          All Providers at {{facility.facilityName}} ({{relationshipDataByProvider.length}})
         </div>
       </mat-panel-title>
       <mat-panel-description>

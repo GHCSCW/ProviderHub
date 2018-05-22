@@ -264,7 +264,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: CreateProvider(Provider provider)
         [HttpPost("[action]")]
-        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> CreateProvider([FromBody]Provider provider)
         {
             provider.CreatedBy = User.Identity.Name;
@@ -295,7 +295,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateCredentials(Credentia[] credentialUpdate, int id)
         [HttpPost("[action]/{id}")]
-        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateCredentials([FromBody]Credential[] credentialUpdate, int id)
         {
             bool x = await ProviderHubService.SaveCredentialByProviderIDAsync(id, credentialUpdate);
@@ -314,7 +314,7 @@ namespace AngularTemplate.Controllers
         #region FUNCTION: UpdateProvider(Provider providerUpdate)
         //Creates and Updates Provider
         [HttpPost("[action]")]
-        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateProvider([FromBody]Provider providerUpdate)
         {
             providerUpdate.CreatedBy = User.Identity.Name;
@@ -322,7 +322,7 @@ namespace AngularTemplate.Controllers
             
 
             _logger.LogInformation("Controller {username}", User.Identity.Name);
-            _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.id}", providerUpdate.ID);
+            _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.}", providerUpdate.ID);
             int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
             if (x > 0)
             {
@@ -348,6 +348,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: CreateFacility(Facility facilityUpdate)
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> CreateFacility([FromBody]Facility newFacility)
         {
             newFacility.LastUpdatedBy = User.Identity.Name;
@@ -371,6 +372,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateFacility(Facility facilityUpdate)
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateFacility([FromBody]Facility facilityUpdate)
         {
             facilityUpdate.LastUpdatedBy = User.Identity.Name; ;
@@ -389,6 +391,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateFacilityProviderRelationship(FacilityProviderRelationship facilityProvUpdate)
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateFacilityProviderRelationship([FromBody]FacilityProviderRelationship facilityProvUpdate)
         {
             facilityProvUpdate.LastUpdatedBy = User.Identity.Name;
@@ -407,6 +410,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: CreateVendor(Vendor vendor)
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> CreateVendor([FromBody]Vendor vendor)
         {
             vendor.LastUpdatedBy = User.Identity.Name;
@@ -427,6 +431,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateVendor(Vendor vendorUpdate)
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateVendor([FromBody]Vendor vendorUpdate)
         {
             vendorUpdate.LastUpdatedBy = User.Identity.Name;
@@ -447,6 +452,7 @@ namespace AngularTemplate.Controllers
         #region FUNCTION: MapAddressToFacility(facilityId,addressID,createdBy)
         //TODO
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> MapAddressToFacility()
         {
             int facilityID = 2;
@@ -461,6 +467,7 @@ namespace AngularTemplate.Controllers
         #region FUNCTION: MapAddressToVendor(vendorID,addressID,createdBy)
         //TODO
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> MapAddressToVendor()
         {
             int vendorID = 2;
@@ -475,6 +482,7 @@ namespace AngularTemplate.Controllers
         #region FUNCTION: MapFaciltyToVendor(faciltiyID,vendorID,createdBy))
         //TODO
         [HttpPost("[action]")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> MapFacilityToVendor()
         {
             int facilityID = 2;
@@ -489,6 +497,7 @@ namespace AngularTemplate.Controllers
         #region FUNCTION: MapProviderToFacility(providerID,facilityID,createdBy))
         //TODO
         [HttpGet("[action]/{providerID}/{facilityID}")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> MapProviderToFacility(int providerID, int facilityID)
         {
             // facilityID = 2;
@@ -508,7 +517,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateBhAttributes(BehavioralHealthAttribute[] attribute, int id)
         [HttpPut("[action]/{id}")]
-        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateBhAttributes([FromBody]BehavioralHealthAttribute[] attribute, int id)
         {
             bool x = await ProviderHubService.SaveBHAttributeToRelationshipAsync(id, attribute);
@@ -525,7 +534,7 @@ namespace AngularTemplate.Controllers
 
         #region FUNCTION: UpdateLanguage(Language[] languageUpdate, int id)
         [HttpPut("[action]/{id}")]
-        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthSuperUser")]
+        [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateLanguage([FromBody]Language[] languageUpdate, int id)
         {
             bool x = await ProviderHubService.SaveLanguageByProviderIDAsync(id, languageUpdate);

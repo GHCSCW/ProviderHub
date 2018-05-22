@@ -20,7 +20,7 @@ export class AthenticationServiceService {
       });
   }
   getUserRoles(): Observable<string[]> {
-    console.log('Calling getUserRoles');
+   // console.log('Calling getUserRoles');
     let serviceUrl: string = 'api/auth/getuserroles';
     return this.http.get(serviceUrl)
       .map((rslt: string[]) => {
