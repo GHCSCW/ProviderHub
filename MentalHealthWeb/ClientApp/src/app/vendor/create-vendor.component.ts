@@ -9,8 +9,8 @@ import 'rxjs/Rx';
 
 @Component({
   selector: 'create-vendor',
-  styleUrls: ['./create.vendor.component.css'],
-  templateUrl: './create.vendor.component.html'
+  styleUrls: ['./create-vendor.component.css'],
+  templateUrl: './create-vendor.component.html'
 
 })
 

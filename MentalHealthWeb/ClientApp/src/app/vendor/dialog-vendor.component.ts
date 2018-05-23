@@ -40,8 +40,8 @@ export class DialogVendor {
 
 @Component({
   selector: 'dialog-vendor-dialog',
-  styleUrls: ['./dialog.vendor.component.css'],
-  templateUrl: 'dialog.vendor.component.html',
+  styleUrls: ['./dialog-vendor.component.css'],
+  templateUrl: 'dialog-vendor.component.html',
 })
 export class DialogVendorDialog {
 

@@ -54,9 +54,10 @@ export class NavMenuComponent implements OnInit {
         this.canEdit = true;
         this.authSvc.addCanEdit();
       }
-      this.canEdit = true;
-      this.authSvc.addCanEdit();
+  
     });
+    this.canEdit = true;
+    this.authSvc.addCanEdit();
   }
 }
 
