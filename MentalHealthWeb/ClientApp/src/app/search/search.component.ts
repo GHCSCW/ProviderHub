@@ -5,6 +5,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { MentalHealthService } from "../services/mental-health.service";
 import { Subject } from "rxjs/Subject";
 import { NavbarService } from '../services/navbar.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +15,6 @@ import { NavbarService } from '../services/navbar.service';
 
 
 export class SearchComponent implements OnInit {
-   
- 
-  
 
   facilityRelationshipColumns = ['firstName', 'lastName', 'credentials', 'relationshipStatus','facilityName','region', 'address', 'city', 'zip', 'phoneNumber'];
   facilityColumns = ['facilityName', 'address', 'city', 'zip','phoneNumber'];
@@ -38,7 +36,12 @@ results: any;
   searchForm: FormGroup;
   message: string;
 
-  constructor(private mentalHealthService: MentalHealthService, private fb: FormBuilder, private router: Router, public nav: NavbarService) {
+  constructor(
+    private mentalHealthService: MentalHealthService,
+    private fb: FormBuilder, private router: Router,
+    public nav: NavbarService,
+    private authSvc: AuthenticationService
+  ) {
 
     this.nav.hide();
     this.createForm();
@@ -56,7 +59,6 @@ results: any;
 
   ngOnInit()
   {
-
   }
 
   ngAfterViewInit() {
@@ -123,6 +125,15 @@ results: any;
         this.mentalHealthService.insertSearchResults(results);
         this.nav.resetIDs();
         this.loading = false;
+        if (this.authSvc.canEdit == false) {
+          results.facilityProviderRelationships = results.facilityProviderRelationships.filter(
+            rel => rel.relationshipStatus == true
+          )
+        }
+        else {
+          results.facilityProviderRelationships
+        }
+        
         this.facilityProviderRelationships = new MatTableDataSource<any>(results.facilityProviderRelationships);
         this.facility = new MatTableDataSource<any>(results.facilities);
         this.provider = new MatTableDataSource<any>(results.providers);
@@ -140,5 +151,4 @@ results: any;
         }
       });
   }
-
 }

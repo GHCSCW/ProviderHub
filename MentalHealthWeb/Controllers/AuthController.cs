@@ -73,7 +73,7 @@ namespace MentalHealthWeb.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 Roles rolenames = new Roles();
-                if (User.IsInRole(@"GHC-HMO\App_BehavioralHealth_Super_User"))
+                if (User.IsInRole(@"GHC-HMO\App_SmallGroupRenewals_Editor"))
                 {
                     rolenames.RoleName = "SuperUser";
                     rolenames.InRole = true;

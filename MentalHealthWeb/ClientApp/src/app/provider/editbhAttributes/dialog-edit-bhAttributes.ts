@@ -201,7 +201,7 @@ export class DialogEditbhAttributeDialog {
     Object.assign(this.data.bhaAges, this.originalAges);
     Object.assign(this.data.bhaModes, this.originalModes);
     Object.assign(this.data.bhaOthers, this.originalOthers);
-    Object.assign(this.data.bhaTherapeauticApproaches, this.originalTherapeuticApproaches);
+    Object.assign(this.data.bhaTherapeuticApproaches, this.originalTherapeuticApproaches);
 
     this.dialogRef.close();
   }

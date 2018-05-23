@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, NgZone } from '@angular/core';
 import { FormGroup, FormControl } from "@angular/forms";
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationStart } from "@angular/router";
@@ -57,7 +57,8 @@ export class ProviderComponent implements OnInit {
     public  nav: NavbarService,
     private authSvc: AuthenticationService,
     private router: Router,
-    private activatedRoute : ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private zone: NgZone
   ) {
     this.showHide = false;
     this.router.events
@@ -71,6 +72,11 @@ export class ProviderComponent implements OnInit {
   }
  
   ngOnInit() {
+
+   
+    this.authSvc.canEditUpdated.subscribe(edit => {
+      this.canEdit = edit;
+    });
     this.nav.show();
     this.canEdit = this.authSvc.canEdit;
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
@@ -162,9 +168,9 @@ export class ProviderComponent implements OnInit {
   RouteNewProvider(data) {
     this.mentalHealthService.insertFacilityProviderRelationshipData(data);
     this.nav.addFacilityRelationshipProviderID(data);
-    this.router.navigate(["/provider/facilityrel/" + data.relationshipID]);
+    this.zone.run(() => {
+      this.router.navigateByUrl('/provider/facilityrel/' + data.relationshipID);
+    });
   }
-
-
 }
 

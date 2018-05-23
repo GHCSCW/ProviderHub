@@ -50,6 +50,7 @@ export class FacilityComponent  {
 
       if (results.facility == undefined) {
         this.facility = this.mentalHealthService.getFacilityData();
+        
       }
       else {
         this.provider = results.provider;
@@ -79,7 +80,7 @@ export class FacilityComponent  {
           this.facilityAddress = data.facilityAddress;
           this.nav.addFacilityID(this.facility.id);
         })
-        this.mentalHealthService.GetRelationshipDataByFacilityID(this.facility.id,this.facilityProviderRelationship.relationshipID).subscribe(results => {
+        this.mentalHealthService.GetRelationshipDataByFacilityID(params['id'],this.facilityProviderRelationship.relationshipID).subscribe(results => {
           this.relationshipDataByProvider = results
         });
       }

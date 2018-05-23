@@ -157,10 +157,9 @@ namespace AngularTemplate.Controllers
         public async Task<IActionResult> GetRelationshipDataByFacilityID(int facilityID, int relationshipID)
         {
             FacilityProviderRelationship[] list = await ProviderHubService.GetRelationshipDataByFacilityIDAsync(facilityID);
-            var filteredFacilityProviderRelationship = list.Where(o => relationshipID != o.RelationshipID);
+            var filteredFacilityProviderRelationship = list.Where(o => relationshipID != o.RelationshipID && o.RelationshipID > 0);   
             return Json(filteredFacilityProviderRelationship);
         }
-
         #endregion
 
         #region FUNCTION: GetRelationshipDataByProviderID(int providerID,int relationshipID)
@@ -190,7 +189,7 @@ namespace AngularTemplate.Controllers
         [HttpGet("[action]/{values}")]
         public async Task<IActionResult> SearchForValues(string values)
         {
-
+            
             SearchResults list = await ProviderHubService.SearchForValueAsync(values);
             return Json(list);
         }

@@ -52,12 +52,9 @@ export class NavMenuComponent implements OnInit {
     this.userRoles.forEach(item => {
       if ((item.roleName == "SuperUser") || (item.roleName == "Editor")) {
         this.canEdit = true;
-        this.authSvc.addCanEdit();
+        this.authSvc.userCanEdit();
       }
-  
     });
-    this.canEdit = true;
-    this.authSvc.addCanEdit();
   }
 }
 

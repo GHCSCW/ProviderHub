@@ -9,7 +9,6 @@ const providerRoutes: Routes = [
   { path: 'provider', component: ProviderComponent },
   { path: 'provider/facilityrel/:id', component: ProviderComponent },
   { path: 'provider/:provid', component: ProviderComponent },
-  { path: 'facilityrel', component: FacilityProviderRelationshipComponent },
   { path: 'createprovider', component: CreateProvider },
   { path: 'mapprovidertoclinic', component: MapProviderToClinic }
 ];

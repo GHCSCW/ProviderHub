@@ -3,11 +3,13 @@ import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/com
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
+import { EventEmitter } from '@angular/core';
 
 @Injectable()
 export class AuthenticationService {
 
-  canEdit: boolean = false;
+  canEditUpdated: EventEmitter<boolean> = new EventEmitter();
+  canEdit: any = false;
   userRoles: any = [];
   userRoles2: any = [];
   serviceData: any = [];
@@ -33,10 +35,8 @@ export class AuthenticationService {
   }
 
   userCanEdit() {
-    return this.addCanEdit;
+    this.canEdit = true;
+    this.canEditUpdated.emit(this.canEdit);
   }
 
-  addCanEdit() {
-    this.canEdit = true;
-  }
 }
