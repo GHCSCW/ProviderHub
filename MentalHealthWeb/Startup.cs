@@ -36,15 +36,7 @@ namespace MentalHealthWeb
             //            .AllowCredentials();
             //        });
             //});
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("BehavorialHealthUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Provider_User"));
-                options.AddPolicy("BehavorialHealthEditor", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Provider_Editor"));
-                //options.AddPolicy("BehavorialHealthSuperUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Super_User"));
-                options.AddPolicy("BehavorialHealthSuperUser", policy => policy.RequireRole(@"GHC-HMO\App_SmallGroupRenewals_Editor"));
-                options.AddPolicy("BehavorialHealthAnonymous", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Anonymous"));
-
-            });
+       
             services.AddAuthenticationCore();
          
             services.AddMvcCore(options =>
@@ -55,7 +47,15 @@ namespace MentalHealthWeb
              })
              .AddFormatterMappings()
              .AddJsonFormatters();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("BehavorialHealthUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Provider_User"));
+                options.AddPolicy("BehavorialHealthEditor", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Provider_Editor"));
+             //   options.AddPolicy("BehavorialHealthSuperUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Super_User"));
+                 options.AddPolicy("BehavorialHealthSuperUser", policy => policy.RequireRole(@"GHC-HMO\App_SmallGroupRenewals_Editor"));
+                options.AddPolicy("BehavorialHealthAnonymous", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Anonymous"));
 
+            });
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

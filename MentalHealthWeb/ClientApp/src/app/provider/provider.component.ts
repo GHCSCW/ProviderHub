@@ -27,8 +27,8 @@ import { AfterViewInit, AfterViewChecked } from '@angular/core/src/metadata/life
 //  InRole: boolean;
 //}
 
-export class ProviderComponent implements OnInit, AfterViewChecked {
-  canEdit: boolean = false;
+export class ProviderComponent implements OnInit {
+  canEdit: any = [];
   userRoles: any = [];
   //facilityList: any;
   public facilityList: Facility[] = [];
@@ -76,17 +76,10 @@ export class ProviderComponent implements OnInit, AfterViewChecked {
       console.log(url);
     });
   }
-  ngAfterViewChecked() {
-    this.userRoles.forEach(item => {
-      if ((item.roleName == "SuperUser" && item.inRole == true )|| (item.roleName == "Editor" && item.inRole == true)) {
-        this.canEdit = true;
-      }
-    });
-
-  }
+ 
   ngOnInit() {
     this.nav.show();
-    this.AuthenticateUser();
+    this.canEdit = this.authSvc.canEdit;
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       if (results.provider == undefined) {
         this.provider = this.mentalHealthService.getProviderData();
@@ -111,16 +104,14 @@ export class ProviderComponent implements OnInit, AfterViewChecked {
   }
 
 
- AuthenticateUser(): void {
-    this.authSvc.getUserRoles()
-      .subscribe(
-      r => { this.userRoles = r },
-      e => { console.log(e) }
-   );
+ //AuthenticateUser(): void {
+ //   this.authSvc.getUserRoles()
+ //     .subscribe(
+ //     r => { this.userRoles = r },
+ //     e => { console.log(e) }
+ //  );
+  //}
 
-
- 
-  }
   onItemSelect(item: any) {
     console.log(item);
     console.log(this.selectedItems);

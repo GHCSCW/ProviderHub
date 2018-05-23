@@ -11,6 +11,7 @@ import { AthenticationServiceService } from '../services/AthenticationService';
   providers: []
 })
 export class NavMenuComponent implements OnInit {
+  canEdit: boolean = false;
   router: any;
   facilityProviderRelationship: any = [];
   provider: any = [];
@@ -19,25 +20,44 @@ export class NavMenuComponent implements OnInit {
   authRslt: string = '';
   userRoles: any = [];
 
-  constructor(public nav: NavbarService, private mentalHealthService: MentalHealthService, private authSvc: AthenticationServiceService) {
+  constructor(
+    public nav: NavbarService,
+    private mentalHealthService: MentalHealthService,
+    private authSvc: AthenticationServiceService
+
+  ) {
 
   }
 
   ngOnInit() {
-    this.testAuthentication();
+    this.getUsername();
+
+    this.authSvc.getUserRoles().finally(() => this.canUserEdit()).subscribe(
+      result => {
+      this.userRoles = result,
+        e => { console.log(e) }
+      })
+
   }
 
-  testAuthentication(): void {
+  getUsername(): void {
     this.authSvc.getUser()
       .subscribe(
       r => { this.authRslt = r },
       e => { console.log(e) }
-    );
-    //this.authSvc.getUserRoles()
-    //  .subscribe(
-    //  r => { this.userRoles = r },
-    //  e => { console.log(e) }
-    //  );
+      );
+  }
+
+  canUserEdit() {
+    this.userRoles.forEach(item => {
+      if ((item.roleName == "SuperUser") || (item.roleName == "Editor")) {
+        this.canEdit = true;
+        this.authSvc.addCanEdit();
+      }
+    });
   }
 }
+
+
+
 
