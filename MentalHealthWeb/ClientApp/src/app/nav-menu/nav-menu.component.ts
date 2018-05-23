@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarService } from '../services/navbarservice';
-import { MentalHealthService } from '../services/mental.health.service';
-import { AthenticationServiceService } from '../services/AthenticationService';
+import { NavbarService } from '../services/navbar.service';
+import { MentalHealthService } from '../services/mental-health.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class NavMenuComponent implements OnInit {
   constructor(
     public nav: NavbarService,
     private mentalHealthService: MentalHealthService,
-    private authSvc: AthenticationServiceService
+    private authSvc: AuthenticationService
 
   ) {
 
@@ -54,6 +54,8 @@ export class NavMenuComponent implements OnInit {
         this.canEdit = true;
         this.authSvc.addCanEdit();
       }
+      this.canEdit = true;
+      this.authSvc.addCanEdit();
     });
   }
 }

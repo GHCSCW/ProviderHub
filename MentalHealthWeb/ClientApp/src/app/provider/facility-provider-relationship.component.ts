@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angu
 import { ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
 
-import { NavbarService } from '../services/navbarservice';
-import { MentalHealthService } from '../services/mental.health.service';
+import { NavbarService } from '../services/navbar.service';
+import { MentalHealthService } from '../services/mental-health.service';
 
 @Component({
   selector: 'facility-provider-relationship',

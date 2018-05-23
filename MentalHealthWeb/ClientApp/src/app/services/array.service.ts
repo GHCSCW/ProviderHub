@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { addressTypes } from '../models/addressTypes';
+import { addressTypes } from '../models/address-types';
 import { Language } from '../models/language';
-import { MentalHealthService } from './mental.health.service';
+import { MentalHealthService } from './mental-health.service';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -25,21 +25,6 @@ export class ArrayService {
         label: 'Business Administration'
       },
     ]
-
- //private  languages: language[] = [
- //   {
- //     value: 1,
- //     label: 'English'
- //   },
- //   {
- //     value: 2,
- //     label: 'Spanish'
- //   },
- //   {
- //     value: 3,
- //     label: 'Hmung'
- //   }
- //]
 
   constructor(private mentalhealthservice: MentalHealthService) { }
 

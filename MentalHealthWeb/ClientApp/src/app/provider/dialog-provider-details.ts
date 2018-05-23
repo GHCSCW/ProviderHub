@@ -8,8 +8,8 @@ import { Observable } from "rxjs/Observable";
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 
-import { Gender } from '../services/enum-service'
-import { MentalHealthService } from '../services/mental.health.service';
+import { Gender } from '../services/enum.service'
+import { MentalHealthService } from '../services/mental-health.service';
 import { ArrayService } from '../services/array.service';
 
 @Component({

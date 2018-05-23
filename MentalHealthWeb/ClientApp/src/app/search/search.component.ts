@@ -2,10 +2,9 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { Router } from "@angular/router";
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MentalHealthService } from "../services/mental.health.service";
+import { MentalHealthService } from "../services/mental-health.service";
 import { Subject } from "rxjs/Subject";
-import { NavbarService } from '../services/navbarservice';
-import { facilityRelationship } from '../models/facilityRelationship'
+import { NavbarService } from '../services/navbar.service';
 
 @Component({
   selector: 'app-home',
@@ -74,36 +73,27 @@ results: any;
     this.mentalHealthService.insertFacilityProviderRelationshipData(provRelationship);
     this.nav.addFacilityRelationshipProviderID(provRelationship);
     this.router.navigate(["/provider/facilityrel/" + provRelationship.relationshipID]);
-  
   }
 
   providerRoute(provider) {
-
     this.mentalHealthService.insertProviderData(provider);
     this.nav.addProviderID(provider.id);
     this.router.navigate(["/provider/" + provider.id]);
-
   }
 
   providerRelationshipFacilityRoute(provRelationship) {
-
-
     this.mentalHealthService.insertFacilityProviderRelationshipData(provRelationship);
     this.nav.addFacilityRelationshipProviderID(provRelationship);
-    //this.provider = provRelationship.id;
     this.router.navigate(["/facility/" + provRelationship.facility.id]);
-
   }
 
   facilityRoute(facility) {
-
     this.nav.addFacilityID(facility.id);
     this.mentalHealthService.insertFacilityData(facility);
     this.router.navigate(["/facility/"+ facility.id]);
   }
 
   vendorRoute(vendor) {
-
     this.nav.addVendorID(vendor.id);
     this.mentalHealthService.insertFacilityProviderRelationshipData(vendor);
     this.router.navigate(["/vendor/" + vendor.id]);
@@ -133,8 +123,6 @@ results: any;
         this.mentalHealthService.insertSearchResults(results);
         this.nav.resetIDs();
         this.loading = false;
-
-  
         this.facilityProviderRelationships = new MatTableDataSource<any>(results.facilityProviderRelationships);
         this.facility = new MatTableDataSource<any>(results.facilities);
         this.provider = new MatTableDataSource<any>(results.providers);

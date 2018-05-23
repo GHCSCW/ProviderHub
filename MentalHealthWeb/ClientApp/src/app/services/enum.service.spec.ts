@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { EnumService } from './enum-service';
+import { EnumService } from './enum.service';
 
 describe('EnumService', () => {
   beforeEach(() => {

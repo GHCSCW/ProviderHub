@@ -5,8 +5,8 @@ import { FormBuilder, Validators, FormsModule, NgForm, FormGroup } from '@angula
 import 'rxjs/Rx';
 import { Router } from "@angular/router";
 
-import { NavbarService } from '../services/navbarservice';
-import { MentalHealthService } from '../services/mental.health.service';
+import { NavbarService } from '../services/navbar.service';
+import { MentalHealthService } from '../services/mental-health.service';
 import { ToastrService } from 'ngx-toastr';
 import { Facility } from '../models/facility';
 import { Address } from '../models/Address';

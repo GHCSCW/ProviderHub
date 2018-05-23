@@ -25,14 +25,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from './app-material/app-material.module';
 
 //Services
-import { NavbarService } from './services/navbarservice';
-import { EnumService } from './services/enum-service';
-import { MentalHealthService } from './services/mental.health.service';
+import { NavbarService } from './services/navbar.service';
+import { EnumService } from './services/enum.service';
+import { MentalHealthService } from './services/mental-health.service';
 import { InterfaceService } from './services/interface.service';
 import { ArrayService } from './services/array.service';
 import { LogService} from './services/log.service'
 import { LogPublishersService } from './services/log-publisher.service';
-import { AthenticationServiceService } from './services/AthenticationService';
+import { AuthenticationService } from './services/authentication.service';
 //Components
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LogTestComponent} from './log-component/log-test.component';
@@ -42,7 +42,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
 
 import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
-import { SharedModule } from './SharedModule';
+import { SharedModule } from './shared.module';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -94,7 +94,7 @@ import { ToastrModule } from 'ngx-toastr';
     ArrayService,
     LogPublishersService,
     LogService,
-    AthenticationServiceService,
+    AuthenticationService,
     ToastrModule
   ],
   bootstrap: [AppComponent]

@@ -4,11 +4,9 @@ import { FormControl, FormGroup, FormBuilder, Validators, NgForm } from '@angula
 import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
 
-import { MentalHealthService } from "../services/mental.health.service";
-import { BHAttributeType } from '../services/enum-service';
-import { NavbarService } from '../services/navbarservice';
-import { facilityRelationship } from '../models/facilityRelationship';
-
+import { MentalHealthService } from "../services/mental-health.service";
+import { BHAttributeType } from '../services/enum.service';
+import { NavbarService } from '../services/navbar.service';
 import { DataSource } from '@angular/cdk/collections';
 //import { Pipe, PipeTransform } from '@angular/core';
 
@@ -162,11 +160,6 @@ export class AdvancedSearchComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
-  
-  }
-
-
   filter(val: string): Observable<any[]> {
     return this.mentalHealthService.getFacilityList()
       .pipe(
@@ -177,7 +170,6 @@ export class AdvancedSearchComponent implements OnInit {
   }
   providerRelationshipRoute(provRelationship) {
 
-
     this.mentalHealthService.insertFacilityProviderRelationshipData(provRelationship);
     this.nav.addFacilityRelationshipProviderID(provRelationship);
     this.router.navigate(["/provider/facilityrel/" + provRelationship.relationshipID]);
@@ -185,12 +177,9 @@ export class AdvancedSearchComponent implements OnInit {
   }
 
   providerRelationshipFacilityRoute(provRelationship) {
-
-
     this.mentalHealthService.insertFacilityProviderRelationshipData(provRelationship);
     this.nav.addFacilityRelationshipProviderID(provRelationship);
     this.router.navigate(["/facility/" + provRelationship.facility.id]);
-
   }
 
   clearDataSource() {
@@ -231,7 +220,6 @@ export class AdvancedSearchComponent implements OnInit {
     var cspIndicatorArray = [];
     cspIndicatorArray.push(i);
     searchObject.push({ key: "CSP", value: cspIndicatorArray });
-
 
     //Build Badgercare Indicator Key Value
     var i = form.badgercareIndicator ? 1 : null;
@@ -319,7 +307,6 @@ export class AdvancedSearchComponent implements OnInit {
     );
   }
 
-
   setModes() {
 
     this.mentalHealthService.getBehavioralHealthAttributeByID(BHAttributeType.Models).subscribe(val =>
@@ -338,30 +325,4 @@ export class AdvancedSearchComponent implements OnInit {
       this.therapeuticApproaches = val
     );
   }
-
-
-  //providerSearch(term: string) {
-
-  //  this.loading = true;
-  //  this.results == [];
-  //  this.mentalHealthService.searchEntries(term)
-  //    .subscribe(results => {
-  //      this.nav.resetIDs();
-  //      this.mentalHealthService.resetBaseData();
-  //      this.results = results;
-  //      this.mentalHealthService.insertSearchResults(results);
-  //      this.nav.resetIDs();
-  //      this.loading = false;
-  //      this.facilityProviderRelationships = results.facilityProviderRelationships;
-  //      this.dataSource = new MatTableDataSource(this.provider);
-
-  //      if (results.facilities.length == 0 && results.facilityProviderRelationships.length == 0 && results.providers.length == 0) {
-  //        this.message = 'No Results were found.';
-  //      }
-  //      else {
-  //        this.message = '';
-
-  //      }
-  //    });
-  //}
 }

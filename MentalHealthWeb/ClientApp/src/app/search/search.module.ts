@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common'
 import { ProviderModule } from '../provider/provider.module';
 import { AdvancedSearchComponent } from './advanced.search.component';
 import { AppMaterialModule } from '../app-material/app-material.module';
-import { SharedModule } from '../SharedModule';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   imports: [

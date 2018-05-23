@@ -6,13 +6,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/map';
 
-import { NavbarService } from '../services/navbarservice';
-import { MentalHealthService } from '../services/mental.health.service'
-import { Language, Gender } from '../services/enum-service';
+import { NavbarService } from '../services/navbar.service';
+import { MentalHealthService } from '../services/mental-health.service'
+import { Language, Gender } from '../services/enum.service';
 import { IProviderLanguageMapping } from '../interfaces/IProviderLanguageMapping';
 import { ILanguage } from '../interfaces/ILanguage';
 import { Facility } from '../models/facility';
-import { AthenticationServiceService } from '../services/AthenticationService';
+import { AuthenticationService } from '../services/authentication.service';
 
 
 @Component({
@@ -55,7 +55,7 @@ export class ProviderComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     public  nav: NavbarService,
-    private authSvc: AthenticationServiceService,
+    private authSvc: AuthenticationService,
     private router: Router,
     private activatedRoute : ActivatedRoute
   ) {

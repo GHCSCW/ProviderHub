@@ -8,8 +8,8 @@ import 'rxjs/Rx';
 import { Router } from '@angular/router';
 
 
-import { NavbarService } from '../../services/navbarservice';
-import { MentalHealthService } from '../../services/mental.health.service';
+import { NavbarService } from '../../services/navbar.service';
+import { MentalHealthService } from '../../services/mental-health.service';
 import { ToastrService } from 'ngx-toastr';
 
 

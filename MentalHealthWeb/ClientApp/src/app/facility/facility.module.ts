@@ -12,9 +12,9 @@ import { FacilityRoutingModule } from './facility.routing.module';
 import { DialogFacilityDetailsDialog, DialogFacilityDetails } from './dialog-facility-details'
 import { ProviderModule } from "../provider/provider.module";
 import { AddressModule } from "../address/address.module";
-import { ENumAsStringPipe } from '../pipes/enumpipe';
 import { AddressComponent } from '../address/address.component';
-import { MentalHealthService } from '../services/mental.health.service'
+import { MentalHealthService } from '../services/mental-health.service'
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   imports: [
@@ -24,14 +24,14 @@ import { MentalHealthService } from '../services/mental.health.service'
     ReactiveFormsModule,
     AppMaterialModule,
     ProviderModule,
-    AddressModule
+    AddressModule,
+    SharedModule
     
   ],
   declarations: [
     FacilityComponent,
     DialogFacilityDetailsDialog,
     DialogFacilityDetails,
-    ENumAsStringPipe,
     CreateFacility
   ],
   entryComponents: [

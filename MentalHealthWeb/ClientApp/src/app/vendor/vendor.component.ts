@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MentalHealthService } from '../services/mental.health.service'
+import { MentalHealthService } from '../services/mental-health.service'
 import { FormGroup, FormControl } from "@angular/forms";
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from "@angular/router";
 import 'rxjs/add/operator/map';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Location } from '@angular/common';
-import { NavbarService } from '../services/navbarservice';
+import { NavbarService } from '../services/navbar.service';
 
 @Component({
   selector: 'vendor',

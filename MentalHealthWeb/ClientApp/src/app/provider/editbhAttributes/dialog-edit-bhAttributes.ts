@@ -9,8 +9,8 @@ import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import 'rxjs/Rx';
 import { ArrayService } from '../../services/array.service';
-import { BHAttributeType } from '../../services/enum-service';
-import { MentalHealthService } from '../../services/mental.health.service';
+import { BHAttributeType } from '../../services/enum.service';
+import { MentalHealthService } from '../../services/mental-health.service';
 import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({

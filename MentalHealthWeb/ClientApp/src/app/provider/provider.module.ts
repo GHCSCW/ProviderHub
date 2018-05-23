@@ -10,12 +10,12 @@ import { ProviderRoutingModule } from './provider.routing.module';
 import { DialogProviderDetails, DialogProviderDetailsDialog } from './dialog-provider-details';
 import { DialogFacilityProviderRelationship, DialogFacilityProviderRelationshipDialog } from './dialog-facility-provider-relationship';
 import { FacilityProviderRelationshipComponent } from './facility-provider-relationship.component';
-import { MentalHealthService } from '../services/mental.health.service';
+import { MentalHealthService } from '../services/mental-health.service';
 import { CreateProvider } from './create-provider.component';
 import { MapProviderToClinic } from './mapProviderToFacility/map-provider-to-clinic.component';
 import { DialogEditbhAttribute, DialogEditbhAttributeDialog } from './editbhAttributes/dialog-edit-bhAttributes';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-import { SharedModule } from '../SharedModule';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   imports: [

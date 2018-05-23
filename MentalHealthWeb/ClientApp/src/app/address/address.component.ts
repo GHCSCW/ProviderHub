@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
 import { FormBuilder, Validators, FormsModule, NgForm } from '@angular/forms';
 
-import { MentalHealthService } from '../services/mental.health.service';
+import { MentalHealthService } from '../services/mental-health.service';
 import { InterfaceService } from '../services/interface.service';
 
 @Component({
