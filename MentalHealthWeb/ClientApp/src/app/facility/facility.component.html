@@ -138,7 +138,7 @@
                 <th>Clinic Address</th>
                 <th>Clinic Phone Number</th>
               </tr>
-              <tr *ngFor="let data of relationshipDataByProvider" [routerLink]="['/facility',data.facility.id]">
+              <tr *ngFor="let data of relationshipDataByProvider" (click)="RouteNewProvider(data)">
                 <td>{{data.provider.fullName}}</td>
                 <td>{{data.provider.credentials}}</td>
                 <td>{{data.facility.facilityAddress.addressLine1}} - {{data.facility.facilityAddress.addressLine2}}</td>

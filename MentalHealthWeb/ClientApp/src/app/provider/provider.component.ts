@@ -13,7 +13,6 @@ import { IProviderLanguageMapping } from '../interfaces/IProviderLanguageMapping
 import { ILanguage } from '../interfaces/ILanguage';
 import { Facility } from '../models/facility';
 import { AthenticationServiceService } from '../services/AthenticationService';
-import { AfterViewInit, AfterViewChecked } from '@angular/core/src/metadata/lifecycle_hooks';
 
 
 @Component({
@@ -22,15 +21,9 @@ import { AfterViewInit, AfterViewChecked } from '@angular/core/src/metadata/life
   styleUrls: ['./provider.component.css']
 })
 
-//export class Roles {
-//  RoleName: string;
-//  InRole: boolean;
-//}
-
 export class ProviderComponent implements OnInit {
+
   canEdit: any = [];
-  userRoles: any = [];
-  //facilityList: any;
   public facilityList: Facility[] = [];
   relationshipDataByProvider: any = [];
   bhaAges: any[];
@@ -61,7 +54,7 @@ export class ProviderComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private location: Location,
-    public nav: NavbarService,
+    public  nav: NavbarService,
     private authSvc: AthenticationServiceService,
     private router: Router,
     private activatedRoute : ActivatedRoute
@@ -94,7 +87,6 @@ export class ProviderComponent implements OnInit {
         this.mentalHealthService.GetRelationshipDataByProviderID(this.provider.id, this.facilityProviderRelationship.relationshipID).subscribe(results => {
           this.relationshipDataByProvider = results
         });
-
       }
     });
 
@@ -103,28 +95,16 @@ export class ProviderComponent implements OnInit {
     }
   }
 
-
- //AuthenticateUser(): void {
- //   this.authSvc.getUserRoles()
- //     .subscribe(
- //     r => { this.userRoles = r },
- //     e => { console.log(e) }
- //  );
-  //}
-
   onItemSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedItems);
   }
+
   OnItemDeSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedItems);
   }
+
   onSelectAll(items: any) {
-    console.log(items);
   }
+
   onDeSelectAll(items: any) {
-    console.log(items);
   }
   fillProviderData() {
     return this.route.params.subscribe(params => {

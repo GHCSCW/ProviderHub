@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { Component,OnInit } from '@angular/core';
+import { ActivatedRoute,Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { catchError, map, tap, filter, startWith, switchMap, debounceTime, distinctUntilChanged, takeWhile, first } from 'rxjs/operators';
-
 import { AddressType } from '../services/enum-service';
 import { MentalHealthService } from '../services/mental.health.service'
 import { NavbarService } from "../services/navbarservice";
 import { AthenticationServiceService } from "../services/AthenticationService";
-
 
 @Component({
   selector: 'facility',
@@ -18,7 +16,7 @@ import { AthenticationServiceService } from "../services/AthenticationService";
 })
 export class FacilityComponent  {
 
-  canEdit: boolean = false;
+  canEdit: any = [];
   userRoles: any = [];
   relationshipDataByProvider: any = [];
   addressType: string;
@@ -41,11 +39,13 @@ export class FacilityComponent  {
     private mentalHealthService: MentalHealthService,
     private route: ActivatedRoute,
     public nav: NavbarService,
-    private authSvc: AthenticationServiceService)
+    private authSvc: AthenticationServiceService,
+    private router: Router
+  )
   {
 
     this.nav.show();
-    this.AuthenticateUser();
+    this.canEdit = this.authSvc.canEdit;
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
 
       if (results.facility == undefined) {
@@ -70,21 +70,6 @@ export class FacilityComponent  {
   
   }
 
-  ngAfterViewChecked() {
-    this.userRoles.forEach(item => {
-      if ((item.roleName == "SuperUser") || (item.roleName == "Editor")) {
-        this.canEdit = true;
-      }
-    });
-
-  }
-  AuthenticateUser(): void {
-    this.authSvc.getUserRoles()
-      .subscribe(
-      r => { this.userRoles = r },
-      e => { console.log(e) }
-      );
-  }
   fillFacilityData() {
     return this.route.params.subscribe(params => {
       console.log(params);
@@ -100,4 +85,11 @@ export class FacilityComponent  {
       }
     });
   }
+
+  RouteNewProvider(data) {
+    this.mentalHealthService.insertFacilityProviderRelationshipData(data);
+    this.nav.addFacilityRelationshipProviderID(data);
+    this.router.navigate(["/provider/facilityrel/" + data.relationshipID]);
+  }
+
 }

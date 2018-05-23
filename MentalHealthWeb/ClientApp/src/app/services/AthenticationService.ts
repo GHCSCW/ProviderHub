@@ -14,36 +14,26 @@ export class AthenticationServiceService {
   serviceData: any = [];
   serviceUrl: string = 'api/auth/';
 
-  constructor(private httpClient: HttpClient, public http: Http
-  ) {
+  constructor
+    (
+    private httpClient: HttpClient,
+    public http: Http
+    ) {
 
- 
+
   }
 
   getUserRoles(): Observable<any> {
     return this.httpClient.get(this.serviceUrl + '/getuserroles');
   }
 
-
-
   getUser(): Observable<string> {
-    console.log('Calling getUser');
-    let serviceUrl: string = 'api/auth/getuser';
-    return this.httpClient.get(serviceUrl)
+    return this.httpClient.get(this.serviceUrl+'/getuser')
       .map((rslt: string) => {
         return rslt;
       });
   }
-  //getUserRoles(): Observable<string[]> {
-  //  console.log('Calling getUserRoles');
-  //  let serviceUrl: string = 'api/auth/getuserroles';
-  //  return this.httpClient.get(serviceUrl)
-  //    .map((rslt: string[]) => {
-  //      return rslt;
-  //    });
-  //}
 
- 
   userCanEdit() {
     return this.addCanEdit;
   }
