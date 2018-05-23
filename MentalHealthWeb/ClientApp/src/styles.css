@@ -12,6 +12,7 @@ label {
 .top-buffer {
   margin-top: 30px;
 }
+
 .navbar-inner {
   text-align: center;
 }
@@ -79,17 +80,27 @@ h1 {
 }
 
 
-mat-container {
+.mat-container {
   display: flex;
   flex-direction: column;
 }
 
-.mat-container > * {
-  width: 100%;
+  .mat-container > * {
+    width: 30%;
+  }
+
+
+.full-width {
+  display: flex;
+  flex-direction: column;
 }
+
+  .full-width > * {
+    width: 100%;
+  }
+
+
 
 .form-row:nth-child(2n+1) {
   background-color: #f6f6f6;
 }
-
-

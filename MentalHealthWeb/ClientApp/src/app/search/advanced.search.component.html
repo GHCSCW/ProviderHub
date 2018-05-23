@@ -5,7 +5,6 @@
       <div class="col-md-3">
         <div class="card">
           <div class="card-body">
-
             <div class="card-header">
               Provider
             </div>
@@ -36,7 +35,6 @@
       <div class="col-md-5">
         <div class="card">
           <div class="card-body">
-
             <div class="card-header">
               Behavioral Health Characteritics
             </div>
@@ -75,7 +73,6 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-
           </div>
         </div>
       </div>
@@ -85,14 +82,13 @@
             <div class="card-header">
               Clinic
             </div>
-            <mat-form-field class="mat-container">
+            <mat-form-field class="full-width">
               <mat-select placeholder="Clinic Name" formControlName="facilityID" multiple>
                 <mat-option *ngFor="let facility of facilityList" [value]="facility.id">
                   {{ facility.facilityName }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-
             <mat-form-field>
               <input matInput placeholder="City" formControlName="city">
             </mat-form-field>
@@ -165,7 +161,6 @@
           </ul>
         </mat-cell>
       </ng-container>
-
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>

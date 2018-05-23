@@ -33,7 +33,6 @@ import { ArrayService } from './services/array.service';
 import { LogService} from './services/log.service'
 import { LogPublishersService } from './services/log-publisher.service';
 import { AthenticationServiceService } from './services/AthenticationService';
-import { DataServiceService} from './services/DataServices';
 //Components
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LogTestComponent} from './log-component/log-test.component';
@@ -96,7 +95,6 @@ import { ToastrModule } from 'ngx-toastr';
     LogPublishersService,
     LogService,
     AthenticationServiceService,
-    DataServiceService,
     ToastrModule
   ],
   bootstrap: [AppComponent]

@@ -1,7 +1,5 @@
-
 <mat-dialog-content mat-dialog-content>
-
-  <form [formGroup]="regiForm">
+  <form [formGroup]="addressForm">
     <mat-form-field>
       <mat-select placeholder="Address Type" formControlName="addressType" [(ngModel)]="addressType" required>
         <mat-option *ngFor="let option of addressTypes" [value]="option.value">
@@ -13,7 +11,7 @@
       <input formControlName="addressLine1" matInput placeholder="Address Line 1" required>
     </mat-form-field>
     <mat-error>
-      <span *ngIf="!regiForm.get('addressLine1').valid && regiForm.get('addressLine1').touched">Please enter Address Line 1!</span>
+      <span *ngIf="!addressForm.get('addressLine1').valid && addressForm.get('addressLine1').touched">Please enter Address Line 1!</span>
     </mat-error>
     <mat-form-field>
       <input formControlName="addressLine2" matInput placeholder="Address Line 2">
@@ -64,7 +62,7 @@
       <input formControlName="contactLastName" matInput placeholder="Contact Last Name">
     </mat-form-field>
     <div>
-      <button mat-raised-button color="accent" [disabled]="!regiForm.valid" (click)='onClick()'>Save</button>
+      <button mat-raised-button color="accent" [disabled]="!addressForm.valid" (click)='onClick()'>Save</button>
     </div>
   </form>
 </mat-dialog-content>

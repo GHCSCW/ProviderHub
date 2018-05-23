@@ -3,5 +3,4 @@ export interface IProviderLanguageMapping {
   providerId: number;
   languageId: number;
   sequenceNumber: number;
-
 }

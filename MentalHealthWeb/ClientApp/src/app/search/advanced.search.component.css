@@ -18,12 +18,3 @@ mat-header-cell {
   font-weight: bold;
 }
 
-
-.mat-container {
-  display: flex;
-  flex-direction: column;
-}
-
-  .mat-container > * {
-    width: 100%;
-  }

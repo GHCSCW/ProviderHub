@@ -5,6 +5,9 @@
     "baseUrl": "./",
     "module": "es2015"
   },
+  "paths": {
+    "@services/*": [ "services/*" ]
+  },
   "exclude": [
     "test.ts",
     "**/*.spec.ts"

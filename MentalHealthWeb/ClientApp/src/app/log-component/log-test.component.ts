@@ -1,15 +1,15 @@
 import { Component } from "@angular/core";
 import { LogService, LogLevel } from '../services/log.service';
 import { AthenticationServiceService } from '../services/AthenticationService'
-import { DataServiceService } from "../services/DataServices";
-import { PostDataModel } from '../models/PostData';
 @Component({
   selector: "log-test",
   templateUrl: "./log-test.component.html"
 })
 export class LogTestComponent {
 
-  constructor(private logger: LogService, private authSvc: AthenticationServiceService, private dataSvc: DataServiceService) {
+  constructor(
+    private logger: LogService,
+    private authSvc: AthenticationServiceService) {
   }
 
   testLog(): void {

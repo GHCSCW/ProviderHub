@@ -11,17 +11,13 @@ import { ToastrService } from 'ngx-toastr';
 import { Facility } from '../models/facility';
 import { Address } from '../models/Address';
 
-
 @Component({
   selector: 'create-facility',
-  styleUrls: ['./create-facility.css'],
-  templateUrl: './create-facility.html'
-  //template: '<a class="btn"><i (click)="openDialog()" class="fa fa-pencil-square-o pull-right" aria-hidden="true"></i></a>'
-
+  styleUrls: ['./create-facility.component.css'],
+  templateUrl: './create-facility.component.html'
 })
 
 export class CreateFacility implements OnInit {
-
 
   public facility = new Facility();
   address: any = [];
@@ -29,7 +25,6 @@ export class CreateFacility implements OnInit {
   NPI: number = null;
   ExternalId: string = '';
   InternalNotes: string = '';
-
 
   constructor(
     private fb: FormBuilder,
@@ -47,12 +42,9 @@ export class CreateFacility implements OnInit {
   }
 
   ngOnInit() {
-   
-
   }
 
   onNotify(form): void {
-
     if (this.createFacilityForm.value.FacilityName === "") {
       this.toastr.error('Invalid Entry', 'Please Enter a Valid Facility Name');
     }
@@ -62,14 +54,8 @@ export class CreateFacility implements OnInit {
       this.mentalHealthService.createFacility(this.facility).subscribe(facilityID =>
         this.facilityRoute(facilityID)
       )
-    
     }
   }
- 
-  //onFormSubmit(form) {
-  //  this.mentalHealthService.createFacility(form);
-  //  console.log(form);
-  //}
   facilityRoute(facilityID) {
     if (facilityID > 0) {
       this.toastr.success('Create Success', 'The Facility ' + this.facility.FacilityName + ' was created');

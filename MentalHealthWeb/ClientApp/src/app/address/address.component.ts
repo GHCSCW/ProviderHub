@@ -8,8 +8,6 @@ import { FormBuilder, Validators, FormsModule, NgForm } from '@angular/forms';
 
 import { MentalHealthService } from '../services/mental.health.service';
 import { InterfaceService } from '../services/interface.service';
-import { Address } from '../interfaces/Address';
-
 
 @Component({
   selector: 'create-address',
@@ -22,11 +20,7 @@ export class AddressComponent implements OnInit {
   @Input() facility: string;
   @Output() notify: EventEmitter<NgForm> = new EventEmitter<NgForm>();
 
- 
-  selected: string;
-  //address: Address;
-  myform: FormGroup;
-  regiForm: FormGroup;
+  addressForm: FormGroup;
   addressType: string = ''; 
   addressLine1: string = '';
   addressLine2: string = '';
@@ -48,7 +42,7 @@ export class AddressComponent implements OnInit {
 
   constructor(public interfaceService: InterfaceService, private fb: FormBuilder, private mentalHealthService: MentalHealthService) {
    
-    this.regiForm = fb.group({
+    this.addressForm = fb.group({
       'addressType': [null, Validators.required],
       'addressLine1': [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(500)])],
       'addressLine2': [null],
@@ -71,7 +65,6 @@ export class AddressComponent implements OnInit {
 
   ngOnInit() {
 
-    this.selected = 'option2';
   }
 
   addressTypes = [
@@ -93,11 +86,7 @@ export class AddressComponent implements OnInit {
     },
   ];
 
-  //onFormSubmit(form: NgForm) {
-  //  this.mentalHealthService.createAddress(form);
-  //  console.log(form);
-  //}  
   onClick() {
-    this.notify.emit(this.regiForm.value);
+    this.notify.emit(this.addressForm.value);
   }
 }
