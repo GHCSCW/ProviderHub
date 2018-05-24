@@ -1,7 +1,7 @@
 <mat-dialog-content mat-dialog-content>
   <form [formGroup]="addressForm">
     <mat-form-field>
-      <mat-select placeholder="Address Type" formControlName="addressType" [(ngModel)]="addressType" required>
+      <mat-select placeholder="Address Type" formControlName="addressType" [(ngModel)]="addressTypeDefault" required>
         <mat-option *ngFor="let option of addressTypes" [value]="option.value">
           {{ option.label }}
         </mat-option>
@@ -11,7 +11,7 @@
       <input formControlName="addressLine1" matInput placeholder="Address Line 1" required>
     </mat-form-field>
     <mat-error>
-      <span *ngIf="!addressForm.get('addressLine1').valid && addressForm.get('addressLine1').touched">Please enter Address Line 1!</span>
+      <span *ngIf="!addressForm.get('addressLine1').valid && addressForm.get('addressLine1').touched">Please enter Address Line 1! A minimum of 5 characters is required. </span>
     </mat-error>
     <mat-form-field>
       <input formControlName="addressLine2" matInput placeholder="Address Line 2">
@@ -26,18 +26,21 @@
       <mat-form-field>
         <input type="number" formControlName="zipCode" matInput placeholder="Zip Code" required>
       </mat-form-field>
+      <mat-error>
+        <span *ngIf="!addressForm.get('zipCode').valid && addressForm.get('zipCode').touched">Please enter a Zip Code! A minimum of 5 numbers is required. </span>
+      </mat-error>
     </div>
     <div>
       <mat-form-field>
         <input formControlName="county" matInput placeholder="County">
       </mat-form-field>
       <mat-form-field>
-      <mat-select placeholder="Region"  formControlName="region">
-        <mat-option *ngFor="let region of regionList"  [value]="region.viewValue">
-          {{ region.viewValue }}
-        </mat-option>
-      </mat-select>
-  </mat-form-field>
+        <mat-select placeholder="Region" formControlName="region">
+          <mat-option *ngFor="let region of regionList" [value]="region.viewValue">
+            {{ region.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <div>
       <mat-form-field>

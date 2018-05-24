@@ -4,6 +4,9 @@
     <mat-form-field>
       <input matInput formControlName="FacilityName" placeholder="Clinic Name" required>
     </mat-form-field>
+    <div class="alert alert-danger" *ngIf="!createFacilityForm.get('FacilityName').valid &&createFacilityForm.get('FacilityName').hasError('required')">
+      Facility Name is required. A minimum of 5 characters is required.
+    </div>
   </div>
   <mat-form-field>
     <input id="number" type="number" formControlName="NPI" placeholder="NPI" matInput>

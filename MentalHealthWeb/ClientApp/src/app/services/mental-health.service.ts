@@ -420,10 +420,10 @@ export class MentalHealthService {
     this.regions = [
       { value: '1', viewValue: 'Madison West' },
       { value: '2', viewValue: 'Madison North' },
-      { value: '3', viewValue: 'Madison Southt' },
+      { value: '3', viewValue: 'Madison South' },
       { value: '5', viewValue: 'Madison East' },
       { value: '6', viewValue: 'Madison Near West' },
-      { value: '7', viewValue: 'Madison Downtownh' }
+      { value: '7', viewValue: 'Madison Downtown' }
     ];
 
 

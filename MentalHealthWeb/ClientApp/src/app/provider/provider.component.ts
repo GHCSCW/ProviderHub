@@ -78,7 +78,7 @@ export class ProviderComponent implements OnInit {
       this.canEdit = edit;
     });
     this.nav.show();
-    this.canEdit = this.authSvc.canEdit;
+    //this.canEdit = this.authSvc.canEdit;
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       if (results.provider == undefined) {
         this.provider = this.mentalHealthService.getProviderData();

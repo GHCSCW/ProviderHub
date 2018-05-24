@@ -26,6 +26,7 @@ export class CreateFacility implements OnInit {
   ExternalId: string = '';
   InternalNotes: string = '';
 
+
   constructor(
     private fb: FormBuilder,
     private mentalHealthService: MentalHealthService,
@@ -34,7 +35,7 @@ export class CreateFacility implements OnInit {
   ) {
 
     this.createFacilityForm = fb.group({
-      'FacilityName': '',
+      'FacilityName': [null, Validators.compose([Validators.required, Validators.minLength(5)])],
       'NPI': [],
       'ExternalId': [],
       'InternalNotes': []
@@ -42,6 +43,7 @@ export class CreateFacility implements OnInit {
   }
 
   ngOnInit() {
+
   }
 
   onNotify(form): void {

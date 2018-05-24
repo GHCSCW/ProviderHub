@@ -39,7 +39,7 @@ export class AddressComponent implements OnInit {
   contactLastName: string = '';
 
   regionList: any = [];
-
+  addressTypeDefault: number = 1;
 
 
   constructor(public interfaceService: InterfaceService, private fb: FormBuilder, private mentalHealthService: MentalHealthService) {
@@ -50,7 +50,7 @@ export class AddressComponent implements OnInit {
       'addressLine2': [null],
       'city': [null, Validators.required],
       'state': [null, Validators.required],
-      'zipCode': [null, Validators.required],
+      'zipCode': [null, Validators.compose([Validators.required, Validators.minLength(5)])],
       'county': [null],
       'region': [null],
       'phoneNumber': [null],
@@ -66,9 +66,7 @@ export class AddressComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.regionList = this.mentalHealthService.getRegions();
-
   }
 
   addressTypes = [

@@ -96,8 +96,6 @@ export class DialogEditbhAttributeDialog {
     this.agesDropdownSettings = {
       singleSelection: false,
       text: "Select Ages",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
       maxHeight: 500,
       primaryKey: 'setID',
       labelKey: 'textValue'
@@ -106,8 +104,6 @@ export class DialogEditbhAttributeDialog {
       singleSelection: false,
       enableSearchFilter: true,
       text: "Select Conditions",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
       maxHeight: 500,
       primaryKey: 'setID',
       labelKey: 'textValue'
@@ -115,8 +111,6 @@ export class DialogEditbhAttributeDialog {
     this.therapeuticApproachesDropdownSettings = {
       singleSelection: false,
       text: "Select Thereapeutic Approaches",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
       maxHeight: 500,
       primaryKey: 'setID',
       labelKey: 'textValue'
@@ -125,8 +119,6 @@ export class DialogEditbhAttributeDialog {
       singleSelection: false,
       enableSearchFilter: true,
       text: "Select Modes",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
       maxHeight: 500,
       primaryKey: 'setID',
       labelKey: 'textValue'
@@ -134,8 +126,6 @@ export class DialogEditbhAttributeDialog {
     this.othersDropdownSettings = {
       singleSelection: false,
       text: "Select Other",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
       maxHeight: 500,
       primaryKey: 'setID',
       labelKey: 'textValue'

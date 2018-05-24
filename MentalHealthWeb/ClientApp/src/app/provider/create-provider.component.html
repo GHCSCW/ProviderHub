@@ -24,7 +24,8 @@
       <mat-datepicker-toggle matSuffix [for]="pickerDOB"></mat-datepicker-toggle>
       <mat-datepicker #pickerDOB></mat-datepicker>
     </mat-form-field>
-    <div class="form-group col-md-12">
+    
+    <div class="form-group col-md-4">
       <label for="credentials">Credentials</label>
       <angular2-multiselect [data]="credentialList" formControlName="CredentialList"
                             [settings]="credentialDropdownSettings"
@@ -34,7 +35,7 @@
                             (onDeSelectAll)="onDeSelectAll($event)">
       </angular2-multiselect>
     </div>
-    <div class="form-group col-md-12">
+    <div class="form-group col-md-4">
       <label for="languages">Languages</label>
       <angular2-multiselect [data]="languageList" formControlName="LanguageList"
                             [settings]="languageDropdownSettings"
