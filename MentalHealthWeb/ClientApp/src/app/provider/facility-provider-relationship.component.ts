@@ -15,14 +15,16 @@ import { MentalHealthService } from '../services/mental-health.service';
 export class FacilityProviderRelationshipComponent  implements OnInit {
   facilityProviderRelationship: any = [];
   provider: any = [];
-  facility: any = [];
-  facilityAddress: any = [];
+  //facility: any = [];
+  //facilityAddress: any = [];
 
   constructor(private mentalHealthService: MentalHealthService) {
    
   }
   ngOnInit() {
-
+    this.mentalHealthService.facilityProviderRelationshipUpdated.subscribe(edit => {
+      this.facilityProviderRelationship = edit
+    });
   
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
       this.facilityProviderRelationship = results;
@@ -30,9 +32,12 @@ export class FacilityProviderRelationshipComponent  implements OnInit {
         this.provider = results;
       }
       else {
-        this.provider = results.provider;
-        this.facility = results.facility;
-        this.facilityAddress = results.facility.facilityAddress;
+        //this.mentalHealthService.facilityProviderRelationshipUpdated.subscribe(edit => {
+        //  this.facility = edit.facility
+        //});
+        //this.provider = results.provider;
+        //this.facility = results.facility;
+        //this.facilityAddress = results.facility.facilityAddress;
         this.facilityProviderRelationship = results;
       }
 

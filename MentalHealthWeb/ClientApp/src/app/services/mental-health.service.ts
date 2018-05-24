@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject,EventEmitter } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -47,6 +47,8 @@ export class MentalHealthService {
   searchResults: any = [];
   advancedSearchResults: any = [];
   states: any = [];
+  facilityProviderRelationshipUpdated: EventEmitter<string[]> = new EventEmitter();
+
   constructor(public http: Http, public httpClient: HttpClient, private logger: LogService) {
 
     this.setStates();
@@ -76,6 +78,7 @@ export class MentalHealthService {
   insertFacilityProviderRelationshipData(facilityRel) {
     this.facilityProviderRelationship = [];
     this.facilityProviderRelationship.push(facilityRel);
+    this.facilityProviderRelationshipUpdated.emit(facilityRel);
   }
   updateFacilityProviderRelationshipData(provider) {
     // this.facilityProviderRelationship = [];
@@ -418,9 +421,10 @@ export class MentalHealthService {
       { value: '1', viewValue: 'Far East' },
       { value: '2', viewValue: 'East' },
       { value: '3', viewValue: 'Far West' },
-      { value: '4', viewValue: 'West' },
-      { value: '4', viewValue: 'North' },
-      { value: '4', viewValue: 'South' }
+      { value: '5', viewValue: 'West' },
+      { value: '6', viewValue: 'North' },
+      { value: '7', viewValue: 'South' },
+      { value: '8', viewValue: 'Downtown' }
     ];
   }
 
