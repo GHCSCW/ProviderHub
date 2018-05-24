@@ -12,7 +12,7 @@ import { DialogFacilityProviderRelationship, DialogFacilityProviderRelationshipD
 import { FacilityProviderRelationshipComponent } from './facility-provider-relationship.component';
 import { MentalHealthService } from '../services/mental-health.service';
 import { CreateProvider } from './create-provider.component';
-import { MapProviderToClinic } from './mapProviderToFacility/map-provider-to-clinic.component';
+import { MapProviderToFacility } from './mapProviderToFacility/map-provider-to-facility.component';
 import { DialogEditbhAttribute, DialogEditbhAttributeDialog } from './editbhAttributes/dialog-edit-bhAttributes';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { SharedModule } from '../shared.module';
@@ -37,7 +37,7 @@ import { SharedModule } from '../shared.module';
     DialogEditbhAttribute,
     DialogEditbhAttributeDialog,
     CreateProvider,
-    MapProviderToClinic
+    MapProviderToFacility
   ],
   entryComponents: [
     DialogProviderDetails,
@@ -57,7 +57,7 @@ import { SharedModule } from '../shared.module';
     DialogEditbhAttribute,
     DialogEditbhAttributeDialog,
     CreateProvider,
-    MapProviderToClinic
+    MapProviderToFacility
 
   ],
   providers: []

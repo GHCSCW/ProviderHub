@@ -1,7 +1,7 @@
 <div class="full-width">
   <form [formGroup]="facilityNameGroup" novalidate (ngSubmit)="onFormSubmit(facilityNameGroup.value)">
     <div class="col">
-      <label for="ages">Pick a facility to map to:</label>
+      <label for="clinicMapping">Pick a Clinic to map to:</label>
       <angular2-multiselect [data]="clinicList" [(ngModel)]="selectedValue"
                             [settings]="DropdownSettings"
                             (onSelect)="onItemSelect($event)"

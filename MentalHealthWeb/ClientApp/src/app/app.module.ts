@@ -6,12 +6,12 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from "@angular/common";
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //3rd party
 import 'hammerjs';
-
-//import { SearchComponent } from './search/search.component';
+import { ToastrModule } from 'ngx-toastr';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 //Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -20,8 +20,8 @@ import { FacilityModule } from "./facility/facility.module";
 import { VendorModule } from "./vendor/vendor.module";
 import { SearchModule } from "./search/search.module";
 import { AddressModule} from "./address/address.module";
+import { SharedModule } from './shared.module';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from './app-material/app-material.module';
 
 //Services
@@ -33,17 +33,17 @@ import { ArrayService } from './services/array.service';
 import { LogService} from './services/log.service'
 import { LogPublishersService } from './services/log-publisher.service';
 import { AuthenticationService } from './services/authentication.service';
+
 //Components
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LogTestComponent} from './log-component/log-test.component';
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
-
+//Interceptors
 import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
-import { SharedModule } from './shared.module';
-import { ToastrModule } from 'ngx-toastr';
+
+
 
 @NgModule({
  
@@ -72,7 +72,6 @@ import { ToastrModule } from 'ngx-toastr';
     NavMenuComponent,
     NotFoundComponent,
     LogTestComponent
-
   ],
   exports: [
     CommonModule,

@@ -16,12 +16,12 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'mapprovidertoclinic',
-  styleUrls: ['./map-provider-to-clinic.component.css'],
-  templateUrl: './map-provider-to-clinic.component.html'
+  styleUrls: ['./map-provider-to-facility.component.css'],
+  templateUrl: './map-provider-to-facility.component.html'
 
 })
 
-export class MapProviderToClinic implements OnInit {
+export class MapProviderToFacility implements OnInit {
   DropdownSettings: {};
   provider: any;
   facilityRelationshipID: any;
@@ -43,7 +43,7 @@ export class MapProviderToClinic implements OnInit {
 
     this.DropdownSettings = {
       singleSelection: true,
-      text: "Select Facility to Map",
+      text: "Select a Clinic to Map",
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       maxHeight: 500,
@@ -61,21 +61,19 @@ export class MapProviderToClinic implements OnInit {
 
 
   onItemSelect(item: any) {
-    console.log(item);
+ 
   }
-  OnItemDeSelect(item: any) {
-    console.log(item);
+  OnItemDeSelect(item: any) {;
 
   }
   onSelectAll(items: any) {
-    console.log(items);
+  
   }
   onDeSelectAll(items: any) {
-    console.log(items);
+
   }
 
   onFormSubmit(form) {
-    var test = form;
     this.mentalHealthService.MapProviderToFacility(this.nav.providerID, form.facility[0].id).subscribe(data => {
       this.facilityRelationshipID = data
     },
@@ -83,25 +81,8 @@ export class MapProviderToClinic implements OnInit {
         this.toastr.error('Mapping Failed', 'This mapping to facility Failed');
       }, () => {
         this.toastr.success('Mapping Succeeded', 'This mapping to facility Succeeded');
-        // this.nav.addFacilityRelationshipProviderID(this.facilityRelationshipID);
         this.router.navigate(["/provider/facilityrel/" + this.facilityRelationshipID]);
       }
     );
   }
-
-  SaveMapping() {
-    this.provider = this.mentalHealthService.getProviderData();
-    //this.mentalHealthService.MapProviderToFacility(this.nav.providerID, this..value).subscribe(data => {
-    //  this.facilityRelationshipID = data
-    //},
-    //  error => {
-    //    this.toastr.error('Mapping Failed', 'This mapping to facility Failed');
-    //  }, () => {
-    //    this.toastr.success('Mapping Succeeded', 'This mapping to facility Succeeded');
-    //   // this.nav.addFacilityRelationshipProviderID(this.facilityRelationshipID);
-    //    this.router.navigate(["/provider/facilityrel/" + this.facilityRelationshipID]);
-    //  }
-    //);
-  }
-
 }

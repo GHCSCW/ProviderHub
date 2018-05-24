@@ -3,14 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProviderComponent } from './provider.component';
 import { FacilityProviderRelationshipComponent } from './facility-provider-relationship.component';
 import { CreateProvider } from './create-provider.component';
-import { MapProviderToClinic } from './mapProviderToFacility/map-provider-to-clinic.component';
+import { MapProviderToFacility } from './mapProviderToFacility/map-provider-to-facility.component';
 
 const providerRoutes: Routes = [
   { path: 'provider', component: ProviderComponent },
   { path: 'provider/facilityrel/:id', component: ProviderComponent },
   { path: 'provider/:provid', component: ProviderComponent },
   { path: 'createprovider', component: CreateProvider },
-  { path: 'mapprovidertoclinic', component: MapProviderToClinic }
+  { path: 'mapprovidertoclinic', component: MapProviderToFacility }
 ];
 
 @NgModule({
