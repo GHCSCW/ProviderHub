@@ -15,7 +15,7 @@ export class DialogFacilityDetails {
 
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogFacilityDetailsDialog, {
-      width: '500px',
+      width: '650px',
       height: '850px',
       data: { facility: this.facility}
     });
@@ -42,6 +42,7 @@ export class DialogFacilityDetailsDialog {
     dialogRef.disableClose = true;
   }
   states = this.mentalHealthService.getStates();
+  regionList = this.mentalHealthService.getRegions();
 
   onNoClick(): void {
     Object.assign(this.data.facility, this.originalFacility);

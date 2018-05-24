@@ -43,9 +43,10 @@ export class FacilityComponent  {
     private router: Router
   )
   {
-
+    this.authSvc.canEditUpdated.subscribe(edit => {
+      this.canEdit = edit;
+    });
     this.nav.show();
-    this.canEdit = this.authSvc.canEdit;
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
 
       if (results.facility == undefined) {

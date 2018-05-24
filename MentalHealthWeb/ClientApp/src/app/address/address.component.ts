@@ -38,6 +38,8 @@ export class AddressComponent implements OnInit {
   contactFirstName: string = '';
   contactLastName: string = '';
 
+  regionList: any = [];
+
 
 
   constructor(public interfaceService: InterfaceService, private fb: FormBuilder, private mentalHealthService: MentalHealthService) {
@@ -64,6 +66,8 @@ export class AddressComponent implements OnInit {
 
 
   ngOnInit() {
+
+    this.regionList = this.mentalHealthService.getRegions();
 
   }
 

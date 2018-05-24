@@ -92,8 +92,15 @@
             <mat-form-field>
               <input matInput placeholder="City" formControlName="city">
             </mat-form-field>
-            <mat-form-field>
+            <!--<mat-form-field>
               <input matInput placeholder="Region" formControlName="region">
+            </mat-form-field>-->
+            <mat-form-field>
+              <mat-select placeholder="Region" formControlName="region">
+                <mat-option *ngFor="let region of regionList" [value]="region.viewValue">
+                  {{ region.viewValue }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
         </div>

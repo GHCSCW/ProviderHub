@@ -418,14 +418,22 @@ export class MentalHealthService {
   }
   setRegions() {
     this.regions = [
-      { value: '1', viewValue: 'Far East' },
-      { value: '2', viewValue: 'East' },
-      { value: '3', viewValue: 'Far West' },
-      { value: '5', viewValue: 'West' },
-      { value: '6', viewValue: 'North' },
-      { value: '7', viewValue: 'South' },
-      { value: '8', viewValue: 'Downtown' }
+      { value: '1', viewValue: 'Madison West' },
+      { value: '2', viewValue: 'Madison North' },
+      { value: '3', viewValue: 'Madison Southt' },
+      { value: '5', viewValue: 'Madison East' },
+      { value: '6', viewValue: 'Madison Near West' },
+      { value: '7', viewValue: 'Madison Downtownh' }
     ];
+
+
+  
+    
+    
+   
+    
+  
+
   }
 
   setCities() {

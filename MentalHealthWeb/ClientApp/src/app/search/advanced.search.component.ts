@@ -37,6 +37,7 @@ export class AdvancedSearchComponent implements OnInit {
   regions: any = [];
   languages: any = [];
   facilityList: any = [];
+  regionList: any = []; 
   previousResultsArray: any = [];
   providerName: string;
   genders: any = [];
@@ -64,16 +65,19 @@ export class AdvancedSearchComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
 
-  constructor
-    (
+  constructor (
     private mentalHealthService: MentalHealthService,
     private fb: FormBuilder, private router: Router,
     public nav: NavbarService
-    ) {
+    )
+    {
 
-  }
+    }
 
-  ngOnInit() {
+  ngOnInit(
+   
+  )
+  {
 
     this.mentalHealthService.getAdvancedSearchResults().map(results => {
       this.dataSource = new MatTableDataSource<any>(results);
@@ -87,7 +91,7 @@ export class AdvancedSearchComponent implements OnInit {
     this.setOthers();
     this.setTherapeuticApproaches();
 
-
+    this.regionList = this.mentalHealthService.getRegions();
     this.cities = this.mentalHealthService.getCities();
     this.regions = this.mentalHealthService.getRegions();
     this.mentalHealthService.getLanguages().subscribe(
