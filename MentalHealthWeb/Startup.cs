@@ -24,21 +24,7 @@ namespace MentalHealthWeb
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("AllowAll",
-            //        builder =>
-            //        {
-            //            builder
-            //            .AllowAnyOrigin()
-            //            .AllowAnyMethod()
-            //            .AllowAnyHeader()
-            //            .AllowCredentials();
-            //        });
-            //});
-       
             services.AddAuthenticationCore();
-         
             services.AddMvcCore(options =>
              {
                  options.RequireHttpsPermanent = true; // does not affect api requests
@@ -51,8 +37,7 @@ namespace MentalHealthWeb
             {
                 options.AddPolicy("BehavorialHealthUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Provider_User"));
                 options.AddPolicy("BehavorialHealthEditor", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Provider_Editor"));
-               // options.AddPolicy("BehavorialHealthSuperUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Super_User"));
-                options.AddPolicy("BehavorialHealthSuperUser", policy => policy.RequireRole(@"GHC-HMO\App_SmallGroupRenewals_Editor"));
+                options.AddPolicy("BehavorialHealthSuperUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Super_User"));
                 options.AddPolicy("BehavorialHealthAnonymous", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Anonymous"));
 
             });

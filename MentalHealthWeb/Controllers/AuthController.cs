@@ -91,12 +91,7 @@ namespace MentalHealthWeb.Controllers
                     rolenames.InRole = true;
                     roles.Add(rolenames);
                 }
-                if(User.IsInRole(@"GHC-HMO\App_BehavioralHealth_Anonymous"))
-                {
-                    rolenames.RoleName = "Anonymous";
-                    rolenames.InRole = true;
-                    roles.Add(rolenames);
-                }
+                
                 return Json(roles);
             }
 
