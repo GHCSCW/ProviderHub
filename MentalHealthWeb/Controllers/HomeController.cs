@@ -81,8 +81,14 @@ namespace AngularTemplate.Controllers
         public async Task<IActionResult> GetFacilityList(string search)
         {
             search = "";
+           List<Facility> addAddressList = new List<Facility>();
             Facility[] list = await ProviderHubService.GetFacilityListAsync(search);
-            return Json(list);
+            foreach(Facility val in list)
+            {
+                val.FacilityName = val.FacilityName + " - " + val.FacilityAddress.AddressLine1;
+                addAddressList.Add(val);
+            }
+            return Json(addAddressList);
         }
 
         #endregion

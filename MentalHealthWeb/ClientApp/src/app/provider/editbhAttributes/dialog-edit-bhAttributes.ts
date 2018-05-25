@@ -95,6 +95,7 @@ export class DialogEditbhAttributeDialog {
 
     this.agesDropdownSettings = {
       singleSelection: false,
+      enableCheckAll: false,
       text: "Select Ages",
       maxHeight: 500,
       primaryKey: 'setID',
@@ -103,6 +104,7 @@ export class DialogEditbhAttributeDialog {
     this.conditionsDropdownSettings = {
       singleSelection: false,
       enableSearchFilter: true,
+      enableCheckAll: false,
       text: "Select Conditions",
       maxHeight: 500,
       primaryKey: 'setID',
@@ -110,6 +112,7 @@ export class DialogEditbhAttributeDialog {
     };
     this.therapeuticApproachesDropdownSettings = {
       singleSelection: false,
+      enableCheckAll:false,
       text: "Select Thereapeutic Approaches",
       maxHeight: 500,
       primaryKey: 'setID',
@@ -117,7 +120,7 @@ export class DialogEditbhAttributeDialog {
     };
     this.modesDropdownSettings = {
       singleSelection: false,
-      enableSearchFilter: true,
+      enableCheckAll: false,
       text: "Select Modes",
       maxHeight: 500,
       primaryKey: 'setID',
@@ -125,6 +128,7 @@ export class DialogEditbhAttributeDialog {
     };
     this.othersDropdownSettings = {
       singleSelection: false,
+      enableCheckAll: false,
       text: "Select Other",
       maxHeight: 500,
       primaryKey: 'setID',
@@ -137,7 +141,7 @@ export class DialogEditbhAttributeDialog {
       conditions: [[], Validators.required],
       therapeuticApproaches: [[], Validators.required],
       modes: [[], Validators.required],
-      others: [[], Validators.required],
+      others: [[], Validators.required]
     });
   }
 

@@ -16,32 +16,34 @@
   </div>
   <div class="form-group col-md-12">
     <label for="modes">Modes</label>
-    <angular2-multiselect [data]="modes" [(ngModel)]="data.bhaModes"
+    <angular2-multiselect [data]="modes"
+                          [(ngModel)]="data.bhaModes"
                           [settings]="modesDropdownSettings"
                           (onSelect)="onItemSelect($event)"
                           (onDeSelect)="OnItemDeSelect($event)"
-                          (onSelectAll)="onSelectAll($event)"
-                          (onDeSelectAll)="onDeSelectAll($event)" formControlName="modes">
+                          formControlName="modes">
     </angular2-multiselect>
   </div>
   <div class="form-group col-md-12">
     <label for="conditions">Conditions</label>
-    <angular2-multiselect [data]="conditions" [(ngModel)]="data.bhaConditions"
+    <angular2-multiselect [data]="conditions"
+                          [(ngModel)]="data.bhaConditions"
                           [settings]="conditionsDropdownSettings"
                           (onSelect)="onItemSelect($event)"
                           (onDeSelect)="OnItemDeSelect($event)"
                           (onSelectAll)="onSelectAll($event)"
-                          (onDeSelectAll)="onDeSelectAll($event)" formControlName="conditions">
+                          (onDeSelectAll)="onDeSelectAll($event)"
+                          formControlName="conditions">
     </angular2-multiselect>
   </div>
   <div class="form-group col-md-12">
     <label for="therapeuticApproaches">Therapeutic Approaches</label>
-    <angular2-multiselect [data]="therapeuticApproaches" [(ngModel)]="data.bhaTherapeuticApproaches"
+    <angular2-multiselect [data]="therapeuticApproaches"
+                          [(ngModel)]="data.bhaTherapeuticApproaches"
                           [settings]="therapeuticApproachesDropdownSettings"
                           (onSelect)="onItemSelect($event)"
                           (onDeSelect)="OnItemDeSelect($event)"
-                          (onSelectAll)="onSelectAll($event)"
-                          (onDeSelectAll)="onDeSelectAll($event)" formControlName="therapeuticApproaches">
+                          formControlName="therapeuticApproaches">
     </angular2-multiselect>
   </div>
 
@@ -50,9 +52,7 @@
     <angular2-multiselect [data]="others" [(ngModel)]="data.bhaOthers"
                           [settings]="othersDropdownSettings"
                           (onSelect)="onItemSelect($event)"
-                          (onDeSelect)="OnItemDeSelect($event)"
-                          (onSelectAll)="onSelectAll($event)"
-                          (onDeSelectAll)="onDeSelectAll($event)" formControlName="others">
+                          (onDeSelect)="OnItemDeSelect($event)" formControlName="others">
     </angular2-multiselect>
   </div>
 

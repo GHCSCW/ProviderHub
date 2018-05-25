@@ -12,6 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
 import { ToastrModule } from 'ngx-toastr';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { GtagModule } from 'angular-gtag';
+import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
 
 //Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -64,7 +66,8 @@ import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
     ToastrModule.forRoot(), // ToastrModule added
     AppMaterialModule,
     AngularMultiSelectModule,
-    SharedModule
+    SharedModule,
+    GtagModule.forRoot({ trackingId: 'UA-119813571-1', trackPageviews: true })
     
   ],
   declarations: [
@@ -72,6 +75,7 @@ import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
     NavMenuComponent,
     NotFoundComponent,
     LogTestComponent
+
   ],
   exports: [
     CommonModule,
@@ -94,7 +98,8 @@ import { WinAuthInterceptor}  from './interceptors/winauth-interceptor';
     LogPublishersService,
     LogService,
     AuthenticationService,
-    ToastrModule
+    ToastrModule,
+    GoogleAnalyticsEventsService
   ],
   bootstrap: [AppComponent]
 })

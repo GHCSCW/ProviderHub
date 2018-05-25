@@ -1,27 +1,31 @@
-<mat-dialog-content mat-dialog-content>
-  <form [formGroup]="addressForm">
-    <mat-form-field>
-      <mat-select placeholder="Address Type" formControlName="addressType" [(ngModel)]="addressTypeDefault" required>
-        <mat-option *ngFor="let option of addressTypes" [value]="option.value">
-          {{ option.label }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <input formControlName="addressLine1" matInput placeholder="Address Line 1" required>
-    </mat-form-field>
-    <mat-error>
-      <span *ngIf="!addressForm.get('addressLine1').valid && addressForm.get('addressLine1').touched">Please enter Address Line 1! A minimum of 5 characters is required. </span>
-    </mat-error>
-    <mat-form-field>
-      <input formControlName="addressLine2" matInput placeholder="Address Line 2">
-    </mat-form-field>
+<form [formGroup]="addressForm">
+    <div class="mat-container">
+      <mat-form-field>
+        <mat-select placeholder="Address Type" formControlName="addressType" [(ngModel)]="addressTypeDefault" required>
+          <mat-option *ngFor="let option of addressTypes" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input formControlName="addressLine1" matInput placeholder="Address Line 1" required>
+      </mat-form-field>
+      <mat-error>
+        <span *ngIf="!addressForm.get('addressLine1').valid && addressForm.get('addressLine1').touched">Please enter Address Line 1! A minimum of 5 characters is required. </span>
+      </mat-error>
+      <mat-form-field>
+        <input formControlName="addressLine2" matInput placeholder="Address Line 2">
+      </mat-form-field>
+    </div>
     <div>
       <mat-form-field>
         <input formControlName="city" matInput placeholder="City" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="state" matInput placeholder="State" required>
+        <mat-select placeholder="State" formControlName="state" [(ngModel)]="stateDefault" required>
+          <mat-option *ngFor="let state of statesList" [value]="state">{{state}}</mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field>
         <input type="number" formControlName="zipCode" matInput placeholder="Zip Code" required>
@@ -72,6 +76,3 @@
       <button mat-raised-button color="accent" [disabled]="!addressForm.valid" (click)='onClick()'>Save</button>
     </div>
   </form>
-</mat-dialog-content>
-<div mat-dialog-actions class="pull-right">
-</div>

@@ -168,6 +168,7 @@ export class ProviderComponent implements OnInit {
   RouteNewProvider(data) {
     this.mentalHealthService.insertFacilityProviderRelationshipData(data);
     this.nav.addFacilityRelationshipProviderID(data);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
     this.zone.run(() => {
       this.router.navigateByUrl('/provider/facilityrel/' + data.relationshipID);
     });
