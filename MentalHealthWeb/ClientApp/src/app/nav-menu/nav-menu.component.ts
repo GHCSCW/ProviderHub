@@ -11,7 +11,7 @@ import { AuthenticationService } from '../services/authentication.service';
   providers: []
 })
 export class NavMenuComponent implements OnInit {
-  canEdit: boolean = false;
+  canEdit: boolean;
   router: any;
   facilityProviderRelationship: any = [];
   provider: any = [];
@@ -53,6 +53,10 @@ export class NavMenuComponent implements OnInit {
       if ((item.roleName == "SuperUser") || (item.roleName == "Editor")) {
         this.canEdit = true;
         this.authSvc.userCanEdit();
+      }
+      else {
+        this.canEdit = false;
+        this.authSvc.userCannotEdit();
       }
     });
   }

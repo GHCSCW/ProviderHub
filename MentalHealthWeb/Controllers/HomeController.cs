@@ -206,29 +206,22 @@ namespace AngularTemplate.Controllers
         public async Task<IActionResult> AdvancedSearchMethod([FromBody]List<AdvancedSearch> values)
         {
             Dictionary<string, string[]> SearchList = new Dictionary<string, string[]>();
+        
             foreach (AdvancedSearch val in values)
             {
-                if (val.Value[0] == null)
+                if (val.Value[0] == null && val.Key != "BHAttributeSet")
                 {
                 }
                 else
                 {
-                    SearchList.Add(val.Key, val.Value);
+                    var filterNulls = val.Value.Where(c => c != null).ToArray();
+                    SearchList.Add(val.Key, filterNulls);
+                
                 }
+              
             }
 
-            //string[] gender = new string[] { "1" };
-            //string[] language = new string[] { "1", "2" };
-            //string[] csp = new string[] { "1" };
-
-            //Dictionary<string, string[]> argList = new Dictionary<string, string[]>()
-            //{
-            //    {"Gender", gender},
-            //    {"Language", language},
-            //    {"CSP", csp}
-            //};
-
-            // FacilityProviderRelationship[] list2 = await ProviderHubService.AdvancedSearchAsync(argList);
+           
             FacilityProviderRelationship[] list = await ProviderHubService.AdvancedSearchAsync(SearchList);
             return Json(list);
         }

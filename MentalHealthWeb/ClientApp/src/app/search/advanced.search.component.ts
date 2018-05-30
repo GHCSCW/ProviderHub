@@ -55,6 +55,7 @@ export class AdvancedSearchComponent implements OnInit {
   provConditionsList: any = [];
   therapeuticApproachesList: any = [];
   newResults: any = [];
+  agesDefault: any = []; 
 
   advancedSearchForm: FormGroup;
 
@@ -123,6 +124,7 @@ export class AdvancedSearchComponent implements OnInit {
         'facilityID': []
       })
       this.acceptingNewPatients = true;
+      this.agesDefault = []; 
     }
     else {
       this.advancedSearchForm = this.fb.group({
@@ -206,11 +208,20 @@ export class AdvancedSearchComponent implements OnInit {
     //Build all array key values
     searchObject.push({ key: "Gender", value: form.gender });
     searchObject.push({ key: "Language", value: form.formLanguage });
-    searchObject.push({ key: "BHAttributeSet", value: form.age });
-    searchObject.push({ key: "BHAttributeSet", value: form.condition });
-    searchObject.push({ key: "BHAttributeSet", value: form.theraApproach });
-    searchObject.push({ key: "BHAttributeSet", value: form.mode });
-    searchObject.push({ key: "BHAttributeSet", value: form.other });
+    
+    var BHAttributeSetArray = [];
+    BHAttributeSetArray = form.age.concat(form.condition, form.theraApproach,form.mode,form.other);
+  //  BHAttributeSetArray.push(form.age + ','+ form.condition);
+    //BHAttributeSetArray.push(form.condition);
+   // var array3 = form.age.concact(form.condition);
+    // searchObject.push({ key: "BHAttributeSet1", value: form.age});
+    searchObject.push({ key: "BHAttributeSet", value: BHAttributeSetArray });
+
+    //searchObject.push({ key: "BHAttributeSet", value: form.age });
+    //searchObject.push({ key: "BHAttributeSet", value: form.condition});
+    //searchObject.push({ key: "BHAttributeSet", value: form.theraApproach });
+    //searchObject.push({ key: "BHAttributeSet", value: form.mode });
+    //searchObject.push({ key: "BHAttributeSet", value: form.other });
     searchObject.push({ key: "FacilityID", value: form.facilityID })
 
     var city = new Array(form.city);

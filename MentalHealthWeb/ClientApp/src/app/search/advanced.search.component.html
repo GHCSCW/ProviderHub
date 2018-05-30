@@ -39,7 +39,7 @@
               Behavioral Health Characteritics
             </div>
             <mat-form-field>
-              <mat-select placeholder="Ages" formControlName="age" multiple>
+              <mat-select placeholder="Ages" [ngModel]="agesDefault" formControlName="age" multiple>
                 <mat-option *ngFor="let age of ages" [value]="age.setID">
                   {{ age.textValue }}
                 </mat-option>
@@ -82,7 +82,10 @@
             <div class="card-header">
               Clinic
             </div>
-            <mat-form-field class="full-width">
+            <div class="full-width">
+
+          
+            <mat-form-field>
               <mat-select placeholder="Clinic Name" formControlName="facilityID" multiple>
                 <mat-option *ngFor="let facility of facilityList" [value]="facility.id">
                   {{ facility.facilityName }}
@@ -106,108 +109,75 @@
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn-secondary" (click)="clearDataSource();advancedSearchForm.reset()">Clear Form</button>
-          <button mat-raised-button color="accent">Search</button>
-        </div>
-      </div>
-    </div>
-  </form>
-  <div>
-    <i class="fa fa-spinner fa-2x" aria-hidden="true" *ngIf="loading"></i>
-  </div>
-  <div class="text-danger" *ngIf="message">
-    {{message}}
-  </div>
+</div>
+<div class="container top-buffer">
   <div class="row">
-    <br />
-  </div>
-  <div class="mat-elevation-z8">
-    <h5 style="margin-left:10px">Provider - Clinic Relationship</h5>
-    <mat-table #table [dataSource]="dataSource">
-      <ng-container matColumnDef="fullName">
-        <mat-header-cell *matHeaderCellDef> Provider Name/Credentials </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.fullName}} - {{facilityProviderRelationships.provider.credentials}} </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="facilityName">
-        <mat-header-cell *matHeaderCellDef> Clinic Name </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityName}} </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="facilityAddress">
-        <mat-header-cell *matHeaderCellDef> Clinic Address/City </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
-          {{facilityProviderRelationships.facility.facilityAddress.addressLine1}} {{facilityProviderRelationships.facility.facilityAddress.addressLine2}} -
-          {{facilityProviderRelationships.facility.facilityAddress.city}}
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="facilityPhoneNumber">
-        <mat-header-cell *matHeaderCellDef> Clinic Phone Number </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
-          {{facilityProviderRelationships.facility.facilityAddress.phoneNumber}}
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="conditions">
-        <mat-header-cell *matHeaderCellDef> Conditions </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
-          <ul>
-            <li *ngFor="let conditions of facilityProviderRelationships.providerConditionsList">
-              {{conditions}}
-            </li>
-          </ul>
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="therapeuticApproaches">
-        <mat-header-cell *matHeaderCellDef> Therapeutic Approaches </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
-          <ul>
-            <li *ngFor="let therapeuticApproaches of facilityProviderRelationships.therapeuticApproachesList">
-              {{therapeuticApproaches}}
-            </li>
-          </ul>
-        </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-    <mat-paginator #paginator
-                   [pageSize]="10"
-                   [pageSizeOptions]="[5, 10, 20, 50]">
-    </mat-paginator>
+    <div class="col">
+      <button type="button" class="btn btn-secondary" (click)="clearDataSource();advancedSearchForm.reset()">Clear Form</button>
+      <button mat-raised-button color="accent">Search</button>
+    </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-<!--<mat-form-field>
-  <mat-select placeholder="Credential">
-    <mat-option *ngFor="let credential of credentialsList" [value]="credential.viewValue">
-      {{ credential.viewValue }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>-->
-<!--<select [(ngModel)]="credential">
-  <option *ngFor="let credential of credentialsList" [ngValue]="credential">{{credential.viewValue}}</option>
-</select>-->
-<!--{{credential}}-->
-<!--<select class="form-control">
-  <option *ngFor="let languages of provider">{{provider.languages}}</option>
-</select>-->
-<!--<mat-checkbox placeholder="CSP Indicator"> CSP Indicator</mat-checkbox>
-<div>Name: <input type="text" [(ngModel)]="providerName" /></div>
-<div>Credentials: <input type="text" [(ngModel)]="credentials" /></div>
-
-<ul>
-  <li *ngFor="let prov of facilityProviderRelationships | providerSearch : providerName : credential : csp_indicator">
-    {{prov.provider.fullName}} -
-    {{prov.provider.languages}} -
-    {{prov.provider.csP_Indicator}} -
-    {{prov.provider.credentials}}
-  </li>
-</ul>-->
+  </form>
+<div>
+  <i class="fa fa-spinner fa-2x" aria-hidden="true" *ngIf="loading"></i>
+</div>
+<div class="text-danger" *ngIf="message">
+  {{message}}
+</div>
+<div class="row">
+  <br />
+</div>
+<div class="mat-elevation-z8">
+  <h5 style="margin-left:10px">Provider - Clinic Relationship</h5>
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="fullName">
+      <mat-header-cell *matHeaderCellDef> Provider Name/Credentials </mat-header-cell>
+      <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.fullName}} - {{facilityProviderRelationships.provider.credentials}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="facilityName">
+      <mat-header-cell *matHeaderCellDef> Clinic Name </mat-header-cell>
+      <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityName}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="facilityAddress">
+      <mat-header-cell *matHeaderCellDef> Clinic Address/City </mat-header-cell>
+      <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
+        {{facilityProviderRelationships.facility.facilityAddress.addressLine1}} {{facilityProviderRelationships.facility.facilityAddress.addressLine2}} -
+        {{facilityProviderRelationships.facility.facilityAddress.city}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="facilityPhoneNumber">
+      <mat-header-cell *matHeaderCellDef> Clinic Phone Number </mat-header-cell>
+      <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
+        {{facilityProviderRelationships.facility.facilityAddress.phoneNumber}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="conditions">
+      <mat-header-cell *matHeaderCellDef> Conditions </mat-header-cell>
+      <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
+        <ul>
+          <li *ngFor="let conditions of facilityProviderRelationships.providerConditionsList">
+            {{conditions}}
+          </li>
+        </ul>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="therapeuticApproaches">
+      <mat-header-cell *matHeaderCellDef> Therapeutic Approaches </mat-header-cell>
+      <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
+        <ul>
+          <li *ngFor="let therapeuticApproaches of facilityProviderRelationships.therapeuticApproachesList">
+            {{therapeuticApproaches}}
+          </li>
+        </ul>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 20, 50]">
+  </mat-paginator>
+</div>
+</div>

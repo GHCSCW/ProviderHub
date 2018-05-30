@@ -23,7 +23,7 @@ import { AuthenticationService } from '../services/authentication.service';
 
 export class ProviderComponent implements OnInit {
 
-  canEdit: any = [];
+  canEdit: Boolean = false;
   public facilityList: Facility[] = [];
   relationshipDataByProvider: any = [];
   bhaAges: any[];

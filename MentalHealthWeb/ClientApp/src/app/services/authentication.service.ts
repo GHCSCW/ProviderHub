@@ -39,4 +39,11 @@ export class AuthenticationService {
     this.canEditUpdated.emit(this.canEdit);
   }
 
+  userCannotEdit() {
+    this.canEdit = false;
+    this.canEditUpdated.emit(this.canEdit);
+  }
+
+
+
 }
