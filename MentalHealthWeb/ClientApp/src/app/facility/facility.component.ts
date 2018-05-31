@@ -16,7 +16,7 @@ import { AuthenticationService } from "../services/authentication.service";
 })
 export class FacilityComponent  {
 
-  canEdit: any = [];
+  canEdit: Boolean;
   userRoles: any = [];
   relationshipDataByProvider: any = [];
   addressType: string;
@@ -43,9 +43,13 @@ export class FacilityComponent  {
     private router: Router
   )
   {
+
     this.authSvc.canEditUpdated.subscribe(edit => {
       this.canEdit = edit;
     });
+
+   
+    this.canEdit = this.authSvc.canEdit
     this.nav.show();
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {
 

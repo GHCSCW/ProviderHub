@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { FormControl, FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router } from "@angular/router";
@@ -144,7 +144,7 @@ export class AdvancedSearchComponent implements OnInit {
         'acceptingNewPatients': [],
         'facilityID': []
       })
-
+     
       this.advancedSearchForm.patchValue({
           gender: this.previousResultsArray[0].gender,
           formLanguage: this.previousResultsArray[0].formLanguage,
@@ -190,6 +190,7 @@ export class AdvancedSearchComponent implements OnInit {
 
   clearDataSource() {
     this.dataSource = new MatTableDataSource<any>([]);
+   
     this.facilityProviderRelationships = [];
     this.newResults = [];
     this.message = '';
@@ -203,7 +204,11 @@ export class AdvancedSearchComponent implements OnInit {
 
   onFormSubmit(form) {
     this.loading = true;
-    var searchObject = [];
+    var searchObject = []
+    //prevents the BHAttributeSetArray from failing, because the form reset nulls out the ages array. I need to reset it.
+    if (form.age == null) {
+      form.age = this.agesDefault;
+    }
     this.mentalHealthService.saveAdvancedSearchQuery(form);
     //Build all array key values
     searchObject.push({ key: "Gender", value: form.gender });

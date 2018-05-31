@@ -9,19 +9,19 @@
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
+            <li *ngIf="canEdit"  class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Provider
               </a>
-              <div *ngIf="canEdit" class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/createprovider">Add new Provider</a>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li *ngIf="canEdit" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Clinic
               </a>
-              <div *ngIf="canEdit" class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/createclinic">Add New Clinic</a>
 
                 <span *ngIf="nav.providerID" class="nav-item" [routerLinkActive]="['link-active']">
@@ -29,7 +29,7 @@
                     Link Provider to Clinic
                   </a>
                 </span>
-               
+
                 <!-- <a class="dropdown-item" href="#">Link Provider to Clinic</a>
                 <a class="dropdown-item" href="#">Link Vendor to Clinic</a>-->
                 <!--<div class="dropdown-divider"></div>
@@ -38,17 +38,16 @@
 
               </div>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Vendor
-              </a>
-              <!--<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <!--  <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Vendor
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="createvendor">Add new Vendor</a>
 
-              </div>-->
-            </li>
+              </div>
+            </li>-->
           </ul>
-          <button class="btn btn-outline-primary my-2 my-sm-0"> {{canEdit}}</button>
           <button class="btn btn-outline-primary my-2 my-sm-0"> {{authRslt}}</button>
           <form class="form-inline mt-2 mt-md-0">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" [routerLink]="['/advanced-search']">Advanced Search</button>

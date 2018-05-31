@@ -99,6 +99,11 @@ h1 {
     width: 100%;
   }
 
+  .full-width2 > * {
+    width: 50%;
+  }
+
+
 
 
 .form-row:nth-child(2n+1) {

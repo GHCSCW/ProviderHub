@@ -23,7 +23,7 @@ import { AuthenticationService } from '../services/authentication.service';
 
 export class ProviderComponent implements OnInit {
 
-  canEdit: Boolean = false;
+  canEdit: Boolean;
   public facilityList: Facility[] = [];
   relationshipDataByProvider: any = [];
   bhaAges: any[];
@@ -57,26 +57,18 @@ export class ProviderComponent implements OnInit {
     public  nav: NavbarService,
     private authSvc: AuthenticationService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
     private zone: NgZone
   ) {
     this.showHide = false;
-    this.router.events
-      .map(event => event instanceof NavigationStart)
-      .subscribe(() => {
-        // TODO
-      });
-    this.activatedRoute.url.subscribe(url => {
-      console.log(url);
+    this.authSvc.canEditUpdated.subscribe(edit => {
+      this.canEdit = edit;
     });
   }
  
   ngOnInit() {
 
-   
-    this.authSvc.canEditUpdated.subscribe(edit => {
-      this.canEdit = edit;
-    });
+    this.canEdit = this.authSvc.canEdit
+ 
     this.nav.show();
     //this.canEdit = this.authSvc.canEdit;
     this.mentalHealthService.getFacilityProviderRelationshipData().map(results => {

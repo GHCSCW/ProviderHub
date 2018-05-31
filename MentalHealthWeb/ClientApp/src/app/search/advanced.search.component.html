@@ -1,43 +1,14 @@
-<div class="container">
-  <div class="h2"> Advanced Search</div>
-  <form [formGroup]="advancedSearchForm" (ngSubmit)="onFormSubmit(advancedSearchForm.value)">
-    <div class="row">
-      <div class="col-md-3">
-        <div class="card">
-          <div class="card-body">
-            <div class="card-header">
-              Provider
-            </div>
-            <mat-form-field>
-              <mat-select placeholder="Gender" formControlName="gender" multiple>
-                <mat-option *ngFor="let option of genders" [value]="option.value">
-                  {{ option.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-select placeholder="Language" formControlName="formLanguage" multiple>
-                <mat-option *ngFor="let language of languages" [value]="language.id">
-                  {{ language.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div>
-              <mat-checkbox [ngModel]="acceptingNewPatients" formControlName="acceptingNewPatients">Accepting New Patients</mat-checkbox>
-              <mat-checkbox formControlName="badgercareIndicator">Badgercare</mat-checkbox>
-              <mat-checkbox formControlName="cspIndicator"> CSP</mat-checkbox>
-              <mat-checkbox formControlName="prescribingProvider">Prescriber</mat-checkbox>
-              <mat-checkbox formControlName="medicareIndicator">Medicare</mat-checkbox>
-            </div>
+
+<div class="h2"> Advanced Search</div>
+<form [formGroup]="advancedSearchForm" (ngSubmit)="onFormSubmit(advancedSearchForm.value)">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-header">
+            Behavioral Health Characteristics
           </div>
-        </div>
-      </div>
-      <div class="col-md-5">
-        <div class="card">
-          <div class="card-body">
-            <div class="card-header">
-              Behavioral Health Characteritics
-            </div>
+          <div class="full-width">
             <mat-form-field>
               <mat-select placeholder="Ages" [ngModel]="agesDefault" formControlName="age" multiple>
                 <mat-option *ngFor="let age of ages" [value]="age.setID">
@@ -76,15 +47,47 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <div class="card-header">
-              Clinic
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-header">
+            Provider
+          </div>
+          <div class="full-width">
+            <mat-form-field>
+              <mat-select placeholder="Gender" formControlName="gender" multiple>
+                <mat-option *ngFor="let option of genders" [value]="option.value">
+                  {{ option.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Language" formControlName="formLanguage" multiple>
+                <mat-option *ngFor="let language of languages" [value]="language.id">
+                  {{ language.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div>
+              <mat-checkbox [ngModel]="acceptingNewPatients" formControlName="acceptingNewPatients">Accepting New Patients</mat-checkbox>
+              <mat-checkbox formControlName="badgercareIndicator">Badgercare</mat-checkbox>
+              <mat-checkbox formControlName="cspIndicator"> CSP</mat-checkbox>
+              <mat-checkbox formControlName="prescribingProvider">Prescriber</mat-checkbox>
+              <mat-checkbox formControlName="medicareIndicator">Medicare</mat-checkbox>
             </div>
-            <div class="full-width">
+          </div>
+        </div>
+      </div>
+    </div>
 
-          
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-header">
+            Clinic
+          </div>
+          <div class="full-width">
             <mat-form-field>
               <mat-select placeholder="Clinic Name" formControlName="facilityID" multiple>
                 <mat-option *ngFor="let facility of facilityList" [value]="facility.id">
@@ -96,8 +99,8 @@
               <input matInput placeholder="City" formControlName="city">
             </mat-form-field>
             <!--<mat-form-field>
-              <input matInput placeholder="Region" formControlName="region">
-            </mat-form-field>-->
+            <input matInput placeholder="Region" formControlName="region">
+          </mat-form-field>-->
             <mat-form-field>
               <mat-select placeholder="Region" formControlName="region">
                 <mat-option *ngFor="let region of regionList" [value]="region.viewValue">
@@ -109,16 +112,16 @@
         </div>
       </div>
     </div>
-</div>
-<div class="container top-buffer">
-  <div class="row">
-    <div class="col">
-      <button type="button" class="btn btn-secondary" (click)="clearDataSource();advancedSearchForm.reset()">Clear Form</button>
-      <button mat-raised-button color="accent">Search</button>
+  </div>
+  <div class="top-buffer">
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-secondary" (click)="clearDataSource();advancedSearchForm.reset()">Clear Form</button>
+        <button mat-raised-button color="accent">Search</button>
+      </div>
     </div>
   </div>
-</div>
-  </form>
+</form>
 <div>
   <i class="fa fa-spinner fa-2x" aria-hidden="true" *ngIf="loading"></i>
 </div>
@@ -179,5 +182,4 @@
                  [pageSize]="10"
                  [pageSizeOptions]="[5, 10, 20, 50]">
   </mat-paginator>
-</div>
 </div>
