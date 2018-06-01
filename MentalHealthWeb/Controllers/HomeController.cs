@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using MentalHealthWeb.Core;
+using BehavorialHealthWeb.Core;
 using Microsoft.AspNetCore.Cors;
 
 namespace AngularTemplate.Controllers

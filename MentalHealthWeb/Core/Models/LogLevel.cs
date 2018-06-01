@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using System;
 using System.Linq;
 
-namespace AngularTemplate.Models
+namespace BehavorialHealthWeb.Models
 {
     public enum LogLevel{
         All = 0,

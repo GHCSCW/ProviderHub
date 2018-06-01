@@ -9,7 +9,7 @@ using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 
-namespace MentalHealthWeb
+namespace BehavorialHealthWeb
 {
     public class Startup
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
-namespace AngularTemplate.Controllers
+namespace BehavorialHealthWeb.Controllers
 {
     public class DefaultController : Controller
     {

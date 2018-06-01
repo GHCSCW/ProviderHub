@@ -1,9 +1,9 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AngularTemplate.Models;
+using BehavorialHealthWeb.Models;
 
-namespace AngularTemplate.Controllers
+namespace BehavorialHealthWeb.Controllers
 {
 
     [Route("api/[controller]")]
