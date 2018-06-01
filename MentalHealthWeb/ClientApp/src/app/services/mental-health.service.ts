@@ -29,9 +29,6 @@ export class MentalHealthService {
   regions: { value: string; viewValue: string; }[];
   genders: { value: string; viewValue: string; }[];
   languages: { value: string; viewValue: string; }[];
-
-
-  handleError: any;
   forecasts: any;
   private server_url: string = 'api/home';
   queryUrl: string = '/SearchForValue/';
@@ -153,6 +150,13 @@ export class MentalHealthService {
   }
 
 
+  	    handleError(error: Response) {
+  	        console.log(error);
+ 	        return Observable.throw(error);
+ 
+}  
+
+
   getProvider(id: number): Observable<any> {
     this.logger.level = LogLevel.Off;
       this.logger.log("Test that log method");
@@ -181,7 +185,7 @@ export class MentalHealthService {
   }
 
   getFacilityList(): Observable<any> {
-    return this.httpClient.get(this.server_url + '/getFacilityList');
+    return this.httpClient.get(this.server_url + '/getFacilityList').catch(this.handleError);
   }
 
   getProviderList(): Observable<any> {
@@ -207,14 +211,15 @@ export class MentalHealthService {
   }
 
 
+
   getLanguages(): Observable<any> {
-    return this.httpClient.get(this.server_url + '/getLanguageList');
+    return this.httpClient.get(this.server_url + '/getLanguageList').catch(this.handleError);
   }
 
   //TO DO
   getVendor(id: number): Observable<any> {
     return this.http.get(this.server_url + '/getvendorbyid/' + id)
-      .map(this.extractData);
+      .map(this.extractData).catch(this.handleError);
   }
 
   //POSTS
@@ -273,7 +278,6 @@ export class MentalHealthService {
 
   createFacility(body) {
     const url = `${this.server_url}/createFacility/`;
- 
     return this.httpClient.post(url, body).map((res: any) => {
       let data = res;
       return data;
@@ -294,8 +298,8 @@ export class MentalHealthService {
   //TODO  mapFacilityToVendor(facilityID,vendorID )
 
   MapProviderToFacility(providerID: number, facilityID): Observable<any> {
-    return this.http.get(this.server_url + '/MapProviderToFacility/' + providerID +'/'+ facilityID)
-      .map(this.extractData);
+    return this.http.get(this.server_url + '/MapProviderToFacility/' + providerID + '/' + facilityID)
+      .map(this.extractData).catch(this.handleError);
   }
 
   updateFacilityProviderRelationship(body) {
@@ -309,7 +313,7 @@ export class MentalHealthService {
   searchEntries(term) {
     return this.http
       .get((this.server_url + '/SearchForValues/' + term))
-      .map(this.extractData);
+      .map(this.extractData).catch(this.handleError);
   }
 
   advancedSearch(body: Object): Observable<any> {
@@ -348,15 +352,6 @@ export class MentalHealthService {
     return promise;
   }
 
-
-
-  //TO DO
-  //updateFacility(facility): Observable<any> {
-  //  return this.http.put(this.server_url + '/updatevendor')
-  //    .map(this.extractData);
-  //} 
-
-  //TO DO
   updateVendor(body: Object): Promise<Object> {
     const url = `${this.server_url}/updateVendor/`;
     return this.http
@@ -376,10 +371,9 @@ export class MentalHealthService {
   }
 
 
-  //TO DO
   linkToProvider(): Observable<any> {
     return this.http.get(this.server_url + '/updatevendor')
-      .map(this.extractData);
+      .map(this.extractData).catch(this.handleError);
   }
 
   //TO DO

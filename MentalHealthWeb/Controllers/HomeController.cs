@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using BehavorialHealthWeb.Core;
 using Microsoft.AspNetCore.Cors;
 
-namespace AngularTemplate.Controllers
+namespace BehavorialHealthWeb.Controllers
 {
    
     [Route("api/[controller]")]
@@ -87,6 +87,10 @@ namespace AngularTemplate.Controllers
             {
                 val.FacilityName = val.FacilityName + " - " + val.FacilityAddress.AddressLine1;
                 addAddressList.Add(val);
+            }
+            if(list == null)
+            {
+                return NotFound("Faciltiy List not Found");
             }
             return Json(addAddressList);
         }
