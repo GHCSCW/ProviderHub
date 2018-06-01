@@ -5,8 +5,8 @@ import { Observable } from "rxjs/Observable";
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 
-import { Gender } from '../services/enum.service'
-import { MentalHealthService } from '../services/mental-health.service';
+import { Gender } from '../../services/enum.service'
+import { MentalHealthService } from '../../services/mental-health.service';
 
 export class Language {
   constructor(public name: string) { }
@@ -14,8 +14,8 @@ export class Language {
 
 
 @Component({
-  selector: 'dialog-facility-provider-relationship',
-  styleUrls: ['./dialog-facility-provider-relationship.css'],
+  selector: 'edit-facility-provider-relationship.component',
+  styleUrls: ['./edit-facility-provider-relationship.component.css'],
   template: '<a class="btn"><i (click)="openDialog()" class="fa fa-pencil-square-o pull-right" aria-hidden="true"></i></a>'
 
 })
@@ -42,8 +42,8 @@ export class DialogFacilityProviderRelationship{
 
 }
 @Component({
-  selector: 'dialog-facility-provider-relationship-dialog',
-  templateUrl: 'dialog-facility-provider-relationship.html',
+  selector: 'edit-facility-provider-relationship-dialog',
+  templateUrl: 'edit-facility-provider-relationship.component.html',
 })
 export class DialogFacilityProviderRelationshipDialog {
   email = new FormControl('', [Validators.required, Validators.email]);

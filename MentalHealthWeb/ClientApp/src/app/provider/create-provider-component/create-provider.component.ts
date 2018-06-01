@@ -2,11 +2,11 @@ import { Component, Inject, Input, Output, EventEmitter, OnInit } from '@angular
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl } from "@angular/forms";
 import { FormBuilder, Validators, FormsModule, NgForm, FormGroup } from '@angular/forms';
-import { MentalHealthService } from '../services/mental-health.service';
+import { MentalHealthService } from '../../services/mental-health.service';
 import 'rxjs/operators/map';
 import 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { NavbarService } from '../services/navbar.service';
+import { NavbarService } from '../../services/navbar.service';
 import { ToastrService } from 'ngx-toastr';
 import { provideRoutes } from '@angular/router/src/router_module';
 export class Language {

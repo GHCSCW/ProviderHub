@@ -7,8 +7,8 @@ namespace BehavorialHealthWeb.Models
     public class LogEntry{
 
         public DateTime EntryDate { get; set;}
-        public string message { get; set;}
-        public LogLevel level { get; set;}
+        public string Message { get; set;}
+        public LogLevel Level { get; set;}
         public object[] ExtraInfor { get; set;}
     }
 }

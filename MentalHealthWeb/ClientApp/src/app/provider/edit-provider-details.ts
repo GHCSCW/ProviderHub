@@ -13,8 +13,8 @@ import { MentalHealthService } from '../services/mental-health.service';
 import { ArrayService } from '../services/array.service';
 
 @Component({
-  selector: 'dialog-provider-details',
-  styleUrls: ['./dialog-provider-details-dialog.css'],
+  selector: 'edit-provider-details',
+  styleUrls: ['./edit-provider-details-dialog.css'],
   template: '<a class="btn"><i (click)="openDialog()" class="fa fa-pencil-square-o pull-right" aria-hidden="true"></i></a>'
 
 })
@@ -37,8 +37,8 @@ export class DialogProviderDetails {
 }
 
 @Component({
-  selector: 'dialog-provider-details-dialog',
-  templateUrl: 'dialog-provider-details-dialog.html',
+  selector: 'edit-provider-details-dialog',
+  templateUrl: 'edit-provider-details-dialog.html',
 })
 export class DialogProviderDetailsDialog {
   provID: any;
@@ -49,7 +49,6 @@ export class DialogProviderDetailsDialog {
   languageList: any = [];
   toppings = new FormControl();
   credentials = new FormControl();
-  toppingList = ['English', 'Spanish', 'Hmong'];
   newProvider: any = [];
   visible: boolean = true;
   selectable: boolean = true;
@@ -59,8 +58,6 @@ export class DialogProviderDetailsDialog {
   credentialDropdownSettings: {};
   languageDropdownSettings: {};
   originalProvider: any = []; 
-
-
   genderSelected = Gender[this.data.provider.gender];
   errors = [];
 

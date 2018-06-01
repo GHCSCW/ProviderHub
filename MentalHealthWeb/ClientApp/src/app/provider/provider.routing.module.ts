@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProviderComponent } from './provider.component';
-import { FacilityProviderRelationshipComponent } from './facility-provider-relationship.component';
-import { CreateProvider } from './create-provider.component';
-import { MapProviderToFacility } from './mapProviderToFacility/map-provider-to-facility.component';
+import { FacilityProviderRelationshipComponent } from './facility-provider-relationship.component/facility-provider-relationship.component';
+import { CreateProvider } from './create-provider-component/create-provider.component';
+import { MapProviderToFacility } from './map-provider-to-facility-component/map-provider-to-facility.component';
 
 const providerRoutes: Routes = [
   { path: 'provider', component: ProviderComponent },
