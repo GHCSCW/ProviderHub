@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators/map';
 import 'rxjs/Rx';
 
 @Component({
-  selector: 'dialog-vendor',
+  selector: 'edit-vendor',
   template: '<a class="btn"><i (click)="openDialog()" class="fa fa-pencil-square-o pull-right" aria-hidden="true"></i></a>'
 
 })
@@ -39,9 +39,9 @@ export class DialogVendor {
 }
 
 @Component({
-  selector: 'dialog-vendor-dialog',
-  styleUrls: ['./dialog-vendor.component.css'],
-  templateUrl: 'dialog-vendor.component.html',
+  selector: 'edit-vendor-dialog',
+  styleUrls: ['./edit-vendor.component.css'],
+  templateUrl: 'edit-vendor.component.html',
 })
 export class DialogVendorDialog {
 

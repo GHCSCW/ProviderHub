@@ -1,10 +1,10 @@
-<facility-provider-relationship *ngIf="facilityProviderRelationship != 0">
-</facility-provider-relationship>
+<facility-provider-relationship-component *ngIf="facilityProviderRelationship != 0">
+</facility-provider-relationship-component>
 <div class="card">
   <div class="card-header vendor">
     <h5>Vendor Name: {{vendor.vendorName}}</h5>
     <span class="pull-right">
-      <dialog-vendor [vendor]="edittedVendor">loading</dialog-vendor>
+      <edit-vendor [vendor]="edittedVendor">loading</edit-vendor>
     </span>
   </div>
   <div class="card-body">

@@ -3,8 +3,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MentalHealthService } from '../services/mental-health.service';
 
 @Component({
-  selector: 'dialog-facility-details',
-  styleUrls: ['./dialog-facility-details.dialog.css'],
+  selector: 'edit-facility-details',
+  styleUrls: ['./edit-facility-details.dialog.css'],
   template: '<a class="btn"><i (click)="openDialog()" class="fa fa-pencil-square-o pull-right" aria-hidden="true"></i> </a>'
 })
 export class DialogFacilityDetails {
@@ -27,8 +27,8 @@ export class DialogFacilityDetails {
 }
 
 @Component({
-  selector: 'dialog-facility-details-dialog',
-  templateUrl: 'dialog-facility-details.dialog.html',
+  selector: 'edit-facility-details-dialog',
+  templateUrl: 'edit-facility-details.dialog.html',
 })
 export class DialogFacilityDetailsDialog {
 

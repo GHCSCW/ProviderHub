@@ -9,7 +9,7 @@ import { FacilityComponent } from './facility.component';
 import { CreateFacility } from './create-facility.component';
 import { FacilityRoutingModule } from './facility.routing.module';
 
-import { DialogFacilityDetailsDialog, DialogFacilityDetails } from './dialog-facility-details'
+import { DialogFacilityDetailsDialog, DialogFacilityDetails } from './edit-facility-details'
 import { ProviderModule } from "../provider/provider.module";
 import { AddressModule } from "../address/address.module";
 import { AddressComponent } from '../address/address.component';

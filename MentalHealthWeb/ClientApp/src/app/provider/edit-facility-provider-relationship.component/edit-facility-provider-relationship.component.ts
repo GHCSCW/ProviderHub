@@ -14,7 +14,7 @@ export class Language {
 
 
 @Component({
-  selector: 'edit-facility-provider-relationship.component',
+  selector: 'edit-facility-provider-relationship-component',
   styleUrls: ['./edit-facility-provider-relationship.component.css'],
   template: '<a class="btn"><i (click)="openDialog()" class="fa fa-pencil-square-o pull-right" aria-hidden="true"></i></a>'
 

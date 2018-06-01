@@ -8,7 +8,7 @@ import { CreateVendorComponent } from './create-vendor.component';
 import { VendorRoutingModule } from './vendor.routing.module';
 import { CommonModule } from '@angular/common';
 import { ProviderModule } from "../provider/provider.module";
-import { DialogVendor, DialogVendorDialog } from './dialog-vendor.component';
+import { DialogVendor, DialogVendorDialog } from './edit-vendor.component';
 
 @NgModule({
   imports: [

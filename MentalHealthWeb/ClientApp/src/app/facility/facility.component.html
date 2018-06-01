@@ -1,5 +1,5 @@
 <div *ngIf="facilityProviderRelationship != 0">
-  <facility-provider-relationship></facility-provider-relationship>
+  <facility-provider-relationship-component></facility-provider-relationship-component>
 </div>
 <mat-accordion multi="true">
   <mat-expansion-panel class="card-header facilty-background" [expanded]="true">
@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-1">
           <span *ngIf="canEdit">
-            <dialog-facility-details [facility]="facility">loading</dialog-facility-details>
+            <edit-facility-details [facility]="facility">loading</edit-facility-details>
           </span>
         </div>
       </mat-panel-title>
