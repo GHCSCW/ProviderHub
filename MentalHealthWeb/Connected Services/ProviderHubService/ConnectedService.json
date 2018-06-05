@@ -5,11 +5,11 @@
     "Uri": "https://go.microsoft.com/fwlink/?linkid=858517"
   },
   "ExtendedData": {
-    "Uri": "http://10.32.0.86/ProviderHubService.svc?singleWsdl",
+    "Uri": "http://behavioralhealthservicedev/ProviderHubService.svc",
     "Namespace": "ProviderHubService",
     "SelectedAccessLevelForGeneratedClass": "Public",
     "GenerateMessageContract": false,
-    "ReuseTypesinReferencedAssemblies": false,
+    "ReuseTypesinReferencedAssemblies": true,
     "ReuseTypesinAllReferencedAssemblies": true,
     "CollectionTypeReference": {
       "Item1": "System.Array",

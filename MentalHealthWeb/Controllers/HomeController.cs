@@ -7,11 +7,12 @@ using System;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using BehavorialHealthWeb.Core;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Hosting;
+using static ProviderHubService.ProviderHubServiceClient;
 
 namespace BehavorialHealthWeb.Controllers
 {
-   
+
     [Route("api/[controller]")]
     [Authorize]
     public class HomeController : Controller
@@ -20,6 +21,7 @@ namespace BehavorialHealthWeb.Controllers
         public string user;
 
         private readonly ILogger _logger;
+        private readonly ProviderHubService.ProviderHubServiceClient _providerHubService;
 
 
         public class AdvancedSearch
@@ -28,17 +30,20 @@ namespace BehavorialHealthWeb.Controllers
             public string[] Value { get; set; }
         }
 
-        public HomeController(ILoggerFactory logger)
+        public HomeController(ILoggerFactory logger,ProviderHubServiceClient providerHubService)
         {
-                _logger = logger.CreateLogger("BehavorialHealthHomeController"); 
+            _providerHubService = providerHubService;
+            _logger = logger.CreateLogger("BehavorialHealthHomeController");
         }
-        ProviderHubService.IProviderHubService ProviderHubService = new ProviderHubServiceClient();
+        //ProviderHubService.IProviderHubService ProviderHubService = new ProviderHubServiceClient();
+
 
         #region FUNCTION: GetFacilityByID(int id)   
         [HttpGet("[action]/{id}")]
         public async Task<Facility> GetFacilityById(int id)
         {
-            Facility facility = await ProviderHubService.GetFacilityByIDAsync(id);
+            Facility facility = await _providerHubService.GetFacilityByIDAsync(id);
+
             return facility;
 
         }
@@ -48,7 +53,7 @@ namespace BehavorialHealthWeb.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCredentialList()
         {
-            Credential[] credentials = await ProviderHubService.GetCredentialListAsync();
+            Credential[] credentials = await _providerHubService.GetCredentialListAsync();
 
             var allowedCredentials = new[] { 31, 32, 100, 128, 185, 188, 202, 239, 242, 244, 279, 286, 294 };
             var filteredCredentials = credentials.Where(o => allowedCredentials.Contains(o.ID));
@@ -61,7 +66,7 @@ namespace BehavorialHealthWeb.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetCredentialListByProviderId(int id)
         {
-            Credential[] credentials = await ProviderHubService.GetProviderCredentialByIDAsync(id);
+            Credential[] credentials = await _providerHubService.GetProviderCredentialByIDAsync(id);
             return Json(credentials);
         }
 
@@ -71,7 +76,7 @@ namespace BehavorialHealthWeb.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetVendorById(int id)
         {
-            Vendor vendor = await ProviderHubService.GetVendorByIDAsync(id);
+            Vendor vendor = await _providerHubService.GetVendorByIDAsync(id);
             return Json(vendor);
         }
         #endregion
@@ -81,14 +86,14 @@ namespace BehavorialHealthWeb.Controllers
         public async Task<IActionResult> GetFacilityList(string search)
         {
             search = "";
-           List<Facility> addAddressList = new List<Facility>();
-            Facility[] list = await ProviderHubService.GetFacilityListAsync(search);
-            foreach(Facility val in list)
+            List<Facility> addAddressList = new List<Facility>();
+            Facility[] list = await _providerHubService.GetFacilityListAsync(search);
+            foreach (Facility val in list)
             {
                 val.FacilityName = val.FacilityName + " - " + val.FacilityAddress.AddressLine1;
                 addAddressList.Add(val);
             }
-            if(list == null)
+            if (list == null)
             {
                 return NotFound("Faciltiy List not Found");
             }
@@ -101,7 +106,7 @@ namespace BehavorialHealthWeb.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetVendorList(string search)
         {
-            Vendor[] vendor = await ProviderHubService.GetVendorListAsync(search);
+            Vendor[] vendor = await _providerHubService.GetVendorListAsync(search);
             return Json(vendor);
         }
 
@@ -112,7 +117,7 @@ namespace BehavorialHealthWeb.Controllers
         public async Task<IActionResult> GetLanguageList()
         {
             // int id = 5;
-            Language[] languages = await ProviderHubService.GetLanguageListAsync();
+            Language[] languages = await _providerHubService.GetLanguageListAsync();
 
             return Json(languages);
         }
@@ -124,7 +129,7 @@ namespace BehavorialHealthWeb.Controllers
         public async Task<IActionResult> GetFacilityProviderRelationshipById(int id)
         {
             _logger.LogInformation("GetFacilityProviderRelationship!!!");
-            FacilityProviderRelationship facilityProviderRelationship = await ProviderHubService.GetFacilityProviderRelationshipByIDAsync(id);
+            FacilityProviderRelationship facilityProviderRelationship = await _providerHubService.GetFacilityProviderRelationshipByIDAsync(id);
             return Json(facilityProviderRelationship);
         }
         #endregion
@@ -134,7 +139,7 @@ namespace BehavorialHealthWeb.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetProviderById(int id)
         {
-            Provider provider = await ProviderHubService.GetProviderByIDAsync(id);
+            Provider provider = await _providerHubService.GetProviderByIDAsync(id);
             return Json(provider);
         }
 
@@ -145,7 +150,7 @@ namespace BehavorialHealthWeb.Controllers
         //[HttpGet("[action]/{id}")]
         //public async Task<IActionResult> GetProviderFacilityRelationshipById(int id)
         //{
-        //    Provider[] provider = await ProviderHubService.GetProviderFacilityRelationshipById(id);
+        //    Provider[] provider = await _providerHubService.GetProviderFacilityRelationshipById(id);
         //    return Json(provider);
         //}
 
@@ -156,7 +161,7 @@ namespace BehavorialHealthWeb.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetProviderList(string search)
         {
-            Provider[] list = await ProviderHubService.GetProviderListAsync(search);
+            Provider[] list = await _providerHubService.GetProviderListAsync(search);
             return Json(list);
         }
 
@@ -166,8 +171,8 @@ namespace BehavorialHealthWeb.Controllers
         [HttpGet("[action]/{facilityID}/{relationshipID}")]
         public async Task<IActionResult> GetRelationshipDataByFacilityID(int facilityID, int relationshipID)
         {
-            FacilityProviderRelationship[] list = await ProviderHubService.GetRelationshipDataByFacilityIDAsync(facilityID);
-            var filteredFacilityProviderRelationship = list.Where(o => relationshipID != o.RelationshipID && o.RelationshipID > 0);   
+            FacilityProviderRelationship[] list = await _providerHubService.GetRelationshipDataByFacilityIDAsync(facilityID);
+            var filteredFacilityProviderRelationship = list.Where(o => relationshipID != o.RelationshipID && o.RelationshipID > 0);
             return Json(filteredFacilityProviderRelationship);
         }
         #endregion
@@ -177,7 +182,7 @@ namespace BehavorialHealthWeb.Controllers
         [HttpGet("[action]/{providerID}/{relationshipID}")]
         public async Task<IActionResult> GetRelationshipDataByProviderID(int providerID, int relationshipID)
         {
-            FacilityProviderRelationship[] list = await ProviderHubService.GetRelationshipDataByProviderIDAsync(providerID);
+            FacilityProviderRelationship[] list = await _providerHubService.GetRelationshipDataByProviderIDAsync(providerID);
 
             var filteredFacilityProviderRelationship = list.Where(o => relationshipID != o.RelationshipID);
             return Json(filteredFacilityProviderRelationship);
@@ -187,9 +192,9 @@ namespace BehavorialHealthWeb.Controllers
 
         #region FUNCTION: GetBehavioralHealthAttributeById(BHAttributeType id)
         [HttpGet("[action]/{id}")]
-        public async Task<IActionResult> GetBehavioralHealthAttributeByID(ProviderHubService.BHAttributeType id)
+        public async Task<IActionResult> GetBehavioralHealthAttributeByID(BHAttributeType id)
         {
-            BehavioralHealthAttribute[] list = await ProviderHubService.GetBehavioralHealthAttributeByIDAsync(id);
+            BehavioralHealthAttribute[] list = await _providerHubService.GetBehavioralHealthAttributeByIDAsync(id);
             return Json(list);
         }
 
@@ -199,8 +204,8 @@ namespace BehavorialHealthWeb.Controllers
         [HttpGet("[action]/{values}")]
         public async Task<IActionResult> SearchForValues(string values)
         {
-            
-            SearchResults list = await ProviderHubService.SearchForValueAsync(values);
+
+            SearchResults list = await _providerHubService.SearchForValueAsync(values);
             return Json(list);
         }
         #endregion
@@ -210,7 +215,7 @@ namespace BehavorialHealthWeb.Controllers
         public async Task<IActionResult> AdvancedSearchMethod([FromBody]List<AdvancedSearch> values)
         {
             Dictionary<string, string[]> SearchList = new Dictionary<string, string[]>();
-        
+
             foreach (AdvancedSearch val in values)
             {
                 if (val.Value[0] == null && val.Key != "BHAttributeSet")
@@ -220,13 +225,13 @@ namespace BehavorialHealthWeb.Controllers
                 {
                     var filterNulls = val.Value.Where(c => c != null).ToArray();
                     SearchList.Add(val.Key, filterNulls);
-                
+
                 }
-              
+
             }
 
-           
-            FacilityProviderRelationship[] list = await ProviderHubService.AdvancedSearchAsync(SearchList);
+
+            FacilityProviderRelationship[] list = await _providerHubService.AdvancedSearchAsync(SearchList);
             return Json(list);
         }
         #endregion
@@ -238,7 +243,7 @@ namespace BehavorialHealthWeb.Controllers
         //public async Task<IActionResult> AllFacilityProviderRelationships()
         //{
         //    string blank = "";
-        //    SearchResults list = await ProviderHubService.SearchForValueAsync(blank);
+        //    SearchResults list = await _providerHubService.SearchForValueAsync(blank);
         //    return Json(list);
         //}
         //#endregion
@@ -252,7 +257,7 @@ namespace BehavorialHealthWeb.Controllers
             address.LastUpdatedBy = User.Identity.Name;
             address.LastUpdatedDate = DateTime.Now;
             address.CreatedDate = DateTime.Now;
-            int x = await ProviderHubService.SaveAddressAsync(address);
+            int x = await _providerHubService.SaveAddressAsync(address);
             if (x > 0)
             {
                 return Ok(address);
@@ -273,11 +278,11 @@ namespace BehavorialHealthWeb.Controllers
             provider.LastUpdatedBy = User.Identity.Name;
             provider.LastUpdatedDate = DateTime.Now;
             provider.CreatedDate = DateTime.Now;
-            int x = await ProviderHubService.SaveProviderDetailAsync(provider);
+            int x = await _providerHubService.SaveProviderDetailAsync(provider);
             if (x > 0)
             {
-                bool y = await ProviderHubService.SaveCredentialByProviderIDAsync(x, provider.CredentialList);
-                bool z = await ProviderHubService.SaveLanguageByProviderIDAsync(x, provider.LanguageList);
+                bool y = await _providerHubService.SaveCredentialByProviderIDAsync(x, provider.CredentialList);
+                bool z = await _providerHubService.SaveLanguageByProviderIDAsync(x, provider.LanguageList);
 
                 if (y == true && z == true)
                 {
@@ -300,7 +305,7 @@ namespace BehavorialHealthWeb.Controllers
         [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateCredentials([FromBody]Credential[] credentialUpdate, int id)
         {
-            bool x = await ProviderHubService.SaveCredentialByProviderIDAsync(id, credentialUpdate);
+            bool x = await _providerHubService.SaveCredentialByProviderIDAsync(id, credentialUpdate);
             if (x == true)
             {
                 return Ok(credentialUpdate);
@@ -312,7 +317,7 @@ namespace BehavorialHealthWeb.Controllers
         }
         #endregion
 
-        
+
         #region FUNCTION: UpdateProvider(Provider providerUpdate)
         //Creates and Updates Provider
         [HttpPost("[action]")]
@@ -321,15 +326,15 @@ namespace BehavorialHealthWeb.Controllers
         {
             providerUpdate.CreatedBy = User.Identity.Name;
             providerUpdate.LastUpdatedBy = User.Identity.Name;
-            
+
 
             _logger.LogInformation("Controller {username}", User.Identity.Name);
             _logger.LogInformation(LoggingEvents.UpdateItem, "UpdateProvider {providerUpdate.}", providerUpdate.ID);
-            int x = await ProviderHubService.SaveProviderDetailAsync(providerUpdate);
+            int x = await _providerHubService.SaveProviderDetailAsync(providerUpdate);
             if (x > 0)
             {
-                bool y = await ProviderHubService.SaveCredentialByProviderIDAsync(x, providerUpdate.CredentialList);
-                bool z = await ProviderHubService.SaveLanguageByProviderIDAsync(x, providerUpdate.LanguageList);
+                bool y = await _providerHubService.SaveCredentialByProviderIDAsync(x, providerUpdate.CredentialList);
+                bool z = await _providerHubService.SaveLanguageByProviderIDAsync(x, providerUpdate.LanguageList);
 
                 if (y == true && z == true)
                 {
@@ -359,7 +364,7 @@ namespace BehavorialHealthWeb.Controllers
             newFacility.CreatedDate = DateTime.Now;
             newFacility.FacilityAddress.LastUpdatedBy = User.Identity.Name;
             newFacility.FacilityAddress.LastUpdatedDate = DateTime.Now;
-            int x = await ProviderHubService.SaveFacilityAndAddressAsync(newFacility);
+            int x = await _providerHubService.SaveFacilityAndAddressAsync(newFacility);
             if (x > 0)
             {
                 return Ok(x);
@@ -378,7 +383,7 @@ namespace BehavorialHealthWeb.Controllers
         public async Task<IActionResult> UpdateFacility([FromBody]Facility facilityUpdate)
         {
             facilityUpdate.LastUpdatedBy = User.Identity.Name; ;
-            int x = await ProviderHubService.SaveFacilityAndAddressAsync(facilityUpdate);
+            int x = await _providerHubService.SaveFacilityAndAddressAsync(facilityUpdate);
             if (x > 0)
             {
                 return Ok(facilityUpdate);
@@ -397,7 +402,7 @@ namespace BehavorialHealthWeb.Controllers
         public async Task<IActionResult> UpdateFacilityProviderRelationship([FromBody]FacilityProviderRelationship facilityProvUpdate)
         {
             facilityProvUpdate.LastUpdatedBy = User.Identity.Name;
-            int x = await ProviderHubService.SaveFacilityProviderRelationshipAsync(facilityProvUpdate);
+            int x = await _providerHubService.SaveFacilityProviderRelationshipAsync(facilityProvUpdate);
             if (x > 0)
             {
                 return Ok(facilityProvUpdate);
@@ -419,7 +424,7 @@ namespace BehavorialHealthWeb.Controllers
             vendor.LastUpdatedDate = DateTime.Now;
             vendor.CreatedBy = User.Identity.Name;
             vendor.CreatedDate = DateTime.Now;
-            int x = await ProviderHubService.SaveVendorAsync(vendor);
+            int x = await _providerHubService.SaveVendorAsync(vendor);
             if (x > 0)
             {
                 return Ok(vendor);
@@ -437,7 +442,7 @@ namespace BehavorialHealthWeb.Controllers
         public async Task<IActionResult> UpdateVendor([FromBody]Vendor vendorUpdate)
         {
             vendorUpdate.LastUpdatedBy = User.Identity.Name;
-            int x = await ProviderHubService.SaveVendorAsync(vendorUpdate);
+            int x = await _providerHubService.SaveVendorAsync(vendorUpdate);
 
             if (x > 0)
             {
@@ -460,7 +465,7 @@ namespace BehavorialHealthWeb.Controllers
             int facilityID = 2;
             int addressID = 3;
             string createdBy = username;
-            int x = await ProviderHubService.MapAddressToFacilityAsync(facilityID, addressID, createdBy);
+            int x = await _providerHubService.MapAddressToFacilityAsync(facilityID, addressID, createdBy);
             return Json(x);
 
         }
@@ -475,7 +480,7 @@ namespace BehavorialHealthWeb.Controllers
             int vendorID = 2;
             int addressID = 3;
             string createdBy = username;
-            int x = await ProviderHubService.MapAddressToVendorAsync(vendorID, addressID, createdBy);
+            int x = await _providerHubService.MapAddressToVendorAsync(vendorID, addressID, createdBy);
             return Json(x);
 
         }
@@ -490,7 +495,7 @@ namespace BehavorialHealthWeb.Controllers
             int facilityID = 2;
             int vendorID = 3;
             string createdBy = username;
-            int x = await ProviderHubService.MapFacilityToVendorAsync(facilityID, vendorID, createdBy);
+            int x = await _providerHubService.MapFacilityToVendorAsync(facilityID, vendorID, createdBy);
             return Json(x);
 
         }
@@ -507,7 +512,7 @@ namespace BehavorialHealthWeb.Controllers
 
 
             string createdBy = User.Identity.Name;
-            int x = await ProviderHubService.MapProviderToFacilityAsync(providerID, facilityID, createdBy);
+            int x = await _providerHubService.MapProviderToFacilityAsync(providerID, facilityID, createdBy);
             if (x == 0)
             {
                 return NotFound("Map To Provider to Facility Failed");
@@ -522,7 +527,7 @@ namespace BehavorialHealthWeb.Controllers
         [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateBhAttributes([FromBody]BehavioralHealthAttribute[] attribute, int id)
         {
-            bool x = await ProviderHubService.SaveBHAttributeToRelationshipAsync(id, attribute);
+            bool x = await _providerHubService.SaveBHAttributeToRelationshipAsync(id, attribute);
             if (x == true)
             {
                 return Ok(attribute);
@@ -539,7 +544,7 @@ namespace BehavorialHealthWeb.Controllers
         [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> UpdateLanguage([FromBody]Language[] languageUpdate, int id)
         {
-            bool x = await ProviderHubService.SaveLanguageByProviderIDAsync(id, languageUpdate);
+            bool x = await _providerHubService.SaveLanguageByProviderIDAsync(id, languageUpdate);
             if (x == true)
             {
                 return Ok(languageUpdate);

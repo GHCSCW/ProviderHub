@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -8,22 +8,41 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using static ProviderHubService.ProviderHubServiceClient;
+
 
 namespace BehavorialHealthWeb
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
-        }
+            //    Configuration = configuration;
 
-        public IConfiguration Configuration { get; }
+            var builder = new ConfigurationBuilder()
+                     .SetBasePath(env.ContentRootPath)
+                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                     .AddEnvironmentVariables();
+            Configuration = builder.Build();
+           // var serviceURL = Configuration.GetSection("serviceUrl");
+            HostingEnvironment = env;
+        }
+        public IHostingEnvironment HostingEnvironment { get; }
+        public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            var serviceURL = Configuration.GetSection("serviceUrl");
+            if (HostingEnvironment.IsDevelopment())
+            {
+                services.AddSingleton(new ProviderHubService.ProviderHubServiceClient(EndpointConfiguration.BasicHttpBinding_IProviderHubService, serviceURL.Value));
+            }
+            else
+            {
+                services.AddSingleton(new ProviderHubService.ProviderHubServiceClient(EndpointConfiguration.BasicHttpBinding_IProviderHubService, serviceURL.Value));
+            }
             services.AddAuthenticationCore();
             services.AddMvcCore(options =>
              {
@@ -33,6 +52,7 @@ namespace BehavorialHealthWeb
              })
              .AddFormatterMappings()
              .AddJsonFormatters();
+           
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("BehavorialHealthUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Provider_User"));
@@ -51,13 +71,12 @@ namespace BehavorialHealthWeb
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
         }
+       
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-
-            
-            Log.Logger = new LoggerConfiguration()
+             Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .WriteTo.File(
             @"E:\logs\behavorialhealth.txt",
@@ -69,11 +88,14 @@ namespace BehavorialHealthWeb
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+             //   ProviderHubService.ProviderHubServiceClient client = new ProviderHubService.ProviderHubServiceClient(EndpointConfiguration.BasicHttpBinding_IProviderHubService, "http://behavioralhealthservicedev/ProviderHubService.svc?singleWsd");
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+              //  ProviderHubService.ProviderHubServiceClient client = new ProviderHubService.ProviderHubServiceClient(EndpointConfiguration.BasicHttpBinding_IProviderHubService, "http://behavioralhealthservicedev/ProviderHubService.svc?singleWsd");
             }
+     
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

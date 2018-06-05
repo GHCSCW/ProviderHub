@@ -2366,7 +2366,7 @@ namespace ProviderHubService
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IProviderHubService))
             {
-                return new System.ServiceModel.EndpointAddress("http://10.32.0.86/ProviderHubService.svc");
+                return new System.ServiceModel.EndpointAddress("http://behavioralhealthservicedev/ProviderHubService.svc");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
