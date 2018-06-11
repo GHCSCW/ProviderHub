@@ -7,7 +7,8 @@ import { map } from 'rxjs/operators/map';
 
 import { Gender } from '../../services/enum.service'
 import { MentalHealthService } from '../../services/mental-health.service';
-
+import * as moment from 'moment';
+import { AuthenticationService } from '../../services/authentication.service';
 export class Language {
   constructor(public name: string) { }
 }
@@ -49,7 +50,9 @@ export class DialogFacilityProviderRelationshipDialog {
   email = new FormControl('', [Validators.required, Validators.email]);
   originalFacilityProviderRelationship: any = []; 
 
-  constructor(private mentalHealthService: MentalHealthService,
+  constructor(
+    private mentalHealthService: MentalHealthService,
+    private authSvc: AuthenticationService,
     public dialogRef: MatDialogRef<DialogFacilityProviderRelationshipDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     dialogRef.disableClose = true;
@@ -69,7 +72,10 @@ export class DialogFacilityProviderRelationshipDialog {
   onSubmit() {
 
       this.mentalHealthService.updateFacilityProviderRelationship(this.data.facilityProviderRelationship).subscribe(updateFacilityProviderRelationship => {
-          Object.assign(this.data.facilityProviderRelationship, updateFacilityProviderRelationship);
+
+        updateFacilityProviderRelationship.lastUpdatedDate = moment().toDate();
+        updateFacilityProviderRelationship.lastUpdatedBy = this.authSvc.userName;
+        Object.assign(this.data.facilityProviderRelationship, updateFacilityProviderRelationship);
       });
     this.dialogRef.close();
   }

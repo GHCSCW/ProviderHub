@@ -57,10 +57,10 @@
 <mat-form-field>
   <input matInput placeholder="NPI" [(ngModel)]="data.facility.npi" name="facility.npi">
 </mat-form-field>
-<mat-form-field>
-  <input matInput placeholder="Website" [(ngModel)]="data.facility.facilityAddress.website" name="facilityAddress.website">
-</mat-form-field>
 <div class="full-width">
+  <mat-form-field>
+    <input matInput placeholder="Website" [(ngModel)]="data.facility.facilityAddress.website" name="facilityAddress.website">
+  </mat-form-field>
   <mat-form-field>
     <textarea matInput placeholder="Internal Notes" [(ngModel)]="data.facility.internalNotes" name="internalNotes"> </textarea>
   </mat-form-field>

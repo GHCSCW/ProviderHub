@@ -21,7 +21,7 @@ namespace BehavorialHealthWeb.Controllers
         {
             public string RoleName { get; set; }
             
-            public Boolean InRole { get; set; }
+            public string Username { get; set; }
             
         }
 
@@ -53,30 +53,33 @@ namespace BehavorialHealthWeb.Controllers
             List<Roles> roles = new List<Roles>();
             if (User.Identity.IsAuthenticated)
             {
-              
-                   Roles rolenames = new Roles();
+                string username = User.Identity.Name;
+                Int32 max = username.Length - 8;
+                username = username.Substring(8, max);
+
+                Roles rolenames = new Roles();
                 if (User.IsInRole(@"GHC-HMO\App_BehavioralHealth_Super_User"))
                 {
                     rolenames.RoleName = "SuperUser";
-                    rolenames.InRole = true;
+                    rolenames.Username = username;
                     roles.Add(rolenames);
                 }
                 else if (User.IsInRole(@"GHC-HMO\App_BehavioralHealth_Provider_Editor"))
                 {
                     rolenames.RoleName = "Editor";
-                    rolenames.InRole = true;
+                    rolenames.Username = username;
                     roles.Add(rolenames);
                 }
                else if (User.IsInRole(@"GHC-HMO\App_BehavioralHealth_Provider_User"))
                 {
                     rolenames.RoleName = "User";
-                    rolenames.InRole = true;
+                    rolenames.Username = username;
                     roles.Add(rolenames);
                 }
                 else
                 {
                     rolenames.RoleName = "Anonymous";
-                    rolenames.InRole = true;
+                    rolenames.Username = username;
                     roles.Add(rolenames);
 
                 }

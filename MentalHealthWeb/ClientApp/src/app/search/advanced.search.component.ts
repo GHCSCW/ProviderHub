@@ -14,6 +14,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap, filter, startWith, switchMap, debounceTime, distinctUntilChanged, takeWhile, first } from 'rxjs/operators';
 import { AbstractControl } from '@angular/forms/src/model';
+import { forEach } from '@angular/router/src/utils/collection';
 
 
 @Component({
@@ -102,7 +103,7 @@ export class AdvancedSearchComponent implements OnInit {
     this.mentalHealthService.getFacilityList().subscribe(data => {
       this.facilityList = data;
     });
-
+    
     this.previousResultsArray = this.mentalHealthService.getAdvancedSearchQuery();
 
     if (this.previousResultsArray.length == 0) {
@@ -174,6 +175,7 @@ export class AdvancedSearchComponent implements OnInit {
       }))
       )
   }
+  prov
   providerRelationshipRoute(provRelationship) {
 
     this.mentalHealthService.insertFacilityProviderRelationshipData(provRelationship);
@@ -190,7 +192,7 @@ export class AdvancedSearchComponent implements OnInit {
 
   clearDataSource() {
     this.dataSource = new MatTableDataSource<any>([]);
-   
+    this.advancedSearchForm.patchValue({ acceptingNewPatients: this.acceptingNewPatients })
     this.facilityProviderRelationships = [];
     this.newResults = [];
     this.message = '';

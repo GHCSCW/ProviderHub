@@ -35,14 +35,7 @@ namespace BehavorialHealthWeb
         public void ConfigureServices(IServiceCollection services)
         {
             var serviceURL = Configuration.GetSection("serviceUrl");
-            if (HostingEnvironment.IsDevelopment())
-            {
-                services.AddSingleton(new ProviderHubService.ProviderHubServiceClient(EndpointConfiguration.BasicHttpBinding_IProviderHubService, serviceURL.Value));
-            }
-            else
-            {
-                services.AddSingleton(new ProviderHubService.ProviderHubServiceClient(EndpointConfiguration.BasicHttpBinding_IProviderHubService, serviceURL.Value));
-            }
+            services.AddSingleton(new ProviderHubService.ProviderHubServiceClient(EndpointConfiguration.BasicHttpBinding_IProviderHubService, serviceURL.Value));
             services.AddAuthenticationCore();
             services.AddMvcCore(options =>
              {
@@ -51,15 +44,13 @@ namespace BehavorialHealthWeb
 
              })
              .AddFormatterMappings()
-             .AddJsonFormatters();
-           
+             .AddJsonFormatters();           
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("BehavorialHealthUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Provider_User"));
                 options.AddPolicy("BehavorialHealthEditor", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Provider_Editor"));
                 options.AddPolicy("BehavorialHealthSuperUser", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Super_User"));
                 options.AddPolicy("BehavorialHealthAnonymous", policy => policy.RequireRole(@"GHC-HMO\App_BehavioralHealth_Anonymous"));
-
             });
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -85,16 +76,14 @@ namespace BehavorialHealthWeb
                 shared: true,
                 flushToDiskInterval: TimeSpan.FromSeconds(1))
                   .CreateLogger();
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() && !env.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
-             //   ProviderHubService.ProviderHubServiceClient client = new ProviderHubService.ProviderHubServiceClient(EndpointConfiguration.BasicHttpBinding_IProviderHubService, "http://behavioralhealthservicedev/ProviderHubService.svc?singleWsd");
-            }
+              }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-              //  ProviderHubService.ProviderHubServiceClient client = new ProviderHubService.ProviderHubServiceClient(EndpointConfiguration.BasicHttpBinding_IProviderHubService, "http://behavioralhealthservicedev/ProviderHubService.svc?singleWsd");
-            }
+             }
      
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -112,7 +101,7 @@ namespace BehavorialHealthWeb
 
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
+                if (env.IsDevelopment() && !env.IsStaging())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }

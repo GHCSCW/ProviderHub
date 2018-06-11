@@ -14,14 +14,24 @@ export class AuthenticationService {
   userRoles2: any = [];
   serviceData: any = [];
   serviceUrl: string = 'api/auth/';
+  userName: string;
 
   constructor
     (
     private httpClient: HttpClient
-    ) {
+  ) {
+    this.getUsername();
 
 
   }
+  getUsername(): void {
+    this.getUser()
+      .subscribe(
+      r => { this.userName = r },
+      e => { console.log(e) }
+      );
+  }
+
 
   getUserRoles(): Observable<any> {
     return this.httpClient.get(this.serviceUrl + '/getuserroles');

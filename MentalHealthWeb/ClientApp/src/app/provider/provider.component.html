@@ -5,18 +5,24 @@
   <mat-expansion-panel class="facilityProviderRelationship">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
           <b style="margin-right:1.0em">Provider Name:</b>
           <span style="margin-right:1.0em">{{provider.fullName}}</span>
         </div>
-        <div class="col-sm-8 float-left" *ngFor="let option of provider.credentialList; let i= index">
-          <b style="margin-right:1.0em">Credentials: </b>
-          <span *ngIf="i < provider.credentialList.length - 1">
-            {{option.value}},
+        <div class="col-sm-1">
+          <b>Credentials: </b>
+        </div>
+        <div class="col-sm-1">
+          <span *ngFor="let option of provider.credentialList; let i= index">
+            <span *ngIf="i < provider.credentialList.length - 1">
+              {{option.value}},
+            </span>
+            <span *ngIf="i == (provider.credentialList.length - 1)">
+              {{option.value}}
+            </span>
           </span>
-          <span *ngIf="i == (provider.credentialList.length - 1)">
-            {{option.value}}
-          </span>
+        </div>
+        <div class="col-sm-5">
         </div>
         <div class="col-sm-1" *ngIf="canEdit">
           <edit-provider-details [provider]="provider">loading</edit-provider-details>

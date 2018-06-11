@@ -129,6 +129,12 @@ results: any;
           results.facilityProviderRelationships = results.facilityProviderRelationships.filter(
             rel => rel.relationshipStatus == true
           )
+          results.facilities = results.facilityProviderRelationships.filter(
+            rel => rel.relationshipStatus == true
+          )
+          results.providers = results.facilityProviderRelationships.filter(
+            rel => rel.relationshipStatus == true
+          )
         }
         else {
           results.facilityProviderRelationships

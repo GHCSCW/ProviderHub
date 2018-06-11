@@ -11,6 +11,9 @@ import { map } from 'rxjs/operators/map';
 import { Gender } from '../services/enum.service'
 import { MentalHealthService } from '../services/mental-health.service';
 import { ArrayService } from '../services/array.service';
+import * as moment from 'moment';
+import { AuthenticationService } from '../services/authentication.service';
+
 
 @Component({
   selector: 'edit-provider-details',
@@ -64,6 +67,7 @@ export class DialogProviderDetailsDialog {
 
   constructor(private mentalHealthService: MentalHealthService,
     private arrayService: ArrayService,
+    private authSvc: AuthenticationService,
     public dialogRef: MatDialogRef<DialogProviderDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     dialogRef.disableClose = true;
@@ -118,7 +122,8 @@ export class DialogProviderDetailsDialog {
     this.provID = this.data.provider.id;
 
     this.mentalHealthService.updateProvider(this.data.provider).subscribe(updatedProvider => {
-      updatedProvider.lastUpdatedDate = Date.now() ; 
+      this.data.provider.lastUpdatedDate = moment().toDate();
+      this.data.provider.lastUpdatedBy = this.authSvc.userName;
       Object.assign(this.data.provider, updatedProvider);
 
     });
