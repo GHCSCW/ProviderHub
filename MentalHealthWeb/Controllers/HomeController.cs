@@ -338,7 +338,7 @@ namespace BehavorialHealthWeb.Controllers
 
                 if (y == true && z == true)
                 {
-                    return Ok(x);
+                    return Ok(providerUpdate);
                 }
                 else
                 {

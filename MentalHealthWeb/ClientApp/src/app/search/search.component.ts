@@ -126,15 +126,12 @@ results: any;
         this.nav.resetIDs();
         this.loading = false;
         if (this.authSvc.canEdit == false) {
+          //do not show inactive relationships to non editor roles. Also hide facilties and providers that don't have relationships. 
           results.facilityProviderRelationships = results.facilityProviderRelationships.filter(
             rel => rel.relationshipStatus == true
           )
-          results.facilities = results.facilityProviderRelationships.filter(
-            rel => rel.relationshipStatus == true
-          )
-          results.providers = results.facilityProviderRelationships.filter(
-            rel => rel.relationshipStatus == true
-          )
+          results.facilities = [];
+          results.providers = [];
         }
         else {
           results.facilityProviderRelationships
