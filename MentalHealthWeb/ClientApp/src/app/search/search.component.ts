@@ -16,7 +16,7 @@ import { AuthenticationService } from '../services/authentication.service';
 
 export class SearchComponent implements OnInit {
 
-  facilityRelationshipColumns = ['firstName', 'lastName', 'credentials', 'relationshipStatus','facilityName','region', 'address', 'city', 'zip', 'phoneNumber'];
+  facilityRelationshipColumns = ['lastName', 'firstName', 'credentials', 'relationshipStatus', 'facilityName', 'address', 'city', 'zip', 'phoneNumber', 'region'];
   facilityColumns = ['facilityName', 'address', 'city', 'zip','phoneNumber'];
   providerColumns = ['firstName', 'lastName'];
   vendorColumns = ['vendorName'];

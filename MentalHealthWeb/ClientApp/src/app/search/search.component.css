@@ -1,7 +1,8 @@
 table, th, td {
-  border: 1px solid grey;
+  border: 1px solid black;
   border-collapse: collapse;
   padding: 5px;
+  width: 100%;
 }
 
   table tr:nth-child(odd) {
@@ -26,17 +27,6 @@ table, th, td {
   font-family: "FontAwesome", "Source Sans Pro";
 }
 
-
-.example-container {
-  display: flex;
-  flex-direction: column;
-  min-width: 300px;
-}
-
-.example-header {
-  min-height: 64px;
-  padding: 8px 24px 0;
-}
 
 .mat-form-field {
   font-size: 14px;

@@ -60,7 +60,7 @@ export class AdvancedSearchComponent implements OnInit {
 
   advancedSearchForm: FormGroup;
 
-  displayedColumns = ['fullName', 'facilityName', 'facilityAddress', 'facilityPhoneNumber', 'conditions', 'therapeuticApproaches'];
+  displayedColumns = ['lastName', 'firstName', 'facilityName', 'facilityAddress', 'facilityPhoneNumber', 'conditions', 'therapeuticApproaches'];
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -83,8 +83,6 @@ export class AdvancedSearchComponent implements OnInit {
 
     this.mentalHealthService.getAdvancedSearchResults().map(results => {
       this.dataSource = new MatTableDataSource<any>(results);
-
-     // this.dataSource.paginator = this.paginator; this was clearing the data???
     });
     this.nav.hide();
     this.setAges();

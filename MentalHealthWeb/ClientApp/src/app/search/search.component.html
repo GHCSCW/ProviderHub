@@ -34,34 +34,30 @@
     {{message}}
   </div>
   <div class="example-container mat-elevation-z8">
+
     <h5 style="margin-left:10px"> Provider - Clinic Relationship</h5>
-    <mat-table #table [dataSource]="facilityProviderRelationships" matSort>
-      Position Column
-      <ng-container matColumnDef="firstName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.firstName}} </mat-cell>
-      </ng-container>
+    <mat-table #table [dataSource]="facilityProviderRelationships">
       <ng-container matColumnDef="lastName">
         <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.lastName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="firstName">
+        <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
+        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.firstName}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="credentials">
         <mat-header-cell *matHeaderCellDef> Credentials </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.credentials}} </mat-cell>
       </ng-container>
-      
       <ng-container matColumnDef="relationshipStatus">
-        <mat-header-cell *matHeaderCellDef> Relationship Status</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.relationshipStatus | ActiveInactivePipe}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="facilityName">
         <mat-header-cell *matHeaderCellDef> Clinic Name </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityName}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="region">
-        <mat-header-cell *matHeaderCellDef> Region </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityAddress.region}} </mat-cell>
-      </ng-container>
+
       <ng-container matColumnDef="address">
         <mat-header-cell *matHeaderCellDef> Clinic Address</mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
@@ -85,6 +81,10 @@
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
           {{facilityProviderRelationships.facility.facilityAddress.phoneNumber}}
         </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="region">
+        <mat-header-cell *matHeaderCellDef> Region </mat-header-cell>
+        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityAddress.region}} </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="facilityRelationshipColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: facilityRelationshipColumns;"></mat-row>
