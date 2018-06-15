@@ -109,3 +109,21 @@ h1 {
 .form-row:nth-child(2n+1) {
   background-color: #f6f6f6;
 }
+
+
+table, th, td {
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+  table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+  }
+
+  table tr:nth-child(even) {
+    background-color: #ffffff;
+  }
+
+  table tr:hover td {
+    background-color: lightblue;
+  }

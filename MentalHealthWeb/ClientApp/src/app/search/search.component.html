@@ -7,7 +7,7 @@
       <div class="col-sm-8 form-group">
         <input type="search"
                class="form-control"
-               placeholder="Vendor Name / Clinic Name / Provider Name/ Address"
+               placeholder="Clinic Name/Provider Name/Provider NPI /Clinic Phone Number/Region"
                formControlName="text"
                required
                #search>
@@ -54,13 +54,13 @@
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.relationshipStatus | ActiveInactivePipe}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="facilityName">
-        <mat-header-cell *matHeaderCellDef> Clinic Name </mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityName}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" > Clinic Name </mat-header-cell>
+        <mat-cell *matCellDef="let facilityProviderRelationships" [ngClass]="'customWidthClass'"  (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityName}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="address">
-        <mat-header-cell *matHeaderCellDef> Clinic Address</mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthAddressClass'"> Clinic Address</mat-header-cell>
+        <mat-cell *matCellDef="let facilityProviderRelationships" [ngClass]="'customWidthAddressClass'" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)">
           {{facilityProviderRelationships.facility.facilityAddress.addressLine1}} {{facilityProviderRelationships.facility.facilityAddress.addressLine2}}
         </mat-cell>
       </ng-container>

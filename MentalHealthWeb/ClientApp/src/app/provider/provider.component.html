@@ -12,7 +12,7 @@
         <div class="col-sm-1">
           <b>Credentials: </b>
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-2">
           <span *ngFor="let option of provider.credentialList; let i= index">
             <span *ngIf="i < provider.credentialList.length - 1">
               {{option.value}},
@@ -22,7 +22,7 @@
             </span>
           </span>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
         </div>
         <div class="col-sm-1" *ngIf="canEdit">
           <edit-provider-details [provider]="provider">loading</edit-provider-details>

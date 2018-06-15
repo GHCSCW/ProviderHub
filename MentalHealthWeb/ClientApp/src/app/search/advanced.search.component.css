@@ -18,3 +18,6 @@ mat-header-cell {
   font-weight: bold;
 }
 
+matColumnDef {
+  flex: 0 0 20px;
+}

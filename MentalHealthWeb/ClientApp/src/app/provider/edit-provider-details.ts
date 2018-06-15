@@ -122,8 +122,8 @@ export class DialogProviderDetailsDialog {
     this.provID = this.data.provider.id;
 
     this.mentalHealthService.updateProvider(this.data.provider).subscribe(updatedProvider => {
-      this.data.provider.lastUpdatedDate = moment().toDate();
-      this.data.provider.lastUpdatedBy = this.authSvc.userName;
+      updatedProvider.lastUpdatedDate = moment().toDate();
+      updatedProvider.lastUpdatedBy = this.authSvc.userName;
       Object.assign(this.data.provider, updatedProvider);
 
     });

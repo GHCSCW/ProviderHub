@@ -274,6 +274,8 @@ namespace BehavorialHealthWeb.Controllers
         [Authorize(Policy = "BehavorialHealthSuperUser,BehavorialHealthEditor")]
         public async Task<IActionResult> CreateProvider([FromBody]Provider provider)
         {
+            bool y = true;
+            bool z = true;
             provider.CreatedBy = User.Identity.Name;
             provider.LastUpdatedBy = User.Identity.Name;
             provider.LastUpdatedDate = DateTime.Now;
@@ -281,8 +283,25 @@ namespace BehavorialHealthWeb.Controllers
             int x = await _providerHubService.SaveProviderDetailAsync(provider);
             if (x > 0)
             {
-                bool y = await _providerHubService.SaveCredentialByProviderIDAsync(x, provider.CredentialList);
-                bool z = await _providerHubService.SaveLanguageByProviderIDAsync(x, provider.LanguageList);
+                if (provider.CredentialList != null)
+                {
+                    y = await _providerHubService.SaveCredentialByProviderIDAsync(x, provider.CredentialList);         
+                }
+                else
+                {
+                    //do not save credentials. 
+                }
+
+                if (provider.LanguageList != null)
+                {
+                    z = await _providerHubService.SaveLanguageByProviderIDAsync(x, provider.LanguageList);
+                }
+                else
+                {
+                    //do not save languages. 
+                }
+
+                
 
                 if (y == true && z == true)
                 {
@@ -290,7 +309,7 @@ namespace BehavorialHealthWeb.Controllers
                 }
                 else
                 {
-                    return NotFound("There was an issue save credentials or languages");
+                    return NotFound("There was an issue with save credentials or languages");
                 }
             }
             else
