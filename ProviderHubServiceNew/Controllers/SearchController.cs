@@ -7,20 +7,21 @@ using ProviderHubService;
 
 namespace ProviderHubServiceNew.Controllers
 {
-    [Route("api/search")]
+    //[Route("api/search")]
     public class SearchController : Controller
     {
         // GetProviderList(searchValue) - retrieve List of providers that match the (given SQL subquery? or is it just keyword/name search?)
         // GET api/search/provider/{searchValue}
         //MODIFY FOR FRAMEWORK [HttpGet("provider/{searchValue}")]
-        public List<Provider> GetProviderList(string searchValue)
+        public ActionResult GetProviderList(string id)
         {
             List<Provider> providers = new List<Provider>();
             using (DataLayer dataLayer = new DataLayer())
             {
-                providers = dataLayer.GetProviderList(searchValue);
+                providers = dataLayer.GetProviderList(id);
             }
-            return providers;
+            string uname = User.Identity.Name;
+            return Json(providers, JsonRequestBehavior.AllowGet);
         }
 
         // GET api/search/facility/{searchValue}

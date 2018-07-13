@@ -20,6 +20,7 @@ namespace ProviderHubServiceNew.Controllers
             {
                 provider = dataLayer.GetProviderByID(providerID);
             }
+            string uname = User.Identity.Name;
             return provider;
         }
 

@@ -113,7 +113,7 @@ namespace ProviderHubService
         public List<Credential> GetProviderCredentialByID(int providerID)
         {
             List<Credential> credentialList = new List<Credential>();
-            string sql = "providerhub.dbo.sp_GetProviderCredentialByID";
+            string sql = "providerhub.dbo.sp_GetProviderCredentialByID_OLD";
 
             SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
 
@@ -223,7 +223,7 @@ namespace ProviderHubService
         {
             List<Provider> providers = new List<Provider>();
 
-            string sql = "providerHub.dbo.sp_GetProviderList";
+            string sql = "providerHub.dbo.sp_GetProviderList_OLD";
             SqlParameter[] sqlParams = { new SqlParameter("@SEARCH_VALUE", SqlDbType.VarChar) { Value = searchValue } };
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
 
