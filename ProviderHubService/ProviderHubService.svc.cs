@@ -185,6 +185,8 @@ namespace ProviderHubService
                     sr.Facilities.RemoveAll(f => f.ID == facRel.Facility.ID);
                     sr.Providers.RemoveAll(p => p.ID == facRel.Provider.ID);
                     sr.Vendors.RemoveAll(v => v.ID == facRel.Vendor.ID);
+
+                    facRel.BehavioralHealthAttributes = dataLayer.GetBHAttributeByRelationshipID(facRel.RelationshipID);
                 }
             }
 
@@ -192,7 +194,7 @@ namespace ProviderHubService
         }
         #endregion
 
-        #region List<FacilityProviderRelationship> GetFacilityProviderRelationshipList(string searchValue)
+        #region FUNCTION: GetFacilityProviderRelationshipList(string searchValue)
 
         public List<FacilityProviderRelationship> GetFacilityProviderRelationshipList(string searchValue)
         {
@@ -202,7 +204,6 @@ namespace ProviderHubService
             {
                 fpRelationship = dataLayer.GetFacilityProviderRelationshipList(searchValue);
 
-                //Remove duplicate objects (Facility/Provider/Vendor) if Facility Relationship already exist
                 foreach (FacilityProviderRelationship relationship in fpRelationship)
                 {
                     relationship.Vendor = dataLayer.GetVendorByFacilityID(relationship.Facility.ID);
@@ -245,12 +246,26 @@ namespace ProviderHubService
         /// <returns>Provider ID being inserted/updated in the database</returns>
         public int SaveProviderDetail(Provider provider)
         {
+            int providerID = 0;
+
             try
             {
                 using (DataLayer dataLayer = new DataLayer())
                 {
-                    return dataLayer.SaveProviderDetail(provider);
+                    providerID = dataLayer.SaveProviderDetail(provider);
+
+                    //if (dataLayer.SaveCredentialByProviderID(providerID, provider.CredentialList))
+                    //{
+                    //    //Log that Credentials have been saved correctly
+                    //}
+
+                    //if (dataLayer.SaveLanguageByProviderID(providerID, provider.LanguageList))
+                    //{
+                    //    //Log that Language have been saved correctly
+                    //}
                 }
+
+                return providerID;
             }
             catch (Exception ex)
             {
@@ -592,18 +607,45 @@ namespace ProviderHubService
         /// <returns></returns>
         public List<FacilityProviderRelationship> AdvancedSearch(Dictionary<string, List<string>> args)
         {
-            List<FacilityProviderRelationship> relationshipList = new List<FacilityProviderRelationship>();
+            //List<FacilityProviderRelationship> relationshipList = new List<FacilityProviderRelationship>();
+            bool retVal = true;
 
-            using(DataLayer dataLayer = new DataLayer())
+            List<string> bhealthAttributes = args.Where(w => w.Key == "BHAttributeSet").SelectMany(i => i.Value).ToList();
+
+            List<FacilityProviderRelationship> relationshipListWithCriteria = new List<FacilityProviderRelationship>();
+
+            using (DataLayer dataLayer = new DataLayer())
             {
-                relationshipList = dataLayer.AdvancedSearch(args);
-                
+                List<FacilityProviderRelationship> relationshipList = dataLayer.AdvancedSearch(args);
+
                 foreach (FacilityProviderRelationship relationship in relationshipList)
                 {
                     relationship.BehavioralHealthAttributes = dataLayer.GetBHAttributeByRelationshipID(relationship.RelationshipID);
+
+                    //if the relationship object has attributes and a list of attributes was specified
+                    if (relationship.BehavioralHealthAttributes.Count > 0 && bhealthAttributes.Count > 0)
+                    {
+                        foreach (string setID in bhealthAttributes)
+                        {
+                            if (relationship.BehavioralHealthAttributes.Exists(element => element.SetID == Convert.ToInt32(setID)) == true)
+                            {
+                                retVal = true;
+                            }
+                            else
+                            {
+                                retVal = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (retVal == true)
+                    {
+                        relationshipListWithCriteria.Add(relationship);
+                    }
                 }
             }
-            return relationshipList;
+            return relationshipListWithCriteria;
         }
 
         #endregion
@@ -670,5 +712,119 @@ namespace ProviderHubService
         }
 
         #endregion
+
+        #region FUNCTION: SaveFacilityAndAddress(Facility facility)
+
+        public int SaveFacilityAndAddress(Facility facility)
+        {
+            int facilityID = 0;
+            int addressID = 0;
+            int facilityAddressID = 0;
+
+            try
+            {
+                facilityID = SaveFacility(facility);
+
+                if (facilityID > 0 & facility.FacilityAddress != null)
+                {
+                    addressID = SaveAddress(facility.FacilityAddress);
+
+                    if (addressID > 0)
+                    {
+                        if (IsAddressMappedToFacility(facilityID, addressID) != true)
+                        {
+                            facilityAddressID = MapAddressToFacility(facilityID, addressID, facility.LastUpdatedBy);
+                        }
+                    }
+                }
+
+                return facilityID;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region FUNCTION: IsAddressMappedToFacility(int facilityID, addressID)
+
+        public bool IsAddressMappedToFacility(int facilityID, int addressID)
+        {
+            try
+            {
+                using (DataLayer dataLayer = new DataLayer())
+                {
+                    return dataLayer.IsAddressMappedToFacility(facilityID, addressID);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region FUNCTION: GetRelationshipDataByFacilityID(int facilityID)
+
+        public List<FacilityProviderRelationship> GetRelationshipDataByFacilityID(int facilityID)
+        {
+            List<FacilityProviderRelationship> relationships = new List<FacilityProviderRelationship>();
+
+            using (DataLayer dataLayer = new DataLayer())
+            {
+                relationships = dataLayer.GetRelationshipDataByFacilityID(facilityID);
+            }
+
+            return relationships;
+        }
+
+        #endregion
+
+        #region FUNCTION: GetRelationshipDataByProviderID(int providerID)
+
+        public List<FacilityProviderRelationship> GetRelationshipDataByProviderID(int providerID)
+        {
+            List<FacilityProviderRelationship> relationships = new List<FacilityProviderRelationship>();
+
+            using (DataLayer dataLayer = new DataLayer())
+            {
+                relationships = dataLayer.GetRelationshipDataByProviderID(providerID);
+            }
+
+            return relationships;
+        }
+
+        #endregion
+
+        #region FUNCTION: MapProviderToFacility(int providerID, int facilityID, string createdBy)
+
+        public int MapProviderToFacility(int providerID, int facilityID, string createdBy)
+        {
+            int relationshipID = 0;
+
+            try
+            {
+                using (DataLayer dataLayer = new DataLayer())
+                {
+                    if (dataLayer.IsProviderAndFacilityMapped(providerID, facilityID) != true)
+                    {
+                        relationshipID = dataLayer.MapProviderToFacility(providerID, facilityID, createdBy);
+                    }
+                }
+
+                return relationshipID;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
     }
 }

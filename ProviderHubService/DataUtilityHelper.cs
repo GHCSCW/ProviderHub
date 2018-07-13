@@ -34,7 +34,7 @@ namespace ProviderHubService
 
             //Specify FacilityID to update record
             if (facility.ID > 0)
-            {              
+            {
                 row["FACILITY_ID"] = facility.ID;
             }
 
@@ -63,7 +63,7 @@ namespace ProviderHubService
             dt.Columns.Add("PROVIDER_FIRST_NAME", typeof(string));
             dt.Columns.Add("PROVIDER_MIDDLE_NAME", typeof(string));
             dt.Columns.Add("PROVIDER_LAST_NAME", typeof(string));
-            dt.Columns.Add("EXTERNAL_PROVIDER_ID", typeof(string));  
+            dt.Columns.Add("EXTERNAL_PROVIDER_ID", typeof(string));
             dt.Columns.Add("EXTERNAL_PROVIDER_NAME", typeof(string));
             dt.Columns.Add("PROVIDER_DATE_OF_BIRTH", typeof(DateTime));
             dt.Columns.Add("PROVIDER_GENDER_ID", typeof(int));
@@ -78,7 +78,7 @@ namespace ProviderHubService
             dt.Columns.Add("TERMINATION_DATE", typeof(DateTime));
             dt.Columns.Add("INTERNAL_NOTES", typeof(string));
             dt.Columns.Add("LAST_UPDATED_BY", typeof(string));
-                        
+
             return dt;
         }
         #endregion
@@ -161,7 +161,7 @@ namespace ProviderHubService
                 {
                     row["TERMINATION_DATE"] = provider.TerminationDate;
                 }
-                
+
                 row["INTERNAL_NOTES"] = provider.InternalNotes;
                 row["LAST_UPDATED_BY"] = provider.LastUpdatedBy;
 
@@ -194,6 +194,9 @@ namespace ProviderHubService
             dt.Columns.Add("FLOAT_PROVIDER_INDICATOR", typeof(bool));
             dt.Columns.Add("EFFECTIVE_DATE", typeof(DateTime));
             dt.Columns.Add("TERMINATION_DATE", typeof(DateTime));
+            dt.Columns.Add("PROVIDER_EMAIL", typeof(string));
+            dt.Columns.Add("PROVIDER_PHONE_NUMBER", typeof(string));
+            dt.Columns.Add("PROVIDER_PHONE_EXTENSION", typeof(string));
             dt.Columns.Add("INTERNAL_NOTES", typeof(string));
             dt.Columns.Add("LAST_UPDATED_BY", typeof(string));
 
@@ -229,10 +232,10 @@ namespace ProviderHubService
                 row["TERMINATION_DATE"] = relationship.TerminationDate;
                 row["PROVIDER_EMAIL"] = relationship.ProviderEmail;
                 row["PROVIDER_PHONE_NUMBER"] = relationship.ProviderPhoneNumber;
-                row["PROVIDER_EXTENSION_NUMBER"] = relationship.ProviderExtensionNumber;
+                row["PROVIDER_PHONE_EXTENSION"] = relationship.ProviderExtensionNumber;
                 row["INTERNAL_NOTES"] = relationship.InternalNotes;
                 row["LAST_UPDATED_BY"] = relationship.LastUpdatedBy;
-                
+
                 dt.Rows.Add(row);
             }
             catch (Exception ex)
@@ -289,7 +292,7 @@ namespace ProviderHubService
                 {
                     row["ADDRESS_ID"] = address.ID;
                 }
-                
+
                 row["ADDRESS_TYPE_ID"] = Convert.ToInt32(address.AddressType);
                 row["ADDRESS_LINE_1"] = address.AddressLine1;
                 row["ADDRESS_LINE_2"] = address.AddressLine2;
@@ -305,8 +308,8 @@ namespace ProviderHubService
                 row["EMAIL"] = address.Email;
                 row["WEBSITE"] = address.Website;
                 row["CONTACT_FIRST_NAME"] = address.ContactFirstName;
-                row["CONTACT_LAST_NAME"] = address.ContactLastName;                   
-                row["LAST_UPDATED_BY"] = address.LastUpdatedBy;               
+                row["CONTACT_LAST_NAME"] = address.ContactLastName;
+                row["LAST_UPDATED_BY"] = address.LastUpdatedBy;
 
                 dt.Rows.Add(row);
             }
@@ -325,7 +328,7 @@ namespace ProviderHubService
         private static DataTable CreateVendorTable()
         {
             DataTable dt = new DataTable();
-            
+
             dt.Columns.Add("VENDOR_ID", typeof(int));
             dt.Columns.Add("VENDOR_NAME", typeof(string));
             dt.Columns.Add("VENDOR_NPI", typeof(string));
@@ -349,7 +352,7 @@ namespace ProviderHubService
             try
             {
                 DataRow row = dt.NewRow();
-                
+
                 //Specify VendorID to update record
                 if (vendor.ID > 0)
                 {
@@ -409,7 +412,7 @@ namespace ProviderHubService
                     row["LANGUAGE_ID"] = language.ID;
                     row["SEQUENCE_NUMBER"] = language.SequenceNumber;
                     row["ACTIVE_STATUS"] = language.Status;
-                    
+
                     dt.Rows.Add(row);
                 }
             }
@@ -422,7 +425,7 @@ namespace ProviderHubService
 
         }
         #endregion
-        
+
         #region STATIC FUNCTION: CreateProviderCredentialTable()
 
         private static DataTable CreateProviderCredentialTable()
@@ -484,7 +487,7 @@ namespace ProviderHubService
                 foreach (string item in pair.Value)
                 {
                     DataRow row = dt.NewRow();
-                    
+
                     row["FIELD_NAME"] = pair.Key.ToString();
                     row["FIELD_VALUE"] = item;
 
@@ -507,7 +510,7 @@ namespace ProviderHubService
             dt.Columns.Add("FACILITY_PROVIDER_RELATIONSHIP_ID", typeof(int));
             dt.Columns.Add("BH_ATTRIBUTE_SET_ID", typeof(int));
             dt.Columns.Add("ACTIVE_STATUS", typeof(bool));
-            
+
             return dt;
         }
 
