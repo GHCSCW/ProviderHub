@@ -110,10 +110,10 @@ namespace ProviderHubService
 
         #region FUNCTION: GetProviderCredentialByID(int providerID)
 
-        public List<Credential> GetProviderCredentialByID(int providerID)
+        public List<Credential> GetProviderCredentialByID(int providerID, bool calledFromPH=false)
         {
             List<Credential> credentialList = new List<Credential>();
-            string sql = "providerhub.bh.sp_GetProviderCredentialByID";
+            string sql = (calledFromPH)? "providerhub.dbo.sp_GetProviderCredentialByID_OLD" : "providerhub.bh.sp_GetProviderCredentialByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
 
@@ -219,11 +219,11 @@ namespace ProviderHubService
 
         #region FUNCTION: GetProviderList(string searchValue)
 
-        public List<Provider> GetProviderList(string searchValue)
+        public List<Provider> GetProviderList(string searchValue, bool calledFromPH=false)
         {
             List<Provider> providers = new List<Provider>();
 
-            string sql = "providerHub.bh.sp_GetProviderList";
+            string sql = (calledFromPH)? "providerHub.dbo.sp_GetProviderList_OLD" : "providerHub.bh.sp_GetProviderList";
             SqlParameter[] sqlParams = { new SqlParameter("@SEARCH_VALUE", SqlDbType.VarChar) { Value = searchValue } };
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
 
@@ -254,7 +254,7 @@ namespace ProviderHubService
                              CreatedBy = x.Field<string>("CREATED_BY"),
                              LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
                              LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
-                             CredentialList = GetProviderCredentialByID(x.Field<int>("PROVIDER_ID"))
+                             CredentialList = GetProviderCredentialByID(x.Field<int>("PROVIDER_ID"),calledFromPH)
 
                          }).ToList();
 

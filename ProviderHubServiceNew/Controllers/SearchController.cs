@@ -18,7 +18,7 @@ namespace ProviderHubServiceNew.Controllers
             List<Provider> providers = new List<Provider>();
             using (DataLayer dataLayer = new DataLayer())
             {
-                providers = dataLayer.GetProviderList(id);
+                providers = dataLayer.GetProviderList(id,true);
             }
             string uname = User.Identity.Name;
             return Json(providers, JsonRequestBehavior.AllowGet);
