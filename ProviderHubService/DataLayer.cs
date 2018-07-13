@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace ProviderHubService
 {
-    public class DataLayer: IDisposable
+    public class DataLayer : IDisposable
     {
         #region PRIVATE VARIABLES
 
@@ -28,12 +28,12 @@ namespace ProviderHubService
         #endregion
 
         #region FUNCTION: GetProviderByID(int providerID)
-        
+
         public Provider GetProviderByID(int providerID)
         {
             Provider provider = new Provider();
 
-            string sql = "providerHub.dbo.sp_GetProviderByID";
+            string sql = "providerHub.bh.sp_GetProviderByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
 
@@ -66,13 +66,13 @@ namespace ProviderHubService
                     provider.CreatedDate = x.Field<DateTime>("CREATED_DATE");
                     provider.CreatedBy = x.Field<string>("CREATED_BY");
                     provider.LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE");
-                    provider.LastUpdatedBy = x.Field <string>("LAST_UPDATED_BY");
-                    provider.LanguageList  = GetProviderLanguageByID(providerID);
+                    provider.LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY");
+                    provider.LanguageList = GetProviderLanguageByID(providerID);
                     provider.CredentialList = GetProviderCredentialByID(providerID);
-                    
+
                 }
             }
-           
+
             return provider;
         }
 
@@ -83,8 +83,8 @@ namespace ProviderHubService
         public List<Language> GetProviderLanguageByID(int providerID)
         {
             List<Language> languageList = new List<Language>();
-            
-            string sql = "providerhub.dbo.sp_GetProviderLanguageByID";
+
+            string sql = "providerhub.bh.sp_GetProviderLanguageByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
 
@@ -95,8 +95,8 @@ namespace ProviderHubService
                 languageList = (from language in ds.Tables[0].AsEnumerable()
                                 select new Language()
                                 {
-                                    ID = language.Field<int>("LANGUAGE_ID"),
-                                    Name = language.Field<string>("LANGUAGE_NAME"),
+                                    ID = language.Field<int>("PROVIDER_LANGUAGE_ID"),
+                                    Name = language.Field<string>("PROVIDER_LANGUAGE_NAME"),
                                     SequenceNumber = language.Field<int>("LANGUAGE_SEQUENCE_NUMBER"),
                                     CreatedDate = language.Field<DateTime>("LANGUAGE_CREATED_DATE"),
                                     MappingID = language.Field<int>("PROVIDER_LANGUAGE_MAPPING_ID")
@@ -113,7 +113,7 @@ namespace ProviderHubService
         public List<Credential> GetProviderCredentialByID(int providerID)
         {
             List<Credential> credentialList = new List<Credential>();
-            string sql = "providerhub.dbo.sp_GetProviderCredentialByID_OLD";
+            string sql = "providerhub.bh.sp_GetProviderCredentialByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
 
@@ -122,17 +122,17 @@ namespace ProviderHubService
             if (ds.Tables[0].Rows.Count > 0)
             {
                 credentialList = (from credentials in ds.Tables[0].AsEnumerable()
-                                      select new Credential()
-                                      {
-                                          ID = credentials.Field<int>("CREDENTIAL_ID"),
-                                          Value = credentials.Field<string>("CREDENTIAL_VALUE"),
-                                          Description = credentials.Field<string>("CREDENTIAL_DESCRIPTION"),
-                                          SequenceNumber = credentials.Field<int>("CREDENTIAL_SEQUENCE_NUMBER"),
-                                          CreatedDate = credentials.Field<DateTime>("CREDENTIAL_CREATED_DATE"),
-                                          MappingID = credentials.Field<int>("CREDENTIAL_MAPPING_ID")
-                                      }).ToList();
+                                  select new Credential()
+                                  {
+                                      ID = credentials.Field<int>("CREDENTIAL_ID"),
+                                      Value = credentials.Field<string>("CREDENTIAL_VALUE"),
+                                      Description = credentials.Field<string>("CREDENTIAL_DESCRIPTION"),
+                                      SequenceNumber = credentials.Field<int>("CREDENTIAL_SEQUENCE_NUMBER"),
+                                      CreatedDate = credentials.Field<DateTime>("CREDENTIAL_CREATED_DATE"),
+                                      MappingID = credentials.Field<int>("CREDENTIAL_MAPPING_ID")
+                                  }).ToList();
             }
-            
+
             return credentialList;
         }
 
@@ -144,7 +144,7 @@ namespace ProviderHubService
         {
             Facility facility = new Facility();
 
-            string sql = "providerHub.dbo.sp_GetFacilityByID";
+            string sql = "providerHub.bh.sp_GetFacilityByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
 
@@ -178,7 +178,7 @@ namespace ProviderHubService
         {
             Address address = new Address();
 
-            string sql = "providerHub.dbo.sp_GetAddressByFacilityID";
+            string sql = "providerHub.bh.sp_GetAddressByFacilityID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
 
@@ -223,40 +223,40 @@ namespace ProviderHubService
         {
             List<Provider> providers = new List<Provider>();
 
-            string sql = "providerHub.dbo.sp_GetProviderList_OLD";
+            string sql = "providerHub.bh.sp_GetProviderList";
             SqlParameter[] sqlParams = { new SqlParameter("@SEARCH_VALUE", SqlDbType.VarChar) { Value = searchValue } };
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
 
             providers = (from x in ds.Tables[0].AsEnumerable()
-                        select new Provider
-                        {
-                            ID = x.Field<int>("PROVIDER_ID"),
-                            EpicProviderID = x.Field<string>("EPIC_PROVIDER_ID"),
-                            NPI = x.Field<string>("NATIONAL_PROVIDER_IDENTIFIER"),
-                            FirstName = x.Field<string>("PROVIDER_FIRST_NAME"),
-                            MiddleName = x.Field<string>("PROVIDER_MIDDLE_NAME"),
-                            LastName = x.Field<string>("PROVIDER_LAST_NAME"),
-                            DateOfBirth = Convert.ToString(x.Field<DateTime?>("PROVIDER_DATE_OF_BIRTH")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("PROVIDER_DATE_OF_BIRTH")),
-                            ExternalProviderID = x.Field<string>("EXTERNAL_PROVIDER_ID"),
-                            ExternalProviderName = x.Field<string>("EXTERNAL_PROVIDER_NAME"),
-                            Gender = (ProviderGender)Enum.Parse(typeof(ProviderGender), x.Field<int>("PROVIDER_GENDER_ID").ToString()),
-                            CSP_Indicator = x.Field<bool>("CSP_INDICATOR"),
-                            MedicareIndicator = x.Field<bool>("MEDICARE_PROVIDER_INDICATOR"),
-                            MedicarePTAN = x.Field<string>("MEDICARE_PTAN"),
-                            MedicareEffectiveDate = Convert.ToString(x.Field<DateTime?>("MEDICARE_EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("MEDICARE_EFFECTIVE_DATE")),
-                            MedicareTerminationDate = Convert.ToString(x.Field<DateTime?>("MEDICARE_TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("MEDICARE_TERMINATION_DATE")),
-                            MedicaidIndicator = x.Field<bool>("MEDICAID_PROVIDER_INDICATOR"),
-                            MedicaidProviderID = x.Field<string>("MEDICAID_PROVIDER_ID"),
-                            EffectiveDate = Convert.ToString(x.Field<DateTime?>("EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("EFFECTIVE_DATE")),
-                            TerminationDate = Convert.ToString(x.Field<DateTime?>("TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("TERMINATION_DATE")),
-                            InternalNotes = x.Field<string>("INTERNAL_NOTES"),
-                            CreatedDate = x.Field<DateTime>("CREATED_DATE"),
-                            CreatedBy = x.Field<string>("CREATED_BY"),
-                            LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
-                            LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
-                            CredentialList = GetProviderCredentialByID(x.Field<int>("PROVIDER_ID"))
-                            
-                        }).ToList();
+                         select new Provider
+                         {
+                             ID = x.Field<int>("PROVIDER_ID"),
+                             EpicProviderID = x.Field<string>("EPIC_PROVIDER_ID"),
+                             NPI = x.Field<string>("NATIONAL_PROVIDER_IDENTIFIER"),
+                             FirstName = x.Field<string>("PROVIDER_FIRST_NAME"),
+                             MiddleName = x.Field<string>("PROVIDER_MIDDLE_NAME"),
+                             LastName = x.Field<string>("PROVIDER_LAST_NAME"),
+                             DateOfBirth = Convert.ToString(x.Field<DateTime?>("PROVIDER_DATE_OF_BIRTH")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("PROVIDER_DATE_OF_BIRTH")),
+                             ExternalProviderID = x.Field<string>("EXTERNAL_PROVIDER_ID"),
+                             ExternalProviderName = x.Field<string>("EXTERNAL_PROVIDER_NAME"),
+                             Gender = (ProviderGender)Enum.Parse(typeof(ProviderGender), x.Field<int>("PROVIDER_GENDER_ID").ToString()),
+                             CSP_Indicator = x.Field<bool>("CSP_INDICATOR"),
+                             MedicareIndicator = x.Field<bool>("MEDICARE_PROVIDER_INDICATOR"),
+                             MedicarePTAN = x.Field<string>("MEDICARE_PTAN"),
+                             MedicareEffectiveDate = Convert.ToString(x.Field<DateTime?>("MEDICARE_EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("MEDICARE_EFFECTIVE_DATE")),
+                             MedicareTerminationDate = Convert.ToString(x.Field<DateTime?>("MEDICARE_TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("MEDICARE_TERMINATION_DATE")),
+                             MedicaidIndicator = x.Field<bool>("MEDICAID_PROVIDER_INDICATOR"),
+                             MedicaidProviderID = x.Field<string>("MEDICAID_PROVIDER_ID"),
+                             EffectiveDate = Convert.ToString(x.Field<DateTime?>("EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("EFFECTIVE_DATE")),
+                             TerminationDate = Convert.ToString(x.Field<DateTime?>("TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("TERMINATION_DATE")),
+                             InternalNotes = x.Field<string>("INTERNAL_NOTES"),
+                             CreatedDate = x.Field<DateTime>("CREATED_DATE"),
+                             CreatedBy = x.Field<string>("CREATED_BY"),
+                             LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
+                             LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
+                             CredentialList = GetProviderCredentialByID(x.Field<int>("PROVIDER_ID"))
+
+                         }).ToList();
 
             return providers;
 
@@ -264,54 +264,54 @@ namespace ProviderHubService
         #endregion
 
         #region FUNCTION: GetFacilityList(string searchValue)
-        
+
         public List<Facility> GetFacilityList(string searchValue)
         {
             List<Facility> facilities = new List<Facility>();
 
-            string sql = "providerHub.dbo.sp_GetFacilityList";
+            string sql = "providerHub.bh.sp_GetFacilityList";
             SqlParameter[] sqlParams = { new SqlParameter("@SEARCH_VALUE", SqlDbType.VarChar) { Value = searchValue } };
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
 
             facilities = (from x in ds.Tables[0].AsEnumerable()
-                         select new Facility
-                         {
-                             ID = x.Field<int>("FACILITY_ID"),
-                             FacilityName = x.Field<string>("FACILITY_NAME"),                            
-                             NPI = x.Field<string>("FACILITY_NPI"),
-                             ExternalID = x.Field<string>("EXTERNAL_ID"),        //should this be by specialties
-                             InternalNotes = x.Field<string>("INTERNAL_NOTES"),
-                             CreatedDate = x.Field<DateTime>("CREATED_DATE"),
-                             CreatedBy = x.Field<string>("CREATED_BY"),
-                             LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
-                             LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
-                             FacilityAddress = (from address in ds.Tables[0].AsEnumerable()
-                                                where address.Field<int>("FACILITY_ID") == x.Field<int>("FACILITY_ID")
-                                                select new Address()
-                                                {
-                                                    ID = address.Field<int>("ADDRESS_ID"),
-                                                    AddressType = (AddressType)Enum.Parse(typeof(AddressType), address.Field<int>("ADDRESS_TYPE_ID").ToString()),
-                                                    AddressLine1 = address.Field<string>("ADDRESS_LINE_1"),
-                                                    AddressLine2 = address.Field<string>("ADDRESS_LINE_2"),
-                                                    City = address.Field<string>("CITY"),
-                                                    State = address.Field<string>("STATE"),
-                                                    ZipCode = address.Field<string>("ZIP_CODE"),
-                                                    County = address.Field<string>("COUNTY"),
-                                                    Region = address.Field<string>("REGION"),
-                                                    PhoneNumber = address.Field<string>("PHONE_NUMBER"),
-                                                    PhoneExtension = address.Field<string>("PHONE_EXTENSION"),
-                                                    AlternatePhoneNumber = address.Field<string>("ALTERNATE_PHONE_NUMBER"),
-                                                    FaxNumber = address.Field<string>("FAX_NUMBER"),
-                                                    Email = address.Field<string>("EMAIL"),
-                                                    Website = address.Field<string>("WEBSITE"),
-                                                    ContactFirstName = address.Field<string>("CONTACT_FIRST_NAME"),
-                                                    ContactLastName = address.Field<string>("CONTACT_LAST_NAME"),
-                                                    CreatedDate = Convert.ToDateTime(address.Field<DateTime>("ADDRESS_CREATED_DATE")),
-                                                    CreatedBy = address.Field<string>("ADDRESS_CREATED_BY"),
-                                                    LastUpdatedDate = Convert.ToDateTime(address.Field<DateTime>("ADDRESS_LAST_UPDATED_DATE")),
-                                                    LastUpdatedBy = address.Field<string>("ADDRESS_LAST_UPDATED_BY")
-                                                }).First()
-                         }).ToList();
+                          select new Facility
+                          {
+                              ID = x.Field<int>("FACILITY_ID"),
+                              FacilityName = x.Field<string>("FACILITY_NAME"),
+                              NPI = x.Field<string>("FACILITY_NPI"),
+                              ExternalID = x.Field<string>("EXTERNAL_ID"),        //should this be by specialties
+                              InternalNotes = x.Field<string>("INTERNAL_NOTES"),
+                              CreatedDate = x.Field<DateTime>("CREATED_DATE"),
+                              CreatedBy = x.Field<string>("CREATED_BY"),
+                              LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
+                              LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
+                              FacilityAddress = (from address in ds.Tables[0].AsEnumerable()
+                                                 where address.Field<int>("FACILITY_ID") == x.Field<int>("FACILITY_ID")
+                                                 select new Address()
+                                                 {
+                                                     ID = address.Field<int>("ADDRESS_ID"),
+                                                     AddressType = (AddressType)Enum.Parse(typeof(AddressType), address.Field<int>("ADDRESS_TYPE_ID").ToString()),
+                                                     AddressLine1 = address.Field<string>("ADDRESS_LINE_1"),
+                                                     AddressLine2 = address.Field<string>("ADDRESS_LINE_2"),
+                                                     City = address.Field<string>("CITY"),
+                                                     State = address.Field<string>("STATE"),
+                                                     ZipCode = address.Field<string>("ZIP_CODE"),
+                                                     County = address.Field<string>("COUNTY"),
+                                                     Region = address.Field<string>("REGION"),
+                                                     PhoneNumber = address.Field<string>("PHONE_NUMBER"),
+                                                     PhoneExtension = address.Field<string>("PHONE_EXTENSION"),
+                                                     AlternatePhoneNumber = address.Field<string>("ALTERNATE_PHONE_NUMBER"),
+                                                     FaxNumber = address.Field<string>("FAX_NUMBER"),
+                                                     Email = address.Field<string>("EMAIL"),
+                                                     Website = address.Field<string>("WEBSITE"),
+                                                     ContactFirstName = address.Field<string>("CONTACT_FIRST_NAME"),
+                                                     ContactLastName = address.Field<string>("CONTACT_LAST_NAME"),
+                                                     CreatedDate = Convert.ToDateTime(address.Field<DateTime>("ADDRESS_CREATED_DATE")),
+                                                     CreatedBy = address.Field<string>("ADDRESS_CREATED_BY"),
+                                                     LastUpdatedDate = Convert.ToDateTime(address.Field<DateTime>("ADDRESS_LAST_UPDATED_DATE")),
+                                                     LastUpdatedBy = address.Field<string>("ADDRESS_LAST_UPDATED_BY")
+                                                 }).First()
+                          }).ToList();
 
             return facilities;
 
@@ -323,7 +323,7 @@ namespace ProviderHubService
 
         public List<FacilityProviderRelationship> GetFacilityProviderRelationshipList(string searchValue)
         {
-            string sql = "providerhub.dbo.sp_GetFacilityProviderRelationshipList";
+            string sql = "providerhub.bh.sp_GetFacilityProviderRelationshipList";
             List<FacilityProviderRelationship> relationship = new List<FacilityProviderRelationship>();
 
             SqlParameter[] sqlParams = { new SqlParameter("@VALUE", SqlDbType.VarChar) { Value = searchValue } };
@@ -345,7 +345,7 @@ namespace ProviderHubService
         public FacilityProviderRelationship GetFacilityProviderRelationshipByID(int relationshipID)
         {
             FacilityProviderRelationship relationship = new FacilityProviderRelationship();
-            string sql = "providerhub.dbo.sp_GetFacilityProviderRelationshipByID";
+            string sql = "providerhub.bh.sp_GetFacilityProviderRelationshipByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@RELATIONSHIP_ID", SqlDbType.Int) { Value = relationshipID } };
 
@@ -368,107 +368,107 @@ namespace ProviderHubService
             List<FacilityProviderRelationship> facilityProviderList = new List<FacilityProviderRelationship>();
 
             facilityProviderList = (from x in ds.Tables[0].AsEnumerable()
-                                  select new FacilityProviderRelationship
-                                  {
-                                      RelationshipID = x.Field<int>("FACILITY_PROVIDER_RELATIONSHIP_ID"),
-                                      Facility = (from facility in ds.Tables[0].AsEnumerable()
-                                                where facility.Field<int>("FACILITY_ID") == x.Field<int>("FACILITY_ID")
-                                                select new Facility()
-                                                {
-                                                    ID = facility.Field<int>("FACILITY_ID"),
-                                                    FacilityName = facility.Field<string>("FACILITY_NAME"),
-                                                    NPI = facility.Field<string>("FACILITY_NPI"),
-                                                    ExternalID = facility.Field<string>("EXTERNAL_ID"),
-                                                    InternalNotes = facility.Field<string>("FACILITY_INTERNAL_NOTES"),
-                                                    CreatedDate = facility.Field<DateTime>("FACILITY_CREATED_DATE"),
-                                                    CreatedBy = facility.Field<string>("FACILITY_CREATED_BY"),
-                                                    LastUpdatedDate = facility.Field<DateTime>("FACILITY_LAST_UPDATED_DATE"),
-                                                    LastUpdatedBy = facility.Field<string>("FACILITY_LAST_UPDATED_BY"),
-                                                    FacilityAddress = (from address in ds.Tables[0].AsEnumerable()
-                                                                        where address.Field<int>("FACILITY_ID") == x.Field<int>("FACILITY_ID")
-                                                                        select new Address()
-                                                                        {
-                                                                            ID = address.Field<int>("ADDRESS_ID"),
-                                                                            AddressType = (AddressType)Enum.Parse(typeof(AddressType), address.Field<int>("ADDRESS_TYPE_ID").ToString()),
-                                                                            AddressLine1 = address.Field<string>("ADDRESS_LINE_1"),
-                                                                            AddressLine2 = address.Field<string>("ADDRESS_LINE_2"),
-                                                                            City = address.Field<string>("CITY"),
-                                                                            State = address.Field<string>("STATE"),
-                                                                            ZipCode = address.Field<string>("ZIP_CODE"),
-                                                                            County = address.Field<string>("COUNTY"),
-                                                                            Region = address.Field<string>("REGION"),
-                                                                            PhoneNumber = address.Field<string>("PHONE_NUMBER"),
-                                                                            PhoneExtension = address.Field<string>("PHONE_EXTENSION"),
-                                                                            AlternatePhoneNumber = address.Field<string>("ALTERNATE_PHONE_NUMBER"),
-                                                                            FaxNumber = address.Field<string>("FAX_NUMBER"),
-                                                                            Email = address.Field<string>("EMAIL"),
-                                                                            Website = address.Field<string>("WEBSITE"),
-                                                                            ContactFirstName = address.Field<string>("CONTACT_FIRST_NAME"),
-                                                                            ContactLastName = address.Field<string>("CONTACT_LAST_NAME"),
-                                                                            CreatedDate = Convert.ToDateTime(address.Field<DateTime>("ADDRESS_CREATED_DATE")),
-                                                                            CreatedBy = address.Field<string>("ADDRESS_CREATED_BY"),
-                                                                            LastUpdatedDate = Convert.ToDateTime(address.Field<DateTime>("ADDRESS_LAST_UPDATED_DATE")),
-                                                                            LastUpdatedBy = address.Field<string>("ADDRESS_LAST_UPDATED_BY")
-                                                                        }).First()
-                                                }).First(),
-                                      Provider = (from provider in ds.Tables[0].AsEnumerable()
-                                                  where provider.Field<int>("PROVIDER_ID") == x.Field<int>("PROVIDER_ID")
-                                                  select new Provider()
-                                                  {
-                                                      ID = provider.Field<int>("PROVIDER_ID"),
-                                                      EpicProviderID = provider.Field<string>("EPIC_PROVIDER_ID"),
-                                                      NPI = provider.Field<string>("NATIONAL_PROVIDER_IDENTIFIER"),
-                                                      FirstName = provider.Field<string>("PROVIDER_FIRST_NAME"),
-                                                      MiddleName = provider.Field<string>("PROVIDER_MIDDLE_NAME"),
-                                                      LastName = provider.Field<string>("PROVIDER_LAST_NAME"),
-                                                      ExternalProviderID = provider.Field<string>("EXTERNAL_PROVIDER_ID"),
-                                                      ExternalProviderName = provider.Field<string>("EXTERNAL_PROVIDER_NAME"),
-                                                      DateOfBirth = Convert.ToString(provider.Field<DateTime?>("PROVIDER_DATE_OF_BIRTH")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("PROVIDER_DATE_OF_BIRTH")),
-                                                      Gender = (ProviderGender)Enum.Parse(typeof(ProviderGender), provider.Field<int>("PROVIDER_GENDER_ID").ToString()),
-                                                      CSP_Indicator = provider.Field<bool>("CSP_INDICATOR"),
-                                                      MedicareIndicator = provider.Field<bool>("MEDICARE_PROVIDER_INDICATOR"),
-                                                      MedicarePTAN = provider.Field<string>("MEDICARE_PTAN"),
-                                                      MedicareEffectiveDate = Convert.ToString(provider.Field<DateTime?>("MEDICARE_EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("MEDICARE_EFFECTIVE_DATE")),
-                                                      MedicareTerminationDate = Convert.ToString(provider.Field<DateTime?>("MEDICARE_TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("MEDICARE_TERMINATION_DATE")),
-                                                      MedicaidIndicator = provider.Field<bool>("MEDICAID_PROVIDER_INDICATOR"),
-                                                      MedicaidProviderID = provider.Field<string>("MEDICAID_PROVIDER_ID"),
-                                                      EffectiveDate = Convert.ToString(provider.Field<DateTime?>("EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("EFFECTIVE_DATE")),
-                                                      TerminationDate = Convert.ToString(provider.Field<DateTime?>("TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("TERMINATION_DATE")),
-                                                      InternalNotes = provider.Field<string>("PROVIDER_INTERNAL_NOTES"),
-                                                      CreatedDate = provider.Field<DateTime>("PROVIDER_CREATED_DATE"),
-                                                      CreatedBy = provider.Field<string>("PROVIDER_CREATED_BY"),
-                                                      LastUpdatedDate = provider.Field<DateTime>("PROVIDER_LAST_UPDATED_DATE"),
-                                                      LastUpdatedBy = provider.Field<string>("PROVIDER_LAST_UPDATED_BY"),
-                                                      CredentialList = GetProviderCredentialByID(provider.Field<int>("PROVIDER_ID")),
-                                                      LanguageList = GetProviderLanguageByID(provider.Field<int>("PROVIDER_ID"))
-                                                  }).First(),
-                                      AcceptingNewPatientIndicator = (bool)x.Field<bool>("ACCEPTING_NEW_PATIENT_INDICATOR"),
-                                      EffectiveDate = Convert.ToDateTime(x.Field<DateTime>("FP_EFFECTIVE_DATE")),
-                                      TerminationDate = Convert.ToDateTime(x.Field<DateTime>("FP_TERMINATION_DATE")),
-                                      ExternalProviderIndicator = (bool)x.Field<bool>("EXTERNAL_PROVIDER_INDICATOR"),
-                                      FloatProviderIndicator = (bool)x.Field<bool>("FLOAT_PROVIDER_INDICATOR"),
-                                      PrescriberIndicator = (bool)x.Field<bool>("PRESCRIBER_INDICATOR"),
-                                      ReferralIndicator = (bool)x.Field<bool>("REFERRALL_INDICATOR"),
-                                      ProviderEmail = x.Field<string>("FP_PROVIDER_EMAIL"),
-                                      ProviderPhoneNumber = x.Field<string>("FP_PROVIDER_PHONE_NUMBER"),
-                                      ProviderExtensionNumber = x.Field<string>("FP_PROVIDER_PHONE_EXTENSION"),
-                                      InternalNotes = x.Field<string>("FP_INTERNAL_NOTES"),
-                                      CreatedDate = Convert.ToDateTime(x.Field<DateTime>("FP_CREATED_DATE")),
-                                      CreatedBy = x.Field<string>("FP_CREATED_BY"),
-                                      LastUpdatedDate = Convert.ToDateTime(x.Field<DateTime>("FP_LAST_UPDATED_DATE")),
-                                      LastUpdatedBy = x.Field<string>("FP_LAST_UPDATED_BY"),
-                                  }).ToList();
+                                    select new FacilityProviderRelationship
+                                    {
+                                        RelationshipID = x.Field<int>("FACILITY_PROVIDER_RELATIONSHIP_ID"),
+                                        Facility = (from facility in ds.Tables[0].AsEnumerable()
+                                                    where facility.Field<int>("FACILITY_ID") == x.Field<int>("FACILITY_ID")
+                                                    select new Facility()
+                                                    {
+                                                        ID = facility.Field<int>("FACILITY_ID"),
+                                                        FacilityName = facility.Field<string>("FACILITY_NAME"),
+                                                        NPI = facility.Field<string>("FACILITY_NPI"),
+                                                        ExternalID = facility.Field<string>("EXTERNAL_ID"),
+                                                        InternalNotes = facility.Field<string>("FACILITY_INTERNAL_NOTES"),
+                                                        CreatedDate = facility.Field<DateTime>("FACILITY_CREATED_DATE"),
+                                                        CreatedBy = facility.Field<string>("FACILITY_CREATED_BY"),
+                                                        LastUpdatedDate = facility.Field<DateTime>("FACILITY_LAST_UPDATED_DATE"),
+                                                        LastUpdatedBy = facility.Field<string>("FACILITY_LAST_UPDATED_BY"),
+                                                        FacilityAddress = (from address in ds.Tables[0].AsEnumerable()
+                                                                           where address.Field<int>("FACILITY_ID") == x.Field<int>("FACILITY_ID")
+                                                                           select new Address()
+                                                                           {
+                                                                               ID = address.Field<int>("ADDRESS_ID"),
+                                                                               AddressType = (AddressType)Enum.Parse(typeof(AddressType), address.Field<int>("ADDRESS_TYPE_ID").ToString()),
+                                                                               AddressLine1 = address.Field<string>("ADDRESS_LINE_1"),
+                                                                               AddressLine2 = address.Field<string>("ADDRESS_LINE_2"),
+                                                                               City = address.Field<string>("CITY"),
+                                                                               State = address.Field<string>("STATE"),
+                                                                               ZipCode = address.Field<string>("ZIP_CODE"),
+                                                                               County = address.Field<string>("COUNTY"),
+                                                                               Region = address.Field<string>("REGION"),
+                                                                               PhoneNumber = address.Field<string>("PHONE_NUMBER"),
+                                                                               PhoneExtension = address.Field<string>("PHONE_EXTENSION"),
+                                                                               AlternatePhoneNumber = address.Field<string>("ALTERNATE_PHONE_NUMBER"),
+                                                                               FaxNumber = address.Field<string>("FAX_NUMBER"),
+                                                                               Email = address.Field<string>("EMAIL"),
+                                                                               Website = address.Field<string>("WEBSITE"),
+                                                                               ContactFirstName = address.Field<string>("CONTACT_FIRST_NAME"),
+                                                                               ContactLastName = address.Field<string>("CONTACT_LAST_NAME"),
+                                                                               CreatedDate = Convert.ToDateTime(address.Field<DateTime>("ADDRESS_CREATED_DATE")),
+                                                                               CreatedBy = address.Field<string>("ADDRESS_CREATED_BY"),
+                                                                               LastUpdatedDate = Convert.ToDateTime(address.Field<DateTime>("ADDRESS_LAST_UPDATED_DATE")),
+                                                                               LastUpdatedBy = address.Field<string>("ADDRESS_LAST_UPDATED_BY")
+                                                                           }).First()
+                                                    }).First(),
+                                        Provider = (from provider in ds.Tables[0].AsEnumerable()
+                                                    where provider.Field<int>("PROVIDER_ID") == x.Field<int>("PROVIDER_ID")
+                                                    select new Provider()
+                                                    {
+                                                        ID = provider.Field<int>("PROVIDER_ID"),
+                                                        EpicProviderID = provider.Field<string>("EPIC_PROVIDER_ID"),
+                                                        NPI = provider.Field<string>("NATIONAL_PROVIDER_IDENTIFIER"),
+                                                        FirstName = provider.Field<string>("PROVIDER_FIRST_NAME"),
+                                                        MiddleName = provider.Field<string>("PROVIDER_MIDDLE_NAME"),
+                                                        LastName = provider.Field<string>("PROVIDER_LAST_NAME"),
+                                                        ExternalProviderID = provider.Field<string>("EXTERNAL_PROVIDER_ID"),
+                                                        ExternalProviderName = provider.Field<string>("EXTERNAL_PROVIDER_NAME"),
+                                                        DateOfBirth = Convert.ToString(provider.Field<DateTime?>("PROVIDER_DATE_OF_BIRTH")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("PROVIDER_DATE_OF_BIRTH")),
+                                                        Gender = (ProviderGender)Enum.Parse(typeof(ProviderGender), provider.Field<int>("PROVIDER_GENDER_ID").ToString()),
+                                                        CSP_Indicator = provider.Field<bool>("CSP_INDICATOR"),
+                                                        MedicareIndicator = provider.Field<bool>("MEDICARE_PROVIDER_INDICATOR"),
+                                                        MedicarePTAN = provider.Field<string>("MEDICARE_PTAN"),
+                                                        MedicareEffectiveDate = Convert.ToString(provider.Field<DateTime?>("MEDICARE_EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("MEDICARE_EFFECTIVE_DATE")),
+                                                        MedicareTerminationDate = Convert.ToString(provider.Field<DateTime?>("MEDICARE_TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("MEDICARE_TERMINATION_DATE")),
+                                                        MedicaidIndicator = provider.Field<bool>("MEDICAID_PROVIDER_INDICATOR"),
+                                                        MedicaidProviderID = provider.Field<string>("MEDICAID_PROVIDER_ID"),
+                                                        EffectiveDate = Convert.ToString(provider.Field<DateTime?>("EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("EFFECTIVE_DATE")),
+                                                        TerminationDate = Convert.ToString(provider.Field<DateTime?>("TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(provider.Field<DateTime>("TERMINATION_DATE")),
+                                                        InternalNotes = provider.Field<string>("PROVIDER_INTERNAL_NOTES"),
+                                                        CreatedDate = provider.Field<DateTime>("PROVIDER_CREATED_DATE"),
+                                                        CreatedBy = provider.Field<string>("PROVIDER_CREATED_BY"),
+                                                        LastUpdatedDate = provider.Field<DateTime>("PROVIDER_LAST_UPDATED_DATE"),
+                                                        LastUpdatedBy = provider.Field<string>("PROVIDER_LAST_UPDATED_BY"),
+                                                        CredentialList = GetProviderCredentialByID(provider.Field<int>("PROVIDER_ID")),
+                                                        LanguageList = GetProviderLanguageByID(provider.Field<int>("PROVIDER_ID"))
+                                                    }).First(),
+                                        AcceptingNewPatientIndicator = (bool)x.Field<bool>("ACCEPTING_NEW_PATIENT_INDICATOR"),
+                                        EffectiveDate = Convert.ToDateTime(x.Field<DateTime>("FP_EFFECTIVE_DATE")),
+                                        TerminationDate = Convert.ToDateTime(x.Field<DateTime>("FP_TERMINATION_DATE")),
+                                        ExternalProviderIndicator = (bool)x.Field<bool>("EXTERNAL_PROVIDER_INDICATOR"),
+                                        FloatProviderIndicator = (bool)x.Field<bool>("FLOAT_PROVIDER_INDICATOR"),
+                                        PrescriberIndicator = (bool)x.Field<bool>("PRESCRIBER_INDICATOR"),
+                                        ReferralIndicator = (bool)x.Field<bool>("REFERRALL_INDICATOR"),
+                                        ProviderEmail = x.Field<string>("FP_PROVIDER_EMAIL"),
+                                        ProviderPhoneNumber = x.Field<string>("FP_PROVIDER_PHONE_NUMBER"),
+                                        ProviderExtensionNumber = x.Field<string>("FP_PROVIDER_PHONE_EXTENSION"),
+                                        InternalNotes = x.Field<string>("FP_INTERNAL_NOTES"),
+                                        CreatedDate = Convert.ToDateTime(x.Field<DateTime>("FP_CREATED_DATE")),
+                                        CreatedBy = x.Field<string>("FP_CREATED_BY"),
+                                        LastUpdatedDate = Convert.ToDateTime(x.Field<DateTime>("FP_LAST_UPDATED_DATE")),
+                                        LastUpdatedBy = x.Field<string>("FP_LAST_UPDATED_BY"),
+                                    }).ToList();
 
             return facilityProviderList;
         }
 
         #endregion
-        
+
         #region FUNCTION: SaveProviderDetail(Provider provider)
 
         public int SaveProviderDetail(Provider provider)
         {
-            string sql = "providerhub.dbo.sp_SaveProviderDetail";
+            string sql = "providerhub.bh.sp_SaveProviderDetail";
 
             DataTable dt = DataUtilityHelper.PopulateProviderDetailsTable(provider);
 
@@ -478,12 +478,12 @@ namespace ProviderHubService
         }
 
         #endregion
-        
+
         #region FUNCTION: SaveFacility(Facility facility)
 
         public int SaveFacility(Facility facility)
         {
-            string sql = "providerhub.dbo.sp_SaveFacilityData";
+            string sql = "providerhub.bh.sp_SaveFacilityData";
 
             DataTable dt = DataUtilityHelper.PopulateFacilityTable(facility);
 
@@ -497,7 +497,7 @@ namespace ProviderHubService
 
         public int SaveFacilityProviderRelationship(FacilityProviderRelationship relationship)
         {
-            string sql = "providerhub.dbo.sp_SaveFacilityProviderRelationship";
+            string sql = "providerhub.bh.sp_SaveFacilityProviderRelationship";
 
             DataTable dt = DataUtilityHelper.PopulateFacilityProviderRelationshipTable(relationship);
 
@@ -511,7 +511,7 @@ namespace ProviderHubService
 
         public int SaveAddress(Address address)
         {
-            string sql = "providerhub.dbo.sp_SaveAddress";
+            string sql = "providerhub.bh.sp_SaveAddress";
 
             DataTable dt = DataUtilityHelper.PopulateAddressTable(address);
 
@@ -520,12 +520,12 @@ namespace ProviderHubService
         }
 
         #endregion
-        
+
         #region FUNCTION: MapAddressToFacility(int facilityID, int addressID, string createdBy)
 
         public int MapAddressToFacility(int facilityID, int addressID, string createdBy)
         {
-            string sql = "providerhub.dbo.sp_MapAddressToFacility";
+            string sql = "providerhub.bh.sp_MapAddressToFacility";
 
             SqlParameter[] sqlParams = {
                                             new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID },
@@ -537,14 +537,14 @@ namespace ProviderHubService
         }
 
         #endregion
-        
+
         #region FUNCTION: GetLanguageList()
 
         public List<Language> GetLanguageList()
         {
             List<Language> languageList = new List<Language>();
-            string sql = "providerhub.dbo.sp_GetLanguageList";
-            
+            string sql = "providerhub.bh.sp_GetLanguageList";
+
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure);
 
             if (ds.Tables[0].Rows.Count > 0)
@@ -552,8 +552,8 @@ namespace ProviderHubService
                 languageList = (from language in ds.Tables[0].AsEnumerable()
                                 select new Language()
                                 {
-                                    ID = language.Field<int>("LANGUAGE_ID"),
-                                    Name = language.Field<string>("LANGUAGE_NAME")
+                                    ID = language.Field<int>("PROVIDER_LANGUAGE_ID"),
+                                    Name = language.Field<string>("PROVIDER_LANGUAGE_NAME")
                                 }).ToList();
             }
 
@@ -567,50 +567,50 @@ namespace ProviderHubService
         public List<Credential> GetCredentialList()
         {
             List<Credential> credentialList = new List<Credential>();
-            string sql = "providerhub.dbo.sp_GetCredentialList";
-            
+            string sql = "providerhub.bh.sp_GetCredentialList";
+
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
                 credentialList = (from title in ds.Tables[0].AsEnumerable()
-                                select new Credential()
-                                {
-                                    ID = title.Field<int>("CREDENTIAL_ID"),
-                                    Value = title.Field<string>("CREDENTIAL_VALUE"),
-                                    Description = title.Field<string>("CREDENTIAL_DESCRIPTION")
-                                }).ToList();
+                                  select new Credential()
+                                  {
+                                      ID = title.Field<int>("CREDENTIAL_ID"),
+                                      Value = title.Field<string>("CREDENTIAL_VALUE"),
+                                      Description = title.Field<string>("CREDENTIAL_DESCRIPTION")
+                                  }).ToList();
             }
 
             return credentialList;
         }
 
         #endregion
-        
+
         #region FUNCTION: GetVendorList(string searchValue)
 
         public List<Vendor> GetVendorList(string searchValue)
         {
             List<Vendor> vendors = new List<Vendor>();
 
-            string sql = "providerHub.dbo.sp_GetVendorList";
+            string sql = "providerHub.bh.sp_GetVendorList";
             SqlParameter[] sqlParams = { new SqlParameter("@SEARCH_VALUE", SqlDbType.VarChar) { Value = searchValue } };
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
 
             vendors = (from v in ds.Tables[0].AsEnumerable()
                        select new Vendor
                        {
-                            ID = v.Field<int>("VENDOR_ID"),
-                            VendorName = v.Field<string>("VENDOR_NAME"),
-                            NPI = v.Field<string>("VENDOR_NPI"),
-                            TaxID = v.Field<string>("VENDOR_TAX_ID"),
-                            EPICVendorID = v.Field<string>("VENDOR_EPIC_ID"),
-                            ExternalID = v.Field<string>("VENDOR_EXTERNAL_ID"),
-                            InternalNotes = v.Field<string>("INTERNAL_NOTES"),
-                            CreatedDate = v.Field<DateTime>("CREATED_DATE"),
-                            CreatedBy = v.Field<string>("CREATED_BY"),
-                            LastUpdatedDate = v.Field<DateTime>("LAST_UPDATED_DATE"),
-                            LastUpdatedBy = v.Field<string>("LAST_UPDATED_BY")
+                           ID = v.Field<int>("VENDOR_ID"),
+                           VendorName = v.Field<string>("VENDOR_NAME"),
+                           NPI = v.Field<string>("VENDOR_NPI"),
+                           TaxID = v.Field<string>("VENDOR_TAX_ID"),
+                           EPICVendorID = v.Field<string>("VENDOR_EPIC_ID"),
+                           ExternalID = v.Field<string>("VENDOR_EXTERNAL_ID"),
+                           InternalNotes = v.Field<string>("INTERNAL_NOTES"),
+                           CreatedDate = v.Field<DateTime>("CREATED_DATE"),
+                           CreatedBy = v.Field<string>("CREATED_BY"),
+                           LastUpdatedDate = v.Field<DateTime>("LAST_UPDATED_DATE"),
+                           LastUpdatedBy = v.Field<string>("LAST_UPDATED_BY")
                        }).ToList();
 
             return vendors;
@@ -622,38 +622,38 @@ namespace ProviderHubService
 
         public int SaveVendor(Vendor vendor)
         {
-            string sql = "providerhub.dbo.sp_SaveVendorData";
+            string sql = "providerhub.bh.sp_SaveVendorData";
 
             DataTable dt = DataUtilityHelper.PopulateVendorTable(vendor);
 
             SqlParameter[] sqlParams = { new SqlParameter("@VENDOR_DATA", SqlDbType.Structured) { Value = dt } };
-            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));            
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
         }
 
         #endregion
-        
+
         #region FUNCTION: MapAddressToVendor(int vendorID, int addressID, string createdBy)
 
         public int MapAddressToVendor(int vendorID, int addressID, string createdBy)
         {
-            string sql = "providerhub.dbo.sp_MapAddressToVendor";
+            string sql = "providerhub.bh.sp_MapAddressToVendor";
 
             SqlParameter[] sqlParams = {
                                             new SqlParameter("@VENDOR_ID", SqlDbType.Int) { Value = vendorID },
                                             new SqlParameter("@ADDRESS_ID", SqlDbType.Int) { Value = addressID },
                                             new SqlParameter("@CREATED_BY", SqlDbType.VarChar) { Value = createdBy }
                                         };
-            
-           return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
         }
 
         #endregion
-        
+
         #region FUNCTION: MapFacilityToVendor(int facilityID, int vendorID, string createdBy)
 
         public int MapFacilityToVendor(int facilityID, int vendorID, string createdBy)
         {
-            string sql = "providerhub.dbo.sp_MapFacilityToVendor";
+            string sql = "providerhub.bh.sp_MapFacilityToVendor";
 
             SqlParameter[] sqlParams = {
                                             new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID },
@@ -672,7 +672,7 @@ namespace ProviderHubService
         {
             Vendor vendor = new Vendor();
 
-            string sql = "providerHub.dbo.sp_GetVendorByFacilityID";
+            string sql = "providerHub.bh.sp_GetVendorByFacilityID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
 
@@ -702,13 +702,13 @@ namespace ProviderHubService
         }
 
         #endregion
-        
+
         #region FUNCTION: GetVendorByID(int vendorID)
 
         public Vendor GetVendorByID(int vendorID)
         {
             Vendor vendor = new Vendor();
-            string sql = "providerHub.dbo.sp_GetVendorByID";
+            string sql = "providerHub.bh.sp_GetVendorByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@VENDOR_ID", SqlDbType.Int) { Value = vendorID } };
 
@@ -737,13 +737,13 @@ namespace ProviderHubService
         }
 
         #endregion
-        
+
         #region FUNCTION: GetAddressByVendorID(int vendorID)
 
         public List<Address> GetAddressByVendorID(int vendorID)
         {
-            List<Address> addresses = new List<Address>();            
-            string sql = "providerHub.dbo.sp_GetAddressByVendorID";
+            List<Address> addresses = new List<Address>();
+            string sql = "providerHub.bh.sp_GetAddressByVendorID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@VENDOR_ID", SqlDbType.Int) { Value = vendorID } };
 
@@ -752,40 +752,40 @@ namespace ProviderHubService
             addresses = (from a in ds.Tables[0].AsEnumerable()
                          select new Address
                          {
-                            ID = a.Field<int>("ADDRESS_ID"),
-                            AddressType = (AddressType)Enum.Parse(typeof(AddressType), a.Field<int>("ADDRESS_TYPE_ID").ToString()),
-                            AddressLine1 = a.Field<string>("ADDRESS_LINE_1"),
-                            AddressLine2 = a.Field<string>("ADDRESS_LINE_2"),
-                            City = a.Field<string>("CITY"),
-                            State = a.Field<string>("STATE"),
-                            ZipCode = a.Field<string>("ZIP_CODE"),
-                            County = a.Field<string>("COUNTY"),
-                            Region = a.Field<string>("REGION"),
-                            PhoneNumber = a.Field<string>("PHONE_NUMBER"),
-                            PhoneExtension = a.Field<string>("PHONE_EXTENSION"),
-                            AlternatePhoneNumber = a.Field<string>("ALTERNATE_PHONE_NUMBER"),
-                            FaxNumber = a.Field<string>("FAX_NUMBER"),
-                            Email = a.Field<string>("EMAIL"),
-                            Website = a.Field<string>("WEBSITE"),
-                            ContactFirstName = a.Field<string>("CONTACT_FIRST_NAME"),
-                            ContactLastName = a.Field<string>("CONTACT_LAST_NAME"),
-                            CreatedDate = a.Field<DateTime>("CREATED_DATE"),
-                            CreatedBy = a.Field<string>("CREATED_BY"),
-                            LastUpdatedDate = a.Field<DateTime>("LAST_UPDATED_DATE"),
-                            LastUpdatedBy = a.Field<string>("LAST_UPDATED_BY")
+                             ID = a.Field<int>("ADDRESS_ID"),
+                             AddressType = (AddressType)Enum.Parse(typeof(AddressType), a.Field<int>("ADDRESS_TYPE_ID").ToString()),
+                             AddressLine1 = a.Field<string>("ADDRESS_LINE_1"),
+                             AddressLine2 = a.Field<string>("ADDRESS_LINE_2"),
+                             City = a.Field<string>("CITY"),
+                             State = a.Field<string>("STATE"),
+                             ZipCode = a.Field<string>("ZIP_CODE"),
+                             County = a.Field<string>("COUNTY"),
+                             Region = a.Field<string>("REGION"),
+                             PhoneNumber = a.Field<string>("PHONE_NUMBER"),
+                             PhoneExtension = a.Field<string>("PHONE_EXTENSION"),
+                             AlternatePhoneNumber = a.Field<string>("ALTERNATE_PHONE_NUMBER"),
+                             FaxNumber = a.Field<string>("FAX_NUMBER"),
+                             Email = a.Field<string>("EMAIL"),
+                             Website = a.Field<string>("WEBSITE"),
+                             ContactFirstName = a.Field<string>("CONTACT_FIRST_NAME"),
+                             ContactLastName = a.Field<string>("CONTACT_LAST_NAME"),
+                             CreatedDate = a.Field<DateTime>("CREATED_DATE"),
+                             CreatedBy = a.Field<string>("CREATED_BY"),
+                             LastUpdatedDate = a.Field<DateTime>("LAST_UPDATED_DATE"),
+                             LastUpdatedBy = a.Field<string>("LAST_UPDATED_BY")
                          }).ToList();
-            
+
             return addresses;
         }
 
         #endregion
-        
+
         #region FUNCTION: SaveLanguageByProviderID(int providerID, List<Language> languages)
 
         public bool SaveLanguageByProviderID(int providerID, List<Language> languages)
         {
             bool retVal = false;
-            string sql = "providerhub.dbo.sp_SaveProviderLanguage";
+            string sql = "providerhub.bh.sp_SaveProviderLanguage";
 
             DataTable dt = DataUtilityHelper.PopulateProviderLanguageTable(providerID, languages);
 
@@ -804,7 +804,7 @@ namespace ProviderHubService
         public bool SaveCredentialByProviderID(int providerID, List<Credential> credentials)
         {
             bool retVal = false;
-            string sql = "providerhub.dbo.sp_SaveProviderCredential";
+            string sql = "providerhub.bh.sp_SaveProviderCredential";
 
             DataTable dt = DataUtilityHelper.PopulateProviderCredentialTable(providerID, credentials);
 
@@ -819,13 +819,13 @@ namespace ProviderHubService
         }
 
         #endregion
-        
+
         #region FUNCTION: AdvancedSearch(Dictionary<string, List<string>> args)
 
         public List<FacilityProviderRelationship> AdvancedSearch(Dictionary<string, List<string>> args)
         {
             List<FacilityProviderRelationship> relationshipList = new List<FacilityProviderRelationship>();
-            string sql = "providerhub.dbo.sp_AdvancedSearch";
+            string sql = "providerhub.bh.sp_AdvancedSearch";
 
             DataTable dt = DataUtilityHelper.LoadSearchFields(args);
 
@@ -848,7 +848,7 @@ namespace ProviderHubService
         public List<BehavioralHealthAttribute> GetBehavioralHealthAttributeByID(BHAttributeType bHAttributeType)
         {
             List<BehavioralHealthAttribute> bhAttributeList = new List<BehavioralHealthAttribute>();
-            string sql = "providerhub.dbo.sp_GetBehavioralHealthAttributeByID";
+            string sql = "providerhub.bh.sp_GetBehavioralHealthAttributeByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@BH_TYPE_ID", SqlDbType.Int) { Value = Convert.ToInt32(bHAttributeType) } };
 
@@ -876,8 +876,8 @@ namespace ProviderHubService
         public List<BehavioralHealthAttribute> GetBHAttributeByRelationshipID(int relationshipID)
         {
             List<BehavioralHealthAttribute> bhAttributeList = new List<BehavioralHealthAttribute>();
-            string sql = "providerhub.dbo.sp_GetBHAttributeByRelationshipID";
-            
+            string sql = "providerhub.bh.sp_GetBHAttributeByRelationshipID";
+
             SqlParameter[] sqlParams = { new SqlParameter("@RELATIONSHIP_ID", SqlDbType.Int) { Value = relationshipID } };
 
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
@@ -904,8 +904,8 @@ namespace ProviderHubService
         public bool SaveBHAttributeToRelationship(int relationshipID, List<BehavioralHealthAttribute> bhAttributeList)
         {
             bool retVal = false;
-            string sql = "providerhub.dbo.sp_SaveBHAttributeToRelationship";
-            
+            string sql = "providerhub.bh.sp_SaveBHAttributeToRelationship";
+
             DataTable dt = DataUtilityHelper.PopulateBHAttributeToRelationshipTable(relationshipID, bhAttributeList);
 
             SqlParameter[] sqlParams = {
@@ -920,7 +920,98 @@ namespace ProviderHubService
         }
 
         #endregion
-        
+
+        #region FUNCTION: IsAddressMappedToFacility(int facilityID, addressID)
+
+        public bool IsAddressMappedToFacility(int facilityID, int addressID)
+        {
+            string sql = "providerhub.bh.sp_IsAddressMappedToFacility";
+
+            SqlParameter[] sqlParams = {
+                                            new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID },
+                                            new SqlParameter("@ADDRESS_ID", SqlDbType.Int) { Value = addressID }
+                                        };
+
+            return Convert.ToBoolean(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
+        #endregion
+
+        #region FUNCTION: GetRelationshipDataByFacilityID(int facilityID)
+
+        public List<FacilityProviderRelationship> GetRelationshipDataByFacilityID(int facilityID)
+        {
+            List<FacilityProviderRelationship> relationships = new List<FacilityProviderRelationship>();
+            string sql = "providerhub.bh.sp_GetRelationshipDataByFacilityID";
+
+            SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
+
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                relationships = ParseFacilityProviderData(ds).ToList();
+            }
+
+            return relationships;
+        }
+
+        #endregion
+
+        #region FUNCTION: GetRelationshipDataByProviderID(int providerID)
+
+        public List<FacilityProviderRelationship> GetRelationshipDataByProviderID(int providerID)
+        {
+            List<FacilityProviderRelationship> relationships = new List<FacilityProviderRelationship>();
+            string sql = "providerhub.bh.sp_GetRelationshipDataByProviderID";
+
+            SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
+
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                relationships = ParseFacilityProviderData(ds).ToList();
+            }
+
+            return relationships;
+        }
+
+        #endregion
+
+        #region FUNCTION: MapProviderToFacility(int providerID, int facilityID, string createdBy)
+
+        public int MapProviderToFacility(int providerID, int facilityID, string createdBy)
+        {
+            string sql = "providerhub.bh.sp_MapProviderToFacility";
+
+            SqlParameter[] sqlParams = {
+                                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID },
+                                            new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID },
+                                            new SqlParameter("@CREATED_BY", SqlDbType.VarChar) { Value = createdBy }
+                                        };
+
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
+        #endregion
+
+        #region FUNCTION: IsProviderAndFacilityMapped(int providerID, facilityID)
+
+        public bool IsProviderAndFacilityMapped(int providerID, int facilityID)
+        {
+            string sql = "providerhub.bh.sp_IsProviderAndFacilityMapped";
+
+            SqlParameter[] sqlParams = {
+                                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID },
+                                            new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID }
+                                        };
+
+            return Convert.ToBoolean(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
+        #endregion
+
         //#region FUNCTION: GetProviderSchedule(int providerID)
 
         //public List<ProviderAgencyAvailability> GetProviderSchedule(int providerID)
