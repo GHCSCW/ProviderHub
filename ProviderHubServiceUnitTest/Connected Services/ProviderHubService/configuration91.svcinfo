@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="GLaMGJo6AEm39WrkvBx5J2qJOZc=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="raZ4yqgVhZIRlYGzQoqKUEfoATc=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IProviderHubService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IProviderHubService" contract="ProviderHubService.IProviderHubService" bindingType="basicHttpBinding" address="http://10.32.0.86/ProviderHubService.svc" bindingConfiguration="BasicHttpBinding_IProviderHubService">
+    <endpoint name="BasicHttpBinding_IProviderHubService" contract="ProviderHubService.IProviderHubService" bindingType="basicHttpBinding" address="http://behavioralhealthservicedev/ProviderHubService.svc" bindingConfiguration="BasicHttpBinding_IProviderHubService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://10.32.0.86/ProviderHubService.svc</serializedValue>
+          <serializedValue>http://behavioralhealthservicedev/ProviderHubService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

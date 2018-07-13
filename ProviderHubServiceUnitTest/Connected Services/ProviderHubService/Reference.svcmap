@@ -19,10 +19,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://10.32.0.86/ProviderHubService.svc?singleWsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://behavioralhealthservicedev/ProviderHubService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ProviderHubService.wsdl" MetadataType="Wsdl" ID="747d5eaa-9cc1-4166-8c4c-a4cb8fced34d" SourceId="1" SourceUrl="http://10.32.0.86/ProviderHubService.svc?singleWsdl" />
+    <MetadataFile FileName="ProviderHubService.xsd" MetadataType="Schema" ID="1bf38c6e-902f-4251-9d15-0beb889add25" SourceId="1" SourceUrl="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd3" />
+    <MetadataFile FileName="ProviderHubService1.xsd" MetadataType="Schema" ID="15c74e5c-f990-44c3-abae-88262f9f15d4" SourceId="1" SourceUrl="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ProviderHubService.disco" MetadataType="Disco" ID="38e3c5ed-cb4a-419a-b68d-b0c838b9fb51" SourceId="1" SourceUrl="http://behavioralhealthservicedev/ProviderHubService.svc?disco" />
+    <MetadataFile FileName="ProviderHubService1.wsdl" MetadataType="Wsdl" ID="51f2bae0-def4-4f39-901a-d8bfcc975f28" SourceId="1" SourceUrl="http://behavioralhealthservicedev/ProviderHubService.svc?wsdl" />
+    <MetadataFile FileName="ProviderHubService2.xsd" MetadataType="Schema" ID="c12c753a-42b5-4125-b2b1-8004e5049595" SourceId="1" SourceUrl="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ProviderHubService3.xsd" MetadataType="Schema" ID="8566f003-23f4-41ae-a396-26a6bc444b08" SourceId="1" SourceUrl="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
