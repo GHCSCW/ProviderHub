@@ -16,7 +16,7 @@ import { AuthenticationService } from '../services/authentication.service';
 
 export class SearchComponent implements OnInit {
 
-  facilityRelationshipColumns = ['lastName', 'firstName', 'credentials', 'relationshipStatus', 'facilityName', 'address', 'city', 'zip', 'phoneNumber', 'region'];
+  facilityRelationshipColumns = ['lastName', 'firstName', 'credentials', 'facilityName', 'address', 'city', 'zip', 'phoneNumber', 'region'];
   facilityColumns = ['facilityName', 'address', 'city', 'zip','phoneNumber'];
   providerColumns = ['firstName', 'lastName'];
   vendorColumns = ['vendorName'];
@@ -112,7 +112,13 @@ results: any;
     });
   }
 
-
+  setInactiveStyle(row) {
+    if (this.authSvc.canEdit == true && row.relationshipStatus == false) {
+      return "#ff794d";
+    } else {
+      return "";
+    }
+  }
   providerSearch(term: string) {
 
     this.loading = true;
