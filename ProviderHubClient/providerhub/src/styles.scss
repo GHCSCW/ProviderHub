@@ -1,0 +1,85 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+h2{
+  font-family:Arial, sans-serif;
+  font-size:1.5em;
+  font-weight:normal;
+  color:#535559;
+}
+.navbar-right {
+  float: right;
+  color: #9d9d9d;
+  line-height: 20px;
+  padding: 15px;
+}
+
+/*Header Styles*/
+#outer-wrapper{ width:90%;margin:0 auto; }
+#nav-bar{
+  background-color:rgb(35,31,32); border-color:rgb(51,51,51);
+  width:100%;display:block;color:rgb(51,51,51); font-size:14px;
+  line-height:20px; margin-bottom:20px; min-height:50px; position:fixed;
+  right:0; top:0; text-size-adjust:100%; z-index:1030; -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+#title-wrapper {
+  text-align:center; padding-top:100px;
+}
+#title-wrapper h1{
+  font-family: Arial, sans-serif;
+  font-size:2em;
+  font-weight:normal;
+  color:#535559;
+}
+.navbar-brand {
+  height: 50px;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+  color:#9d9d9d;
+}
+.navbar-brand:hover{ color:#ffffff; }
+/*Datatables Styles*/
+.table td {
+  padding: 0.45rem;
+}
+#providers{width:100%;margin:0 auto;}
+.dataTables_info span.select-info {
+  display: none !important;
+}
+table.dataTable tr.selected {
+  background-color:rgba(4,255,0,0.32)!important;
+}
+table.dataTable tr:hover{
+  background-color:#ddd;
+}
+.dataTables_filter, .dataTables_filter label {
+  width: 100%;
+}
+div.dataTables_filter input{
+  width:100%;
+}
+input[type='search'] {
+  display: block;
+  width: 100%!important;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+#providers_wrapper .row:first-child > div:first-child{display:none;width:0;}
+#providers_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}

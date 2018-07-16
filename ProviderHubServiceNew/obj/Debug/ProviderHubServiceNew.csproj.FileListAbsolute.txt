@@ -44,3 +44,10 @@ C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\ProviderHubS
 C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\GHCDataAccess.dll
 C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\ProviderHubService.pdb
 C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\ProviderHubService.dll.config
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Net.Http.Formatting.dll
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Web.Cors.dll
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Web.Http.Cors.dll
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Web.Http.dll
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Net.Http.Formatting.xml
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Web.Http.xml
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Web.Http.Cors.xml

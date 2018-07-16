@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Http.Cors;
 using ProviderHubService;
 
 namespace ProviderHubServiceNew.Controllers
 {
     //[Route("api/search")]
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class SearchController : Controller
     {
         // GetProviderList(searchValue) - retrieve List of providers that match the (given SQL subquery? or is it just keyword/name search?)

@@ -1,0 +1,17 @@
+<h2>Provider Search</h2>
+<table id="providers" class="table table-striped table-bordered" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>NPI</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of data; let i = index">
+      <td>{{row.ID}}</td>
+      <td>{{row.NPI}}</td>
+      <td><input [(ngModel)]="row.full_name" style="color:black"></td>
+    </tr>
+  </tbody>
+</table>
