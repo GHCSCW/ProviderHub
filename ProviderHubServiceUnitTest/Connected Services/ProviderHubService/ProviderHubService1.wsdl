@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ProviderHubService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ProviderHubService" />
+      <xsd:import schemaLocation="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IProviderHubService_GetData_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetData" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderLanguageByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderLanguageByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderLanguageByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderLanguageByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderCredentialByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderCredentialByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderCredentialByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderCredentialByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetAddressByFacilityID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressByFacilityID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetAddressByFacilityID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressByFacilityIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetProviderList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProviderListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SearchForValue_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchForValue" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SearchForValue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchForValueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityProviderRelationshipList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityProviderRelationshipList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityProviderRelationshipList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityProviderRelationshipListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityProviderRelationshipByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityProviderRelationshipByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetFacilityProviderRelationshipByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFacilityProviderRelationshipByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveProviderDetail_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveProviderDetail" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveProviderDetail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveProviderDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacility_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacility" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacility_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacilityResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacilityProviderRelationship_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacilityProviderRelationship" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacilityProviderRelationship_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacilityProviderRelationshipResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveAddress_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveAddress" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveAddress_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapAddressToFacility_InputMessage">
+    <wsdl:part name="parameters" element="tns:MapAddressToFacility" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapAddressToFacility_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MapAddressToFacilityResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetLanguageList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLanguageList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetLanguageList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLanguageListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetCredentialList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCredentialList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetCredentialList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCredentialListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetVendorList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVendorList" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetVendorList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVendorListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveVendor_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveVendor" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveVendor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveVendorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapAddressToVendor_InputMessage">
+    <wsdl:part name="parameters" element="tns:MapAddressToVendor" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapAddressToVendor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MapAddressToVendorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetVendorByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVendorByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetVendorByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVendorByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetAddressByVendorID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressByVendorID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetAddressByVendorID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAddressByVendorIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapFacilityToVendor_InputMessage">
+    <wsdl:part name="parameters" element="tns:MapFacilityToVendor" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapFacilityToVendor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MapFacilityToVendorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveLanguageByProviderID_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveLanguageByProviderID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveLanguageByProviderID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveLanguageByProviderIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveCredentialByProviderID_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCredentialByProviderID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveCredentialByProviderID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCredentialByProviderIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_AdvancedSearch_InputMessage">
+    <wsdl:part name="parameters" element="tns:AdvancedSearch" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_AdvancedSearch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AdvancedSearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetBehavioralHealthAttributeByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBehavioralHealthAttributeByID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetBehavioralHealthAttributeByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBehavioralHealthAttributeByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetBHAttributeByRelationshipID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBHAttributeByRelationshipID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetBHAttributeByRelationshipID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBHAttributeByRelationshipIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveBHAttributeToRelationship_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveBHAttributeToRelationship" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveBHAttributeToRelationship_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveBHAttributeToRelationshipResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacilityAndAddress_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacilityAndAddress" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_SaveFacilityAndAddress_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFacilityAndAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetRelationshipDataByFacilityID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRelationshipDataByFacilityID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetRelationshipDataByFacilityID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRelationshipDataByFacilityIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetRelationshipDataByProviderID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRelationshipDataByProviderID" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_GetRelationshipDataByProviderID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRelationshipDataByProviderIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapProviderToFacility_InputMessage">
+    <wsdl:part name="parameters" element="tns:MapProviderToFacility" />
+  </wsdl:message>
+  <wsdl:message name="IProviderHubService_MapProviderToFacility_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MapProviderToFacilityResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IProviderHubService">
+    <wsdl:operation name="GetData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetData" message="tns:IProviderHubService_GetData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetDataResponse" message="tns:IProviderHubService_GetData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderByID" message="tns:IProviderHubService_GetProviderByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderByIDResponse" message="tns:IProviderHubService_GetProviderByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderLanguageByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderLanguageByID" message="tns:IProviderHubService_GetProviderLanguageByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderLanguageByIDResponse" message="tns:IProviderHubService_GetProviderLanguageByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderCredentialByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderCredentialByID" message="tns:IProviderHubService_GetProviderCredentialByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderCredentialByIDResponse" message="tns:IProviderHubService_GetProviderCredentialByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityByID" message="tns:IProviderHubService_GetFacilityByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityByIDResponse" message="tns:IProviderHubService_GetFacilityByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressByFacilityID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetAddressByFacilityID" message="tns:IProviderHubService_GetAddressByFacilityID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetAddressByFacilityIDResponse" message="tns:IProviderHubService_GetAddressByFacilityID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderList" message="tns:IProviderHubService_GetProviderList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetProviderListResponse" message="tns:IProviderHubService_GetProviderList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityList" message="tns:IProviderHubService_GetFacilityList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityListResponse" message="tns:IProviderHubService_GetFacilityList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchForValue">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SearchForValue" message="tns:IProviderHubService_SearchForValue_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SearchForValueResponse" message="tns:IProviderHubService_SearchForValue_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityProviderRelationshipList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipList" message="tns:IProviderHubService_GetFacilityProviderRelationshipList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipListResponse" message="tns:IProviderHubService_GetFacilityProviderRelationshipList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityProviderRelationshipByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipByID" message="tns:IProviderHubService_GetFacilityProviderRelationshipByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipByIDResponse" message="tns:IProviderHubService_GetFacilityProviderRelationshipByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveProviderDetail">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveProviderDetail" message="tns:IProviderHubService_SaveProviderDetail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveProviderDetailResponse" message="tns:IProviderHubService_SaveProviderDetail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacility">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacility" message="tns:IProviderHubService_SaveFacility_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacilityResponse" message="tns:IProviderHubService_SaveFacility_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacilityProviderRelationship">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacilityProviderRelationship" message="tns:IProviderHubService_SaveFacilityProviderRelationship_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacilityProviderRelationshipResponse" message="tns:IProviderHubService_SaveFacilityProviderRelationship_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveAddress">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveAddress" message="tns:IProviderHubService_SaveAddress_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveAddressResponse" message="tns:IProviderHubService_SaveAddress_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MapAddressToFacility">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/MapAddressToFacility" message="tns:IProviderHubService_MapAddressToFacility_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/MapAddressToFacilityResponse" message="tns:IProviderHubService_MapAddressToFacility_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLanguageList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetLanguageList" message="tns:IProviderHubService_GetLanguageList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetLanguageListResponse" message="tns:IProviderHubService_GetLanguageList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCredentialList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetCredentialList" message="tns:IProviderHubService_GetCredentialList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetCredentialListResponse" message="tns:IProviderHubService_GetCredentialList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVendorList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetVendorList" message="tns:IProviderHubService_GetVendorList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetVendorListResponse" message="tns:IProviderHubService_GetVendorList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveVendor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveVendor" message="tns:IProviderHubService_SaveVendor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveVendorResponse" message="tns:IProviderHubService_SaveVendor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MapAddressToVendor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/MapAddressToVendor" message="tns:IProviderHubService_MapAddressToVendor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/MapAddressToVendorResponse" message="tns:IProviderHubService_MapAddressToVendor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVendorByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetVendorByID" message="tns:IProviderHubService_GetVendorByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetVendorByIDResponse" message="tns:IProviderHubService_GetVendorByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressByVendorID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetAddressByVendorID" message="tns:IProviderHubService_GetAddressByVendorID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetAddressByVendorIDResponse" message="tns:IProviderHubService_GetAddressByVendorID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MapFacilityToVendor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/MapFacilityToVendor" message="tns:IProviderHubService_MapFacilityToVendor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/MapFacilityToVendorResponse" message="tns:IProviderHubService_MapFacilityToVendor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveLanguageByProviderID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveLanguageByProviderID" message="tns:IProviderHubService_SaveLanguageByProviderID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveLanguageByProviderIDResponse" message="tns:IProviderHubService_SaveLanguageByProviderID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveCredentialByProviderID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveCredentialByProviderID" message="tns:IProviderHubService_SaveCredentialByProviderID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveCredentialByProviderIDResponse" message="tns:IProviderHubService_SaveCredentialByProviderID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AdvancedSearch">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/AdvancedSearch" message="tns:IProviderHubService_AdvancedSearch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/AdvancedSearchResponse" message="tns:IProviderHubService_AdvancedSearch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBehavioralHealthAttributeByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetBehavioralHealthAttributeByID" message="tns:IProviderHubService_GetBehavioralHealthAttributeByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetBehavioralHealthAttributeByIDResponse" message="tns:IProviderHubService_GetBehavioralHealthAttributeByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBHAttributeByRelationshipID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetBHAttributeByRelationshipID" message="tns:IProviderHubService_GetBHAttributeByRelationshipID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetBHAttributeByRelationshipIDResponse" message="tns:IProviderHubService_GetBHAttributeByRelationshipID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveBHAttributeToRelationship">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationship" message="tns:IProviderHubService_SaveBHAttributeToRelationship_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationshipResponse" message="tns:IProviderHubService_SaveBHAttributeToRelationship_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacilityAndAddress">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacilityAndAddress" message="tns:IProviderHubService_SaveFacilityAndAddress_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/SaveFacilityAndAddressResponse" message="tns:IProviderHubService_SaveFacilityAndAddress_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRelationshipDataByFacilityID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByFacilityID" message="tns:IProviderHubService_GetRelationshipDataByFacilityID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByFacilityIDResponse" message="tns:IProviderHubService_GetRelationshipDataByFacilityID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRelationshipDataByProviderID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderID" message="tns:IProviderHubService_GetRelationshipDataByProviderID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderIDResponse" message="tns:IProviderHubService_GetRelationshipDataByProviderID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MapProviderToFacility">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProviderHubService/MapProviderToFacility" message="tns:IProviderHubService_MapProviderToFacility_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProviderHubService/MapProviderToFacilityResponse" message="tns:IProviderHubService_MapProviderToFacility_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IProviderHubService" type="tns:IProviderHubService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetData">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetProviderByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderLanguageByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetProviderLanguageByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderCredentialByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetProviderCredentialByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetFacilityByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressByFacilityID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetAddressByFacilityID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProviderList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetProviderList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetFacilityList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchForValue">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SearchForValue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityProviderRelationshipList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFacilityProviderRelationshipByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetFacilityProviderRelationshipByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveProviderDetail">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveProviderDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacility">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveFacility" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacilityProviderRelationship">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveFacilityProviderRelationship" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveAddress">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MapAddressToFacility">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/MapAddressToFacility" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLanguageList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetLanguageList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCredentialList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetCredentialList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendorList">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetVendorList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveVendor">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveVendor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MapAddressToVendor">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/MapAddressToVendor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVendorByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetVendorByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAddressByVendorID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetAddressByVendorID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MapFacilityToVendor">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/MapFacilityToVendor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveLanguageByProviderID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveLanguageByProviderID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveCredentialByProviderID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveCredentialByProviderID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AdvancedSearch">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/AdvancedSearch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBehavioralHealthAttributeByID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetBehavioralHealthAttributeByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBHAttributeByRelationshipID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetBHAttributeByRelationshipID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveBHAttributeToRelationship">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationship" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveFacilityAndAddress">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/SaveFacilityAndAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRelationshipDataByFacilityID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetRelationshipDataByFacilityID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRelationshipDataByProviderID">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MapProviderToFacility">
+      <soap:operation soapAction="http://tempuri.org/IProviderHubService/MapProviderToFacility" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProviderHubService">
+    <wsdl:port name="BasicHttpBinding_IProviderHubService" binding="tns:BasicHttpBinding_IProviderHubService">
+      <soap:address location="http://behavioralhealthservicedev/ProviderHubService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

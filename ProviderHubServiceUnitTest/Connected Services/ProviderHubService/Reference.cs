@@ -2538,6 +2538,30 @@ namespace ProviderHubServiceUnitTest.ProviderHubService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationship", ReplyAction="http://tempuri.org/IProviderHubService/SaveBHAttributeToRelationshipResponse")]
         System.Threading.Tasks.Task<bool> SaveBHAttributeToRelationshipAsync(int relationshipID, ProviderHubServiceUnitTest.ProviderHubService.BehavioralHealthAttribute[] bhAttributeList);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/SaveFacilityAndAddress", ReplyAction="http://tempuri.org/IProviderHubService/SaveFacilityAndAddressResponse")]
+        int SaveFacilityAndAddress(ProviderHubServiceUnitTest.ProviderHubService.Facility facility);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/SaveFacilityAndAddress", ReplyAction="http://tempuri.org/IProviderHubService/SaveFacilityAndAddressResponse")]
+        System.Threading.Tasks.Task<int> SaveFacilityAndAddressAsync(ProviderHubServiceUnitTest.ProviderHubService.Facility facility);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByFacilityID", ReplyAction="http://tempuri.org/IProviderHubService/GetRelationshipDataByFacilityIDResponse")]
+        ProviderHubServiceUnitTest.ProviderHubService.FacilityProviderRelationship[] GetRelationshipDataByFacilityID(int facilityID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByFacilityID", ReplyAction="http://tempuri.org/IProviderHubService/GetRelationshipDataByFacilityIDResponse")]
+        System.Threading.Tasks.Task<ProviderHubServiceUnitTest.ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByFacilityIDAsync(int facilityID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderID", ReplyAction="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderIDResponse")]
+        ProviderHubServiceUnitTest.ProviderHubService.FacilityProviderRelationship[] GetRelationshipDataByProviderID(int providerID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderID", ReplyAction="http://tempuri.org/IProviderHubService/GetRelationshipDataByProviderIDResponse")]
+        System.Threading.Tasks.Task<ProviderHubServiceUnitTest.ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByProviderIDAsync(int providerID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/MapProviderToFacility", ReplyAction="http://tempuri.org/IProviderHubService/MapProviderToFacilityResponse")]
+        int MapProviderToFacility(int providerID, int facilityID, string createdBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProviderHubService/MapProviderToFacility", ReplyAction="http://tempuri.org/IProviderHubService/MapProviderToFacilityResponse")]
+        System.Threading.Tasks.Task<int> MapProviderToFacilityAsync(int providerID, int facilityID, string createdBy);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -2805,6 +2829,38 @@ namespace ProviderHubServiceUnitTest.ProviderHubService {
         
         public System.Threading.Tasks.Task<bool> SaveBHAttributeToRelationshipAsync(int relationshipID, ProviderHubServiceUnitTest.ProviderHubService.BehavioralHealthAttribute[] bhAttributeList) {
             return base.Channel.SaveBHAttributeToRelationshipAsync(relationshipID, bhAttributeList);
+        }
+        
+        public int SaveFacilityAndAddress(ProviderHubServiceUnitTest.ProviderHubService.Facility facility) {
+            return base.Channel.SaveFacilityAndAddress(facility);
+        }
+        
+        public System.Threading.Tasks.Task<int> SaveFacilityAndAddressAsync(ProviderHubServiceUnitTest.ProviderHubService.Facility facility) {
+            return base.Channel.SaveFacilityAndAddressAsync(facility);
+        }
+        
+        public ProviderHubServiceUnitTest.ProviderHubService.FacilityProviderRelationship[] GetRelationshipDataByFacilityID(int facilityID) {
+            return base.Channel.GetRelationshipDataByFacilityID(facilityID);
+        }
+        
+        public System.Threading.Tasks.Task<ProviderHubServiceUnitTest.ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByFacilityIDAsync(int facilityID) {
+            return base.Channel.GetRelationshipDataByFacilityIDAsync(facilityID);
+        }
+        
+        public ProviderHubServiceUnitTest.ProviderHubService.FacilityProviderRelationship[] GetRelationshipDataByProviderID(int providerID) {
+            return base.Channel.GetRelationshipDataByProviderID(providerID);
+        }
+        
+        public System.Threading.Tasks.Task<ProviderHubServiceUnitTest.ProviderHubService.FacilityProviderRelationship[]> GetRelationshipDataByProviderIDAsync(int providerID) {
+            return base.Channel.GetRelationshipDataByProviderIDAsync(providerID);
+        }
+        
+        public int MapProviderToFacility(int providerID, int facilityID, string createdBy) {
+            return base.Channel.MapProviderToFacility(providerID, facilityID, createdBy);
+        }
+        
+        public System.Threading.Tasks.Task<int> MapProviderToFacilityAsync(int providerID, int facilityID, string createdBy) {
+            return base.Channel.MapProviderToFacilityAsync(providerID, facilityID, createdBy);
         }
     }
 }

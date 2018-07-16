@@ -10,6 +10,14 @@ namespace ProviderHubServiceUnitTest
     [TestClass]
     public class PHubServiceUnitTest
     {
+        [TestInitialize]
+        public void InitializeObjects()
+        {
+            //I'd like to move all of the code to initialiaze objects  to this code for testing (Provider, Facility)
+            //that way it is easier to manage the data we are testing with and have the configuration for all of that in one function.
+            //Initialize objects Proivder/Facility/Relationship/Credential/Language
+        }
+
         [TestMethod]
         public void ValidateProviderByID()
         {
