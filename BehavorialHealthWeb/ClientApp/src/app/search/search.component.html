@@ -49,10 +49,6 @@
         <mat-header-cell *matHeaderCellDef> Credentials </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.provider.credentials}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="relationshipStatus">
-        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-        <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.relationshipStatus | ActiveInactivePipe}} </mat-cell>
-      </ng-container>
       <ng-container matColumnDef="facilityName">
         <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" > Clinic Name </mat-header-cell>
         <mat-cell *matCellDef="let facilityProviderRelationships" [ngClass]="'customWidthClass'"  (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityName}} </mat-cell>
@@ -87,7 +83,7 @@
         <mat-cell *matCellDef="let facilityProviderRelationships" (click)="providerRelationshipFacilityRoute(facilityProviderRelationships)"> {{facilityProviderRelationships.facility.facilityAddress.region}} </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="facilityRelationshipColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: facilityRelationshipColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: facilityRelationshipColumns;" [style.background]="setInactiveStyle(row)"></mat-row>
     </mat-table>
     <mat-paginator #paginator
                    [pageSize]="10"
