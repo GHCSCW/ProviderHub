@@ -43,6 +43,22 @@ h2{
   color:#9d9d9d;
 }
 .navbar-brand:hover{ color:#ffffff; }
+.menu-links{ margin-left:15px; color:#eee; }
+.menu-links a { margin-left:20px;cursor:pointer; }
+.menu-links a:hover{color:#fff;text-decoration:underline;}
+#header-advanced-search-wrapper{padding:0;}
+#header-advanced-search{
+  margin-top:8px;border-top-right-radius:0;border-bottom-right-radius:0;background-color:#312c2d;color:#fff;border:1px solid #ddd;
+}
+#header-advanced-search::-webkit-input-placeholder{color:#ddd;}
+#header-advanced-search:-moz-placeholder{color:#ddd;}
+#header-advanced-search::-moz-placeholder{color:#ddd;}
+#header-advanced-search:-ms-input-placeholder{color:#ddd;}
+#header-advanced-search-button{
+  float:right;margin-top:8px;height:34px;border-top-right-radius:6px;border-bottom-right-radius:6px;background:#eee;border-color:#eee;color:#231f20;
+}
+#header-advanced-search-button i { position:relative;bottom:1px;right:1px; }
+
 /*Datatables Styles*/
 .table td {
   padding: 0.45rem;
@@ -51,6 +67,7 @@ h2{
 .dataTables_info span.select-info {
   display: none !important;
 }
+table.dataTable tr { cursor:pointer; }
 table.dataTable tr.selected {
   background-color:rgba(4,255,0,0.32)!important;
 }
