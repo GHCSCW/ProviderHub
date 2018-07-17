@@ -1,5 +1,6 @@
 import { Component, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { API } from '../globals';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
@@ -14,13 +15,13 @@ export class DatatableComponent implements OnInit {
   public tableWidget: any;
   public apiRoot: string;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route
       .data
       .subscribe(v => this.apiRoot = v.apiRoot);
-    console.log(this.apiRoot);
+    //console.log(this.apiRoot);
   }
 
   ngAfterViewInit() {
@@ -47,6 +48,7 @@ export class DatatableComponent implements OnInit {
         { data: null, render: function (data, type, row) { var d = data; return ""; }, searchable:false }
       ],
       order: [[1, "asc"]],
+      rowId: 'ID',
       initComplete: function (settings, json) {
         //alert("loaded");
       }
@@ -61,7 +63,12 @@ export class DatatableComponent implements OnInit {
   private onRowSelect(indexes: number[]): void {
     this.rowSelected.emit(indexes[0]);
     console.log(indexes[0]);
-    //load addtional data for provider @ index
+    var providerId = indexes[0] + 1;
+    var full_name = $("#" + providerId + " td:nth-child(3)").text() + " " + $("#" + providerId + " td:nth-child(2)").text();
+    alert(full_name); API.selectedProvider = full_name;
+    //load addtional data for provider @ index+1 (not sure why this value is ID-1 but it is and it's consistent so it's nothing to worry about)
+    //this.loadProvider(indexes[0] + 1);
+    this.router.navigate(['/provider',providerId]);
   }
 
 }

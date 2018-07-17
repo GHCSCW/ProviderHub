@@ -9,17 +9,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { API } from './globals';
 import { environment } from '../environments/environment';
 import { HeaderComponent } from './header/header.component';
+import { ProviderComponent } from './provider/provider.component';
 
 const routes: Routes = [
+  /*Root: Provider List & Basic Search (Name/NPI)*/
   { path: 'providers', component: DatatableComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } },
-  { path: '', redirectTo: '/providers', pathMatch: 'full' }
+  { path: '', redirectTo: '/providers', pathMatch: 'full' },
+  /*Individual Provider View*/
+  { path: 'provider/:id', component: ProviderComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     DatatableComponent,
-    HeaderComponent
+    HeaderComponent,
+    ProviderComponent
   ],
   imports: [
     BrowserModule,
