@@ -40,10 +40,18 @@ export class DatatableComponent implements OnInit {
         xhrFields: { withCredentials: true },
         dataSrc: ''
       },
-      columns: [{ data: "ID", searchable: false }, { data: "NPI" }, { data: null, render: function (data, type, row) { var d = data; return d.FirstName + " " + d.LastName; } }],
+      columns: [{ data: "NPI" }, { data: "LastName" }, { data: "FirstName" },
+        { data: null, render: function (data, type, row) { var d = data.CredentialList; var r=""; for (var i = 0; i < d.length; i++) { r += d[i].Value + ","; } if (r.length > 0) { r=r.substring(0, r.length - 1) } return r; }, searchable:false },
+        { data: null, render: function (data, type, row) { var d = data; var r; switch (d.Gender) { case 1: r = "Female"; break; case 2: r = "Male"; break; default: r = "Other"; break; } return r; }, searchable: false },
+        { data: null, render: function (data, type, row) { var d = data.ProviderSpecialties; for (var i = 0; i < d.length; i++) { if (d[i].SequenceNumber == 1) { return d[i].Value; } } return ""; }, searchable: false  },
+        { data: null, render: function (data, type, row) { var d = data; return ""; }, searchable:false }
+      ],
+      order: [[1, "asc"]],
       initComplete: function (settings, json) {
         //alert("loaded");
       }
+      //NPI, Last name, First Name, Credential, Gender, Primary Specialty, Vendor.
+      //Full name:{ data: null, render: function (data, type, row) { var d = data; return d.FirstName + " " + d.LastName; } }
       /*columns: [{data:"firstName"}, {data:"lastName"}],
       data: [{ firstName: "sree", lastName: "pill" }, { firstName: "sree2", lastName: "pill2" }]*/
     });
@@ -53,6 +61,7 @@ export class DatatableComponent implements OnInit {
   private onRowSelect(indexes: number[]): void {
     this.rowSelected.emit(indexes[0]);
     console.log(indexes[0]);
+    //load addtional data for provider @ index
   }
 
 }
