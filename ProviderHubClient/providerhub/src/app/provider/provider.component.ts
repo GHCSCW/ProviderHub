@@ -33,11 +33,18 @@ export class ProviderComponent implements OnInit {
     this.route.params.subscribe(params => { this.providerId = +params['id']; });
     console.log(this.providerId);
     this.service.hitAPI(this.apiRoot + "Provider/ByID/" + this.providerId).subscribe(
-      data => { this.Provider = data }
+      data => {
+        this.Provider = data; var _c = "";
+        this.Provider.LastUpdatedDate = this.Provider.LastUpdatedDate.replace(/\D/g, '');
+        for (var i = 0; i < this.Provider.CredentialList.length; i++) {
+          _c += this.Provider.CredentialList[i].Value;
+          if (i != this.Provider.CredentialList.length - 1) { _c += ", "; }
+        }
+        this.Provider.Credentials = _c;
+        //this.Provider.LastUpdatedDate = new Date(this.Provider.LastUpdatedDate.replace(/\D/g, '')).toUTCString();
+        document.getElementById("page-title").innerHTML = this.Provider.FirstName + " " + this.Provider.LastName;
+      }
     );
-    console.log(this.Provider);
-    this.Provider.FacilityNames = "UW, Meriter, St. Mary's";
-    console.log(this.Provider);
     //note: if navigated to from direct link, and not clicking a provider,
     //      it'll be empty til the provider object loads from AJAX...but that's okay
     document.getElementById("page-title").innerHTML = API.selectedProvider;//faster than jQ or Ang

@@ -13,14 +13,26 @@
       <tr>
         <td>First Name</td>
         <td>{{Provider.FirstName}}</td>
-        <td>Credentials</td>
-        <td>{{Provider.Credentials}}</td>
+        <td>NPI</td>
+        <td>{{Provider.NPI}}</td>
       </tr>
       <tr>
         <td>Last Name</td>
         <td>{{Provider.LastName}}</td>
-        <td>NPI</td>
-        <td>{{Provider.NPI}}</td>
+        <td>EpicProviderID</td>
+        <td>{{Provider.EpicProviderID}}</td>
+      </tr>
+      <tr>
+        <td>Gender</td>
+        <td>{{Provider.Gender==0?"Male":"Female"}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Credentials</td>
+        <td>{{Provider.Credentials}}</td>
+        <td><!--this will be a new standalone comma separated field like languages--></td>
+        <td><!--and coming from a join, instead of an additional SP--></td>
       </tr>
     </table>
     <hr />
@@ -32,29 +44,54 @@
         <td></td>
       </tr>
       <tr>
-        <td>ABMS</td>
-        <td>{{Provider.ABMS.has}}</td>
-        <td>ABMS Expiration Date</td>
-        <td>{{Provider.ABMS.exp}}</td>
+        <td>Medicare Indicator</td>
+        <td>{{Provider.MedicareIndicator? "Yes":"No"}}</td>
+        <td>Medicare PTAN</td>
+        <td>{{Provider.MedicarePTAN==null? "-":Provider.MedicarePTAN}}</td>
       </tr>
       <tr>
-        <td>License Number</td>
-        <td>{{Provider.License.no}}</td>
-        <td>License Expiration Date</td>
-        <td>{{Provider.License.exp}}</td>
+        <td>Medicare Effective Date</td>
+        <td>{{Provider.MedicareEffectiveDate==null?"-":Provider.MedicareEffectiveDate}}</td>
+        <td>Medicare Termination Date</td>
+        <td>{{Provider.MedicareTerminationDate==null?"-":Provider.MedicareTerminationDate}}</td>
       </tr>
       <tr>
-        <td>Certifying Board</td>
-        <td>{{Provider.CertifyingBoard.name}}</td>
-        <td>NPI</td>
-        <td>{{Provider.CertifyingBoard.exp}}</td>
+        <td>Medicaid Indicator</td>
+        <td>{{Provider.MedicaidIndicator? "Yes":"No"}}</td>
+        <td>MedicaidProviderID</td>
+        <td>{{Provider.MedicaidProviderID==null?"-":Provider.MedicaidProviderID}}</td>
+      </tr>
+      <tr>
+        <td>Last Updated By</td>
+        <td>{{Provider.LastUpdatedBy}}</td>
+        <td>Last Updated On</td>
+        <td>{{Provider.LastUpdatedDate | date}}</td><!--:'MMM d, y h:mm a'-->
       </tr>
       <tr>
         <td>Hospital Affiliations</td>
-        <td>{{Provider.FacilityNames}}</td>
+        <td>{{Provider.FacilityNames==null?"Coming Soon":Provider.FacilityNames}}</td>
         <td></td>
         <td></td>
       </tr>
     </table>
   </div>
 </div>
+<!-- below in wireframe but not deemed useful -->
+<!--tr>
+  <td>ABMS</td>
+  <td>{{Provider.ABMS.has}}</td>
+  <td>ABMS Expiration Date</td>
+  <td>{{Provider.ABMS.exp}}</td>
+</!--tr>
+<tr>
+  <td>License Number</td>
+  <td>{{Provider.License.no}}</td>
+  <td>License Expiration Date</td>
+  <td>{{Provider.License.exp}}</td>
+</tr>
+<tr>
+  <td>Certifying Board</td>
+  <td>{{Provider.CertifyingBoard.name}}</td>
+  <td>Recreditation Date</td>
+  <td>{{Provider.CertifyingBoard.exp}}</td>
+</tr-->
