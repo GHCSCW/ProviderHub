@@ -1,1 +1,60 @@
-provider component
+<div id="provider-wrapper">
+  <div class="left-sidebar">
+    <ul>
+      <li class="selected">Demographics</li>
+      <li>Facilities</li>
+      <li>Specialties</li>
+      <li>Facility - Specialty Mapping</li>
+      <li>Networks</li>
+    </ul>
+  </div>
+  <div class="provider-display">
+    <table>
+      <tr>
+        <td>First Name</td>
+        <td>{{Provider.FirstName}}</td>
+        <td>Credentials</td>
+        <td>{{Provider.Credentials}}</td>
+      </tr>
+      <tr>
+        <td>Last Name</td>
+        <td>{{Provider.LastName}}</td>
+        <td>NPI</td>
+        <td>{{Provider.NPI}}</td>
+      </tr>
+    </table>
+    <hr />
+    <table>
+      <tr>
+        <td>Languages</td>
+        <td>{{Provider.Languages}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>ABMS</td>
+        <td>{{Provider.ABMS.has}}</td>
+        <td>ABMS Expiration Date</td>
+        <td>{{Provider.ABMS.exp}}</td>
+      </tr>
+      <tr>
+        <td>License Number</td>
+        <td>{{Provider.License.no}}</td>
+        <td>License Expiration Date</td>
+        <td>{{Provider.License.exp}}</td>
+      </tr>
+      <tr>
+        <td>Certifying Board</td>
+        <td>{{Provider.CertifyingBoard.name}}</td>
+        <td>NPI</td>
+        <td>{{Provider.CertifyingBoard.exp}}</td>
+      </tr>
+      <tr>
+        <td>Hospital Affiliations</td>
+        <td>{{Provider.FacilityNames}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+</div>

@@ -40,7 +40,7 @@ export class DatatableComponent implements OnInit {
         dataSrc: ''
       },
       columns: [{ data: "NPI" }, { data: "LastName" }, { data: "FirstName" },
-        { data: null, render: function (data, type, row) { var d = data.CredentialList; var r=""; for (var i = 0; i < d.length; i++) { r += d[i].Value + ","; } if (r.length > 0) { r=r.substring(0, r.length - 1) } return r; }, searchable:false },
+        { data: null, render: function (data, type, row) { var d = data.CredentialList; var r=""; for (var i = 0; i < d.length; i++) { r += d[i].Value + ", "; } if (r.length > 0) { r=r.substring(0, r.length - 2) } return r; }, searchable:false },
         { data: null, render: function (data, type, row) { var d = data; var r; switch (d.Gender) { case 1: r = "Female"; break; case 2: r = "Male"; break; default: r = "Other"; break; } return r; }, searchable: false },
         { data: null, render: function (data, type, row) { var d = data.ProviderSpecialties; for (var i = 0; i < d.length; i++) { if (d[i].SequenceNumber == 1) { return d[i].Value; } } return ""; }, searchable: false  },
         { data: null, render: function (data, type, row) { var d = data; return ""; }, searchable:false }

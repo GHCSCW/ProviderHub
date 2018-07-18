@@ -11,8 +11,17 @@ export class ProviderComponent implements OnInit {
 
   public apiRoot: string;
   public providerId: number;
+  public Provider: any;
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router) {
+    //TEST PROVIDER FOR DEBUG
+    this.Provider = {
+      FirstName: "John", LastName: "Doe", Credentials: "MD (Primary), PhD", NPI: 3913874644,
+      Languages: "English, Spanish", ABMS: { has: "Yes", exp: "12/19/2024" },
+      License: { no: 452567, exp: "12/19/2024" }, CertifyingBoard: { name: "USDA", exp: "12/19/2024" },
+      FacilityNames: "UW, Meriter"
+    };
+  }
 
   ngOnInit() {
     this.route.data.subscribe(v => this.apiRoot = v.apiRoot);

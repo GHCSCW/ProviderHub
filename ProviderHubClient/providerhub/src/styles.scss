@@ -100,3 +100,66 @@ input[type='search'] {
 }
 #providers_wrapper .row:first-child > div:first-child{display:none;width:0;}
 #providers_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
+
+/*Provider View Styles*/
+#provider-wrapper .left-sidebar{
+  background:#231f20; color:#eee; width:210px; float:left; margin:0;padding:0;border:0;
+}
+#provider-wrapper .left-sidebar ul {
+  list-style-type:none;
+  padding:0;margin:0;
+  padding-top:10px; padding-left:5px;
+  padding-bottom:200px;
+}
+#provider-wrapper .left-sidebar ul li {
+  font-size: 16px;
+  line-height: 24px;
+  cursor:pointer;
+  padding-bottom:3px;
+}
+#provider-wrapper .left-sidebar ul li.selected { font-size:20px; font-weight:bold; color:#fff; }
+#provider-wrapper .left-sidebar ul li:hover { color:#fff; }
+#provider-wrapper .provider-display {
+  /* As per https://caniuse.com/#feat=calc this should work with 94% of global users' browsers aka anything GHC staff will use */
+  width: calc(100% - 210px);/*note: need spaces around - sign or fail CSS validation. weird.*/
+  float: left;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+#provider-wrapper .provider-display table:first-child{
+  width:100%;
+}
+#provider-wrapper .provider-display table:first-child tr {
+
+}
+#provider-wrapper .provider-display table:first-child td:nth-child(odd) {
+  text-align: right; /*Labels*/
+  font-size:14px;
+}
+#provider-wrapper .provider-display table:first-child td:nth-child(even) {
+  text-align: left; /*Values*/
+  font-size: 20px;
+  padding-left: 20px;
+}
+#provider-wrapper hr {
+  width: 90%;
+  margin: 0 auto;
+  color: #111;
+  border-top: 2px solid #111;
+  margin-top: 10px; margin-bottom:10px;
+}
+#provider-wrapper .provider-display table:last-child {
+  width:100%;
+}
+#provider-wrapper .provider-display table:last-child tr {
+}
+#provider-wrapper .provider-display table:last-child td:nth-child(odd) {
+  text-align: right; /*Labels*/
+  font-size: 14px;
+}
+#provider-wrapper .provider-display table:last-child td:nth-child(even) {
+  text-align: left; /*Values*/
+  font-size: 20px; padding-left:20px;
+}
