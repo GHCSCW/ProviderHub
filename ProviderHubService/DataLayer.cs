@@ -29,11 +29,11 @@ namespace ProviderHubService
 
         #region FUNCTION: GetProviderByID(int providerID)
 
-        public Provider GetProviderByID(int providerID)
+        public Provider GetProviderByID(int providerID, bool calledFromPH = false)
         {
             Provider provider = new Provider();
 
-            string sql = "providerHub.bh.sp_GetProviderByID";
+            string sql = (calledFromPH)? "providerHub.dbo.sp_GetProviderByID_OLD" : "providerHub.bh.sp_GetProviderByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
 

@@ -18,9 +18,7 @@ export class DatatableComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.route
-      .data
-      .subscribe(v => this.apiRoot = v.apiRoot);
+    this.route.data.subscribe(v => this.apiRoot = v.apiRoot);
     //console.log(this.apiRoot);
   }
 

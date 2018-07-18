@@ -3,25 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Http.Cors;
 using ProviderHubService;
 
 namespace ProviderHubServiceNew.Controllers
 {
-    [Route("api/provider")]
+    //[Route("api/provider")]
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class ProviderController : Controller
     {
         // GetProviderByID(providerID) - retrieve provider object given ID
         // GET api/provider/{providerID}
         //MODIFY FOR FRAMEWORK [HttpGet("{providerID}")]
-        public Provider GetProviderByID(int providerID)
+        public ActionResult ByID(int id)
         {
             Provider provider = new Provider();
             using (DataLayer dataLayer = new DataLayer())
             {
-                provider = dataLayer.GetProviderByID(providerID);
+                provider = dataLayer.GetProviderByID(id,true);
             }
             string uname = User.Identity.Name;
-            return provider;
+            return Json(provider, JsonRequestBehavior.AllowGet);
         }
 
         // GetProviderLanguageByID(providerID) - retrieve List of languages for provider with given ID
