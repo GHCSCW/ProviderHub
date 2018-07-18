@@ -14,11 +14,13 @@ import 'datatables.net-select-bs4';
 export class DatatableComponent implements OnInit {
   public tableWidget: any;
   public apiRoot: string;
+  public title: string = "Welcome to ProviderHub!";
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.data.subscribe(v => this.apiRoot = v.apiRoot);
+    document.getElementById("page-title").innerHTML = this.title;//faster than jQ or Ang
     //console.log(this.apiRoot);
   }
 

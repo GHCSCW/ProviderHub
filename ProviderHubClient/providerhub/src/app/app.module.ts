@@ -11,6 +11,11 @@ import { environment } from '../environments/environment';
 import { HeaderComponent } from './header/header.component';
 import { ProviderComponent } from './provider/provider.component';
 
+import { ProviderHubService } from './app.service';
+import { Http, Response, HttpModule } from '@angular/http';
+import { HttpClientModule, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CustomInterceptor } from './app.service';
+
 const routes: Routes = [
   /*Root: Provider List & Basic Search (Name/NPI)*/
   { path: 'providers', component: DatatableComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } },
@@ -29,9 +34,14 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
+    HttpModule,
     RouterModule.forRoot(routes, { enableTracing: true })
   ],
-  providers: [],
+  providers: [
+    ProviderHubService,
+    { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi:true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
