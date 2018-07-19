@@ -254,7 +254,7 @@ namespace ProviderHubService
                              CreatedBy = x.Field<string>("CREATED_BY"),
                              LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
                              LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
-                             CredentialList = GetProviderCredentialByID(x.Field<int>("PROVIDER_ID"),calledFromPH)
+                             CredentialListStr = x.Field<string>("CREDENTIAL_LIST")
 
                          }).ToList();
 

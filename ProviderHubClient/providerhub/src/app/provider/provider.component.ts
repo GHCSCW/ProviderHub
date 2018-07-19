@@ -20,11 +20,12 @@ export class ProviderComponent implements OnInit {
     this.Service = service;
     //TEST PROVIDER FOR DEBUG
     this.Provider = {
-      FirstName: "John", LastName: "Doe", Credentials: "MD (Primary), PhD", NPI: 3913874644,
+      FirstName: "John", LastName: "Doe", Credentials: "MD, PhD, NCIS, CSI", NPI: 3913874644,
       Languages: "English, Spanish", ABMS: { has: "Yes", exp: "12/19/2024" },
       License: { no: 452567, exp: "12/19/2024" }, CertifyingBoard: { name: "USDA", exp: "12/19/2024" },
-      FacilityNames: "UW, Meriter"
+      FacilityNames: "UW, Meriter", LastUpdatedBy:"GHC-HMO\\spillai", LastUpdatedDate:"Jun 18, 2018"
     };
+    //"(Primary)" to mark primary credential takes up too much space for no benefit
   }
 
   ngOnInit() {
@@ -34,14 +35,15 @@ export class ProviderComponent implements OnInit {
     console.log(this.providerId);
     this.service.hitAPI(this.apiRoot + "Provider/ByID/" + this.providerId).subscribe(
       data => {
-        this.Provider = data; var _c = "";
+        this.Provider = data; var _c = this.Provider.CredentialListStr;
         this.Provider.LastUpdatedDate = this.Provider.LastUpdatedDate.replace(/\D/g, '');
-        for (var i = 0; i < this.Provider.CredentialList.length; i++) {
+        this.Provider.Credentials = _c.slice(0, -1);//trailing comma
+        /*for (var i = 0; i < this.Provider.CredentialList.length; i++) {
           _c += this.Provider.CredentialList[i].Value;
           if (i != this.Provider.CredentialList.length - 1) { _c += ", "; }
         }
         this.Provider.Credentials = _c;
-        //this.Provider.LastUpdatedDate = new Date(this.Provider.LastUpdatedDate.replace(/\D/g, '')).toUTCString();
+        this.Provider.LastUpdatedDate = new Date(this.Provider.LastUpdatedDate.replace(/\D/g, '')).toUTCString();*/
         document.getElementById("page-title").innerHTML = this.Provider.FirstName + " " + this.Provider.LastName;
       }
     );

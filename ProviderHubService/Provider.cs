@@ -120,6 +120,9 @@ namespace ProviderHubService
         public List<Credential> CredentialList { get; set; }
 
         [DataMember]
+        public string CredentialListStr { get; set; }
+
+        [DataMember]
         public List<Specialty> ProviderSpecialties { get; set; }
 
         [DataMember]
