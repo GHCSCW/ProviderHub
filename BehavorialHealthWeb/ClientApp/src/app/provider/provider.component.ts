@@ -93,6 +93,14 @@ export class ProviderComponent implements OnInit {
     }
   }
 
+  setInactiveStyle() {
+    if (this.authSvc.canEdit == true && this.facilityProviderRelationship.relationshipStatus == false) {
+      return "#ff794d";
+    } else {
+      return "";
+    }
+  }
+
   onItemSelect(item: any) {
   }
 
