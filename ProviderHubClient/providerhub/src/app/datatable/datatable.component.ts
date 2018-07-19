@@ -42,9 +42,9 @@ export class DatatableComponent implements OnInit {
         dataSrc: ''
       },
       columns: [{ data: "NPI" }, { data: "LastName" }, { data: "FirstName" },
-        { data: null, render: function (data, type, row) { var d = data.CredentialList; var r=""; for (var i = 0; i < d.length; i++) { r += d[i].Value + ", "; } if (r.length > 0) { r=r.substring(0, r.length - 2) } return r; }, searchable:false },
+        { data: null, render: function (data, type, row) { var d = data.CredentialListStr; return (d==null)? "" : d.slice(0, -1); }, searchable:false },
         { data: null, render: function (data, type, row) { var d = data; var r; switch (d.Gender) { case 1: r = "Female"; break; case 2: r = "Male"; break; default: r = "Other"; break; } return r; }, searchable: false },
-        { data: null, render: function (data, type, row) { var d = data.ProviderSpecialties; for (var i = 0; i < d.length; i++) { if (d[i].SequenceNumber == 1) { return d[i].Value; } } return ""; }, searchable: false  },
+        { data: null, render: function (data, type, row) { var d = data.PrimarySpecialty; return d; }, searchable: false  },
         { data: null, render: function (data, type, row) { var d = data; return ""; }, searchable:false }
       ],
       order: [[1, "asc"]],
@@ -52,18 +52,23 @@ export class DatatableComponent implements OnInit {
       initComplete: function (settings, json) {
         //alert("loaded");
       }
+      // var d = data.CredentialList; var r=""; for (var i = 0; i < d.length; i++) { r += d[i].Value + ", "; } if (r.length > 0) { r=r.substring(0, r.length - 2) } return r;
       //NPI, Last name, First Name, Credential, Gender, Primary Specialty, Vendor.
       //Full name:{ data: null, render: function (data, type, row) { var d = data; return d.FirstName + " " + d.LastName; } }
       /*columns: [{data:"firstName"}, {data:"lastName"}],
       data: [{ firstName: "sree", lastName: "pill" }, { firstName: "sree2", lastName: "pill2" }]*/
     });
     this.tableWidget.on('select',
-      (e, dt, type, indexes) => this.onRowSelect(indexes));
+      (e, dt, type, indexes) => {
+        console.log(this.tableWidget.rows(indexes).data().pluck("ID"));
+        this.onRowSelect(this.tableWidget.rows(indexes).data().pluck("ID"));
+      }
+    );
   }
   private onRowSelect(indexes: number[]): void {
-    this.rowSelected.emit(indexes[0]);
-    console.log(indexes[0]);
-    var providerId = indexes[0] + 1;
+    //this.rowSelected.emit(indexes[0]);
+    //console.log(indexes[0]);
+    var providerId = indexes[0];// + 1;
     var full_name = $("#" + providerId + " td:nth-child(3)").text() + " " + $("#" + providerId + " td:nth-child(2)").text();
     alert(full_name); API.selectedProvider = full_name;
     //load addtional data for provider @ index+1 (not sure why this value is ID-1 but it is and it's consistent so it's nothing to worry about)

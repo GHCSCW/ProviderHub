@@ -69,7 +69,10 @@ namespace ProviderHubService
                     provider.LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY");
                     provider.LanguageList = GetProviderLanguageByID(providerID);
                     provider.CredentialList = GetProviderCredentialByID(providerID);
-
+                    provider.CredentialListStr = x.Field<string>("CREDENTIAL_LIST");
+                    provider.ParentSpecialtyList = x.Field<string>("PARENT_SPECIALTY_LIST");
+                    provider.ChildSpecialtyList = x.Field<string>("CHILD_SPECIALTY_LIST");
+                    provider.SubSpecialtyList = x.Field<string>("SUB_SPECIALTY_LIST");
                 }
             }
 
@@ -217,6 +220,9 @@ namespace ProviderHubService
 
         #endregion
 
+        #region FUNCTION: GetProviderSpecialties(int id)
+        #endregion
+
         #region FUNCTION: GetProviderList(string searchValue)
 
         public List<Provider> GetProviderList(string searchValue, bool calledFromPH=false)
@@ -254,7 +260,8 @@ namespace ProviderHubService
                              CreatedBy = x.Field<string>("CREATED_BY"),
                              LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
                              LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
-                             CredentialListStr = x.Field<string>("CREDENTIAL_LIST")
+                             CredentialListStr = x.Field<string>("CREDENTIAL_LIST"),
+                             PrimarySpecialty = x.Field<string>("PARENT_SPECIALTY_LIST") == null? "" : x.Field<string>("PARENT_SPECIALTY_LIST").Split(',')[0]
 
                          }).ToList();
 

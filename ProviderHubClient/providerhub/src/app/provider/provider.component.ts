@@ -38,12 +38,6 @@ export class ProviderComponent implements OnInit {
         this.Provider = data; var _c = this.Provider.CredentialListStr;
         this.Provider.LastUpdatedDate = this.Provider.LastUpdatedDate.replace(/\D/g, '');
         this.Provider.Credentials = _c.slice(0, -1);//trailing comma
-        /*for (var i = 0; i < this.Provider.CredentialList.length; i++) {
-          _c += this.Provider.CredentialList[i].Value;
-          if (i != this.Provider.CredentialList.length - 1) { _c += ", "; }
-        }
-        this.Provider.Credentials = _c;
-        this.Provider.LastUpdatedDate = new Date(this.Provider.LastUpdatedDate.replace(/\D/g, '')).toUTCString();*/
         document.getElementById("page-title").innerHTML = this.Provider.FirstName + " " + this.Provider.LastName;
       }
     );

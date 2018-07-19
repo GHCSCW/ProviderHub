@@ -126,6 +126,18 @@ namespace ProviderHubService
         public List<Specialty> ProviderSpecialties { get; set; }
 
         [DataMember]
+        public string ParentSpecialtyList { get; set; }
+
+        [DataMember]
+        public string ChildSpecialtyList { get; set; }
+
+        [DataMember]
+        public string SubSpecialtyList { get; set; }
+
+        [DataMember]
+        public string PrimarySpecialty { get; set; }
+
+        [DataMember]
         private string FullName
         {
             get { return this.FirstName + " " + this.LastName; }
