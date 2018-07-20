@@ -12,6 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { ProviderComponent } from './provider/provider.component';
 
 import { ProviderHubService } from './app.service';
+import { CommonModule } from '@angular/common';
 import { Http, Response, HttpModule } from '@angular/http';
 import { HttpClientModule, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomInterceptor } from './app.service';
@@ -34,6 +35,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    CommonModule,
     HttpClientModule,
     HttpModule,
     RouterModule.forRoot(routes, { enableTracing: true })

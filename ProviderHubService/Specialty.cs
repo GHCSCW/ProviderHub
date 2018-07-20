@@ -33,6 +33,20 @@ namespace ProviderHubService
         [DataMember]
         public string CreatedBy { get; set; }
 
+        //for PH
+        [DataMember]
+        public DateTime EffectiveDate { get; set; }
+
+        [DataMember]
+        public DateTime TerminationDate { get; set; }
+
+        [DataMember]
+        public string SpecialtyType { get; set; }
+
+        [DataMember]
+        public int ParentSpecialtyID { get; set; }
+        //end for PH
+
         #endregion
     }
 }

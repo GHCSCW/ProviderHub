@@ -150,16 +150,30 @@ input[type='search'] {
   border-top: 2px solid #111;
   margin-top: 10px; margin-bottom:10px;
 }
-#provider-wrapper .provider-display table:last-child {
+#provider-wrapper .provider-display #demoTable, #provider-specialties table {
   width:100%;
 }
-#provider-wrapper .provider-display table:last-child tr {
+#provider-wrapper .provider-display #demoTable tr, #specTable tr {
 }
-#provider-wrapper .provider-display table:last-child td:nth-child(odd) {
+#provider-wrapper .provider-display #demoTable td:nth-child(odd), #specTable td:nth-child(odd) {
   text-align: right; /*Labels*/
   font-size: 14px;
 }
-#provider-wrapper .provider-display table:last-child td:nth-child(even) {
+#provider-wrapper .provider-display #demoTable td:nth-child(even),
+#specTable td:nth-child(even) {
   text-align: left; /*Values*/
-  font-size: 20px; padding-left:20px;
+  font-size: 20px;
+  padding-left: 20px;
 }
+#specTable td.rowHeader{
+  font-size:32px; text-align:left;
+}
+#specTable tr td{padding-left:20px;}
+#specTable {
+  margin-left: 20px;
+}
+#specTable td:nth-child(even){text-align:right;}
+#specTable td:nth-child(odd) {
+  text-align: left;
+}
+.inter-table-separator{ border-bottom:2px solid #111; }

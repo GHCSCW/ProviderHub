@@ -1,6 +1,6 @@
 <div id="provider-wrapper">
   <div class="left-sidebar">
-    <ul>
+    <ul id="provider-nav">
       <li class="selected">Demographics</li>
       <li>Facilities</li>
       <li>Specialties</li>
@@ -36,7 +36,7 @@
       </tr>
     </table>
     <hr />
-    <table>
+    <table id="demoTable" [hidden]="nav!='Demographics'">
       <tr>
         <td>Languages</td>
         <td>{{Provider.Languages}}</td>
@@ -72,6 +72,38 @@
         <td>{{Provider.FacilityNames==null?"Coming Soon":Provider.FacilityNames}}</td>
         <td></td>
         <td></td>
+      </tr>
+    </table>
+    <table id="specTable" [hidden]="nav!='Specialties'">
+      <tr>
+        <td class="rowHeader" colspan="4">Pediatric Oncology</td>
+      </tr>
+      <tr>
+        <td>Parent Specialty: Oncology</td>
+        <td style="width:80px;"></td><!--make a setting/css style-->
+        <td>Effective Dates</td>
+        <td>01/01/2009 - 01/01/2020</td>
+      </tr>
+      <tr class="inter-table-separator">
+        <td>Primary Specialty</td>
+        <td></td>
+        <td></td>
+        <td>-expand down arrow-</td>
+      </tr>
+      <tr>
+        <td class="rowHeader" colspan="4">Family Medicine</td>
+      </tr>
+      <tr>
+        <td>Parent Specialty: Primary Care</td>
+        <td style="width:80px;"></td><!--make a setting/css style-->
+        <td>Effective Dates</td>
+        <td>02/01/2012 - 02/01/2023</td>
+      </tr>
+      <tr class="inter-table-separator">
+        <td>Secondary Specialty</td>
+        <td></td>
+        <td></td>
+        <td>-expand down arrow-</td>
       </tr>
     </table>
   </div>

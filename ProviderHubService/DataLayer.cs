@@ -69,16 +69,40 @@ namespace ProviderHubService
                     provider.LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY");
                     provider.LanguageList = GetProviderLanguageByID(providerID);
                     provider.CredentialList = GetProviderCredentialByID(providerID);
-                    provider.CredentialListStr = x.Field<string>("CREDENTIAL_LIST");
-                    provider.ParentSpecialtyList = x.Field<string>("PARENT_SPECIALTY_LIST");
-                    provider.ChildSpecialtyList = x.Field<string>("CHILD_SPECIALTY_LIST");
-                    provider.SubSpecialtyList = x.Field<string>("SUB_SPECIALTY_LIST");
+                    provider.CredentialListStr = (calledFromPH)? x.Field<string>("CREDENTIAL_LIST") : "";
+                    provider.ParentSpecialtyList = (calledFromPH) ? x.Field<string>("PARENT_SPECIALTY_LIST") : "";
+                    provider.ChildSpecialtyList = (calledFromPH) ? x.Field<string>("CHILD_SPECIALTY_LIST") : "";
+                    provider.SubSpecialtyList = (calledFromPH) ? x.Field<string>("SUB_SPECIALTY_LIST") : "";
+                    provider.ProviderSpecialties = (calledFromPH) ? GetProviderSpecialties(providerID) : null;
                 }
             }
 
             return provider;
         }
 
+        #endregion
+
+        #region FUNCTION: GetProviderSpecialties(int providerID)
+        public List<Specialty> GetProviderSpecialties(int providerID) {
+            List<Specialty> specialtyList = new List<Specialty>();
+            string sql = "providerhub.dbo.sp_GetProviderSpecialtiesByID";
+            SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            if (ds.Tables[0].Rows.Count > 0) {
+                specialtyList = (from specialty in ds.Tables[0].AsEnumerable()
+                                 select new Specialty() {
+                                     MappingID = specialty.Field<int>("PROVIDER_SPECIALTY_MAPPING_ID"),
+                                     ID = specialty.Field<int>("SPECIALTY_ID"),
+                                     Name = specialty.Field<string>("SPECIALTY_NAME"),
+                                     SequenceNumber = specialty.Field<int>("SEQUENCE_NUMBER"),
+                                     EffectiveDate = specialty.Field<DateTime>("EFFECTIVE_DATE"),
+                                     TerminationDate = specialty.Field<DateTime>("TERMINATION_DATE"),
+                                     ParentSpecialtyID = !specialty.IsNull("PARENT_SPECIALTY_ID") ? specialty.Field<int>("PARENT_SPECIALTY_ID") : 0,
+                                     SpecialtyType = specialty.Field<string>("SPECIALTY_TYPE_NAME")
+                                 }).ToList();
+            }
+            return specialtyList;
+        }
         #endregion
 
         #region FUNCTION: GetProviderLanguage(int providerID)
@@ -260,9 +284,8 @@ namespace ProviderHubService
                              CreatedBy = x.Field<string>("CREATED_BY"),
                              LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
                              LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
-                             CredentialListStr = x.Field<string>("CREDENTIAL_LIST"),
-                             PrimarySpecialty = x.Field<string>("PARENT_SPECIALTY_LIST") == null? "" : x.Field<string>("PARENT_SPECIALTY_LIST").Split(',')[0]
-
+                             CredentialListStr = (calledFromPH)? x.Field<string>("CREDENTIAL_LIST") : "",
+                             PrimarySpecialty = (calledFromPH)? x.Field<string>("PARENT_SPECIALTY_LIST") == null? "" : x.Field<string>("PARENT_SPECIALTY_LIST").Split(',')[0] : ""
                          }).ToList();
 
             return providers;

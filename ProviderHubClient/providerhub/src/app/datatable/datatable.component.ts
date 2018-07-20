@@ -70,7 +70,8 @@ export class DatatableComponent implements OnInit {
     //console.log(indexes[0]);
     var providerId = indexes[0];// + 1;
     var full_name = $("#" + providerId + " td:nth-child(3)").text() + " " + $("#" + providerId + " td:nth-child(2)").text();
-    alert(full_name); API.selectedProvider = full_name;
+    //alert(full_name);
+    API.selectedProvider = full_name;
     //load addtional data for provider @ index+1 (not sure why this value is ID-1 but it is and it's consistent so it's nothing to worry about)
     //this.loadProvider(indexes[0] + 1);
     this.router.navigate(['/provider',providerId]);

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { API } from '../globals';
 import { ProviderHubService } from '../app.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-provider',
@@ -14,6 +15,7 @@ export class ProviderComponent implements OnInit {
   public providerId: number;
   public Provider: any;
   public Service: any;
+  public nav: string;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private service: ProviderHubService) {
@@ -26,6 +28,7 @@ export class ProviderComponent implements OnInit {
       FacilityNames: "UW, Meriter", LastUpdatedBy:"GHC-HMO\\spillai", LastUpdatedDate:"Jun 18, 2018"
     };
     //"(Primary)" to mark primary credential takes up too much space for no benefit
+    this.nav = 'Specialties'; //default tab is Demographics
   }
 
   ngOnInit() {
