@@ -98,7 +98,8 @@ namespace ProviderHubService
                                      EffectiveDate = specialty.Field<DateTime>("EFFECTIVE_DATE"),
                                      TerminationDate = specialty.Field<DateTime>("TERMINATION_DATE"),
                                      ParentSpecialtyID = !specialty.IsNull("PARENT_SPECIALTY_ID") ? specialty.Field<int>("PARENT_SPECIALTY_ID") : 0,
-                                     SpecialtyType = specialty.Field<string>("SPECIALTY_TYPE_NAME")
+                                     SpecialtyType = specialty.Field<string>("SPECIALTY_TYPE_NAME"),
+                                     ParentName = specialty.Field<string>("PARENT_NAME")
                                  }).ToList();
             }
             return specialtyList;

@@ -35,13 +35,32 @@ export class ProviderComponent implements OnInit {
     this.route.data.subscribe(v => this.apiRoot = v.apiRoot);
     console.log(this.apiRoot);
     this.route.params.subscribe(params => { this.providerId = +params['id']; });
-    console.log(this.providerId);
+    console.log(this.providerId); var _dis = this;
+    //0. nav
+    var navs = document.getElementById("provider-nav").getElementsByTagName("li");
+    for (var i = 0; i < navs.length; i++) {
+      navs[i].addEventListener("click", (function(event) {
+        return function (e) { _dis.nav = this.getAttribute("tab-id"); }
+      })(_dis),false);
+    }
+    
     this.service.hitAPI(this.apiRoot + "Provider/ByID/" + this.providerId).subscribe(
       data => {
+        //1. Main and Demo
         this.Provider = data; var _c = this.Provider.CredentialListStr;
         this.Provider.LastUpdatedDate = this.Provider.LastUpdatedDate.replace(/\D/g, '');
         this.Provider.Credentials = _c.slice(0, -1);//trailing comma
         document.getElementById("page-title").innerHTML = this.Provider.FirstName + " " + this.Provider.LastName;
+        //2. Specialties
+        // Object spec (per Provider):
+        //  ProviderSpecialties:[{Specialty},{Specialty},...]
+        // Each Specialty = {ID,Name,Description,MappingID,SequenceNumber,CreatedDate,
+        // CreatedBy,EffectiveDate,TerminationDate,SpecialtyType,ParentSpecialtyID,ParentName}
+        for (var i = 0; i < this.Provider.ProviderSpecialties.length; i++) {
+          var s = this.Provider.ProviderSpecialties[i];
+          s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
+          s.TerminationDate = s.TerminationDate.replace(/\D/g, '');
+        }
       }
     );
     //note: if navigated to from direct link, and not clicking a provider,

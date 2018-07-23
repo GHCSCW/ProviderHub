@@ -1,11 +1,11 @@
 <div id="provider-wrapper">
   <div class="left-sidebar">
     <ul id="provider-nav">
-      <li class="selected">Demographics</li>
-      <li>Facilities</li>
-      <li>Specialties</li>
-      <li>Facility - Specialty Mapping</li>
-      <li>Networks</li>
+      <li tab-id="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
+      <li tab-id="Facility" [class.selected]="nav=='Facility'">Facilities</li>
+      <li tab-id="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
+      <li tab-id="FacSpecMap" [class.selected]="nav=='FacSpecMap'">Facility - Specialty Mapping</li>
+      <li tab-id="Networks" [class.selected]="nav=='Networks'">Networks</li>
     </ul>
   </div>
   <div class="provider-display">
@@ -75,40 +75,30 @@
       </tr>
     </table>
     <table id="specTable" [hidden]="nav!='Specialties'">
-      <tr>
-        <td class="rowHeader" colspan="4">Pediatric Oncology</td>
-      </tr>
-      <tr>
-        <td>Parent Specialty: Oncology</td>
-        <td style="width:80px;"></td><!--make a setting/css style-->
-        <td>Effective Dates</td>
-        <td>01/01/2009 - 01/01/2020</td>
-      </tr>
-      <tr class="inter-table-separator">
-        <td>Primary Specialty</td>
-        <td></td>
-        <td></td>
-        <td>-expand down arrow-</td>
-      </tr>
-      <tr>
-        <td class="rowHeader" colspan="4">Family Medicine</td>
-      </tr>
-      <tr>
-        <td>Parent Specialty: Primary Care</td>
-        <td style="width:80px;"></td><!--make a setting/css style-->
-        <td>Effective Dates</td>
-        <td>02/01/2012 - 02/01/2023</td>
-      </tr>
-      <tr class="inter-table-separator">
-        <td>Secondary Specialty</td>
-        <td></td>
-        <td></td>
-        <td>-expand down arrow-</td>
-      </tr>
+      <tbody *ngFor="let s of Provider.ProviderSpecialties">
+        <tr>
+          <td class="rowHeader" colspan="4">{{s.Name}}</td>
+        </tr>
+        <tr>
+          <td>{{s.ParentSpecialtyID==0?"(is a Parent Specialty)":"Parent Specialty: "+s.ParentName}}</td><!--get Parent Name or "" in sp/view-->
+          <td style="width:10px;"></td><!--make a setting/css style-->
+          <td>Effective Dates</td>
+          <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+        </tr>
+        <tr class="inter-table-separator">
+          <td>{{s.SequenceNumber==1?"Primary Specialty":"Secondary Specialty"}}</td>
+          <td></td>
+          <td><!--I dont see any other specialty info, so no expand UI for now--></td>
+          <td><!--span class="expand"><i class="arrow down"></i></span--></td>
+        </tr>
+      </tbody>
     </table>
+    <table id="facSpecMapTable" [hidden]="nav!='FacSpecMap'"></table>
+    <table id="facTable" [hidden]="nav!='Facility'"></table>
+    <table id="networksTable" [hidden]="nav!='Networks'"></table>
   </div>
 </div>
-<!-- below in wireframe but not deemed useful -->
+<!-- below in wireframe for demographics but not deemed useful -->
 <!--tr>
   <td>ABMS</td>
   <td>{{Provider.ABMS.has}}</td>

@@ -45,6 +45,9 @@ namespace ProviderHubService
 
         [DataMember]
         public int ParentSpecialtyID { get; set; }
+
+        [DataMember]
+        public string ParentName { get; set; }
         //end for PH
 
         #endregion
