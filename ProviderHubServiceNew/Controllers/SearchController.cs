@@ -28,15 +28,15 @@ namespace ProviderHubServiceNew.Controllers
 
         // GET api/search/facility/{searchValue}
         //MODIFY FOR FRAMEWORK [HttpGet("facility/{searchValue}")]
-        public List<Facility> GetFacilityList(string searchValue)
+        public ActionResult GetFacilityList(string id)
         {
             List<Facility> facilities = new List<Facility>();
 
             using (DataLayer dataLayer = new DataLayer())
             {
-                facilities = dataLayer.GetFacilityList(searchValue);
+                facilities = dataLayer.GetFacilityList(id,true);
             }
-            return facilities;
+            return Json(facilities, JsonRequestBehavior.AllowGet);
         }
 
         // GET api/search/{searchValue}

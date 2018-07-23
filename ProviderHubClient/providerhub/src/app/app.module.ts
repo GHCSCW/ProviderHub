@@ -16,13 +16,16 @@ import { CommonModule } from '@angular/common';
 import { Http, Response, HttpModule } from '@angular/http';
 import { HttpClientModule, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomInterceptor } from './app.service';
+import { FacilitysearchComponent } from './facilitysearch/facilitysearch.component';
 
 const routes: Routes = [
   /*Root: Provider List & Basic Search (Name/NPI)*/
   { path: 'providers', component: DatatableComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } },
   { path: '', redirectTo: '/providers', pathMatch: 'full' },
   /*Individual Provider View*/
-  { path: 'provider/:id', component: ProviderComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } }
+  { path: 'provider/:id', component: ProviderComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } },
+  /*Facilities Search*/
+  { path: 'facilities', component: FacilitysearchComponent, data: { apiRoot: (environment.production)? API.prod : API.dev } }
 ];
 
 @NgModule({
@@ -30,7 +33,8 @@ const routes: Routes = [
     AppComponent,
     DatatableComponent,
     HeaderComponent,
-    ProviderComponent
+    ProviderComponent,
+    FacilitysearchComponent
   ],
   imports: [
     BrowserModule,

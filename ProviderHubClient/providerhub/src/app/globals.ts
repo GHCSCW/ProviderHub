@@ -1,4 +1,4 @@
-export const API = { dev: "http://localhost:51660/", prod: "PROD_URL", selectedProvider:"" };//Object.freeze();
+export const API = { dev: "http://localhost:51660/", prod: "PROD_URL", selectedProvider:"", selectedFacility:"" };//Object.freeze();
 
 export class Globals {
   public selectedProvider: any = ("" as any);

@@ -296,11 +296,11 @@ namespace ProviderHubService
 
         #region FUNCTION: GetFacilityList(string searchValue)
 
-        public List<Facility> GetFacilityList(string searchValue)
+        public List<Facility> GetFacilityList(string searchValue, bool isCalledFromPH = false)
         {
             List<Facility> facilities = new List<Facility>();
 
-            string sql = "providerHub.bh.sp_GetFacilityList";
+            string sql = (isCalledFromPH)? "providerHub.dbo.sp_GetFacilityList_OLD" : "providerHub.bh.sp_GetFacilityList";
             SqlParameter[] sqlParams = { new SqlParameter("@SEARCH_VALUE", SqlDbType.VarChar) { Value = searchValue } };
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
 

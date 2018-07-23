@@ -63,7 +63,7 @@ h2{
 .table td {
   padding: 0.45rem;
 }
-#providers{width:100%;margin:0 auto;}
+#providers,#facilities{width:100%;margin:0 auto;}
 .dataTables_info span.select-info {
   display: none !important;
 }
@@ -100,6 +100,8 @@ input[type='search'] {
 }
 #providers_wrapper .row:first-child > div:first-child{display:none;width:0;}
 #providers_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
+#facilities_wrapper .row:first-child > div:first-child{display:none;width:0;}
+#facilities_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
 
 /*Provider View Styles*/
 #provider-wrapper .left-sidebar{

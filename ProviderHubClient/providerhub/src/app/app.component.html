@@ -1,6 +1,6 @@
 <div id="nav-bar">
   <a href="/" class="navbar-brand navbar-left">{{title}}</a>
-  <span class="navbar-left menu-links"><a>Provider</a><a>Facility</a><a>Vendor</a></span>
+  <span class="navbar-left menu-links"><a (click)="nav('/providers')">Provider</a><a (click)="nav('/facilities')">Facility</a><a>Vendor</a></span>
   <span class="navbar-right">spillai</span>
   <button type="submit" id="header-advanced-search-button"><i class="fa fa-search"></i></button>
   <span class="navbar-right" id="header-advanced-search-wrapper">
