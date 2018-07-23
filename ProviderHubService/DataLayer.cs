@@ -168,11 +168,11 @@ namespace ProviderHubService
 
         #region FUNCTION: GetFacilityByID(int facilityID)
 
-        public Facility GetFacilityByID(int facilityID)
+        public Facility GetFacilityByID(int facilityID, bool calledFromPH=false)
         {
             Facility facility = new Facility();
 
-            string sql = "providerHub.bh.sp_GetFacilityByID";
+            string sql = (calledFromPH)? "providerHub.dbo.sp_GetFacilityByID_OLD":  "providerHub.bh.sp_GetFacilityByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
 
@@ -202,11 +202,11 @@ namespace ProviderHubService
 
         #region FUNCTION: GetAddressByFacilityID(int facilityID)
 
-        public Address GetAddressByFacilityID(int facilityID)
+        public Address GetAddressByFacilityID(int facilityID, bool isCalledFromPH=false)
         {
             Address address = new Address();
 
-            string sql = "providerHub.bh.sp_GetAddressByFacilityID";
+            string sql = (isCalledFromPH)? "providerHub.dbo.sp_GetAddressByFacilityID_OLD" : "providerHub.bh.sp_GetAddressByFacilityID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
 

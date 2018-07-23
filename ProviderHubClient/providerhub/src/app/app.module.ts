@@ -17,6 +17,7 @@ import { Http, Response, HttpModule } from '@angular/http';
 import { HttpClientModule, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomInterceptor } from './app.service';
 import { FacilitysearchComponent } from './facilitysearch/facilitysearch.component';
+import { FacilityComponent } from './facility/facility.component';
 
 const routes: Routes = [
   /*Root: Provider List & Basic Search (Name/NPI)*/
@@ -25,7 +26,9 @@ const routes: Routes = [
   /*Individual Provider View*/
   { path: 'provider/:id', component: ProviderComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } },
   /*Facilities Search*/
-  { path: 'facilities', component: FacilitysearchComponent, data: { apiRoot: (environment.production)? API.prod : API.dev } }
+  { path: 'facilities', component: FacilitysearchComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } },
+  /*Individual Facility View*/
+  { path: 'facility/:id', component: FacilityComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } }
 ];
 
 @NgModule({
@@ -34,7 +37,8 @@ const routes: Routes = [
     DatatableComponent,
     HeaderComponent,
     ProviderComponent,
-    FacilitysearchComponent
+    FacilitysearchComponent,
+    FacilityComponent
   ],
   imports: [
     BrowserModule,

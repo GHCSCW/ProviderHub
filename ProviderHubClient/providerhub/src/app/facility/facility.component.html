@@ -1,0 +1,92 @@
+<div id="facility-wrapper">
+  <div class="left-sidebar">
+    <ul id="facility-nav">
+      <li tab-id="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
+      <li tab-id="Vendor" [class.selected]="nav=='Vendor'">Vendor</li>
+      <li tab-id="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
+      <li tab-id="Providers" [class.selected]="nav=='Providers'">Providers</li>
+      <li tab-id="ProviderSpecialtyMapping" [class.selected]="nav=='ProviderSpecialtyMapping'">Provider-Specialty Mapping</li>
+      <li tab-id="Networks" [class.selected]="nav=='Networks'">Networks</li>
+    </ul>
+  </div>
+  <div class="facility-display">
+    <table>
+      <tr>
+        <td>Facility Name</td>
+        <td>{{Facility.FacilityName}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>NPI</td>
+        <td>{{Facility.NPI}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <hr />
+    <table id="demoTable" [hidden]="nav!='Demographics'">
+      <tr>
+        <td>Address</td>
+        <td>
+          {{FacilityAddress.AddressLine1}}&nbsp;&nbsp;{{FacilityAddress.AddressLine2}}<br />
+          {{FacilityAddress.City}},&nbsp;{{FacilityAddress.State}}&nbsp;&nbsp;{{FacilityAddress.ZipCode}}
+        </td>
+      </tr>
+      <tr>
+        <td>Hours</td>
+        <td>Coming Soon to a DataModel near U</td>
+      </tr>
+    </table>
+    <table id="vendorTable" [hidden]="nav!='Vendor'">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <table id="specTable" [hidden]="nav!='Specialties'">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <table id="providersTable" [hidden]="nav!='Providers'">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <table id="psmTable" [hidden]="nav!='ProviderSpecialtyMapping'">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <table id="networksTable" [hidden]="nav!='Networks'">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+</div>

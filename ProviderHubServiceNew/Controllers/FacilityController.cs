@@ -13,14 +13,14 @@ namespace ProviderHubServiceNew.Controllers
         // GetFacilityByID(facilityID) - retrieve Facility object given ID
         // GET api/facility/{facilityID}
         //MODIFY FOR FRAMEWORK [HttpGet("{facilityID}")]
-        public Facility GetFacilityByID(int facilityID)
+        public ActionResult ByID(int id)
         {
             Facility facility = new Facility();
             using (DataLayer dataLayer = new DataLayer())
             {
-                facility = dataLayer.GetFacilityByID(facilityID);
+                facility = dataLayer.GetFacilityByID(id,true);
             }
-            return facility;
+            return Json(facility,JsonRequestBehavior.AllowGet);
         }
 
         // GET api/facility/{facilityID}/address

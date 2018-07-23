@@ -19,16 +19,16 @@ export class ProviderComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router,
               private service: ProviderHubService) {
-    this.Service = service;
+    this.Service = service; this.Provider = {};
     //TEST PROVIDER FOR DEBUG
-    this.Provider = {
+    /*this.Provider = {
       FirstName: "John", LastName: "Doe", Credentials: "MD, PhD, NCIS, CSI", NPI: 3913874644,
       Languages: "English, Spanish", ABMS: { has: "Yes", exp: "12/19/2024" },
       License: { no: 452567, exp: "12/19/2024" }, CertifyingBoard: { name: "USDA", exp: "12/19/2024" },
       FacilityNames: "UW, Meriter", LastUpdatedBy:"GHC-HMO\\spillai", LastUpdatedDate:"Jun 18, 2018"
-    };
+    };*/
     //"(Primary)" to mark primary credential takes up too much space for no benefit
-    this.nav = 'Specialties'; //default tab is Demographics
+    this.nav = 'Demographics'; //default tab should be Demographics, change to test whatever you workin on
   }
 
   ngOnInit() {
