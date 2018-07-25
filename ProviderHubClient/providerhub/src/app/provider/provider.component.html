@@ -94,7 +94,30 @@
       </tbody>
     </table>
     <table id="facSpecMapTable" [hidden]="nav!='FacSpecMap'"></table>
-    <table id="facTable" [hidden]="nav!='Facility'"></table>
+    <table id="facTable" [hidden]="nav!='Facility'"><!-- basically Facility Demographics (Facility + FacilityAddress)-->
+      <tbody *ngFor="let f of Provider.ProviderFacilities">
+        <tr>
+          <td class="rowHeader" id="rH" colspan="4"><a href="../facility/{{f.ID}}">{{f.FacilityName}}</a></td>
+        </tr>
+        <tr>
+          <td>NPI</td>
+          <td>{{f.NPI}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td>
+            {{f.FacilityAddress.AddressLine1}}&nbsp;&nbsp;{{f.FacilityAddress.AddressLine2}}<br />
+            {{f.FacilityAddress.City}},&nbsp;{{f.FacilityAddress.State}}&nbsp;&nbsp;{{f.FacilityAddress.ZipCode}}
+          </td>
+        </tr>
+        <tr>
+          <td>Hours</td>
+          <td>Coming Soon</td><!--Facility.Hours.DisplayValues-->
+        </tr>
+      </tbody>
+    </table>
     <table id="networksTable" [hidden]="nav!='Networks'"></table>
   </div>
 </div>

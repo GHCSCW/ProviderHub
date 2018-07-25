@@ -130,17 +130,17 @@ input[type='search'] {
   border: 0;
 }
 
-#provider-wrapper .provider-display table:first-child, #facility-wrapper .facility-display table:first-child{
-  width:100%;
+#provider-wrapper .provider-display table:first-child, #facility-wrapper .facility-display table:first-child, #providersTable {
+  width: 100%;
 }
 #provider-wrapper .provider-display table:first-child tr {
 
 }
-#provider-wrapper .provider-display table:first-child td:nth-child(odd), #facility-wrapper .facility-display table:first-child td:nth-child(odd) {
+#provider-wrapper .provider-display table:first-child td:nth-child(odd), #facility-wrapper .facility-display table:first-child td:nth-child(odd), #providersTable td:nth-child(odd) {
   text-align: right; /*Labels*/
-  font-size:14px;
+  font-size: 14px;
 }
-#provider-wrapper .provider-display table:first-child td:nth-child(even), #facility-wrapper .facility-display table:first-child td:nth-child(even) {
+#provider-wrapper .provider-display table:first-child td:nth-child(even), #facility-wrapper .facility-display table:first-child td:nth-child(even), #providersTable td:nth-child(even) {
   text-align: left; /*Values*/
   font-size: 20px;
   padding-left: 20px;
@@ -167,16 +167,33 @@ input[type='search'] {
   font-size: 20px;
   padding-left: 20px;
 }
-#specTable td.rowHeader{
+#specTable td.rowHeader, #facTable td#rH{
   font-size:32px; text-align:left;
 }
+#rH { padding-left:20px;padding-top:10px; }
+#rH a, #providersTable a{text-decoration:none;color:#111;}
+#rH a:hover, #providersTable a:hover{text-decoration:underline;}
 #specTable tr td{}
 #specTable {
-  margin-left: 20px;
+  margin-left: 20px;/*50 for real center*/
 }
-#specTable td:nth-child(even){text-align:right;}
+#specTable td:nth-child(even) {
+  text-align:right;
+}
 #specTable td:nth-child(odd) {
   text-align: left;
+}
+#facTable td:nth-child(even) {
+  text-align: left;
+  vertical-align: top;
+  font-size: 20px;
+  padding-left: 20px;
+}
+#facTable td:nth-child(odd) {
+  text-align: right;
+  vertical-align: top;
+  font-size: 14px;
+  line-height:27px;
 }
 .inter-table-separator{ border-bottom:2px solid #111; }
 i.arrow {

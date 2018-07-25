@@ -46,6 +46,11 @@ export class FacilityComponent implements OnInit {
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
           s.TerminationDate = s.TerminationDate.replace(/\D/g, '');
         }
+        //providers
+        for (var i = 0; i < this.Facility.FacilityProviders.length; i++) {
+          var _c = this.Facility.FacilityProviders[i].CredentialListStr;
+          this.Facility.FacilityProviders[i].Credentials = _c.slice(0, -1);
+        }
       }
     );
     document.getElementById("page-title").innerHTML = API.selectedFacility;

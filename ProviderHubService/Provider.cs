@@ -126,6 +126,9 @@ namespace ProviderHubService
         public List<Specialty> ProviderSpecialties { get; set; }
 
         [DataMember]
+        public List<Facility> ProviderFacilities { get; set; }
+
+        [DataMember]
         public string ParentSpecialtyList { get; set; }
 
         [DataMember]

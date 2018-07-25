@@ -74,6 +74,7 @@ namespace ProviderHubService
                     provider.ChildSpecialtyList = (calledFromPH) ? x.Field<string>("CHILD_SPECIALTY_LIST") : "";
                     provider.SubSpecialtyList = (calledFromPH) ? x.Field<string>("SUB_SPECIALTY_LIST") : "";
                     provider.ProviderSpecialties = (calledFromPH) ? GetProviderSpecialties(providerID) : null;
+                    provider.ProviderFacilities = (calledFromPH) ? GetProviderFacilities(providerID) : null;
                 }
             }
 
@@ -103,6 +104,37 @@ namespace ProviderHubService
                                  }).ToList();
             }
             return specialtyList;
+        }
+        #endregion
+
+        #region FUNCTION: GetProviderFacilities(int providerID)
+        public List<Facility> GetProviderFacilities(int providerID) {
+            List<Facility> facilityList = new List<Facility>();
+            string sql = "providerhub.dbo.sp_GetProviderFacilitiesByID";
+            SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            if (ds.Tables[0].Rows.Count > 0) {
+                facilityList = (from x in ds.Tables[0].AsEnumerable()
+                                select new Facility() {
+                                    ID = x.Field<int>("FACILITY_ID"),
+                                    FacilityName = x.Field<string>("FACILITY_NAME"),
+                                    NPI = x.Field<string>("FACILITY_NPI"),
+                                    ExternalID = x.Field<string>("EXTERNAL_ID"),
+                                    InternalNotes = x.Field<string>("FACILITY_INTERNAL_NOTES"),
+                                    CreatedDate = x.Field<DateTime>("FACILITY_CREATED_DATE"),
+                                    CreatedBy = x.Field<string>("FACILITY_CREATED_BY"),
+                                    LastUpdatedDate = x.Field<DateTime>("FACILITY_LAST_UPDATED_DATE"),
+                                    LastUpdatedBy = x.Field<string>("FACILITY_LAST_UPDATED_BY"),
+                                    FacilityAddress = new Address() {
+                                        AddressLine1 = x.Field<string>("ADDRESS_LINE_1"),
+                                        AddressLine2 = x.Field<string>("ADDRESS_LINE_2"),
+                                        City = x.Field<string>("CITY"),
+                                        State = x.Field<string>("STATE"),
+                                        ZipCode = x.Field<string>("ZIP_CODE")
+                                    }
+                                }).ToList();
+            }
+            return facilityList;
         }
         #endregion
 
@@ -193,6 +225,7 @@ namespace ProviderHubService
                     facility.LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY");
                     facility.FacilityAddress = GetAddressByFacilityID(facilityID);
                     facility.FacilitySpecialties = GetFacilitySpecialties(facilityID);
+                    facility.FacilityProviders = GetFacilityProviders(facilityID);
                 }
             }
 
@@ -225,6 +258,31 @@ namespace ProviderHubService
                                  }).ToList();
             }
             return specialtyList;
+        }
+        #endregion
+
+        #region FUNCTION: GetFacilityProviders(int facilityID)
+        public List<Provider> GetFacilityProviders(int facilityID) {
+            List<Provider> providerList = new List<Provider>();
+            string sql = "providerhub.dbo.sp_GetFacilityProvidersByID";
+            SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                /*demo data only: FirstName, NPI, LastName, EpicProviderID, Credentials, Gender*/
+                providerList = (from provider in ds.Tables[0].AsEnumerable()
+                                select new Provider()
+                                {
+                                    ID = provider.Field<int>("PROVIDER_ID"),
+                                    FirstName = provider.Field<string>("PROVIDER_FIRST_NAME"),
+                                    LastName = provider.Field<string>("PROVIDER_LAST_NAME"),
+                                    NPI = provider.Field<string>("NATIONAL_PROVIDER_IDENTIFIER"),
+                                    EpicProviderID = provider.Field<string>("EPIC_PROVIDER_ID"),
+                                    CredentialListStr = provider.Field<string>("CREDENTIAL_LIST"),
+                                    Gender = (ProviderGender)Enum.Parse(typeof(ProviderGender), provider.Field<int>("PROVIDER_GENDER_ID").ToString())
+                                }).ToList();
+            }
+            return providerList;
         }
         #endregion
 

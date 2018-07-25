@@ -68,14 +68,26 @@
       </tbody>
     </table>
     <table id="providersTable" [hidden]="nav!='Providers'">
-      <tr>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-      </tr>
+      <tbody *ngFor="let p of Facility.FacilityProviders">
+        <tr>
+          <td>First Name</td>
+          <td><a href="../provider/{{p.ID}}">{{p.FirstName}}</a></td>
+          <td>NPI</td>
+          <td>{{p.NPI}}</td>
+        </tr>
+        <tr>
+          <td>Last Name</td>
+          <td><a href="../provider/{{p.ID}}">{{p.LastName}}</a></td>
+          <td>EpicProviderID</td>
+          <td>{{p.EpicProviderID}}</td>
+        </tr>
+        <tr style="border-bottom:2px solid #111;">
+          <td>Credentials</td>
+          <td>{{p.Credentials}}</td>
+          <td>Gender</td>
+          <td>{{p.Gender==2?"Male":"Female"}}</td>
+        </tr>
+      </tbody>
     </table>
     <table id="psmTable" [hidden]="nav!='ProviderSpecialtyMapping'">
       <tr>
