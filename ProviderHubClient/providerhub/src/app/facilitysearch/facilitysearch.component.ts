@@ -61,8 +61,8 @@ export class FacilitysearchComponent implements OnInit {
   }
   private onRowSelect(indexes: number[]): void {
     var facilityId = indexes[0];
-    var full_name = $("#" + facilityId + " td:nth-child(1)").text() + " at" + $("#" + facilityId + " td:nth-child(2)").text();
-    alert(full_name);
+    var full_name = $("#" + facilityId + " td:nth-child(1)").text();
+    // + " at" + $("#" + facilityId + " td:nth-child(2)").text(); alert(full_name);
     API.selectedFacility = full_name;
     this.router.navigate(['/facility',facilityId]);
   }

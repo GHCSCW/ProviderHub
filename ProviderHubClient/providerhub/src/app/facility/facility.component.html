@@ -3,8 +3,8 @@
     <ul id="facility-nav">
       <li tab-id="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
       <li tab-id="Vendor" [class.selected]="nav=='Vendor'">Vendor</li>
-      <li tab-id="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
       <li tab-id="Providers" [class.selected]="nav=='Providers'">Providers</li>
+      <li tab-id="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
       <li tab-id="ProviderSpecialtyMapping" [class.selected]="nav=='ProviderSpecialtyMapping'">Provider-Specialty Mapping</li>
       <li tab-id="Networks" [class.selected]="nav=='Networks'">Networks</li>
     </ul>
@@ -35,7 +35,7 @@
       </tr>
       <tr>
         <td>Hours</td>
-        <td>Coming Soon to a DataModel near U</td>
+        <td>Coming Soon</td><!--Facility.Hours.DisplayValues-->
       </tr>
     </table>
     <table id="vendorTable" [hidden]="nav!='Vendor'">
@@ -49,14 +49,23 @@
       </tr>
     </table>
     <table id="specTable" [hidden]="nav!='Specialties'">
-      <tr>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-      </tr>
+      <tbody *ngFor="let s of Facility.FacilitySpecialties">
+        <tr>
+          <td class="rowHeader" colspan="4">{{s.Name}}</td>
+        </tr>
+        <tr>
+          <td>{{s.ParentSpecialtyID==0?"(is a Parent Specialty)":"Parent Specialty: "+s.ParentName}}</td>
+          <td style="width:10px"></td><!--make a setting/css style-->
+          <td>Effective Dates</td>
+          <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+        </tr>
+        <tr>
+          <td>{{s.SequenceNumber==1?"Primary Specialty":"Secondary Specialty"}}</td>
+          <td></td>
+          <td><!--I dont see any other specialty info, so no expand UI for now--></td>
+          <td><!--span class="expand"><i class="arrow down"></i></span--></td>
+        </tr>
+      </tbody>
     </table>
     <table id="providersTable" [hidden]="nav!='Providers'">
       <tr>

@@ -22,7 +22,6 @@ export class FacilityComponent implements OnInit {
               private service: ProviderHubService) {
     this.Service = service; this.Facility = {};
     //TEST FACILITY FOR DEBUG
-    /**/
     this.nav = 'Demographics';//default=Demographics, change to test
   }
 
@@ -38,11 +37,18 @@ export class FacilityComponent implements OnInit {
     this.service.hitAPI(this.apiRoot + "Facility/ByID/" + this.facilityId).subscribe(
       data => {
         this.Facility = data; this.FacilityAddress = this.Facility.FacilityAddress;
+        document.getElementById("page-title").innerHTML = this.Facility.FacilityName;
         this.FacilityAddress.AddressLine1 = (this.FacilityAddress.AddressLine1 == null) ? "" : this.FacilityAddress.AddressLine1;
         this.FacilityAddress.AddressLine2 = (this.FacilityAddress.AddressLine2 == null) ? "" : this.FacilityAddress.AddressLine2;
+        //specs
+        for (var i = 0; i < this.Facility.FacilitySpecialties.length; i++) {
+          var s = this.Facility.FacilitySpecialties[i];
+          s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
+          s.TerminationDate = s.TerminationDate.replace(/\D/g, '');
+        }
       }
     );
-    document.getElementById("page-title").innerHTML = API.selectedProvider;
+    document.getElementById("page-title").innerHTML = API.selectedFacility;
   }
 
 }

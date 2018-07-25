@@ -192,12 +192,40 @@ namespace ProviderHubService
                     facility.LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE");
                     facility.LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY");
                     facility.FacilityAddress = GetAddressByFacilityID(facilityID);
+                    facility.FacilitySpecialties = GetFacilitySpecialties(facilityID);
                 }
             }
 
             return facility;
         }
 
+        #endregion
+
+        #region FUNCTION: GetFacilitySpecialties(int facilityID)
+        public List<Specialty> GetFacilitySpecialties(int facilityID)
+        {
+            List<Specialty> specialtyList = new List<Specialty>();
+            string sql = "providerhub.dbo.sp_GetFacilitySpecialtiesByID";
+            SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                specialtyList = (from specialty in ds.Tables[0].AsEnumerable()
+                                 select new Specialty()
+                                 {
+                                     MappingID = specialty.Field<int>("FACILITY_SPECIALTY_MAPPING_ID"),
+                                     ID = specialty.Field<int>("SPECIALTY_ID"),
+                                     Name = specialty.Field<string>("SPECIALTY_NAME"),
+                                     SequenceNumber = specialty.Field<int>("SEQUENCE_NUMBER"),
+                                     EffectiveDate = specialty.Field<DateTime>("EFFECTIVE_DATE"),
+                                     TerminationDate = specialty.Field<DateTime>("TERMINATION_DATE"),
+                                     ParentSpecialtyID = !specialty.IsNull("PARENT_SPECIALTY_ID") ? specialty.Field<int>("PARENT_SPECIALTY_ID") : 0,
+                                     SpecialtyType = specialty.Field<string>("SPECIALTY_TYPE_NAME"),
+                                     ParentName = specialty.Field<string>("PARENT_NAME")
+                                 }).ToList();
+            }
+            return specialtyList;
+        }
         #endregion
 
         #region FUNCTION: GetAddressByFacilityID(int facilityID)
