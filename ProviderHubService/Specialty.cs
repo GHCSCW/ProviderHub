@@ -38,7 +38,7 @@ namespace ProviderHubService
         public DateTime EffectiveDate { get; set; }
 
         [DataMember]
-        public DateTime TerminationDate { get; set; }
+        public DateTime? TerminationDate { get; set; }
 
         [DataMember]
         public string SpecialtyType { get; set; }

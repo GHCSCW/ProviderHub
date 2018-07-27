@@ -97,7 +97,7 @@ namespace ProviderHubService
                                      Name = specialty.Field<string>("SPECIALTY_NAME"),
                                      SequenceNumber = specialty.Field<int>("SEQUENCE_NUMBER"),
                                      EffectiveDate = specialty.Field<DateTime>("EFFECTIVE_DATE"),
-                                     TerminationDate = specialty.Field<DateTime>("TERMINATION_DATE"),
+                                     TerminationDate = (specialty.IsNull("TERMINATION_DATE"))? (DateTime?)null : specialty.Field<DateTime>("TERMINATION_DATE"),
                                      ParentSpecialtyID = !specialty.IsNull("PARENT_SPECIALTY_ID") ? specialty.Field<int>("PARENT_SPECIALTY_ID") : 0,
                                      SpecialtyType = specialty.Field<string>("SPECIALTY_TYPE_NAME"),
                                      ParentName = specialty.Field<string>("PARENT_NAME")
@@ -130,7 +130,9 @@ namespace ProviderHubService
                                         AddressLine2 = x.Field<string>("ADDRESS_LINE_2"),
                                         City = x.Field<string>("CITY"),
                                         State = x.Field<string>("STATE"),
-                                        ZipCode = x.Field<string>("ZIP_CODE")
+                                        ZipCode = x.Field<string>("ZIP_CODE"),
+                                        PhoneNumber = x.Field<string>("PHONE_NUMBER"),
+                                        Website = x.Field<string>("WEBSITE")
                                     }
                                 }).ToList();
             }
@@ -223,7 +225,7 @@ namespace ProviderHubService
                     facility.CreatedBy = x.Field<string>("CREATED_BY");
                     facility.LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE");
                     facility.LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY");
-                    facility.FacilityAddress = GetAddressByFacilityID(facilityID);
+                    facility.FacilityAddress = GetAddressByFacilityID(facilityID, true);
                     facility.FacilitySpecialties = GetFacilitySpecialties(facilityID);
                     facility.FacilityProviders = GetFacilityProviders(facilityID);
                 }
@@ -251,7 +253,7 @@ namespace ProviderHubService
                                      Name = specialty.Field<string>("SPECIALTY_NAME"),
                                      SequenceNumber = specialty.Field<int>("SEQUENCE_NUMBER"),
                                      EffectiveDate = specialty.Field<DateTime>("EFFECTIVE_DATE"),
-                                     TerminationDate = specialty.Field<DateTime>("TERMINATION_DATE"),
+                                     TerminationDate = specialty.IsNull("TERMINATION_DATE")? (DateTime?)null : specialty.Field<DateTime>("TERMINATION_DATE"),
                                      ParentSpecialtyID = !specialty.IsNull("PARENT_SPECIALTY_ID") ? specialty.Field<int>("PARENT_SPECIALTY_ID") : 0,
                                      SpecialtyType = specialty.Field<string>("SPECIALTY_TYPE_NAME"),
                                      ParentName = specialty.Field<string>("PARENT_NAME")

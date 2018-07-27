@@ -167,6 +167,7 @@ input[type='search'] {
   font-size: 20px;
   padding-left: 20px;
 }
+#facTable{margin-left:13px;}
 #specTable td.rowHeader, #facTable td#rH{
   font-size:32px; text-align:left;
 }
@@ -175,7 +176,7 @@ input[type='search'] {
 #rH a:hover, #providersTable a:hover{text-decoration:underline;}
 #specTable tr td{}
 #specTable {
-  margin-left: 20px;/*50 for real center*/
+  margin-left: 33px;/*20 default,50 for real center*/
 }
 #specTable td:nth-child(even) {
   text-align:right;

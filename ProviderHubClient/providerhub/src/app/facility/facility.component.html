@@ -34,6 +34,14 @@
         </td>
       </tr>
       <tr>
+        <td>Phone</td>
+        <td>{{FacilityAddress.PhoneNumber | nullable}}</td>
+      </tr>
+      <tr>
+        <td>Website</td>
+        <td><a target="_blank" href="{{FacilityAddress.Website | nullable:''}}">{{FacilityAddress.Website | nullable:''}}</a></td>
+      </tr>
+      <tr>
         <td>Hours</td>
         <td>Coming Soon</td><!--Facility.Hours.DisplayValues-->
       </tr>
@@ -54,13 +62,13 @@
           <td class="rowHeader" colspan="4">{{s.Name}}</td>
         </tr>
         <tr>
-          <td>{{s.ParentSpecialtyID==0?"(is a Parent Specialty)":"Parent Specialty: "+s.ParentName}}</td>
+          <td>{{s | parentSpecialty}}</td>
           <td style="width:10px"></td><!--make a setting/css style-->
-          <td>Effective Dates</td>
-          <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+          <td>Effective Date</td>
+          <td>{{s.EffectiveDate | date}}<!-- - {{s.TerminationDate | date}}--></td>
         </tr>
         <tr>
-          <td>{{s.SequenceNumber==1?"Primary Specialty":"Secondary Specialty"}}</td>
+          <td>{{s | specialtyType}}</td>
           <td></td>
           <td><!--I dont see any other specialty info, so no expand UI for now--></td>
           <td><!--span class="expand"><i class="arrow down"></i></span--></td>
@@ -85,7 +93,7 @@
           <td>Credentials</td>
           <td>{{p.Credentials}}</td>
           <td>Gender</td>
-          <td>{{p.Gender==2?"Male":"Female"}}</td>
+          <td>{{p.Gender | gender}}</td>
         </tr>
       </tbody>
     </table>

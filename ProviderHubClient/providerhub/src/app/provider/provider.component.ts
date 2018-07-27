@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { API } from '../globals';
+import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule } from '@angular/common';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe } from '../pipes';
 
 @Component({
   selector: 'app-provider',
@@ -20,22 +22,14 @@ export class ProviderComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,
               private service: ProviderHubService) {
     this.Service = service; this.Provider = {};
-    //TEST PROVIDER FOR DEBUG
-    /*this.Provider = {
-      FirstName: "John", LastName: "Doe", Credentials: "MD, PhD, NCIS, CSI", NPI: 3913874644,
-      Languages: "English, Spanish", ABMS: { has: "Yes", exp: "12/19/2024" },
-      License: { no: 452567, exp: "12/19/2024" }, CertifyingBoard: { name: "USDA", exp: "12/19/2024" },
-      FacilityNames: "UW, Meriter", LastUpdatedBy:"GHC-HMO\\spillai", LastUpdatedDate:"Jun 18, 2018"
-    };*/
     //"(Primary)" to mark primary credential takes up too much space for no benefit
-    this.nav = 'Demographics'; //default tab should be Demographics, change to test whatever you workin on
+    this.nav = 'Demographics'; //default tab should be Demographics
   }
 
   ngOnInit() {
-    this.route.data.subscribe(v => this.apiRoot = v.apiRoot);
-    console.log(this.apiRoot);
+    this.apiRoot = environment.apiRoot;
     this.route.params.subscribe(params => { this.providerId = +params['id']; });
-    console.log(this.providerId); var _dis = this;
+    var _dis = this;
     //0. nav
     var navs = document.getElementById("provider-nav").getElementsByTagName("li");
     for (var i = 0; i < navs.length; i++) {
@@ -59,13 +53,14 @@ export class ProviderComponent implements OnInit {
         for (var i = 0; i < this.Provider.ProviderSpecialties.length; i++) {
           var s = this.Provider.ProviderSpecialties[i];
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
-          s.TerminationDate = s.TerminationDate.replace(/\D/g, '');
+          s.TerminationDate = (s.TerminationDate == null)?'':s.TerminationDate.replace(/\D/g, '');
+          console.log(s);
         }
       }
     );
     //note: if navigated to from direct link, and not clicking a provider,
     //      it'll be empty til the provider object loads from AJAX...but that's okay
-    document.getElementById("page-title").innerHTML = API.selectedProvider;//faster than jQ or Ang
+    document.getElementById("page-title").innerHTML = API.selectedProvider;
   }
 
 }

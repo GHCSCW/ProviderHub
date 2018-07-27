@@ -26,7 +26,7 @@
         <td>Credentials</td>
         <td>{{Provider.Credentials}}</td>
         <td>Gender</td>
-        <td>{{Provider.Gender==2?"Male":"Female"}}</td>
+        <td>{{Provider.Gender | gender}}</td>
       </tr>
       <tr>
         <td></td>
@@ -45,21 +45,21 @@
       </tr>
       <tr>
         <td>Medicare Indicator</td>
-        <td>{{Provider.MedicareIndicator? "Yes":"No"}}</td>
+        <td>{{Provider.MedicareIndicator | bool}}</td>
         <td>Medicare PTAN</td>
-        <td>{{Provider.MedicarePTAN==null? "-":Provider.MedicarePTAN}}</td>
+        <td>{{Provider.MedicarePTAN | nullable}}</td>
       </tr>
       <tr>
         <td>Medicare Effective Date</td>
-        <td>{{Provider.MedicareEffectiveDate==null?"-":Provider.MedicareEffectiveDate}}</td>
+        <td>{{Provider.MedicareEffectiveDate | nullable}}</td>
         <td>Medicare Termination Date</td>
-        <td>{{Provider.MedicareTerminationDate==null?"-":Provider.MedicareTerminationDate}}</td>
+        <td>{{Provider.MedicareTerminationDate | nullable}}</td>
       </tr>
       <tr>
         <td>Medicaid Indicator</td>
-        <td>{{Provider.MedicaidIndicator? "Yes":"No"}}</td>
+        <td>{{Provider.MedicaidIndicator | bool}}</td>
         <td>MedicaidProviderID</td>
-        <td>{{Provider.MedicaidProviderID==null?"-":Provider.MedicaidProviderID}}</td>
+        <td>{{Provider.MedicaidProviderID | nullable}}</td>
       </tr>
       <tr>
         <td>Last Updated By</td>
@@ -69,7 +69,7 @@
       </tr>
       <tr>
         <td>Hospital Affiliations</td>
-        <td>{{Provider.FacilityNames==null?"Coming Soon":Provider.FacilityNames}}</td>
+        <td>{{Provider.FacilityNames | nullable:"Coming Soon"}}</td>
         <td></td>
         <td></td>
       </tr>
@@ -80,13 +80,13 @@
           <td class="rowHeader" colspan="4">{{s.Name}}</td>
         </tr>
         <tr>
-          <td>{{s.ParentSpecialtyID==0?"(is a Parent Specialty)":"Parent Specialty: "+s.ParentName}}</td><!--get Parent Name or "" in sp/view-->
+          <td>{{s | parentSpecialty}}</td><!--get Parent Name or "" in sp/view-->
           <td style="width:10px;"></td><!--make a setting/css style-->
-          <td>Effective Dates</td>
-          <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+          <td>Effective Date</td>
+          <td>{{s.EffectiveDate | date}}<!-- - {{s.TerminationDate | date}}--></td>
         </tr>
-        <tr class="inter-table-separator">
-          <td>{{s.SequenceNumber==1?"Primary Specialty":"Secondary Specialty"}}</td>
+        <tr><!-- class="inter-table-separator"-->
+          <td>{{s | specialtyType}}</td>
           <td></td>
           <td><!--I dont see any other specialty info, so no expand UI for now--></td>
           <td><!--span class="expand"><i class="arrow down"></i></span--></td>
@@ -113,30 +113,19 @@
           </td>
         </tr>
         <tr>
+          <td>Phone</td>
+          <td>{{f.FacilityAddress.PhoneNumber | nullable}}</td>
+        </tr>
+        <tr>
+          <td>Website</td>
+          <td><a href="{{f.FacilityAddress.Website | nullable:''}}" target="_blank">{{f.FacilityAddress.Website | nullable:''}}</a></td>
+        </tr>
+        <tr>
           <td>Hours</td>
-          <td>Coming Soon</td><!--Facility.Hours.DisplayValues-->
+          <td>Coming Soon</td>
         </tr>
       </tbody>
     </table>
     <table id="networksTable" [hidden]="nav!='Networks'"></table>
   </div>
 </div>
-<!-- below in wireframe for demographics but not deemed useful -->
-<!--tr>
-  <td>ABMS</td>
-  <td>{{Provider.ABMS.has}}</td>
-  <td>ABMS Expiration Date</td>
-  <td>{{Provider.ABMS.exp}}</td>
-</!--tr>
-<tr>
-  <td>License Number</td>
-  <td>{{Provider.License.no}}</td>
-  <td>License Expiration Date</td>
-  <td>{{Provider.License.exp}}</td>
-</tr>
-<tr>
-  <td>Certifying Board</td>
-  <td>{{Provider.CertifyingBoard.name}}</td>
-  <td>Recreditation Date</td>
-  <td>{{Provider.CertifyingBoard.exp}}</td>
-</tr-->

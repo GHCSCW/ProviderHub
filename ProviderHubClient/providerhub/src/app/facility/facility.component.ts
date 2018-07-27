@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { API } from '../globals';
+import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule } from '@angular/common';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe } from '../pipes';
 
 @Component({
   selector: 'app-facility',
@@ -26,7 +28,7 @@ export class FacilityComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe(v => this.apiRoot = v.apiRoot); var _dis = this;
+    this.apiRoot = environment.apiRoot; var _dis = this;
     this.route.params.subscribe(params => { this.facilityId = +params['id']; });
     var navs = document.getElementById("facility-nav").getElementsByTagName("li");
     for (var i = 0; i < navs.length; i++) {
@@ -44,7 +46,7 @@ export class FacilityComponent implements OnInit {
         for (var i = 0; i < this.Facility.FacilitySpecialties.length; i++) {
           var s = this.Facility.FacilitySpecialties[i];
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
-          s.TerminationDate = s.TerminationDate.replace(/\D/g, '');
+          s.TerminationDate = (s.TerminationDate==null)? '' : s.TerminationDate.replace(/\D/g, '');
         }
         //providers
         for (var i = 0; i < this.Facility.FacilityProviders.length; i++) {

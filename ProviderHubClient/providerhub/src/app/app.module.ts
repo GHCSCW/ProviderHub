@@ -18,17 +18,19 @@ import { HttpClientModule, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/c
 import { CustomInterceptor } from './app.service';
 import { FacilitysearchComponent } from './facilitysearch/facilitysearch.component';
 import { FacilityComponent } from './facility/facility.component';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe } from './pipes';
 
 const routes: Routes = [
   /*Root: Provider List & Basic Search (Name/NPI)*/
-  { path: 'providers', component: DatatableComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } },
+  //, data: { apiRoot: (environment.production) ? API.prod : API.dev }
+  { path: 'providers', component: DatatableComponent },
   { path: '', redirectTo: '/providers', pathMatch: 'full' },
   /*Individual Provider View*/
-  { path: 'provider/:id', component: ProviderComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } },
+  { path: 'provider/:id', component: ProviderComponent },
   /*Facilities Search*/
-  { path: 'facilities', component: FacilitysearchComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } },
+  { path: 'facilities', component: FacilitysearchComponent },
   /*Individual Facility View*/
-  { path: 'facility/:id', component: FacilityComponent, data: { apiRoot: (environment.production) ? API.prod : API.dev } }
+  { path: 'facility/:id', component: FacilityComponent }
 ];
 
 @NgModule({
@@ -38,7 +40,12 @@ const routes: Routes = [
     HeaderComponent,
     ProviderComponent,
     FacilitysearchComponent,
-    FacilityComponent
+    FacilityComponent,
+    GenderPipe,
+    NullablePipe,
+    BoolPipe,
+    SpecialtyTypePipe,
+    ParentSpecialtyPipe
   ],
   imports: [
     BrowserModule,

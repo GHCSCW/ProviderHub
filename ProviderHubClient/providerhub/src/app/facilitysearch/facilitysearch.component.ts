@@ -1,6 +1,7 @@
 import { Component, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { API } from '../globals';
+import { environment } from '../../environments/environment';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
@@ -19,7 +20,7 @@ export class FacilitysearchComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.route.data.subscribe(v => this.apiRoot = v.apiRoot);
+    this.apiRoot = environment.apiRoot;
     document.getElementById("page-title").innerHTML = this.title;
   }
 
