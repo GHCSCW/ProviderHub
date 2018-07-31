@@ -23,13 +23,15 @@ import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyP
 const routes: Routes = [
   /*Root: Provider List & Basic Search (Name/NPI)*/
   //, data: { apiRoot: (environment.production) ? API.prod : API.dev }
-  { path: 'providers', component: DatatableComponent },
-  { path: '', redirectTo: '/providers', pathMatch: 'full' },
+  { path: 'Provider/Search', component: DatatableComponent },
+  { path: '', redirectTo: '/Provider/Search', pathMatch: 'full' },
   /*Individual Provider View*/
   { path: 'provider/:id', component: ProviderComponent },
+  { path: 'Provider/:tabURL/:id', component: ProviderComponent },
   /*Facilities Search*/
-  { path: 'facilities', component: FacilitysearchComponent },
+  { path: 'Facility/Search', component: FacilitysearchComponent },
   /*Individual Facility View*/
+  { path: 'Facility/:tabURL/:id', component: FacilityComponent },
   { path: 'facility/:id', component: FacilityComponent }
 ];
 

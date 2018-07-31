@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { API } from '../globals';
 import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe } from '../pipes';
 
 @Component({
@@ -15,12 +15,13 @@ export class ProviderComponent implements OnInit {
 
   public apiRoot: string;
   public providerId: number;
+  public initialTab: string = "";
   public Provider: any;
   public Service: any;
   public nav: string;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private service: ProviderHubService) {
+              private service: ProviderHubService, private location: Location) {
     this.Service = service; this.Provider = {};
     //"(Primary)" to mark primary credential takes up too much space for no benefit
     this.nav = 'Demographics'; //default tab should be Demographics
@@ -28,15 +29,25 @@ export class ProviderComponent implements OnInit {
 
   ngOnInit() {
     this.apiRoot = environment.apiRoot;
-    this.route.params.subscribe(params => { this.providerId = +params['id']; });
-    var _dis = this;
+    this.route.params.subscribe(params => {
+      this.providerId = +params['id'];
+      if (params['tabURL']) { this.initialTab = params['tabURL']; } else {
+        this.location.replaceState("/Provider/Demographics/" + this.providerId);
+      }
+    });
+    var _dis = this; var toClick = null;
     //0. nav
     var navs = document.getElementById("provider-nav").getElementsByTagName("li");
     for (var i = 0; i < navs.length; i++) {
       navs[i].addEventListener("click", (function(event) {
-        return function (e) { _dis.nav = this.getAttribute("tab-id"); }
-      })(_dis),false);
+        return function (e) {
+          _dis.nav = this.getAttribute("tab-id");
+          _dis.location.replaceState("/Provider/" + this.getAttribute("tab-url") + "/" + _dis.providerId);
+        }
+      })(_dis), false);
+      if (navs[i].getAttribute("tab-url") == this.initialTab) { toClick = navs[i] as HTMLElement; }
     }
+    if (this.initialTab != "") { toClick.click(); }
     
     this.service.hitAPI(this.apiRoot + "Provider/ByID/" + this.providerId).subscribe(
       data => {

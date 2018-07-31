@@ -67,7 +67,7 @@ namespace ProviderHubService
                     provider.CreatedBy = x.Field<string>("CREATED_BY");
                     provider.LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE");
                     provider.LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY");
-                    provider.LanguageList = GetProviderLanguageByID(providerID);
+                    provider.LanguageList = GetProviderLanguageByID(providerID, true);
                     provider.CredentialList = GetProviderCredentialByID(providerID);
                     provider.CredentialListStr = (calledFromPH)? x.Field<string>("CREDENTIAL_LIST") : "";
                     provider.ParentSpecialtyList = (calledFromPH) ? x.Field<string>("PARENT_SPECIALTY_LIST") : "";
@@ -142,11 +142,11 @@ namespace ProviderHubService
 
         #region FUNCTION: GetProviderLanguage(int providerID)
 
-        public List<Language> GetProviderLanguageByID(int providerID)
+        public List<Language> GetProviderLanguageByID(int providerID, bool isCalledFromPH = false)
         {
             List<Language> languageList = new List<Language>();
 
-            string sql = "providerhub.bh.sp_GetProviderLanguageByID";
+            string sql = (isCalledFromPH)?"providerhub.dbo.sp_GetProviderLanguageList":"providerhub.bh.sp_GetProviderLanguageByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
 
@@ -157,8 +157,8 @@ namespace ProviderHubService
                 languageList = (from language in ds.Tables[0].AsEnumerable()
                                 select new Language()
                                 {
-                                    ID = language.Field<int>("PROVIDER_LANGUAGE_ID"),
-                                    Name = language.Field<string>("PROVIDER_LANGUAGE_NAME"),
+                                    ID = (isCalledFromPH)? language.Field<int>("LANGUAGE_ID") : language.Field<int>("PROVIDER_LANGUAGE_ID"),
+                                    Name = (isCalledFromPH)? language.Field<string>("LANGUAGE_NAME") : language.Field<string>("PROVIDER_LANGUAGE_NAME"),
                                     SequenceNumber = language.Field<int>("LANGUAGE_SEQUENCE_NUMBER"),
                                     CreatedDate = language.Field<DateTime>("LANGUAGE_CREATED_DATE"),
                                     MappingID = language.Field<int>("PROVIDER_LANGUAGE_MAPPING_ID")
