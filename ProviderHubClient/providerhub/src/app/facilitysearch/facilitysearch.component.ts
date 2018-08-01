@@ -59,6 +59,9 @@ export class FacilitysearchComponent implements OnInit {
         this.onRowSelect(this.tableWidget.rows(indexes).data().pluck("ID"));
       }
     );
+    this.tableWidget.on('search.dt', () => {
+      document.getElementById('facilities').getElementsByTagName('tbody')[0].style.visibility = (document.getElementById('facilities_filter').getElementsByTagName('input')[0].value.length < 2) ? "hidden" : "visible";
+    });
   }
   private onRowSelect(indexes: number[]): void {
     var facilityId = indexes[0];

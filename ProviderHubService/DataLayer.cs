@@ -33,7 +33,7 @@ namespace ProviderHubService
         {
             Provider provider = new Provider();
 
-            string sql = (calledFromPH)? "providerHub.dbo.sp_GetProviderByID_OLD" : "providerHub.bh.sp_GetProviderByID";
+            string sql = (calledFromPH)? "providerHub.dbo.sp_GetProviderByID" : "providerHub.bh.sp_GetProviderByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
 
@@ -175,7 +175,7 @@ namespace ProviderHubService
         public List<Credential> GetProviderCredentialByID(int providerID, bool calledFromPH=false)
         {
             List<Credential> credentialList = new List<Credential>();
-            string sql = (calledFromPH)? "providerhub.dbo.sp_GetProviderCredentialByID_OLD" : "providerhub.bh.sp_GetProviderCredentialByID";
+            string sql = (calledFromPH)? "providerhub.dbo.sp_GetProviderCredentialByID" : "providerhub.bh.sp_GetProviderCredentialByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
 
@@ -206,7 +206,7 @@ namespace ProviderHubService
         {
             Facility facility = new Facility();
 
-            string sql = (calledFromPH)? "providerHub.dbo.sp_GetFacilityByID_OLD":  "providerHub.bh.sp_GetFacilityByID";
+            string sql = (calledFromPH)? "providerHub.dbo.sp_GetFacilityByID":  "providerHub.bh.sp_GetFacilityByID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
 
@@ -294,7 +294,7 @@ namespace ProviderHubService
         {
             Address address = new Address();
 
-            string sql = (isCalledFromPH)? "providerHub.dbo.sp_GetAddressByFacilityID_OLD" : "providerHub.bh.sp_GetAddressByFacilityID";
+            string sql = (isCalledFromPH)? "providerHub.dbo.sp_GetAddressByFacilityID" : "providerHub.bh.sp_GetAddressByFacilityID";
 
             SqlParameter[] sqlParams = { new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = facilityID } };
 
@@ -342,7 +342,7 @@ namespace ProviderHubService
         {
             List<Provider> providers = new List<Provider>();
 
-            string sql = (calledFromPH)? "providerHub.dbo.sp_GetProviderList_OLD" : "providerHub.bh.sp_GetProviderList";
+            string sql = (calledFromPH)? "providerHub.dbo.sp_GetProviderList" : "providerHub.bh.sp_GetProviderList";
             SqlParameter[] sqlParams = { new SqlParameter("@SEARCH_VALUE", SqlDbType.VarChar) { Value = searchValue } };
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
 
@@ -388,7 +388,7 @@ namespace ProviderHubService
         {
             List<Facility> facilities = new List<Facility>();
 
-            string sql = (isCalledFromPH)? "providerHub.dbo.sp_GetFacilityList_OLD" : "providerHub.bh.sp_GetFacilityList";
+            string sql = (isCalledFromPH)? "providerHub.dbo.sp_GetFacilityList" : "providerHub.bh.sp_GetFacilityList";
             SqlParameter[] sqlParams = { new SqlParameter("@SEARCH_VALUE", SqlDbType.VarChar) { Value = searchValue } };
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
 

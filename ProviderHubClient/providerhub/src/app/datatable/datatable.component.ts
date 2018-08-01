@@ -32,6 +32,7 @@ export class DatatableComponent implements OnInit {
   @Output() rowSelected: EventEmitter<number> = new EventEmitter();
   private initDatatable(): void {
     let exampleId: any = $('#providers');
+    let searchId: any = $('#providers_filter label input[type="search"]');
     this.tableWidget = exampleId.DataTable({
       select: true,
       paging: false,
@@ -60,6 +61,9 @@ export class DatatableComponent implements OnInit {
         this.onRowSelect(this.tableWidget.rows(indexes).data().pluck("ID"));
       }
     );
+    this.tableWidget.on('search.dt', () => {
+      document.getElementById('providers').getElementsByTagName('tbody')[0].style.visibility = (document.getElementById('providers_filter').getElementsByTagName('input')[0].value.length < 2) ? "hidden" : "visible";
+    });
   }
   private onRowSelect(indexes: number[]): void {
     var providerId = indexes[0];
