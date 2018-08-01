@@ -22,8 +22,8 @@ export class FacilityComponent implements OnInit {
   public nav: string;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private service: ProviderHubService, private location: Location) {
-    this.Service = service; this.Facility = {};
+    private service: ProviderHubService, private location: Location) {
+    this.Service = service; this.Facility = {}; this.FacilityAddress = {};
     //TEST FACILITY FOR DEBUG
     this.nav = 'Demographics';//default=Demographics, change to test
   }

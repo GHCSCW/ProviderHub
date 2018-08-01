@@ -54,8 +54,8 @@ export class ProviderComponent implements OnInit {
         //1. Main and Demo
         this.Provider = data; var _c = this.Provider.CredentialListStr;
         this.Provider.LastUpdatedDate = this.Provider.LastUpdatedDate.replace(/\D/g, '');
-        this.Provider.Credentials = _c.slice(0, -1);//trailing comma
-        document.getElementById("page-title").innerHTML = this.Provider.FirstName + " " + this.Provider.LastName;
+        this.Provider.Credentials = _c.slice(0, -1).replace(/,/g,", ");//trailing comma
+        document.getElementById("page-title").innerHTML = this.Provider.FirstName + " " + this.Provider.LastName + ", " + this.Provider.Credentials;
         //2. Specialties
         // Object spec (per Provider):
         //  ProviderSpecialties:[{Specialty},{Specialty},...]
