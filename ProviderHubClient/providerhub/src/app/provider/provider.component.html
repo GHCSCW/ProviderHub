@@ -124,6 +124,27 @@
           <td>Hours</td>
           <td>Coming Soon</td>
         </tr>
+        <tr>
+          <td class="rowHeader" id="rH" colspan="4">{{Provider.FirstName}} {{Provider.LastName}} @ {{f.FacilityName}}:</td>
+        </tr>
+        <tr>
+          <td>External Provider: </td>
+          <td>{{f.FPRelationship.ExternalProviderIndicator | bool}}</td>
+          <td>Accepting New Patients: </td>
+          <td>{{f.FPRelationship.AcceptingNewPatientIndicator | bool}}</td>
+        </tr>
+        <tr>
+          <td>Prescriber: </td>
+          <td>{{f.FPRelationship.PrescriberIndicator | bool}}</td>
+          <td>Referral: </td>
+          <td>{{f.FPRelationship.ReferralIndicator | bool}}</td>
+        </tr>
+        <tr>
+          <td>PCP Eligible: </td>
+          <td>{{f.FPRelationship.PCPEligibleIndicator | bool}}</td>
+          <td>Float Provider: </td>
+          <td>{{f.FPRelationship.FloatProviderIndicator | bool}}</td>
+        </tr>
       </tbody>
     </table>
     <table id="networksTable" [hidden]="nav!='Networks'"></table>

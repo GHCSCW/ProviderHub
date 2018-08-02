@@ -75,8 +75,20 @@
         </tr>
       </tbody>
     </table>
-    <table id="providersTable" [hidden]="nav!='Providers'">
-      <tbody *ngFor="let p of Facility.FacilityProviders">
+    <table id="providersTableDT" [hidden]="nav!='Providers'" class="table table-striped table-bordered" cellspacing="0">
+      <thead>
+        <tr>
+          <th></th>
+          <th>NPI</th>
+          <th>Last</th>
+          <th>First</th>
+          <th>Credential</th>
+          <th>Gender</th>
+          <th>Primary Specialty</th>
+          <th>Vendor</th>
+        </tr>
+      </thead>
+      <!--OLD NON-DT TABLE tbody *ngFor="let p of Facility.FacilityProviders">
         <tr>
           <td>First Name</td>
           <td><a href="../provider/{{p.ID}}">{{p.FirstName}}</a></td>
@@ -95,7 +107,7 @@
           <td>Gender</td>
           <td>{{p.Gender | gender}}</td>
         </tr>
-      </tbody>
+      </tbody END OLD NON-DT TABLE-->
     </table>
     <table id="psmTable" [hidden]="nav!='ProviderSpecialtyMapping'">
       <tr>

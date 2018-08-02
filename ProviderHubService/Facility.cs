@@ -25,6 +25,9 @@ namespace ProviderHubService
         public Address FacilityAddress { get; set; }
 
         [DataMember]
+        public FacilityProviderRelationship FPRelationship { get; set; }
+
+        [DataMember]
         public List<Specialty> FacilitySpecialties { get; set; }
 
         [DataMember]

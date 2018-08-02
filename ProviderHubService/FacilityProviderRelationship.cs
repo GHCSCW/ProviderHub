@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
 using System.ServiceModel;
 using System.Runtime.Serialization;
 
@@ -32,19 +33,22 @@ namespace ProviderHubService
         public Vendor Vendor { get; set; }
 
         [DataMember]
-        public bool ExternalProviderIndicator { get; set; }
+        public bool? ExternalProviderIndicator { get; set; }
 
         [DataMember]
-        public bool AcceptingNewPatientIndicator { get; set; }
+        public bool? AcceptingNewPatientIndicator { get; set; }
 
         [DataMember]
-        public bool PrescriberIndicator { get; set; }
+        public bool? PrescriberIndicator { get; set; }
 
         [DataMember]
-        public bool ReferralIndicator { get; set; }
+        public bool? ReferralIndicator { get; set; }
 
         [DataMember]
-        public bool FloatProviderIndicator { get; set; }
+        public bool? PCPEligibleIndicator { get; set; }
+
+        [DataMember]
+        public bool? FloatProviderIndicator { get; set; }
 
         [DataMember]
         public DateTime EffectiveDate { get; set; }
@@ -105,7 +109,17 @@ namespace ProviderHubService
             //this.FacilityProviderSpecialties = new List<Specialty>();
             //this.AvailabilityList = new List<ProviderFacilityAvailability>();
         }
-
+        public Dictionary<string, bool?> getshortObj(DataRow x)
+        {
+            Dictionary<string, bool?> toReturn = new Dictionary<string, bool?>();
+            toReturn.Add("ExternalProviderIndicator", x.Field<bool?>("EXTERNAL_PROVIDER_INDICATOR"));
+            toReturn.Add("AcceptingNewPatientIndicator", x.Field<bool?>("ACCEPTING_NEW_PATIENT_INDICATOR"));
+            toReturn.Add("PrescriberIndicator", x.Field<bool?>("PRESCRIBER_INDICATOR"));
+            toReturn.Add("ReferralIndicator", x.Field<bool?>("REFERRALL_INDICATOR"));
+            toReturn.Add("PCPEligibleIndicator", x.Field<bool?>("PCP_ELIGIBLE_INDICATOR"));
+            toReturn.Add("FloatProviderIndicator", x.Field<bool?>("FLOAT_PROVIDER_INDICATOR"));
+            return toReturn;
+        }
         #endregion
 
     }

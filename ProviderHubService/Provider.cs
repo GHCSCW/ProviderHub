@@ -70,6 +70,9 @@ namespace ProviderHubService
 
         [DataMember]
         public ProviderGender Gender { get; set; }
+
+        [DataMember]
+        public Dictionary<string,bool?> FPRelationship { get; set; }
         
         [DataMember]
         public bool CSP_Indicator { get; set; }

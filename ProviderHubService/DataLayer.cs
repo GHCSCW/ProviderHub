@@ -133,6 +133,14 @@ namespace ProviderHubService
                                         ZipCode = x.Field<string>("ZIP_CODE"),
                                         PhoneNumber = x.Field<string>("PHONE_NUMBER"),
                                         Website = x.Field<string>("WEBSITE")
+                                    },
+                                    FPRelationship = new FacilityProviderRelationship {
+                                        ExternalProviderIndicator = x.Field<bool?>("EXTERNAL_PROVIDER_INDICATOR"),
+                                        AcceptingNewPatientIndicator = x.Field<bool?>("ACCEPTING_NEW_PATIENT_INDICATOR"),
+                                        PrescriberIndicator = x.Field<bool?>("PRESCRIBER_INDICATOR"),
+                                        ReferralIndicator = x.Field<bool?>("REFERRALL_INDICATOR"),
+                                        PCPEligibleIndicator = x.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
+                                        FloatProviderIndicator = x.Field<bool?>("FLOAT_PROVIDER_INDICATOR")
                                     }
                                 }).ToList();
             }
@@ -281,7 +289,8 @@ namespace ProviderHubService
                                     NPI = provider.Field<string>("NATIONAL_PROVIDER_IDENTIFIER"),
                                     EpicProviderID = provider.Field<string>("EPIC_PROVIDER_ID"),
                                     CredentialListStr = provider.Field<string>("CREDENTIAL_LIST"),
-                                    Gender = (ProviderGender)Enum.Parse(typeof(ProviderGender), provider.Field<int>("PROVIDER_GENDER_ID").ToString())
+                                    Gender = (ProviderGender)Enum.Parse(typeof(ProviderGender), provider.Field<int>("PROVIDER_GENDER_ID").ToString()),
+                                    FPRelationship = new FacilityProviderRelationship().getshortObj(provider)
                                 }).ToList();
             }
             return providerList;

@@ -80,6 +80,8 @@ table.dataTable tr:hover{
 div.dataTables_filter input{
   width:100%;
 }
+.expandedFP{padding:0!important;background-color:rgba(4, 255, 0, 0.32) !important;border:0!important;border-spacing:0px!important;}
+.plainjane tr td{text-align:center!important;}
 input[type='search'] {
   display: block;
   width: 100%!important;
@@ -102,6 +104,8 @@ input[type='search'] {
 #providers_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
 #facilities_wrapper .row:first-child > div:first-child{display:none;width:0;}
 #facilities_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
+#providersTableDT_wrapper .row:first-child > div:first-child{display:none;width:0;}
+#providersTableDT_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
 
 /*Provider View Styles (shared with most "single object" CRUD views aka Facility View, Vendor View, etc...*/
 #provider-wrapper .left-sidebar, #facility-wrapper .left-sidebar{
@@ -222,3 +226,4 @@ span.expand {
   padding-right: 5px;
   cursor:pointer;
 }
+#providersTableDT td{font-size:16px!important;}
