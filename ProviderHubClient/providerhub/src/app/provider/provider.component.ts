@@ -69,7 +69,8 @@ export class ProviderComponent implements OnInit {
           s.TerminationDate = (s.TerminationDate == null)?'':s.TerminationDate.replace(/\D/g, '');
           console.log(s);
         }
-        $("#specList").sortable();
+        let list: any = $('#specList');
+        list.sortable();
       }
     );
     //note: if navigated to from direct link, and not clicking a provider,

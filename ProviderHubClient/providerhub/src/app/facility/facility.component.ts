@@ -67,7 +67,8 @@ export class FacilityComponent implements OnInit {
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
           s.TerminationDate = (s.TerminationDate==null)? '' : s.TerminationDate.replace(/\D/g, '');
         }
-        $("#specList").sortable();
+        let list: any = $('#specList');
+        list.sortable();
         //providers
         for (var i = 0; i < this.Facility.FacilityProviders.length; i++) {
           var _c = this.Facility.FacilityProviders[i].CredentialListStr;
