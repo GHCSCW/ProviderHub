@@ -41,6 +41,6 @@ export class SpecialtyTypePipe implements PipeTransform {
 })
 export class ParentSpecialtyPipe implements PipeTransform {
   transform(value: any, args?: any): any {
-    return (value.ParentSpecialtyID==0) ? "(is a Parent Specialty)" : "Parent Specialty :"+value.ParentName;
+    return (value.ParentSpecialtyID==0) ? "(is a Parent Specialty)" : "Parent Specialty: "+value.ParentName;
   }
 }

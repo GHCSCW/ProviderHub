@@ -17,6 +17,19 @@ h2{
   line-height: 20px;
   padding: 15px;
 }
+.turq {
+  background: #32a89c !important;
+  color: #fff !important;
+}
+.midHead{text-align:left!important;}
+h2.one {
+  text-align: left;
+  font-size: 40px;
+  padding-left: 23px;
+  /* font-weight: bold; */
+  padding-top: 15px;
+  padding-bottom:3px;
+}
 
 /*Header Styles*/
 #outer-wrapper{ width:90%;margin:0 auto; }
@@ -37,14 +50,14 @@ h2{
 }
 .navbar-brand {
   height: 50px;
-  padding: 15px 15px;
+  padding: 15px 22px; /*15x15*/
   font-size: 18px;
   line-height: 20px;
-  color:#9d9d9d;
+  color:#ddd; /*#9d9d9d*/
 }
 .navbar-brand:hover{ color:#ffffff; }
-.menu-links{ margin-left:15px; color:#eee; }
-.menu-links a { margin-left:20px;cursor:pointer; }
+.menu-links{ margin-left:50px; color:#eee; }/*15*/
+.menu-links a { margin-left:25px;cursor:pointer; }/*20*/
 .menu-links a:hover{color:#fff;text-decoration:underline;}
 #header-advanced-search-wrapper{padding:0;}
 #header-advanced-search{
@@ -55,7 +68,7 @@ h2{
 #header-advanced-search::-moz-placeholder{color:#ddd;}
 #header-advanced-search:-ms-input-placeholder{color:#ddd;}
 #header-advanced-search-button{
-  float:right;margin-top:8px;height:34px;border-top-right-radius:6px;border-bottom-right-radius:6px;background:#eee;border-color:#eee;color:#231f20;
+  float:right;margin-top:8px;height:34px;border-top-right-radius:6px;border-bottom-right-radius:6px;background:#231f20;border-color:#eee;color:#eee;
 }
 #header-advanced-search-button i { position:relative;bottom:1px;right:1px; }
 
@@ -80,6 +93,9 @@ table.dataTable tr:hover{
 div.dataTables_filter input{
   width:100%;
 }
+.visible{display:block}
+.invisible{display:none}
+.outer-wrapper-cD{padding-top:50px;width:100%!important;}
 .expandedFP{padding:0!important;background-color:rgba(4, 255, 0, 0.32) !important;border:0!important;border-spacing:0px!important;}
 .plainjane tr td{text-align:center!important;}
 input[type='search'] {
@@ -106,16 +122,27 @@ input[type='search'] {
 #facilities_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
 #providersTableDT_wrapper .row:first-child > div:first-child{display:none;width:0;}
 #providersTableDT_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
+.left-sidebar h2 {
+  font-size: 40px;
+  padding: 0;
+  margin: 0;
+  margin-left: 20px;
+  margin-top: 14px;
+  opacity: 0.8;
+  color:rgb(238,238,238);
+}
 
 /*Provider View Styles (shared with most "single object" CRUD views aka Facility View, Vendor View, etc...*/
 #provider-wrapper .left-sidebar, #facility-wrapper .left-sidebar{
   background:#231f20; color:#eee; width:210px; float:left; margin:0;padding:0;border:0;
 }
 #provider-wrapper .left-sidebar ul, #facility-wrapper .left-sidebar ul {
-  list-style-type:none;
-  padding:0;margin:0;
-  padding-top:10px; padding-left:5px;
-  padding-bottom:200px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 13px;
+  padding-left: 40px;
+  padding-bottom: 200px;
 }
 #provider-wrapper .left-sidebar ul li, #facility-wrapper .left-sidebar ul li {
   font-size: 16px;
@@ -123,7 +150,7 @@ input[type='search'] {
   cursor:pointer;
   padding-bottom:3px;
 }
-#provider-wrapper .left-sidebar ul li.selected, #facility-wrapper .left-sidebar ul li.selected { font-size:20px; font-weight:bold; color:#fff; }
+#provider-wrapper .left-sidebar ul li.selected, #facility-wrapper .left-sidebar ul li.selected { font-size:18px; font-weight:bold; color:#fff; }
 #provider-wrapper .left-sidebar ul li:hover, #facility-wrapper .left-sidebar ul li:hover { color:#fff; }
 #provider-wrapper .provider-display, #facility-wrapper .facility-display {
   /* As per https://caniuse.com/#feat=calc this should work with 94% of global users' browsers aka anything GHC staff will use */
@@ -133,34 +160,48 @@ input[type='search'] {
   padding: 0;
   border: 0;
 }
-
-#provider-wrapper .provider-display table:first-child, #facility-wrapper .facility-display table:first-child, #providersTable {
-  width: 100%;
+#provider-demo, #facility-demo, #providersTable {
+  margin-left:32px;
 }
-#provider-wrapper .provider-display table:first-child tr {
-
+#demoTable tr:nth-child(even) {
+  background:#ddd;
 }
-#provider-wrapper .provider-display table:first-child td:nth-child(odd), #facility-wrapper .facility-display table:first-child td:nth-child(odd), #providersTable td:nth-child(odd) {
+#provider-demo td:nth-child(odd), #facility-demo td:nth-child(odd), #providersTable td:nth-child(odd) {
   text-align: right; /*Labels*/
   font-size: 14px;
 }
-#provider-wrapper .provider-display table:first-child td:nth-child(even), #facility-wrapper .facility-display table:first-child td:nth-child(even), #providersTable td:nth-child(even) {
+#provider-demo td:nth-child(even), #facility-demo td:nth-child(even), #providersTable td:nth-child(even) {
   text-align: left; /*Values*/
   font-size: 20px;
   padding-left: 20px;
 }
+#provider-demo td:not(:first-child){padding-left:20px;}
 #provider-wrapper hr, #facility-wrapper hr {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   color: #111;
-  border-top: 2px solid #111;
-  margin-top: 10px; margin-bottom:10px;
+  border-top: 1px solid #111;
+  margin-top: .5rem; margin-bottom:0;
 }
 #provider-wrapper .provider-display #demoTable, #provider-specialties table, #facility-wrapper .facility-display #demoTable {
-  width:100%;
+  /*width:100%;*/margin-left:32px;
 }
 #provider-wrapper .provider-display #demoTable tr, #specTable tr {
 }
+tr.footer{
+  background:#ccc;
+}
+tr.footer td {
+  position: relative;
+  right: 32px;
+  background: #ccc;
+  text-align: right;
+  font-size: 11px!important;
+  font-family: Courier;
+  padding-left: 16px;
+  padding-top:5px;padding-bottom:5px;
+}
+#provider-wrapper .provider-display #demoTable tr td:first-child { text-align:left; }
 #provider-wrapper .provider-display #demoTable td:nth-child(odd), #specTable td:nth-child(odd), #facility-wrapper .facility-display #demoTable td:nth-child(odd) {
   text-align: right; /*Labels*/
   font-size: 14px;
@@ -171,13 +212,19 @@ input[type='search'] {
   font-size: 20px;
   padding-left: 20px;
 }
-#facTable{margin-left:13px;}
+#facTable{margin-left:13px;margin-top:-20px;display:block;}
 .tabselected{font-weight:bold!important;font-size:15px!important;}
 #specTable td.rowHeader, #facTable td#rH{
   font-size:32px; text-align:left;
 }
 #rH { padding-left:20px;padding-top:10px; }
-#rH a, #providersTable a{text-decoration:none;color:#111;}
+#providersTable a{text-decoration:none;color:#111;}
+#rH a {
+  font-size: 16px;
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+}
 #rH a:hover, #providersTable a:hover{text-decoration:underline;}
 #specTable tr td{}
 #specTable {
@@ -227,3 +274,34 @@ span.expand {
   cursor:pointer;
 }
 #providersTableDT td{font-size:16px!important;}
+
+/*card*/
+.card {
+  border: none;
+}
+.card-body{padding:0;}
+.card-title,.card-text{padding:5px;}
+.card-title {
+  padding-left: 23px;
+  margin-bottom: 8px;
+}
+.card-text {
+  padding-left: 32px;
+  margin-top: 0px;
+}
+.specTitle {
+  padding-left: 5px;
+  border-radius: 5px;
+  color: #fff;
+  background: #86bf2f;
+  cursor:pointer;
+}
+.specTitle span {
+  font-size: 15px;
+}
+.specCard {
+  border: 1px solid rgba(0,0,0,0.125);
+  border-radius: 10px;
+  width:500px;
+}
+.specTable{display:none;}

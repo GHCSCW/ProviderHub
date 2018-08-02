@@ -10,6 +10,7 @@ import { API } from './globals';
 export class AppComponent implements OnInit {
   title = 'ProviderHub';
   selectedTab = "P";
+  compactDesign = false;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     router.events.forEach((event) => {
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
           case "Facility": this.selectedTab = "F"; break;
           default: this.selectedTab = "N"; console.log("a url in this app without a '/'? or something wrong"); break;
         }
+        this.compactDesign = (this.router.url.indexOf("Search")==-1);
       }
       // Other Events you might want to handle:NavigationStart,NavigationEnd,NavigationCancel,NavigationError,RoutesRecognized
     });

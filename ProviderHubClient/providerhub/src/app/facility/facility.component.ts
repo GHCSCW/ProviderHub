@@ -9,6 +9,7 @@ import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
 import 'datatables.net-select-bs4';
+import 'jquery-ui-bundle';
 
 @Component({
   selector: 'app-facility',
@@ -66,6 +67,7 @@ export class FacilityComponent implements OnInit {
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
           s.TerminationDate = (s.TerminationDate==null)? '' : s.TerminationDate.replace(/\D/g, '');
         }
+        $("#specList").sortable();
         //providers
         for (var i = 0; i < this.Facility.FacilityProviders.length; i++) {
           var _c = this.Facility.FacilityProviders[i].CredentialListStr;
@@ -109,6 +111,9 @@ export class FacilityComponent implements OnInit {
       }
     );
     document.getElementById("page-title").innerHTML = API.selectedFacility;
+  }
+  public onSpecClick(event: any) {
+    $(event.target).parent().children("table.specTable").toggle();
   }
   private onRowSelect(indexes: number[]): void {
     var providerId = indexes[0];

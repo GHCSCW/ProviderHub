@@ -11,12 +11,12 @@
     <input id="header-advanced-search" type="search" class="form-control form-control-sm" placeholder="Search All (Provider, Facility, Vendor)" />
   </span>
 </div>
-<div id="outer-wrapper">
-  <div id="title-wrapper">
+<div id="outer-wrapper" [class.outer-wrapper-cD]="compactDesign">
+  <div id="title-wrapper" [class.invisible]="compactDesign">
     <h1 id="page-title">
       Welcome to {{ title }}!
     </h1>
   </div>
-  <hr />
+  <hr [class.invisible]="compactDesign" />
   <router-outlet></router-outlet>
 </div>

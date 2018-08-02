@@ -5,6 +5,8 @@ import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule, Location } from '@angular/common';
 import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe } from '../pipes';
+import * as $ from 'jquery';
+import 'jquery-ui-bundle';
 
 @Component({
   selector: 'app-provider',
@@ -67,11 +69,20 @@ export class ProviderComponent implements OnInit {
           s.TerminationDate = (s.TerminationDate == null)?'':s.TerminationDate.replace(/\D/g, '');
           console.log(s);
         }
+        $("#specList").sortable();
       }
     );
     //note: if navigated to from direct link, and not clicking a provider,
     //      it'll be empty til the provider object loads from AJAX...but that's okay
     document.getElementById("page-title").innerHTML = API.selectedProvider;
+  }
+
+  public onSpecClick(event: any) {
+    $(event.target).parent().children("table.specTable").toggle();
+  }
+
+  public setSortable(event: any) {
+    alert("set sortable!");
   }
 
 }

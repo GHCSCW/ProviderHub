@@ -1,15 +1,17 @@
 <div id="provider-wrapper">
   <div class="left-sidebar">
+    <h2>Provider</h2>
     <ul id="provider-nav">
       <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
-      <li tab-id="Facility" tab-url="Facility" [class.selected]="nav=='Facility'">Facilities</li>
       <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
+      <li tab-id="Facility" tab-url="Facility" [class.selected]="nav=='Facility'">Facilities</li>
       <li tab-id="FacSpecMap" tab-url="Employment" [class.selected]="nav=='FacSpecMap'">Facility - Specialty Mapping</li>
       <li tab-id="Networks" tab-url="Network" [class.selected]="nav=='Networks'">Networks</li>
     </ul>
   </div>
   <div class="provider-display">
-    <table>
+    <h2 class="one turq">{{Provider.FirstName}} {{Provider.LastName}}, {{Provider.Credentials}}</h2>
+    <table id="provider-demo">
       <tr>
         <td>First Name</td>
         <td>{{Provider.FirstName}}</td>
@@ -36,117 +38,147 @@
       </tr>
     </table>
     <hr />
-    <table id="demoTable" [hidden]="nav!='Demographics'">
-      <tr>
-        <td>Languages</td>
-        <td>{{Provider.Languages}}</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Medicare Indicator</td>
-        <td>{{Provider.MedicareIndicator | bool}}</td>
-        <td>Medicare PTAN</td>
-        <td>{{Provider.MedicarePTAN | nullable}}</td>
-      </tr>
-      <tr>
-        <td>Medicare Effective Date</td>
-        <td>{{Provider.MedicareEffectiveDate | nullable}}</td>
-        <td>Medicare Termination Date</td>
-        <td>{{Provider.MedicareTerminationDate | nullable}}</td>
-      </tr>
-      <tr>
-        <td>Medicaid Indicator</td>
-        <td>{{Provider.MedicaidIndicator | bool}}</td>
-        <td>MedicaidProviderID</td>
-        <td>{{Provider.MedicaidProviderID | nullable}}</td>
-      </tr>
-      <tr>
-        <td>Last Updated By</td>
-        <td>{{Provider.LastUpdatedBy}}</td>
-        <td>Last Updated On</td>
-        <td>{{Provider.LastUpdatedDate | date}}</td><!--:'MMM d, y h:mm a'-->
-      </tr>
-      <tr>
-        <td>Hospital Affiliations</td>
-        <td>{{Provider.FacilityNames | nullable:"Coming Soon"}}</td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
-    <table id="specTable" [hidden]="nav!='Specialties'">
-      <tbody *ngFor="let s of Provider.ProviderSpecialties">
-        <tr>
-          <td class="rowHeader" colspan="4">{{s.Name}}</td>
-        </tr>
-        <tr>
-          <td>{{s | parentSpecialty}}</td><!--get Parent Name or "" in sp/view-->
-          <td style="width:10px;"></td><!--make a setting/css style-->
-          <td>Effective Date</td>
-          <td>{{s.EffectiveDate | date}}<!-- - {{s.TerminationDate | date}}--></td>
-        </tr>
-        <tr><!-- class="inter-table-separator"-->
-          <td>{{s | specialtyType}}</td>
-          <td></td>
-          <td><!--I dont see any other specialty info, so no expand UI for now--></td>
-          <td><!--span class="expand"><i class="arrow down"></i></span--></td>
-        </tr>
-      </tbody>
-    </table>
+    <div id="demo-card" class="card" [hidden]="nav!='Demographics'">
+      <div class="card-body">
+        <h5 class="card-title turq">Demographics</h5>
+        <table id="demoTable">
+          <tr>
+            <td>Languages</td>
+            <td>{{Provider.Languages}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Medicare Indicator</td>
+            <td>{{Provider.MedicareIndicator | bool}}</td>
+            <td>Medicare PTAN</td>
+            <td>{{Provider.MedicarePTAN | nullable}}</td>
+          </tr>
+          <tr>
+            <td>Medicare Effective Date</td>
+            <td>{{Provider.MedicareEffectiveDate | nullable}}</td>
+            <td style="padding-left:20px;">Medicare Termination Date</td>
+            <td>{{Provider.MedicareTerminationDate | nullable}}</td>
+          </tr>
+          <tr>
+            <td>Medicaid Indicator</td>
+            <td>{{Provider.MedicaidIndicator | bool}}</td>
+            <td>MedicaidProviderID</td>
+            <td>{{Provider.MedicaidProviderID | nullable}}</td>
+          </tr>
+          <tr>
+            <td>Hospital Affiliations</td>
+            <td>{{Provider.FacilityNames | nullable:"Coming Soon"}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr class="footer">
+            <td colspan="2">Last Updated By: {{Provider.LastUpdatedBy}}</td>
+            <td></td>
+            <td>Last Updated On: {{Provider.LastUpdatedDate | date}}</td><!--:'MMM d, y h:mm a'-->
+          </tr>
+        </table>
+        <!--OPTIONAL EXPAND FUNCTION a href="#" class="btn btn-primary">Expand?</a-->
+      </div>
+    </div>
+    <div id="spec-card" class="card specWrapper" [hidden]="nav!='Specialties'">
+      <div class="card-body">
+        <h5 class="card-title turq">Specialties</h5>
+        <div id="specList" class="card-text ui-sortable">
+          <!--EACH SPECIALTY-->
+          <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;">
+            <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
+            <div class="card-body specCardBody">
+              <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{s.Name}} <br /><span>{{s | specialtyType}} | {{s | parentSpecialty}}</span></h5>
+              <table class="card-text specTable">
+                <tbody>
+                  <tr>
+                    <td colspan="2">
+                      ACTIVE
+                    </td>
+                  </tr>
+                  <tr class="whenExpand">
+                    <td colspan="2">Effective Dates: {{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!--END FOR EACH SPECIALTY-->
+        </div>
+      </div>
+    </div>
     <table id="facSpecMapTable" [hidden]="nav!='FacSpecMap'"></table>
-    <table id="facTable" [hidden]="nav!='Facility'"><!-- basically Facility Demographics (Facility + FacilityAddress)-->
-      <tbody *ngFor="let f of Provider.ProviderFacilities">
-        <tr>
-          <td class="rowHeader" id="rH" colspan="4"><a href="../facility/{{f.ID}}">{{f.FacilityName}}</a></td>
-        </tr>
-        <tr>
-          <td>NPI</td>
-          <td>{{f.NPI}}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>Address</td>
-          <td>
-            {{f.FacilityAddress.AddressLine1}}&nbsp;&nbsp;{{f.FacilityAddress.AddressLine2}}<br />
-            {{f.FacilityAddress.City}},&nbsp;{{f.FacilityAddress.State}}&nbsp;&nbsp;{{f.FacilityAddress.ZipCode}}
-          </td>
-        </tr>
-        <tr>
-          <td>Phone</td>
-          <td>{{f.FacilityAddress.PhoneNumber | nullable}}</td>
-        </tr>
-        <tr>
-          <td>Website</td>
-          <td><a href="{{f.FacilityAddress.Website | nullable:''}}" target="_blank">{{f.FacilityAddress.Website | nullable:''}}</a></td>
-        </tr>
-        <tr>
-          <td>Hours</td>
-          <td>Coming Soon</td>
-        </tr>
-        <tr>
-          <td class="rowHeader" id="rH" colspan="4">{{Provider.FirstName}} {{Provider.LastName}} @ {{f.FacilityName}}:</td>
-        </tr>
-        <tr>
-          <td>External Provider: </td>
-          <td>{{f.FPRelationship.ExternalProviderIndicator | bool}}</td>
-          <td>Accepting New Patients: </td>
-          <td>{{f.FPRelationship.AcceptingNewPatientIndicator | bool}}</td>
-        </tr>
-        <tr>
-          <td>Prescriber: </td>
-          <td>{{f.FPRelationship.PrescriberIndicator | bool}}</td>
-          <td>Referral: </td>
-          <td>{{f.FPRelationship.ReferralIndicator | bool}}</td>
-        </tr>
-        <tr>
-          <td>PCP Eligible: </td>
-          <td>{{f.FPRelationship.PCPEligibleIndicator | bool}}</td>
-          <td>Float Provider: </td>
-          <td>{{f.FPRelationship.FloatProviderIndicator | bool}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div id="spec-card" class="card specWrapper" [hidden]="nav!='Facility'">
+      <div class="card-body">
+        <h5 class="card-title turq">Facilities</h5>
+        <div id="facList" class="card-text ui-sortable">
+          <!--EACH FACILITY-->
+          <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;width:100%;">
+            <span [hidden]="true">spec-id:{{f.ID}}</span>
+            <div class="card-body specCardBody">
+              <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{f.FacilityName}}</h5>
+              <table id="facTable" class="card-text specTable">
+                <!-- basically Facility Demographics (Facility + FacilityAddress)-->
+                <tbody>
+                  <tr>
+                    <td class="rowHeader" id="rH" colspan="4"><a href="../facility/{{f.ID}}">Go To Facility</a></td>
+                  </tr>
+                  <tr>
+                    <td>NPI</td>
+                    <td>{{f.NPI}}</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>
+                      {{f.FacilityAddress.AddressLine1}}&nbsp;&nbsp;{{f.FacilityAddress.AddressLine2}}<br />
+                      {{f.FacilityAddress.City}},&nbsp;{{f.FacilityAddress.State}}&nbsp;&nbsp;{{f.FacilityAddress.ZipCode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Phone</td>
+                    <td>{{f.FacilityAddress.PhoneNumber | nullable}}</td>
+                  </tr>
+                  <tr>
+                    <td>Website</td>
+                    <td><a href="{{f.FacilityAddress.Website | nullable:''}}" target="_blank">{{f.FacilityAddress.Website | nullable:''}}</a></td>
+                  </tr>
+                  <tr>
+                    <td>Hours</td>
+                    <td>Coming Soon</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="midHead"><h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{Provider.FirstName}} {{Provider.LastName}} @ {{f.FacilityName}}</h5></td>
+                    <!--td class="one blu" id="rH" colspan="4">{{Provider.FirstName}} {{Provider.LastName}} @ {{f.FacilityName}}:</!--td-->
+                  </tr>
+                  <tr>
+                    <td>External Provider: </td>
+                    <td>{{f.FPRelationship.ExternalProviderIndicator | bool}}</td>
+                    <td>Accepting New Patients: </td>
+                    <td>{{f.FPRelationship.AcceptingNewPatientIndicator | bool}}</td>
+                  </tr>
+                  <tr>
+                    <td>Prescriber: </td>
+                    <td>{{f.FPRelationship.PrescriberIndicator | bool}}</td>
+                    <td>Referral: </td>
+                    <td>{{f.FPRelationship.ReferralIndicator | bool}}</td>
+                  </tr>
+                  <tr>
+                    <td>PCP Eligible: </td>
+                    <td>{{f.FPRelationship.PCPEligibleIndicator | bool}}</td>
+                    <td>Float Provider: </td>
+                    <td>{{f.FPRelationship.FloatProviderIndicator | bool}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!--END FOR EACH FACILITY-->
+        </div>
+      </div>
+    </div>
     <table id="networksTable" [hidden]="nav!='Networks'"></table>
   </div>
 </div>
