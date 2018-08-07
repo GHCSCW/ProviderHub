@@ -132,7 +132,13 @@ namespace ProviderHubService
                                         State = x.Field<string>("STATE"),
                                         ZipCode = x.Field<string>("ZIP_CODE"),
                                         PhoneNumber = x.Field<string>("PHONE_NUMBER"),
-                                        Website = x.Field<string>("WEBSITE")
+                                        Website = x.Field<string>("WEBSITE"),
+                                        AddressTypeName = x.Field<string>("ADDRESS_TYPE_NAME"),
+                                        PhoneExtension = x.Field<string>("PHONE_EXTENSION"),
+                                        AlternatePhoneNumber = x.Field<string>("ALTERNATE_PHONE_NUMBER"),
+                                        FaxNumber = x.Field<string>("FAX_NUMBER"),
+                                        /*LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
+                                        LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE")*/
                                     },
                                     FPRelationship = new FacilityProviderRelationship {
                                         ExternalProviderIndicator = x.Field<bool?>("EXTERNAL_PROVIDER_INDICATOR"),
@@ -315,6 +321,7 @@ namespace ProviderHubService
                 {
                     address.ID = x.Field<int>("ADDRESS_ID");
                     address.AddressType = (AddressType)Enum.Parse(typeof(AddressType), x.Field<int>("ADDRESS_TYPE_ID").ToString());
+                    if (isCalledFromPH) { address.AddressTypeName = x.Field<string>("ADDRESS_TYPE_NAME").ToString(); }
                     address.AddressLine1 = x.Field<string>("ADDRESS_LINE_1");
                     address.AddressLine2 = x.Field<string>("ADDRESS_LINE_2");
                     address.City = x.Field<string>("CITY");

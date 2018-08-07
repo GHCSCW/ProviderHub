@@ -14,8 +14,8 @@
     <h2 class="one turq">{{Facility.FacilityName}}</h2>
     <table id="facility-demo">
       <tr>
-        <td>Facility Name</td>
-        <td>{{Facility.FacilityName}}</td>
+        <td>Facility Type</td>
+        <td>{{FacilityAddress.AddressTypeName}}</td>
         <td></td>
         <td></td>
       </tr>
@@ -40,7 +40,15 @@
           </tr>
           <tr>
             <td>Phone</td>
-            <td>{{FacilityAddress.PhoneNumber | nullable}}</td>
+            <td>{{FacilityAddress.PhoneNumber | nullable}} <span *ngIf="!FacilityAddress.HidePhoneExtension">ext. {{FacilityAddress.PhoneExtension}}</span></td>
+          </tr>
+          <tr>
+            <td>Fax</td>
+            <td>{{FacilityAddress.FaxNumber | nullable}}</td>
+          </tr>
+          <tr *ngIf="!FacilityAddress.HideAlternatePhoneNumber">
+            <td>Alt. Phone</td>
+            <td>{{FacilityAddress.AlternatePhoneNumber}}</td>
           </tr>
           <tr>
             <td>Website</td>

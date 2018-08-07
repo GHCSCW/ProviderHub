@@ -19,6 +19,15 @@ export class NullablePipe implements PipeTransform {
 }
 
 @Pipe({
+  name: 'novalue'
+})
+export class NoValuePipe implements PipeTransform {
+  transform(value: any): any {
+    return (value == null) || (value=="");
+  }
+}
+
+@Pipe({
   name: 'bool'
 })
 export class BoolPipe implements PipeTransform {

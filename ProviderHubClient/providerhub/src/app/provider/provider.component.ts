@@ -4,7 +4,7 @@ import { API } from '../globals';
 import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule, Location } from '@angular/common';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe } from '../pipes';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe } from '../pipes';
 import * as $ from 'jquery';
 import 'jquery-ui-bundle';
 
@@ -71,6 +71,13 @@ export class ProviderComponent implements OnInit {
         }
         let list: any = $('#specList');
         list.sortable();
+        //3. Additional properties for UI conditionals ('novalue' pipe doesn't work??)
+        for (var i = 0; i < this.Provider.ProviderFacilities.length; i++) {
+          var f = this.Provider.ProviderFacilities[i];
+          f.HidePhoneExtension = (f.PhoneExtension == null || f.PhoneExtension == '');
+          f.HideAlternatePhoneNumber = (f.AlternatePhoneNumber == null || f.AlternatePhoneNumber == '');
+          console.log(f);
+        }
       }
     );
     //note: if navigated to from direct link, and not clicking a provider,

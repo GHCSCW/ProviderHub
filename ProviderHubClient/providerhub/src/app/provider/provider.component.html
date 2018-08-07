@@ -122,7 +122,8 @@
                 <!-- basically Facility Demographics (Facility + FacilityAddress)-->
                 <tbody>
                   <tr>
-                    <td class="rowHeader" id="rH" colspan="4"><a href="../facility/{{f.ID}}">Go To Facility</a></td>
+                    <td>Facility Type</td>
+                    <td><a href="../facility/{{f.ID}}">{{f.FacilityAddress.AddressTypeName}}</a></td><!-- class="rowHeader" id="rH" colspan="4"-->
                   </tr>
                   <tr>
                     <td>NPI</td>
@@ -139,7 +140,15 @@
                   </tr>
                   <tr>
                     <td>Phone</td>
-                    <td>{{f.FacilityAddress.PhoneNumber | nullable}}</td>
+                    <td>{{f.FacilityAddress.PhoneNumber | nullable}} <span *ngIf="!f.FacilityAddress.HidePhoneExtension">ext. {{f.FacilityAddress.PhoneExtension}}</span></td>
+                  </tr>
+                  <tr>
+                    <td>Fax</td>
+                    <td>{{f.FacilityAddress.FaxNumber | nullable}}</td>
+                  </tr>
+                  <tr *ngIf="!f.FacilityAddress.HideAlternatePhoneNumber">
+                    <td>Alt. Phone</td>
+                    <td>{{f.FacilityAddress.AlternatePhoneNumber}}</td>
                   </tr>
                   <tr>
                     <td>Website</td>
@@ -151,7 +160,6 @@
                   </tr>
                   <tr>
                     <td colspan="4" class="midHead"><h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{Provider.FirstName}} {{Provider.LastName}} @ {{f.FacilityName}}</h5></td>
-                    <!--td class="one blu" id="rH" colspan="4">{{Provider.FirstName}} {{Provider.LastName}} @ {{f.FacilityName}}:</!--td-->
                   </tr>
                   <tr>
                     <td>External Provider: </td>

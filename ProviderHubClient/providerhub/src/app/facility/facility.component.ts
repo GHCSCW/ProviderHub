@@ -4,7 +4,7 @@ import { API } from '../globals';
 import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule, Location } from '@angular/common';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe } from '../pipes';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe } from '../pipes';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
@@ -61,7 +61,7 @@ export class FacilityComponent implements OnInit {
         document.getElementById("page-title").innerHTML = this.Facility.FacilityName;
         this.FacilityAddress.AddressLine1 = (this.FacilityAddress.AddressLine1 == null) ? "" : this.FacilityAddress.AddressLine1;
         this.FacilityAddress.AddressLine2 = (this.FacilityAddress.AddressLine2 == null) ? "" : this.FacilityAddress.AddressLine2;
-        //specs
+        //1. specs
         for (var i = 0; i < this.Facility.FacilitySpecialties.length; i++) {
           var s = this.Facility.FacilitySpecialties[i];
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
@@ -69,7 +69,7 @@ export class FacilityComponent implements OnInit {
         }
         let list: any = $('#specList');
         list.sortable();
-        //providers
+        //2. providers
         for (var i = 0; i < this.Facility.FacilityProviders.length; i++) {
           var _c = this.Facility.FacilityProviders[i].CredentialListStr;
           this.Facility.FacilityProviders[i].Credentials = _c.slice(0, -1).replace(/,/g,", ");
@@ -105,6 +105,9 @@ export class FacilityComponent implements OnInit {
             this.onRowSelect(this.providerDT.rows(indexes).data().pluck("ID"));
           }
         );
+        //3. Additional properties for UI conditionals ('novalue' pipe doesn't work??)
+        this.FacilityAddress.HidePhoneExtension = (this.FacilityAddress.PhoneExtension == null || this.FacilityAddress.PhoneExtension == '');
+        this.FacilityAddress.HideAlternatePhoneNumber = (this.FacilityAddress.AlternatePhoneNumber == null || this.FacilityAddress.AlternatePhoneNumber == '');
         /*this.providerDT.on('search.dt', () => {
           document.getElementById('providersTableDT').getElementsByTagName('tbody')[0].style.visibility = (document.getElementById('providersTableDT_filter').getElementsByTagName('input')[0].value.length < 2) ? "hidden" : "visible";
         });
