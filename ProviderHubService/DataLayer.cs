@@ -301,6 +301,7 @@ namespace ProviderHubService
                                     NPI = provider.Field<string>("NATIONAL_PROVIDER_IDENTIFIER"),
                                     EpicProviderID = provider.Field<string>("EPIC_PROVIDER_ID"),
                                     CredentialListStr = provider.Field<string>("CREDENTIAL_LIST"),
+                                    PrimarySpecialty = provider.Field<string>("PRIMARY_SPECIALTY"),
                                     Gender = (ProviderGender)Enum.Parse(typeof(ProviderGender), provider.Field<int>("PROVIDER_GENDER_ID").ToString()),
                                     FPRelationship = new FacilityProviderRelationship().getshortObj(provider)
                                 }).ToList();
@@ -396,7 +397,7 @@ namespace ProviderHubService
                              LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
                              LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
                              CredentialListStr = (calledFromPH)? x.Field<string>("CREDENTIAL_LIST") : "",
-                             PrimarySpecialty = (calledFromPH)? x.Field<string>("PARENT_SPECIALTY_LIST") == null? "" : x.Field<string>("PARENT_SPECIALTY_LIST").Split(',')[0] : ""
+                             PrimarySpecialty = (calledFromPH)? x.Field<string>("PRIMARY_SPECIALTY") == null? "" : x.Field<string>("PRIMARY_SPECIALTY").Split(',')[0] : ""
                          }).ToList();
 
             return providers;
