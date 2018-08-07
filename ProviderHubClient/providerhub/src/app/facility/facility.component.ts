@@ -4,7 +4,7 @@ import { API } from '../globals';
 import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule, Location } from '@angular/common';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe } from '../pipes';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe } from '../pipes';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
@@ -59,13 +59,15 @@ export class FacilityComponent implements OnInit {
       data => {
         this.Facility = data; this.FacilityAddress = this.Facility.FacilityAddress;
         document.getElementById("page-title").innerHTML = this.Facility.FacilityName;
+        this.Facility.LastUpdatedDate = new PHDatePipe().transform(this.Facility.LastUpdatedDate);
         this.FacilityAddress.AddressLine1 = (this.FacilityAddress.AddressLine1 == null) ? "" : this.FacilityAddress.AddressLine1;
         this.FacilityAddress.AddressLine2 = (this.FacilityAddress.AddressLine2 == null) ? "" : this.FacilityAddress.AddressLine2;
         //1. specs
         for (var i = 0; i < this.Facility.FacilitySpecialties.length; i++) {
           var s = this.Facility.FacilitySpecialties[i];
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
-          s.TerminationDate = (s.TerminationDate==null)? '' : s.TerminationDate.replace(/\D/g, '');
+          s.TerminationDate = (s.TerminationDate == null) ? '' : s.TerminationDate.replace(/\D/g, '');
+          s.LastUpdatedDate = (s.LastUpdatedDate == null) ? '' : s.LastUpdatedDate.replace(/\D/g, '');
         }
         let list: any = $('#specList');
         list.sortable();
@@ -118,6 +120,7 @@ export class FacilityComponent implements OnInit {
   }
   public onSpecClick(event: any) {
     $(event.target).parent().children("table.specTable").toggle();
+    $(event.target).parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
   }
   private onRowSelect(indexes: number[]): void {
     var providerId = indexes[0];

@@ -1,4 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { DatePipe } from '@angular/common';
+
+@Pipe({
+  name: 'phdate'
+})
+export class PHDatePipe implements PipeTransform {
+  transform(value: any): any {
+    return new DatePipe('en-US').transform(value.replace(/\D/g, ''));
+  }
+}
 
 @Pipe({
   name: 'gender'

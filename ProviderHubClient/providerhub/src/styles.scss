@@ -216,6 +216,9 @@ tr.footer td {
   font-size: 20px;
   padding-left: 20px;
 }
+#provider-wrapper .provider-display #demoTable tr.footer td:last-child, #facility-wrapper .facility-display #demoTable tr.footer td:last-child {
+  text-align: left !important;
+}
 #facTable{margin-left:13px;margin-top:-20px;display:block;}
 #facTable tr:first-child td{ padding-top:10px; }
 .tabselected{font-weight:bold!important;font-size:15px!important;}
@@ -308,5 +311,20 @@ span.expand {
   border: 1px solid rgba(0,0,0,0.125);
   border-radius: 10px;
   width:500px;
+  margin-bottom:10px;
 }
 .specTable{display:none;}
+.provFacFooter, .provSpecFooter {
+  background: rgb(204, 204, 204);
+  border-bottom-left-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  font-size: 12px;
+  font-family: Courier;
+}
+.provSpecFooter{display:none;}
+.provFacFooter {
+  padding-left: 45px;
+  padding-right: 91px;
+}
+.provFacFooter span:first-child{float:left;}
+.provFacFooter span:last-child{float:right;}

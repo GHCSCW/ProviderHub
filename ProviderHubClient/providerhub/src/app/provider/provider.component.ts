@@ -4,7 +4,7 @@ import { API } from '../globals';
 import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule, Location } from '@angular/common';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe } from '../pipes';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe } from '../pipes';
 import * as $ from 'jquery';
 import 'jquery-ui-bundle';
 
@@ -66,27 +66,40 @@ export class ProviderComponent implements OnInit {
         for (var i = 0; i < this.Provider.ProviderSpecialties.length; i++) {
           var s = this.Provider.ProviderSpecialties[i];
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
-          s.TerminationDate = (s.TerminationDate == null)?'':s.TerminationDate.replace(/\D/g, '');
+          s.TerminationDate = (s.TerminationDate == null) ? '' : s.TerminationDate.replace(/\D/g, '');
+          s.LastUpdatedDate = (s.LastUpdatedDate == null) ? '' : s.LastUpdatedDate.replace(/\D/g, '');
           console.log(s);
         }
         let list: any = $('#specList');
         list.sortable();
-        //3. Additional properties for UI conditionals ('novalue' pipe doesn't work??)
+        //3. Additional properties for UI conditionals ('novalue' pipe doesn't work in HTML??)
         for (var i = 0; i < this.Provider.ProviderFacilities.length; i++) {
           var f = this.Provider.ProviderFacilities[i];
-          f.HidePhoneExtension = (f.PhoneExtension == null || f.PhoneExtension == '');
-          f.HideAlternatePhoneNumber = (f.AlternatePhoneNumber == null || f.AlternatePhoneNumber == '');
-          console.log(f);
+          f.FacilityAddress.HidePhoneExtension = new NoValuePipe().transform(f.FacilityAddress.PhoneExtension);
+          f.FacilityAddress.HideAlternatePhoneNumber = new NoValuePipe().transform(f.FacilityAddress.AlternatePhoneNumber);
+          var fp = f.FPRelationship; fp.LastUpdatedDate = new PHDatePipe().transform(fp.LastUpdatedDate);
+          //console.log(f);
         }
+        //4. Post-load UI actions
+        setTimeout(function () {
+          if (typeof (Event) === 'function') { window.dispatchEvent(new Event('resize')); }
+          else { var evt = window.document.createEvent('UIEvents'); evt.initUIEvent('resize', true, false, window, 0); window.dispatchEvent(evt); }
+        }, 100);
       }
     );
     //note: if navigated to from direct link, and not clicking a provider,
     //      it'll be empty til the provider object loads from AJAX...but that's okay
     document.getElementById("page-title").innerHTML = API.selectedProvider;
+    window.addEventListener('resize', function (event) {
+      for (var j = 0; j < document.getElementsByClassName('provFacFooter').length; j++) {
+        (document.getElementsByClassName('provFacFooter')[j] as HTMLElement).style.paddingRight = document.getElementsByClassName('provFacTitle')[0].clientWidth - document.getElementsByClassName('midHead')[0].clientWidth - 45 + "px";
+      }
+    });
   }
 
   public onSpecClick(event: any) {
     $(event.target).parent().children("table.specTable").toggle();
+    $(event.target).parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
   }
 
   public setSortable(event: any) {

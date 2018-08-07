@@ -58,6 +58,10 @@
             <td>Hours</td>
             <td>Coming Soon</td><!--Facility.Hours.DisplayValues-->
           </tr>
+          <tr class="footer">
+            <td>Last Updated By: {{Facility.LastUpdatedBy}}</td>
+            <td>Last Updated On: {{Facility.LastUpdatedDate}}</td><!--:'MMM d, y h:mm a'-->
+          </tr>
         </table>
         <table id="vendorTable" [hidden]="nav!='Vendor'">
           <tr>
@@ -92,6 +96,9 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div class="card-footer provSpecFooter">
+              <span>Last Updated By: {{s.LastUpdatedBy}}</span><br /><span>Last Updated On: {{s.LastUpdatedDate | date}}</span>
             </div>
           </div>
           <!--END FOR EACH SPECIALTY-->

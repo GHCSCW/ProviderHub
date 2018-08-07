@@ -33,6 +33,12 @@ namespace ProviderHubService
         [DataMember]
         public string CreatedBy { get; set; }
 
+        [DataMember]
+        public DateTime? LastUpdatedDate { get; set; }
+
+        [DataMember]
+        public string LastUpdatedBy { get; set; }
+
         //for PH
         [DataMember]
         public DateTime EffectiveDate { get; set; }

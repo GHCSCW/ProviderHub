@@ -97,10 +97,12 @@ namespace ProviderHubService
                                      Name = specialty.Field<string>("SPECIALTY_NAME"),
                                      SequenceNumber = specialty.Field<int>("SEQUENCE_NUMBER"),
                                      EffectiveDate = specialty.Field<DateTime>("EFFECTIVE_DATE"),
-                                     TerminationDate = (specialty.IsNull("TERMINATION_DATE"))? (DateTime?)null : specialty.Field<DateTime>("TERMINATION_DATE"),
+                                     TerminationDate = (specialty.IsNull("TERMINATION_DATE")) ? (DateTime?)null : specialty.Field<DateTime>("TERMINATION_DATE"),
                                      ParentSpecialtyID = !specialty.IsNull("PARENT_SPECIALTY_ID") ? specialty.Field<int>("PARENT_SPECIALTY_ID") : 0,
                                      SpecialtyType = specialty.Field<string>("SPECIALTY_TYPE_NAME"),
-                                     ParentName = specialty.Field<string>("PARENT_NAME")
+                                     ParentName = specialty.Field<string>("PARENT_NAME"),
+                                     LastUpdatedDate = specialty.IsNull("LAST_UPDATED_DATE") ? (DateTime?)null : specialty.Field<DateTime>("LAST_UPDATED_DATE"),
+                                     LastUpdatedBy = specialty.Field<string>("LAST_UPDATED_BY")
                                  }).ToList();
             }
             return specialtyList;
@@ -137,8 +139,8 @@ namespace ProviderHubService
                                         PhoneExtension = x.Field<string>("PHONE_EXTENSION"),
                                         AlternatePhoneNumber = x.Field<string>("ALTERNATE_PHONE_NUMBER"),
                                         FaxNumber = x.Field<string>("FAX_NUMBER"),
-                                        /*LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
-                                        LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE")*/
+                                        LastUpdatedBy = x.Field<string>("ADDRESS_LAST_UPDATED_BY"),
+                                        LastUpdatedDate = x.Field<DateTime>("ADDRESS_LAST_UPDATED_DATE")
                                     },
                                     FPRelationship = new FacilityProviderRelationship {
                                         ExternalProviderIndicator = x.Field<bool?>("EXTERNAL_PROVIDER_INDICATOR"),
@@ -146,7 +148,9 @@ namespace ProviderHubService
                                         PrescriberIndicator = x.Field<bool?>("PRESCRIBER_INDICATOR"),
                                         ReferralIndicator = x.Field<bool?>("REFERRALL_INDICATOR"),
                                         PCPEligibleIndicator = x.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
-                                        FloatProviderIndicator = x.Field<bool?>("FLOAT_PROVIDER_INDICATOR")
+                                        FloatProviderIndicator = x.Field<bool?>("FLOAT_PROVIDER_INDICATOR"),
+                                        LastUpdatedDate = x.Field<DateTime>("FP_LAST_UPDATED_DATE"),
+                                        LastUpdatedBy = x.Field<string>("FP_LAST_UPDATED_BY")
                                     }
                                 }).ToList();
             }
@@ -267,10 +271,12 @@ namespace ProviderHubService
                                      Name = specialty.Field<string>("SPECIALTY_NAME"),
                                      SequenceNumber = specialty.Field<int>("SEQUENCE_NUMBER"),
                                      EffectiveDate = specialty.Field<DateTime>("EFFECTIVE_DATE"),
-                                     TerminationDate = specialty.IsNull("TERMINATION_DATE")? (DateTime?)null : specialty.Field<DateTime>("TERMINATION_DATE"),
+                                     TerminationDate = specialty.IsNull("TERMINATION_DATE") ? (DateTime?)null : specialty.Field<DateTime>("TERMINATION_DATE"),
                                      ParentSpecialtyID = !specialty.IsNull("PARENT_SPECIALTY_ID") ? specialty.Field<int>("PARENT_SPECIALTY_ID") : 0,
                                      SpecialtyType = specialty.Field<string>("SPECIALTY_TYPE_NAME"),
-                                     ParentName = specialty.Field<string>("PARENT_NAME")
+                                     ParentName = specialty.Field<string>("PARENT_NAME"),
+                                     LastUpdatedDate = specialty.IsNull("LAST_UPDATED_DATE") ? (DateTime?)null : specialty.Field<DateTime>("LAST_UPDATED_DATE"),
+                                     LastUpdatedBy = specialty.Field<string>("LAST_UPDATED_BY")
                                  }).ToList();
             }
             return specialtyList;
