@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DatatableComponent } from './datatable/datatable.component';
+import { DatatableModule } from './datatable/datatable.module';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { API } from './globals';
@@ -18,7 +19,7 @@ import { HttpClientModule, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/c
 import { CustomInterceptor } from './app.service';
 import { FacilitysearchComponent } from './facilitysearch/facilitysearch.component';
 import { FacilityComponent } from './facility/facility.component';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe } from './pipes';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, PHDatePipe, NoValuePipe } from './pipes';
 
 const routes: Routes = [
   /*Root: Provider List & Basic Search (Name/NPI)*/
@@ -38,7 +39,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    DatatableComponent,
+    //DatatableComponent,
     HeaderComponent,
     ProviderComponent,
     FacilitysearchComponent,
@@ -47,9 +48,12 @@ const routes: Routes = [
     NullablePipe,
     BoolPipe,
     SpecialtyTypePipe,
-    ParentSpecialtyPipe
+    ParentSpecialtyPipe,
+    PHDatePipe,
+    NoValuePipe
   ],
   imports: [
+    DatatableModule,
     BrowserModule,
     FormsModule,
     CommonModule,

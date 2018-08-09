@@ -45,7 +45,7 @@ export class DatatableComponent implements OnInit {
       },
       columns: [{ data: "NPI" }, { data: "LastName" }, { data: "FirstName" },
         { data: null, render: function (data, type, row) { var d = data.CredentialListStr; return (d==null)? "" : d.slice(0, -1).replace(/,/g,", "); }, searchable:false },
-        { data: null, render: function (data, type, row) { var d = data; var r; switch (d.Gender) { case 1: r = "Female"; break; case 2: r = "Male"; break; default: r = "Other"; break; } return r; }, searchable: false },
+        { data: null, render: function (data, type, row) { var d = data; var r; switch (d.Gender) { case 1: r = "Female"; break; case 2: r = "Male"; break; default: r = " "; break; } return r; }, searchable: false },
         { data: null, render: function (data, type, row) { var d = data.PrimarySpecialty; return d; }, searchable: false  },
         { data: null, render: function (data, type, row) { var d = data; return ""; }, searchable:false }
       ],

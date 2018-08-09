@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiURL: "http://localhost:200/"
+  apiRoot: "http://webappd1:200/"
 };

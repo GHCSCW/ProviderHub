@@ -15,7 +15,7 @@ export class PHDatePipe implements PipeTransform {
 })
 export class GenderPipe implements PipeTransform {
   transform(value: any, args?: any): any {
-    return (value==2)? "Male" : "Female";
+    return (value==2)? "Male" : (value==1)? "Female" : "Unknown";
   }
 }
 

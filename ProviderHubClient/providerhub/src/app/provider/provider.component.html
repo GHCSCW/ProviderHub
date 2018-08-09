@@ -10,7 +10,7 @@
     </ul>
   </div>
   <div class="provider-display main-display">
-    <h2 class="one turq">{{Provider.FirstName}} {{Provider.LastName}}, {{Provider.Credentials}}</h2>
+    <h2 class="one turq">{{Provider.FirstName}} {{Provider.LastName}}<span [hidden]="Provider.Credentials==''">, {{Provider.Credentials}}</span></h2>
     <table id="provider-demo">
       <tr>
         <td>First Name</td>
