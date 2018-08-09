@@ -10,7 +10,7 @@
       <li tab-id="Networks" tab-url="Networks" [class.selected]="nav=='Networks'">Networks</li>
     </ul>
   </div>
-  <div class="facility-display">
+  <div class="facility-display main-display">
     <h2 class="one turq">{{Facility.FacilityName}}</h2>
     <table id="facility-demo">
       <tr>
@@ -79,20 +79,21 @@
       <div class="card-body">
         <h5 class="card-title turq">Specialties</h5>
         <div id="specList" class="card-text ui-sortable">
+          <h4><input type="checkbox" /> Show Inactive Specialties</h4>
           <!--EACH SPECIALTY-->
           <div *ngFor="let s of Facility.FacilitySpecialties" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;">
             <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
             <div class="card-body specCardBody">
               <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{s.Name}} <br /><span>{{s | specialtyType}} | {{s | parentSpecialty}}</span></h5>
-              <table class="card-text specTable">
+              <table id="specialtyTable" class="card-text specTable">
                 <tbody>
                   <tr>
-                    <td colspan="2">
-                      ACTIVE
-                    </td>
+                    <td>Specialty Status</td>
+                    <td>ACTIVE</td>
                   </tr>
                   <tr class="whenExpand">
-                    <td colspan="2">Effective Dates: {{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+                    <td>Effective Dates</td>
+                    <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
                   </tr>
                 </tbody>
               </table>

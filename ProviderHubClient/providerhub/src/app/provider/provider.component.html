@@ -9,7 +9,7 @@
       <li tab-id="Networks" tab-url="Network" [class.selected]="nav=='Networks'">Networks</li>
     </ul>
   </div>
-  <div class="provider-display">
+  <div class="provider-display main-display">
     <h2 class="one turq">{{Provider.FirstName}} {{Provider.LastName}}, {{Provider.Credentials}}</h2>
     <table id="provider-demo">
       <tr>
@@ -85,26 +85,27 @@
       <div class="card-body">
         <h5 class="card-title turq">Specialties</h5>
         <div id="specList" class="card-text ui-sortable">
+          <h4><input type="checkbox" /> Show Inactive Specialties</h4>
           <!--EACH SPECIALTY-->
           <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;">
             <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
             <div class="card-body specCardBody">
               <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{s.Name}} <br /><span>{{s | specialtyType}} | {{s | parentSpecialty}}</span></h5>
-              <table class="card-text specTable">
+              <table id="specialtyTable" class="card-text specTable">
                 <tbody>
                   <tr>
-                    <td colspan="2">
-                      ACTIVE
-                    </td>
+                    <td>Specialty Status</td>
+                    <td>ACTIVE</td>
                   </tr>
                   <tr class="whenExpand">
-                    <td colspan="2">Effective Dates: {{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+                    <td>Effective Dates</td>
+                    <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <div class="card-footer provSpecFooter">
-              <span>Last Updated By: {{s.LastUpdatedBy}}</span><br/><span>Last Updated On: {{s.LastUpdatedDate | date}}</span>
+              <span>Last Updated By: {{s.LastUpdatedBy}}</span><br /><span>Last Updated On: {{s.LastUpdatedDate | date}}</span>
             </div>
           </div>
           <!--END FOR EACH SPECIALTY-->

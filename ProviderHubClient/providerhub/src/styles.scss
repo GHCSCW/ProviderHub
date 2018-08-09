@@ -216,6 +216,27 @@ tr.footer td {
   font-size: 20px;
   padding-left: 20px;
 }
+#specialtyTable tr td {
+  padding: 10px;
+  font-size: 14px;
+  text-align:right;
+}
+#specialtyTable tr td:nth-child(2) {
+  font-size:20px;
+  text-align:left;
+}
+#specialtyTable tr:first-child td {
+  padding-bottom: 0px;
+}
+#specList h4 {
+  font-size: 14px;
+  line-height: 14px;
+}
+#specList h4 input[type='checkbox'] {
+  height: 14px;
+  position: relative;
+  top: 2px;
+}
 #provider-wrapper .provider-display #demoTable tr.footer td:last-child, #facility-wrapper .facility-display #demoTable tr.footer td:last-child {
   text-align: left !important;
 }
