@@ -5,12 +5,12 @@
       <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
       <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
       <li tab-id="Facility" tab-url="Facility" [class.selected]="nav=='Facility'">Facilities</li>
-      <li tab-id="FacSpecMap" tab-url="Employment" [class.selected]="nav=='FacSpecMap'">Facility - Specialty Mapping</li>
+      <li tab-id="FacSpecMap" tab-url="Employment" [class.selected]="nav=='FacSpecMap'">Employment</li>
       <li tab-id="Networks" tab-url="Network" [class.selected]="nav=='Networks'">Networks</li>
     </ul>
   </div>
   <div class="provider-display main-display">
-    <h2 class="one turq">{{Provider.FirstName}} {{Provider.LastName}}<span [hidden]="Provider.Credentials==''">, {{Provider.Credentials}}</span></h2>
+    <h2 class="one red">{{Provider.FirstName}} {{Provider.LastName}}<span [hidden]="Provider.Credentials==''">, {{Provider.Credentials}}</span></h2>
     <table id="provider-demo">
       <tr>
         <td>First Name</td>
@@ -21,7 +21,7 @@
       <tr>
         <td>Last Name</td>
         <td>{{Provider.LastName}}</td>
-        <td>EpicProviderID</td>
+        <td>Epic Provider ID</td>
         <td>{{Provider.EpicProviderID}}</td>
       </tr>
       <tr>
@@ -40,7 +40,7 @@
     <hr />
     <div id="demo-card" class="card" [hidden]="nav!='Demographics'">
       <div class="card-body">
-        <h5 class="card-title turq">Demographics</h5>
+        <h5 class="card-title red">Demographics</h5>
         <table id="demoTable">
           <tr>
             <td>Languages</td>
@@ -63,7 +63,7 @@
           <tr>
             <td>Medicaid Indicator</td>
             <td>{{Provider.MedicaidIndicator | bool}}</td>
-            <td>MedicaidProviderID</td>
+            <td>Medicaid Provider ID</td>
             <td>{{Provider.MedicaidProviderID | nullable}}</td>
           </tr>
           <tr>
@@ -83,7 +83,7 @@
     </div>
     <div id="spec-card" class="card specWrapper" [hidden]="nav!='Specialties'">
       <div class="card-body">
-        <h5 class="card-title turq">Specialties</h5>
+        <h5 class="card-title red">Specialties</h5>
         <div id="specList" class="card-text ui-sortable">
           <h4><input type="checkbox" /> Show Inactive Specialties</h4>
           <!--EACH SPECIALTY-->
@@ -115,7 +115,7 @@
     <table id="facSpecMapTable" [hidden]="nav!='FacSpecMap'"></table>
     <div id="spec-card" class="card specWrapper" [hidden]="nav!='Facility'">
       <div class="card-body">
-        <h5 class="card-title turq">Facilities</h5>
+        <h5 class="card-title red">Facilities</h5>
         <div id="facList" class="card-text ui-sortable">
           <!--EACH FACILITY-->
           <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;width:100%;">

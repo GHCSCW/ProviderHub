@@ -11,6 +11,11 @@ h2{
   font-weight:normal;
   color:#535559;
 }
+a{
+  color:#E6003E;
+  text-decoration:underline;
+}
+a:hover{color:#E6003E}
 .navbar-right {
   float: right;
   color: #9d9d9d;
@@ -19,6 +24,10 @@ h2{
 }
 .turq {
   background: #32a89c !important;
+  color: #fff !important;
+}
+.red {
+  background: #E6003E !important;
   color: #fff !important;
 }
 .midHead{text-align:left!important;}
@@ -53,6 +62,7 @@ h2.one {
   padding: 15px 22px; /*15x15*/
   font-size: 18px;
   line-height: 20px;
+  text-decoration:none;
   color:#ddd; /*#9d9d9d*/
 }
 .navbar-brand:hover{ color:#ffffff; }
@@ -82,10 +92,23 @@ h2.one {
 }
 table.dataTable tr { cursor:pointer; }
 table.dataTable tr.selected {
-  background-color:rgba(4,255,0,0.32)!important;
+  /*background-color:rgba(4,255,0,0.32)!important;*/
+  background-color:#B2a570;
+  color:#fff;
 }
-table.dataTable tr:hover{
-  background-color:#ddd;
+table.dataTable tr:hover {
+  background-color: #ddd;
+}
+#providersTableDT tr:not(.expandedFP):hover {
+  background-color: rgba(178,162,112,0.9);
+  color: #fff;
+}
+.plainjane td {
+  background-color: rgba(178,162,112,0.4)!important;
+  color: #000!important;
+}
+.plainjane tr:hover {
+  background-color: rgba(178,162,112,0.4) !important;
 }
 .dataTables_filter, .dataTables_filter label {
   width: 100%;
@@ -96,7 +119,12 @@ div.dataTables_filter input{
 .visible{display:block}
 .invisible{display:none}
 .outer-wrapper-cD{padding-top:50px;width:100%!important;}
-.expandedFP{padding:0!important;background-color:rgba(4, 255, 0, 0.32) !important;border:0!important;border-spacing:0px!important;}
+.expandedFP{padding:0!important;background-color:rgba(4, 255, 0, 0.32);border:0!important;border-spacing:0px!important;}
+.expandedFP { /**new, remove for old style*/
+  background-color: rgba(178,162,112,0.4);
+  color: #000;
+}
+.expandedFP td:first-child{padding-left:65px;}
 .plainjane tr td{text-align:center!important;}
 input[type='search'] {
   display: block;
@@ -141,7 +169,6 @@ input[type='search'] {
   padding: 0;
   margin: 0;
   padding-top: 13px;
-  padding-left: 40px;
   padding-bottom: 200px;
 }
 #provider-wrapper .left-sidebar ul li, #facility-wrapper .left-sidebar ul li {
@@ -149,8 +176,14 @@ input[type='search'] {
   line-height: 24px;
   cursor:pointer;
   padding-bottom:3px;
+  padding-left:40px;
 }
-#provider-wrapper .left-sidebar ul li.selected, #facility-wrapper .left-sidebar ul li.selected { font-size:18px; font-weight:bold; color:#fff; }
+#provider-wrapper .left-sidebar ul li.selected, #facility-wrapper .left-sidebar ul li.selected {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background: #444;
+}
 #provider-wrapper .left-sidebar ul li:hover, #facility-wrapper .left-sidebar ul li:hover { color:#fff; }
 #provider-wrapper .provider-display, #facility-wrapper .facility-display {
   /* As per https://caniuse.com/#feat=calc this should work with 94% of global users' browsers aka anything GHC staff will use */
@@ -322,8 +355,8 @@ span.expand {
   padding-left: 5px;
   border-radius: 5px;
   color: #fff;
-  background: #86bf2f;
-  cursor:pointer;
+  /*#86bf2f=green*/ background:#B2a570;
+  cursor: pointer;
 }
 .specTitle span {
   font-size: 15px;
