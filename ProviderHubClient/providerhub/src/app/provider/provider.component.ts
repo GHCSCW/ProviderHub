@@ -58,6 +58,12 @@ export class ProviderComponent implements OnInit {
         this.Provider.LastUpdatedDate = this.Provider.LastUpdatedDate.replace(/\D/g, '');
         this.Provider.Credentials = (_c==null)? "" : _c.slice(0, -1).replace(/,/g,", ");//trailing comma
         document.getElementById("page-title").innerHTML = this.Provider.FirstName + " " + this.Provider.LastName + ", " + this.Provider.Credentials;
+        //DEBUG MEDICARE+MEDICAID UI
+        if (this.Provider.FirstName == "Mary " && this.Provider.LastName == "Karls")
+        {
+          this.Provider.MedicareIndicator = true; this.Provider.MedicaidIndicator = true; this.Provider.MedicarePTAN = "9284654";
+          this.Provider.MedicareEffectiveDate = "Jan 1, 2015"; this.Provider.MedicareTerminationDate = "Jan 1, 2019"; this.Provider.MedicaidProviderID = "1825465";
+        }
         //2. Specialties
         // Object spec (per Provider):
         //  ProviderSpecialties:[{Specialty},{Specialty},...]
@@ -81,10 +87,11 @@ export class ProviderComponent implements OnInit {
           //console.log(f);
         }
         //4. Post-load UI actions
-        setTimeout(function () {
+        let facilityLink: any = $("#provider-nav li[tab-id='Facility']")
+        facilityLink.click(function () {
           if (typeof (Event) === 'function') { window.dispatchEvent(new Event('resize')); }
           else { var evt = window.document.createEvent('UIEvents'); evt.initUIEvent('resize', true, false, window, 0); window.dispatchEvent(evt); }
-        }, 100);
+        });
       }
     );
     //note: if navigated to from direct link, and not clicking a provider,

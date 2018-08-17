@@ -44,29 +44,27 @@
         <table id="demoTable">
           <tr>
             <td>Languages</td>
-            <td>{{Provider.Languages}}</td>
-            <td></td>
-            <td></td>
+            <td colspan="3">{{Provider.Languages}}</td>
           </tr>
           <tr>
-            <td>Medicare Indicator</td>
-            <td>{{Provider.MedicareIndicator | bool}}</td>
-            <td>Medicare PTAN</td>
-            <td>{{Provider.MedicarePTAN | nullable}}</td>
+            <td>Accepts Medicare?</td>
+            <td [attr.colspan]="!Provider.MedicareIndicator?3:1">{{Provider.MedicareIndicator | bool}}</td>
+            <td [hidden]="!Provider.MedicareIndicator">Medicare PTAN</td>
+            <td [hidden]="!Provider.MedicareIndicator">{{Provider.MedicarePTAN | nullable}}</td>
           </tr>
-          <tr>
+          <tr [hidden]="!Provider.MedicareIndicator">
             <td>Medicare Effective Date</td>
             <td>{{Provider.MedicareEffectiveDate | nullable}}</td>
             <td style="padding-left:20px;">Medicare Termination Date</td>
             <td>{{Provider.MedicareTerminationDate | nullable}}</td>
           </tr>
-          <tr>
-            <td>Medicaid Indicator</td>
+          <tr [class.whiteTR]="!Provider.MedicareIndicator">
+            <td>Accepts Medicaid?</td>
             <td>{{Provider.MedicaidIndicator | bool}}</td>
-            <td>Medicaid Provider ID</td>
-            <td>{{Provider.MedicaidProviderID | nullable}}</td>
+            <td [hidden]="!Provider.MedicaidIndicator">Medicaid Provider ID</td>
+            <td [hidden]="!Provider.MedicaidIndicator">{{Provider.MedicaidProviderID | nullable}}</td>
           </tr>
-          <tr>
+          <tr [class.greyTR]="!Provider.MedicareIndicator">
             <td>Hospital Affiliations</td>
             <td>{{Provider.FacilityNames | nullable:"Coming Soon"}}</td>
             <td></td>

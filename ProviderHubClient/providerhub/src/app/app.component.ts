@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   title = 'ProviderHub';
   selectedTab = "P";
   compactDesign = false;
+  hasBeenAdjusted = false;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     router.events.forEach((event) => {
@@ -26,20 +27,12 @@ export class AppComponent implements OnInit {
         this.compactDesign = (this.router.url.indexOf("Search") == -1);
         if (this.compactDesign) {
           window.addEventListener('resize', function (event) {
-            var desiredSidebarHeight = Math.max(document.getElementsByClassName('main-display')[0].clientHeight, (window.innerHeight - 50));
-            var currentSidebarHeight = document.getElementsByClassName('left-sidebar')[0].clientHeight;
-            var paddingBottomToAdd = desiredSidebarHeight - currentSidebarHeight;
-            if (paddingBottomToAdd != 0) { (document.getElementsByClassName('left-sidebar')[0] as HTMLElement).style.paddingBottom = paddingBottomToAdd + "px"; }
+            var desiredSidebarHeight = Math.max(document.getElementsByClassName('main-display')[0].clientHeight, (window.innerHeight - 50)); var defaultSidebarHeight = 410;
+            var paddingBottomToAdd = desiredSidebarHeight - defaultSidebarHeight;
+            if (paddingBottomToAdd > 0) { (document.getElementsByClassName('left-sidebar')[0] as HTMLElement).style.paddingBottom = paddingBottomToAdd + "px"; }
           });
-          if (typeof (Event) === 'function') {
-            //what it should be
-            window.dispatchEvent(new Event('resize'));
-          } else {
-            //deprecated but IE11 is dumb; actually warns that it's deprecated in IE11 but it's the only working method :)
-            var evt = window.document.createEvent('UIEvents');
-            evt.initUIEvent('resize', true, false, window, 0);
-            window.dispatchEvent(evt);
-          }
+          if (typeof (Event) === 'function') { window.dispatchEvent(new Event('resize')); }
+          else { var evt = window.document.createEvent('UIEvents'); evt.initUIEvent('resize', true, false, window, 0); window.dispatchEvent(evt); }
         }
       }
       // Other Events you might want to handle:NavigationStart,NavigationEnd,NavigationCancel,NavigationError,RoutesRecognized
