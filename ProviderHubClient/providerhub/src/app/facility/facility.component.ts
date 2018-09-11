@@ -26,6 +26,9 @@ export class FacilityComponent implements OnInit {
   public Service: any;
   public nav: string;
   public providerDT: any;
+  public editingDivWrappers: any;
+  public editingDivHeaderWrappers: any;
+  public editingHeaderDivs: any;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private service: ProviderHubService, private location: Location) {
@@ -55,22 +58,47 @@ export class FacilityComponent implements OnInit {
     }
     if (this.initialTab != "") { toClick.click(); }
 
+    this.editingDivWrappers = ['#facility-demo', '#demoTable'];
+    this.editingDivHeaderWrappers = ['#facility-main-header', '#demo-card .card-title'];
+    this.editingHeaderDivs = [document.getElementById("facility-main-header"), document.getElementById("demo-card").getElementsByClassName('card-title')[0]];
+
+    //0=PROVIDER HEADER EDIT, 1=PROVIDER DEMO EDIT
+    for (var i = 0; i < this.editingHeaderDivs.length; i++) {
+      (function () {
+        var divs = _dis.editingHeaderDivs[i]; var _i = i;
+        divs.getElementsByClassName("not-editing")[0].addEventListener("click", function (event) { //edit
+          _dis.editFacility(_i, event);
+        });
+        divs.getElementsByClassName("is-editing")[0].addEventListener("click", function (event) { //save
+          _dis.saveFacility(_i, event);
+        });
+        divs.getElementsByClassName("is-editing")[1].addEventListener("click", function (event) { //cancel
+          _dis.cancelEdit(_i, event);
+        });
+      })();
+    }
+
     this.service.hitAPI(this.apiRoot + "Facility/ByID/" + this.facilityId).subscribe(
       data => {
+        //0. Edit/Save buttons and Misc UI
+        for (var i = 0; i < this.editingDivWrappers.length; i++) {
+          let _editDivs: any = $(this.editingDivHeaderWrappers[i] + " i.is-editing," + this.editingDivWrappers[i] + " .is-editing"); _editDivs.hide(); _editDivs = null;
+          let _notEditDivs: any = $(this.editingDivHeaderWrappers[i] + " i.not-editing," + this.editingDivWrappers[i] + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
+        }
+        //1. header and address
         this.Facility = data; this.FacilityAddress = this.Facility.FacilityAddress;
         document.getElementById("page-title").innerHTML = this.Facility.FacilityName;
-        this.Facility.LastUpdatedDate = new PHDatePipe().transform(this.Facility.LastUpdatedDate);
+        this.Facility.LastUpdatedDate = new PHDatePipe().transform(this.Facility.LastUpdatedDate.replace(/\D/g, '').slice(0,-4));
         this.FacilityAddress.AddressLine1 = (this.FacilityAddress.AddressLine1 == null) ? "" : this.FacilityAddress.AddressLine1;
         this.FacilityAddress.AddressLine2 = (this.FacilityAddress.AddressLine2 == null) ? "" : this.FacilityAddress.AddressLine2;
-        //1. specs
+        //1b. specs
         for (var i = 0; i < this.Facility.FacilitySpecialties.length; i++) {
           var s = this.Facility.FacilitySpecialties[i];
-          s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '');
-          s.TerminationDate = (s.TerminationDate == null) ? '' : s.TerminationDate.replace(/\D/g, '');
-          s.LastUpdatedDate = (s.LastUpdatedDate == null) ? '' : s.LastUpdatedDate.replace(/\D/g, '');
+          s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '').slice(0, -4);
+          s.TerminationDate = (s.TerminationDate == null) ? '' : s.TerminationDate.replace(/\D/g, '').slice(0, -4);
+          s.LastUpdatedDate = (s.LastUpdatedDate == null) ? '' : s.LastUpdatedDate.replace(/\D/g, '').slice(0, -4);
         }
-        let list: any = $('#specList');
-        list.sortable();
+        let list: any = $('#specList'); list.sortable();
         let providersLink: any = $("#facility-nav li[tab-id='Providers']");
         providersLink.click(function () {
           if (typeof (Event) === 'function') { window.dispatchEvent(new Event('resize')); }
@@ -114,6 +142,12 @@ export class FacilityComponent implements OnInit {
             this.onRowSelect(this.providerDT.rows(indexes).data().pluck("ID"));
           }
         );
+        //2b. Vendor
+        // Facility-level properties to set from Vendor: VendorName ([0].VendorName) | VLastUpdatedBy ([0].LastUpdatedBy) | VLastUpdatedDate ([0].LastUpdatedDate)
+        this.Facility.VendorName = this.Facility.VendorAddresses[0].VendorName;
+        this.Facility.VLastUpdatedBy = this.Facility.VendorAddresses[0].LastUpdatedBy;
+        this.Facility.VLastUpdatedDate = this.Facility.VendorAddresses[0].LastUpdatedDate;
+        // Any tweaking of vendor properties needed: mess with this.Facility.VendorAddresses[i] -- do for PhoneExtension and AlternatePhoneNumber
         //3. Additional properties for UI conditionals ('novalue' pipe doesn't work??)
         this.FacilityAddress.HidePhoneExtension = (this.FacilityAddress.PhoneExtension == null || this.FacilityAddress.PhoneExtension == '');
         this.FacilityAddress.HideAlternatePhoneNumber = (this.FacilityAddress.AlternatePhoneNumber == null || this.FacilityAddress.AlternatePhoneNumber == '');
@@ -148,6 +182,64 @@ export class FacilityComponent implements OnInit {
         + "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.FPRelationship.PCPEligibleIndicator) + "</td>"
         + "<td>Float Provider <br/>" + new BoolPipe().transform(d.FPRelationship.FloatProviderIndicator) + "</td></tr>";
     }
+  }
+  //save/edit
+  public saveFacility(type: number, event: any) {
+    let _editDivs: any = $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing"); _editDivs.hide(); _editDivs = null;
+    let _notEditDivs: any = $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
+    this.loading(true, type);//load starting, show overlay
+    function val(which) { let _e: any = $("#edit_Facility_" + which); return _e.val(); }//MULTI SELECT VALS ARE ID ARRAYS
+    function val2(which) { let _e: any = $("#edit_FacilityDemo_" + which); return _e.val(); } let body: any;
+    switch (type) {
+      case 0: //"Main" Facility-Header Info
+        body = { Name:val("Name"), NPI: val("NPI"), User: "GHC-HMO\\spillai" };
+        break;
+      case 1: //Demographics (Really just an address)
+        body = { Address1: val2("Address1"), Address2: val2("Address2"), City: val2("City"), State: val2("State"), Zip: val2("ZipCode"), User: "GHC-HMO\\spillai" };
+        body.PhoneNumber = val2("PhoneNumber"); body.FaxNumber = val2("FaxNumber"); body.Website = val2("Website");
+        break;
+      case 2: //Specialties
+        break;
+      default: //log error + weird behavior
+        break;
+    }
+    console.log(body);
+    this.service.hitAPI(this.apiRoot + "Facility/Save/" + type + "/" + this.facilityId, JSON.stringify(body)).subscribe(
+      data => {
+        console.log(data); this.loading(false, data.POSTvars.type);//load finished, hide overlay
+        switch (data.POSTvars.type) {
+          case 0:
+            //header data to just transform over (replace with partial arr matching function)
+            this.Facility.FacilityName = data.POSTvars.Name; this.Facility.NPI = data.POSTvars.NPI;
+            break;
+          case 1:
+            //demo data to just transform over (also replace with partial arr matching fxn)
+            this.FacilityAddress.AddressLine1 = data.POSTvars.Address1; this.FacilityAddress.AddressLine2 = data.POSTvars.Address2;
+            this.FacilityAddress.City = data.POSTvars.City; this.FacilityAddress.State = data.POSTvars.State; this.FacilityAddress.ZipCode = data.POSTvars.Zip;
+            this.FacilityAddress.PhoneNumber = data.POSTvars.PhoneNumber; this.FacilityAddress.FaxNumber = data.POSTvars.FaxNumber; this.FacilityAddress.Website = data.POSTvars.Website;
+            break;
+          case 2:
+            break;
+          default: //log error + weird behavior
+            break;
+        }
+      }
+    );
+  }
+
+  public editFacility(type: number, event: any) {
+    let _editDivs: any = $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing"); _editDivs.show(); _editDivs = null;
+    let _notEditDivs: any = $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing"); _notEditDivs.hide(); _notEditDivs = null;
+  }
+
+  public cancelEdit(type: number, event: any) {
+    let _editDivs: any = $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing"); _editDivs.hide(); _editDivs = null;
+    let _notEditDivs: any = $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
+  }
+
+  public loading(isLoading, saveType) {
+    let loadOverlay: any = $("#loadOverlay" + saveType);
+    if (isLoading) { loadOverlay.show(); } else { loadOverlay.hide(); }
   }
 
 }

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 @import "../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+@import "../node_modules/selectize/dist/css/selectize.css";
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -31,6 +32,7 @@ a:hover{color:#E6003E}
   color: #fff !important;
 }
 .midHead{text-align:left!important;}
+i.fa {cursor:pointer;}
 h2.one {
   text-align: left;
   font-size: 40px;
@@ -40,8 +42,25 @@ h2.one {
   padding-bottom:3px;
 }
 
+/*Selectize Styles*/
+.selectize-control.multi .selectize-input > div {
+  background: #B2a570;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.selectize-control.multi .selectize-input > div.active {
+  background: rgba(178,165,112,0.4);
+  color:#fff;
+  border: 0px #ccc;
+}
+
 /*Header Styles*/
-#outer-wrapper{ width:90%;margin:0 auto; }
+#outer-wrapper {
+  width: 90%;
+  margin: 0 auto;
+}
 #nav-bar{
   background-color:rgb(35,31,32); border-color:rgb(51,51,51);
   width:100%;display:block;color:rgb(51,51,51); font-size:14px;
@@ -161,6 +180,10 @@ input[type='search'] {
 }
 
 /*Provider View Styles (shared with most "single object" CRUD views aka Facility View, Vendor View, etc...*/
+i.is-editor{
+  font-size:0.7em; padding-left:10px; padding-right:10px;
+}
+.is-editing{display:none;}
 #provider-wrapper .left-sidebar, #facility-wrapper .left-sidebar{
   background:#231f20; color:#eee; width:210px; float:left; margin:0;padding:0;border:0;
 }
@@ -244,6 +267,7 @@ tr.footer td {
   text-align: right; /*Labels*/
   font-size: 14px;
 }
+.status_INACTIVE{display:none;}
 #provider-wrapper .provider-display #demoTable td:nth-child(even), #facility-wrapper .facility-display #demoTable td:nth-child(even), 
 #specTable td:nth-child(even) {
   text-align: left; /*Values*/
@@ -337,7 +361,15 @@ span.expand {
   cursor:pointer;
 }
 #providersTableDT td{font-size:16px!important;}
-
+/*datepickers*/
+#ui-datepicker-div{background:#fff;padding:20px;}
+.ui-datepicker-title{text-align:center;font-weight:bold;}
+.ui-datepicker-prev{position:absolute;left:20px;top:20px;display:inline-block;}
+.ui-datepicker-next{position:absolute;right:20px;top:20px;display:inline-block;}
+.ui-datepicker-next span, .ui-datepicker-prev span{cursor:pointer;font-weight:bold;}
+.ui-datepicker-calendar td a{color:#000;padding:5px;text-decoration:none;}
+.ui-datepicker-calendar td a:hover{text-decoration:underline;}
+.ui-datepicker-calendar td.ui-datepicker-other-month a{color:#999;}
 /*card*/
 .card {
   border: none;

@@ -1,4 +1,4 @@
-import { PHDatePipe, GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe } from './pipes';
+import { PHDatePipe, GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, SpecStatusPipe } from './pipes';
 
 describe('PHDatePipe', () => {
   it('create an instance', () => {
@@ -34,6 +34,12 @@ describe('SpecialtyTypePipe', () => {
 describe('ParentSpecialtyPipe', () => {
   it('create an instance', () => {
     const pipe = new ParentSpecialtyPipe();
+    expect(pipe).toBeTruthy();
+  });
+});
+describe('SpecStatusPipe', () => {
+  it('create an instance', () => {
+    const pipe = new SpecStatusPipe();
     expect(pipe).toBeTruthy();
   });
 });

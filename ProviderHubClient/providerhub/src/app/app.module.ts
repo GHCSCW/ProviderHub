@@ -14,12 +14,16 @@ import { ProviderComponent } from './provider/provider.component';
 
 import { ProviderHubService } from './app.service';
 import { CommonModule } from '@angular/common';
+import { NgSelectizeModule } from 'ng-selectize';
 import { Http, Response, HttpModule } from '@angular/http';
 import { HttpClientModule, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomInterceptor } from './app.service';
 import { FacilitysearchComponent } from './facilitysearch/facilitysearch.component';
 import { FacilityComponent } from './facility/facility.component';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, PHDatePipe, NoValuePipe } from './pipes';
+import { PresetValueExampleComponent } from './selectize/preset-value-example/presetValueExample.component';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, PHDatePipe, NoValuePipe, SpecStatusPipe } from './pipes';
+import { VendorsearchComponent } from './vendorsearch/vendorsearch.component';
+import { VendorComponent } from './vendor/vendor.component';
 
 const routes: Routes = [
   /*Root: Provider List & Basic Search (Name/NPI)*/
@@ -44,18 +48,24 @@ const routes: Routes = [
     ProviderComponent,
     FacilitysearchComponent,
     FacilityComponent,
+    PresetValueExampleComponent,
     GenderPipe,
     NullablePipe,
     BoolPipe,
     SpecialtyTypePipe,
     ParentSpecialtyPipe,
+    SpecStatusPipe,
     PHDatePipe,
-    NoValuePipe
+    NoValuePipe,
+    VendorsearchComponent,
+    VendorComponent
   ],
   imports: [
     DatatableModule,
+    NgSelectizeModule,
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     HttpClientModule,
     HttpModule,

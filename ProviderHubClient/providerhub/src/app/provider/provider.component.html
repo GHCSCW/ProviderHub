@@ -10,25 +10,42 @@
     </ul>
   </div>
   <div class="provider-display main-display">
-    <h2 class="one red">{{Provider.FirstName}} {{Provider.LastName}}<span [hidden]="Provider.Credentials==''">, {{Provider.Credentials}}</span></h2>
+    <h2 id="provider-main-header" class="one red">
+      {{Provider.FirstName}} {{Provider.LastName}}<span [hidden]="Provider.Credentials==''">, {{Provider.Credentials}}</span>
+      <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
+    </h2>
     <table id="provider-demo">
       <tr>
         <td>First Name</td>
-        <td>{{Provider.FirstName}}</td>
+        <td><span class="not-editing">{{Provider.FirstName}}</span><span class="is-editing"><input type="text" id="edit_Provider_FirstName" value="{{Provider.FirstName}}" /></span></td>
         <td>NPI</td>
-        <td>{{Provider.NPI}}</td>
+        <td><span class="not-editing">{{Provider.NPI}}</span><span class="is-editing"><input type="text" id="edit_Provider_NPI" value="{{Provider.NPI}}" /></span></td>
       </tr>
       <tr>
         <td>Last Name</td>
-        <td>{{Provider.LastName}}</td>
+        <td><span class="not-editing">{{Provider.LastName}}</span><span class="is-editing"><input type="text" id="edit_Provider_LastName" value="{{Provider.LastName}}" /></span></td>
         <td>Epic Provider ID</td>
-        <td>{{Provider.EpicProviderID}}</td>
+        <td><span class="not-editing">{{Provider.EpicProviderID}}</span><span class="is-editing"><input type="text" id="edit_Provider_EpicProviderID" value="{{Provider.EpicProviderID}}" /></span></td>
       </tr>
       <tr>
         <td>Credentials</td>
-        <td>{{Provider.Credentials}}</td>
+        <td><span class="not-editing">{{Provider.Credentials}}</span><span class="is-editing">
+           <!--EDIT CREDENTIALS CONTROL: selectize, tag-based autocomplete select box: cred abbreviations + description-->
+           <select id="edit_Provider_Credentials" multiple="multiple" class="toSelectize">
+              <option value="MD">MD</option>
+              <option value="DO">DO</option>
+              <option value="PhD">PhD</option>
+            </select>
+        </span></td>
         <td>Gender</td>
-        <td>{{Provider.Gender | gender}}</td>
+        <td><span class="not-editing">{{Provider.Gender | gender}}</span><span class="is-editing">
+             <!--EDIT GENDER CONTROL: normal select tag, Male/Female/Unknown-->
+             <select id="edit_Provider_Gender" value="{{Provider.Gender | gender}}">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Unknown">Unknown</option>
+            </select>
+        </span></td>
       </tr>
       <tr>
         <td></td>
@@ -40,38 +57,59 @@
     <hr />
     <div id="demo-card" class="card" [hidden]="nav!='Demographics'">
       <div class="card-body">
-        <h5 class="card-title red">Demographics</h5>
+        <h5 class="card-title red">Demographics<i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i></h5>
         <table id="demoTable">
           <tr>
             <td>Languages</td>
-            <td colspan="3">{{Provider.Languages}}</td>
+            <td colspan="3"><span class="not-editing">{{Provider.Languages}}</span><span class="is-editing">
+                <!--EDIT LANGUAGE CONTROL: selectize, tag-based autocomplete select box: language names-->
+                <select id="edit_ProviderDemo_Language" multiple="multiple" class="toSelectize">
+                  <option value="English">English</option>
+                  <option value="Spanish">Spanish</option>
+                  <option value="Gujarati">Gujarati</option>
+                </select>
+            </span></td>
           </tr>
           <tr>
             <td>Accepts Medicare?</td>
-            <td [attr.colspan]="!Provider.MedicareIndicator?3:1">{{Provider.MedicareIndicator | bool}}</td>
+            <td [attr.colspan]="!Provider.MedicareIndicator?3:1"><span class="not-editing">{{Provider.MedicareIndicator | bool}}</span><span class="is-editing">
+                  <!--BOOL CONTROL: Yes/No/Unknown-->
+                  <select id="edit_ProviderDemo_MedicareIndicator" class="is-editing" value="{{Provider.MedicareIndicator | bool}}">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                  </select>
+            </span></td>
             <td [hidden]="!Provider.MedicareIndicator">Medicare PTAN</td>
-            <td [hidden]="!Provider.MedicareIndicator">{{Provider.MedicarePTAN | nullable}}</td>
+            <td [hidden]="!Provider.MedicareIndicator"><span class="not-editing">{{Provider.MedicarePTAN | nullable}}</span><span class="is-editing"><input type="text" id="edit_ProviderDemo_MedicarePTAN" value="{{Provider.MedicarePTAN | nullable}}" /></span></td>
           </tr>
           <tr [hidden]="!Provider.MedicareIndicator">
             <td>Medicare Effective Date</td>
-            <td>{{Provider.MedicareEffectiveDate | nullable}}</td>
+            <td><span class="not-editing">{{Provider.MedicareEffectiveDate | date}}</span><span class="is-editing"><input type="text" class="datepicker" id="edit_ProviderDemo_MedicareEffectiveDate" value="{{Provider.MedicareEffectiveDate | date}}" /></span></td>
             <td style="padding-left:20px;">Medicare Termination Date</td>
-            <td>{{Provider.MedicareTerminationDate | nullable}}</td>
+            <td><span class="not-editing">{{Provider.MedicareTerminationDate | date}}</span><span class="is-editing"><input type="text" class="datepicker" id="edit_ProviderDemo_MedicareTerminationDate" value="{{Provider.MedicareTerminationDate | date}}" /></span></td>
           </tr>
           <tr [class.whiteTR]="!Provider.MedicareIndicator">
             <td>Accepts Medicaid?</td>
-            <td>{{Provider.MedicaidIndicator | bool}}</td>
+            <td><span class="not-editing">{{Provider.MedicaidIndicator | bool}}</span><span class="is-editing">
+                  <!--BOOL CONTROL: Yes/No/Unknown-->
+                  <select id="edit_ProviderDemo_MedicaidIndicator" class="is-editing" value="{{Provider.MedicaidIndicator | bool}}">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                  </select>
+            </span></td>
             <td [hidden]="!Provider.MedicaidIndicator">Medicaid Provider ID</td>
-            <td [hidden]="!Provider.MedicaidIndicator">{{Provider.MedicaidProviderID | nullable}}</td>
+            <td [hidden]="!Provider.MedicaidIndicator"><span class="not-editing">{{Provider.MedicaidProviderID | nullable}}</span><span class="is-editing"><input type="text" id="edit_ProviderDemo_MedicaidProviderID" value="{{Provider.MedicaidProviderID | nullable}}" /></span></td>
           </tr>
           <tr [class.greyTR]="!Provider.MedicareIndicator">
             <td>Hospital Affiliations</td>
-            <td>{{Provider.FacilityNames | nullable:"Coming Soon"}}</td>
+            <td>{{Provider.FacilityNames | nullable:"Coming Soon"}}</td><!--TODO: implement editing/saving once pulling real data for this field!-->
             <td></td>
             <td></td>
           </tr>
           <tr class="footer">
-            <td colspan="2">Last Updated By: {{Provider.LastUpdatedBy}}</td>
+            <td colspan="2">Last Updated By: {{Provider.LastUpdatedBy}}</td><!--updated on edit+save, so no need to toggle when editing/saving, BUT need to pull values (by+on) post-save-->
             <td></td>
             <td>Last Updated On: {{Provider.LastUpdatedDate | date}}</td><!--:'MMM d, y h:mm a'-->
           </tr>
@@ -83,9 +121,9 @@
       <div class="card-body">
         <h5 class="card-title red">Specialties</h5>
         <div id="specList" class="card-text ui-sortable">
-          <h4><input type="checkbox" /> Show Inactive Specialties</h4>
+          <h4><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties</h4>
           <!--EACH SPECIALTY-->
-          <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;">
+          <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard ui-sortable-handle status_{{s.Status}}" style="position: relative; left: 0px; top: 0px;">
             <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
             <div class="card-body specCardBody">
               <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{s.Name}} <br /><span>{{s | specialtyType}} | {{s | parentSpecialty}}</span></h5>
@@ -93,7 +131,7 @@
                 <tbody>
                   <tr>
                     <td>Specialty Status</td>
-                    <td>ACTIVE</td>
+                    <td>{{s | specStatus}}</td>
                   </tr>
                   <tr class="whenExpand">
                     <td>Effective Dates</td>

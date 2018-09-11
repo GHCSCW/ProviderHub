@@ -11,17 +11,32 @@
     </ul>
   </div>
   <div class="facility-display main-display">
-    <h2 class="one red">{{Facility.FacilityName}}</h2>
+    <h2 id="facility-main-header" class="one red">
+      {{Facility.FacilityName}}
+      <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
+    </h2>
     <table id="facility-demo">
       <tr>
-        <td>Address Type</td>
-        <td>{{FacilityAddress.AddressTypeName}}</td>
+        <td>Facility Name</td>
+        <td>
+          <span class="not-editing">{{Facility.FacilityName}}</span>
+          <span class="is-editing"><input type="text" id="edit_Facility_Name" value="{{Facility.FacilityName}}" /></span>
+        </td>
         <td></td>
         <td></td>
       </tr>
+      <!--tr>
+      <td>Address Type</td>
+      <td>{{FacilityAddress.AddressTypeName}}</td>
+      <td></td>
+      <td></td>
+    </tr-->
       <tr>
         <td>NPI</td>
-        <td>{{Facility.NPI}}</td>
+        <td>
+          <span class="not-editing">{{Facility.NPI}}</span>
+          <span class="is-editing"><input type="text" id="edit_Facility_NPI" value="{{Facility.NPI}}" /></span>
+        </td>
         <td></td>
         <td></td>
       </tr>
@@ -29,22 +44,42 @@
     <hr />
     <div id="demo-card" class="card" [hidden]="nav!='Demographics'">
       <div class="card-body">
-        <h5 class="card-title red">Demographics</h5>
+        <h5 class="card-title red">Demographics<i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i></h5>
         <table id="demoTable">
           <tr>
             <td>Address</td>
             <td>
-              {{FacilityAddress.AddressLine1}}&nbsp;&nbsp;{{FacilityAddress.AddressLine2}}<br />
-              {{FacilityAddress.City}},&nbsp;{{FacilityAddress.State}}&nbsp;&nbsp;{{FacilityAddress.ZipCode}}
+              <span id="FacilityAddress" class="not-editing">
+                <span id="FA_A1">{{FacilityAddress.AddressLine1}}</span>&nbsp;&nbsp;<span id="FA_A2">{{FacilityAddress.AddressLine2}}</span><br />
+                <span id="FA_C">{{FacilityAddress.City}}</span>,&nbsp;<span id="FA_S">{{FacilityAddress.State}}</span>&nbsp;&nbsp;<span id="FA_Z">{{FacilityAddress.ZipCode}}</span>
+              </span>
+              <span class="is-editing">
+                <input type="text" id="edit_FacilityDemo_Address1" value="{{FacilityAddress.AddressLine1}}" />
+                <input type="text" id="edit_FacilityDemo_Address2" value="{{FacilityAddress.AddressLine2}}" /><br />
+                <input type="text" id="edit_FacilityDemo_City" value="{{FacilityAddress.City}}" />
+                <input type="text" id="edit_FacilityDemo_State" value="{{FacilityAddress.State}}" />
+                <input type="text" id="edit_FacilityDemo_ZipCode" value="{{FacilityAddress.ZipCode}}" />
+              </span>
             </td>
           </tr>
           <tr>
             <td>Phone</td>
-            <td>{{FacilityAddress.PhoneNumber | nullable}} <span *ngIf="!FacilityAddress.HidePhoneExtension">ext. {{FacilityAddress.PhoneExtension}}</span></td>
+            <td>
+              <span id="FacilityPhoneNumber" class="not-editing">
+                {{FacilityAddress.PhoneNumber | nullable}} <span *ngIf="!FacilityAddress.HidePhoneExtension">ext. {{FacilityAddress.PhoneExtension}}</span>
+              </span>
+              <span class="is-editing">
+                <input type="text" id="edit_FacilityDemo_PhoneNumber" value="{{FacilityAddress.PhoneNumber}}" />
+                <input *ngIf="!FacilityAddress.HidePhoneExtension" type="text" id="edit_FacilityDemo_PhoneExtension" value="{{FacilityAddress.PhoneExtension}}" />
+              </span>
+            </td>
           </tr>
           <tr>
             <td>Fax</td>
-            <td>{{FacilityAddress.FaxNumber | nullable}}</td>
+            <td>
+              <span id="FacilityFaxNumber" class="not-editing">{{FacilityAddress.FaxNumber | nullable}}</span>
+              <span class="is-editing"><input type="text" id="edit_FacilityDemo_FaxNumber" value="{{FacilityAddress.FaxNumber}}" /></span>
+            </td>
           </tr>
           <tr *ngIf="!FacilityAddress.HideAlternatePhoneNumber">
             <td>Alt. Phone</td>
@@ -52,7 +87,10 @@
           </tr>
           <tr>
             <td>Website</td>
-            <td><a target="_blank" href="{{FacilityAddress.Website | nullable:''}}">{{FacilityAddress.Website | nullable:''}}</a></td>
+            <td>
+              <span id="FacilityWebsite" class="not-editing"><a target="_blank" href="{{FacilityAddress.Website | nullable:''}}">{{FacilityAddress.Website | nullable:''}}</a></span>
+              <span class="is-editing"><input type="text" id="edit_FacilityDemo_Website" value="{{FacilityAddress.Website}}" /></span>
+            </td>
           </tr>
           <tr>
             <td>Hours</td>
@@ -63,18 +101,61 @@
             <td>Last Updated On: {{Facility.LastUpdatedDate}}</td><!--:'MMM d, y h:mm a'-->
           </tr>
         </table>
-        <table id="vendorTable" [hidden]="nav!='Vendor'">
-          <tr>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-          </tr>
-        </table>
       </div>
     </div>
+    <!--VENDOR-->
+    <div id="spec-card" class="card specWrapper" [hidden]="nav!='Vendor'">
+      <div class="card-body">
+        <h5 class="card-title red">Vendor</h5>
+        <div id="facList" class="card-text ui-sortable">
+          <!--EACH FACILITY-->
+          <div class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;width:100%;">
+            <div class="card-body specCardBody">
+              <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)">{{Facility.VendorName}}</h5>
+              <table id="facTable" class="card-text specTable">
+                <tbody *ngFor="let v of Facility.VendorAddresses">
+                  <tr>
+                    <td colspan="4" class="midHead"><h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{v.AddressTypeName}}</h5></td>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>
+                      {{v.AddressLine1}}&nbsp;&nbsp;{{v.AddressLine2}}<br />
+                      {{v.City}},&nbsp;{{v.State}}&nbsp;&nbsp;{{v.ZipCode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Phone</td>
+                    <td>{{v.PhoneNumber | nullable}}</td>
+                  </tr>
+                  <tr>
+                    <td>Fax</td>
+                    <td>{{v.FaxNumber | nullable}}</td>
+                  </tr>
+                  <!--tr>
+                    <td>Alt. Phone</td>
+                    <td>{{v.AlternatePhoneNumber | nullable}}</td>
+                  </tr-->
+                  <tr>
+                    <td>Website</td>
+                    <td><a href="{{v.Website | nullable:''}}" target="_blank">{{v.Website | nullable:''}}</a></td>
+                  </tr>
+                  <tr>
+                    <td>Hours</td>
+                    <td>Coming Soon</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer provFacFooter">
+              <span>Last Updated By: {{Facility.VLastUpdatedBy}}</span><span>Last Updated On: {{Facility.VLastUpdatedDate}}</span>
+            </div>
+          </div>
+          <!--END FOR EACH VENDOR ADDRESS-->
+        </div>
+      </div>
+    </div>
+    <!--END VENDOR-->
     <div id="demo-card" class="card" [hidden]="nav!='Specialties'">
       <div class="card-body">
         <h5 class="card-title red">Specialties</h5>

@@ -19,6 +19,18 @@ namespace ProviderHubServiceNew
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Auth", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "SaveProvider", 
+                url: "Provider/Save/{type}/{id}",
+                defaults: new { controller = "Provider", action="Save", type=0, id=UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "SaveFacility",
+                url: "Facility/Save/{type}/{id}",
+                defaults: new { controller = "Facility", action = "Save", type = 0, id = UrlParameter.Optional }
+            );
         }
     }
 }

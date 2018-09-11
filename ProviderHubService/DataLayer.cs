@@ -6,6 +6,7 @@ using Ghc.Utility.DataAccess;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace ProviderHubService
 {
@@ -246,6 +247,7 @@ namespace ProviderHubService
                     facility.FacilityAddress = GetAddressByFacilityID(facilityID, true);
                     facility.FacilitySpecialties = GetFacilitySpecialties(facilityID);
                     facility.FacilityProviders = GetFacilityProviders(facilityID);
+                    facility.VendorAddresses = GetVendorAddressesByFacilityID(facilityID);
                 }
             }
 
@@ -309,6 +311,33 @@ namespace ProviderHubService
             return providerList;
         }
         #endregion
+
+        public List<dynamic> GetVendorAddressesByFacilityID(int facilityID) {
+            List<dynamic> VendorAddressList = new List<dynamic>();
+            string sql = "providerhub.dbo.sp_GetVendorByFacilityID";
+            SqlParameter[] sqlParams = { new SqlParameter("@FID", SqlDbType.Int) { Value = facilityID } };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            for (var i=0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                dynamic toAdd = new ExpandoObject(); var row = ds.Tables[0].Rows[i];
+                toAdd.VendorName = row.Field<string>("VENDOR_NAME");
+                //AddressTypeName, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber, PhoneExtension, FaxNumber, AlternatePhoneNumber, Website
+                toAdd.AddressTypeName = row.Field<string>("ADDRESS_TYPE_NAME");
+                toAdd.AddressLine1 = row.Field<string>("ADDRESS_LINE_1");
+                toAdd.AddressLine2 = row.Field<string>("ADDRESS_LINE_2");
+                toAdd.City = row.Field<string>("CITY");
+                toAdd.State = row.Field<string>("STATE");
+                toAdd.ZipCode = row.Field<string>("ZIP_CODE");
+                toAdd.PhoneNumber = row.Field<string>("PHONE_NUMBER");
+                toAdd.PhoneExtension = row.Field<string>("PHONE_EXTENSION");
+                toAdd.AlternatePhoneNumber = row.Field<string>("ALTERNATE_PHONE_NUMBER");
+                toAdd.FaxNumber = row.Field<string>("FAX_NUMBER");
+                toAdd.Website = row.Field<string>("WEBSITE");
+                //TODO: ORDER BY ADDRESS LAST_UPDATED DESC... AKA VERY LATEST UPDATED ONE FIRST
+                VendorAddressList.Add(toAdd);
+            }
+            return VendorAddressList;
+        }
 
         #region FUNCTION: GetAddressByFacilityID(int facilityID)
 
@@ -619,6 +648,49 @@ namespace ProviderHubService
             return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
         }
 
+        public int SaveProviderHeader(dynamic p) {
+            string sql = "providerhub.dbo.sp_SaveProviderHeader";
+            //FirstName: val("FirstName"), LastName: val("LastName"), Credentials: val("Credentials"), NPI: val("NPI"), EpicProviderID: val("EpicProviderID"), Gender: val("Gender")
+            SqlParameter[] sqlParams = { new SqlParameter("@FirstName", SqlDbType.VarChar){ Value = p.FirstName }, new SqlParameter("@LastName", SqlDbType.VarChar){ Value = p.LastName }, 
+                                         new SqlParameter("@Credentials", SqlDbType.VarChar){ Value = p.Credstr }, new SqlParameter("@NPI", SqlDbType.VarChar){ Value = p.NPI }, 
+                                         new SqlParameter("@EpicProviderID", SqlDbType.VarChar){ Value = p.EpicProviderID }, new SqlParameter("@Gender", SqlDbType.Int){ Value = p.Gender },
+                                         new SqlParameter("@User", SqlDbType.VarChar){ Value = p.User }, new SqlParameter("@ID",SqlDbType.Int){ Value = p.ID } };
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
+        public int SaveProviderDemo(dynamic p) {
+            string sql = "providerhub.dbo.sp_SaveProviderDemo";
+            //{ Languages: val2("Language"), MedicareIndicator: val2("MedicareIndicator"), MedicaidIndicator: val2("MedicaidIndicator") }
+            // if Medicare: MedicarePTAN, MedicareEffectiveDate, MedicareTerminationDate | if Medicaid: MedicaidProviderID | (else these are present in p but null)
+            SqlParameter[] sqlParams = { new SqlParameter("@MedicareIndicator", SqlDbType.Bit){ Value = p.MedicareIndicator }, new SqlParameter("@MedicaidIndicator", SqlDbType.Bit){ Value = p.MedicaidIndicator },
+                                         new SqlParameter("@Languages", SqlDbType.VarChar){ Value = p.Langstr }, new SqlParameter("@MedicarePTAN", SqlDbType.VarChar){ Value = p.MedicarePTAN },
+                                         new SqlParameter("@MedicareEffectiveDate", SqlDbType.Date){  Value = p.MedicareEffectiveDate == null? DBNull.Value : p.MedicareEffectiveDate },
+                                         new SqlParameter("@MedicareTerminationDate", SqlDbType.Date){ Value = p.MedicareTerminationDate == null? DBNull.Value : p.MedicareTerminationDate },
+                                         new SqlParameter("@MedicaidProviderID", SqlDbType.VarChar){ Value = p.MedicaidProviderID }, new SqlParameter("@User", SqlDbType.VarChar){ Value = p.User },
+                                         new SqlParameter("@ID",SqlDbType.Int){ Value = p.ID } };
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
+        public int SaveFacilityHeader(dynamic p) {
+            string sql = "providerhub.dbo.sp_SaveFacilityHeader";
+            //body = { Name:val("Name"), NPI: val("NPI"), User: "GHC-HMO\\spillai" };
+            SqlParameter[] sqlParams = { new SqlParameter("@Name", SqlDbType.VarChar){ Value = p.Name }, new SqlParameter("@NPI", SqlDbType.VarChar){ Value = p.NPI },
+                                         new SqlParameter("@ID", SqlDbType.Int){ Value = p.ID }, new SqlParameter("@User", SqlDbType.VarChar){ Value = p.User } };
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
+        public int SaveFacilityDemo(dynamic p) {
+            string sql = "providerhub.dbo.sp_SaveFacilityDemo";
+            /*body = { Address1: val2("Address1"), Address2: val2("Address2"), City: val2("City"), State: val2("State"), Zip: val2("ZipCode"), User: "GHC-HMO\\spillai" };
+                 body.PhoneNumber = val2("PhoneNumber"); body.FaxNumber = val2("FaxNumber"); body.Website = val2("Website");*/
+            SqlParameter[] sqlParams = { new SqlParameter("@Address1", SqlDbType.VarChar){ Value = p.Address1 }, new SqlParameter("@Address2", SqlDbType.VarChar){ Value = p.Address2 },
+                                         new SqlParameter("@City", SqlDbType.VarChar){ Value = p.City }, new SqlParameter("@State", SqlDbType.VarChar){ Value = p.State },
+                                         new SqlParameter("@Zip", SqlDbType.VarChar){  Value = p.Zip }, new SqlParameter("@User", SqlDbType.VarChar){ Value = p.User },
+                                         new SqlParameter("@PhoneNumber", SqlDbType.VarChar){ Value = p.PhoneNumber }, new SqlParameter("@FaxNumber", SqlDbType.VarChar){ Value = p.FaxNumber },
+                                         new SqlParameter("@Website",SqlDbType.VarChar){ Value = p.Website }, new SqlParameter("@ID", SqlDbType.Int){ Value = p.ID } };
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
         #endregion
 
         #region FUNCTION: SaveFacility(Facility facility)
@@ -682,10 +754,10 @@ namespace ProviderHubService
 
         #region FUNCTION: GetLanguageList()
 
-        public List<Language> GetLanguageList()
+        public List<Language> GetLanguageList(bool isCalledFromPH=false)
         {
             List<Language> languageList = new List<Language>();
-            string sql = "providerhub.bh.sp_GetLanguageList";
+            string sql = (isCalledFromPH)? "providerhub.dbo.sp_GetLanguageList" : "providerhub.bh.sp_GetLanguageList";
 
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure);
 
@@ -694,8 +766,8 @@ namespace ProviderHubService
                 languageList = (from language in ds.Tables[0].AsEnumerable()
                                 select new Language()
                                 {
-                                    ID = language.Field<int>("PROVIDER_LANGUAGE_ID"),
-                                    Name = language.Field<string>("PROVIDER_LANGUAGE_NAME")
+                                    ID = (isCalledFromPH)? language.Field<int>("LANGUAGE_ID") : language.Field<int>("PROVIDER_LANGUAGE_ID"),
+                                    Name = (isCalledFromPH) ? language.Field<string>("LANGUAGE_NAME") : language.Field<string>("PROVIDER_LANGUAGE_NAME")
                                 }).ToList();
             }
 
@@ -706,10 +778,10 @@ namespace ProviderHubService
 
         #region FUNCTION: GetCredentialList()
 
-        public List<Credential> GetCredentialList()
+        public List<Credential> GetCredentialList(bool isCalledFromPH=false)
         {
             List<Credential> credentialList = new List<Credential>();
-            string sql = "providerhub.bh.sp_GetCredentialList";
+            string sql = (isCalledFromPH)? "providerhub.dbo.sp_getCredentialList" : "providerhub.bh.sp_GetCredentialList";
 
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure);
 
@@ -731,11 +803,11 @@ namespace ProviderHubService
 
         #region FUNCTION: GetVendorList(string searchValue)
 
-        public List<Vendor> GetVendorList(string searchValue)
+        public List<Vendor> GetVendorList(string searchValue, bool isCalledFromPH = false)
         {
             List<Vendor> vendors = new List<Vendor>();
 
-            string sql = "providerHub.bh.sp_GetVendorList";
+            string sql = (isCalledFromPH)? "providerHub.dbo.sp_GetVendorList" : "providerHub.bh.sp_GetVendorList";
             SqlParameter[] sqlParams = { new SqlParameter("@SEARCH_VALUE", SqlDbType.VarChar) { Value = searchValue } };
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
 

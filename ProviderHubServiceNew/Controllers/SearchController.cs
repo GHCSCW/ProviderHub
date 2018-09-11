@@ -26,6 +26,14 @@ namespace ProviderHubServiceNew.Controllers
             return Json(providers, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetVendorList(string id) {
+            List<Vendor> vendors = new List<Vendor>();
+            using (DataLayer dataLayer = new DataLayer()) {
+                vendors = dataLayer.GetVendorList(id, true);
+            }
+            return Json(vendors, JsonRequestBehavior.AllowGet);
+        }
+
         // GET api/search/facility/{searchValue}
         //MODIFY FOR FRAMEWORK [HttpGet("facility/{searchValue}")]
         public ActionResult GetFacilityList(string id)

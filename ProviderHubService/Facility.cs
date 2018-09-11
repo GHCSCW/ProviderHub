@@ -34,6 +34,9 @@ namespace ProviderHubService
         public List<Provider> FacilityProviders { get; set; }
 
         [DataMember]
+        public List<dynamic> VendorAddresses { get; set; }
+
+        [DataMember]
         public string ExternalID { get; set; }
 
         [DataMember]

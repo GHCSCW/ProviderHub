@@ -63,3 +63,13 @@ export class ParentSpecialtyPipe implements PipeTransform {
     return (value.ParentSpecialtyID==0) ? "(is a Parent Specialty)" : "Parent Specialty: "+value.ParentName;
   }
 }
+
+@Pipe({
+  name: 'specStatus'
+})
+export class SpecStatusPipe implements PipeTransform {
+  transform(value: any, args?: any): any {
+    var todaysDate = new Date(); todaysDate.setHours(0, 0, 0, 0);
+    return (value.TerminationDate !== null && parseInt(value.TerminationDate) <= todaysDate.getTime()) ? "INACTIVE" : "ACTIVE";
+  }
+}

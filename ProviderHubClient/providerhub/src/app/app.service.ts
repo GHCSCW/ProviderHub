@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, HttpModule, RequestOptions } from '@angular/http';
-import { HttpClientModule, HttpClient, HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { Http, Response, HttpModule, RequestOptions } from '@angular/http'; //Headers is deprecated
+import { HttpClientModule, HttpClient, HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { map } from "rxjs/operators";
 import { Observable } from "rxjs";
 
 @Injectable()
 export class ProviderHubService {
   constructor(private http: Http) { }
-  hitAPI(url) {
+  hitAPI(url, body="") {
     try {
-      var options = new RequestOptions({withCredentials:true});
-      return this.http.post(url,"",options).pipe(map(response => response.json()));
+      //let headers = new Headers(); headers.append('Content-Type','application/json');
+      var options = new RequestOptions({ withCredentials: true });
+      return this.http.post(url,body,options).pipe(map(response => response.json()));
     } catch (err) { console.log(err); }
   }
 }
