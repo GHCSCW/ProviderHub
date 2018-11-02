@@ -25,12 +25,12 @@
         <td></td>
         <td></td>
       </tr>
-      <!--tr>
-      <td>Address Type</td>
-      <td>{{FacilityAddress.AddressTypeName}}</td>
-      <td></td>
-      <td></td>
-    </tr-->
+      <tr>
+        <td>Address Type</td>
+        <td>{{FacilityAddress.AddressTypeName}}</td>
+        <td></td>
+        <td></td>
+      </tr>
       <tr>
         <td>NPI</td>
         <td>
@@ -54,11 +54,11 @@
                 <span id="FA_C">{{FacilityAddress.City}}</span>,&nbsp;<span id="FA_S">{{FacilityAddress.State}}</span>&nbsp;&nbsp;<span id="FA_Z">{{FacilityAddress.ZipCode}}</span>
               </span>
               <span class="is-editing">
-                <input type="text" id="edit_FacilityDemo_Address1" value="{{FacilityAddress.AddressLine1}}" />
-                <input type="text" id="edit_FacilityDemo_Address2" value="{{FacilityAddress.AddressLine2}}" /><br />
-                <input type="text" id="edit_FacilityDemo_City" value="{{FacilityAddress.City}}" />
-                <input type="text" id="edit_FacilityDemo_State" value="{{FacilityAddress.State}}" />
-                <input type="text" id="edit_FacilityDemo_ZipCode" value="{{FacilityAddress.ZipCode}}" />
+                <input type="text" id="edit_FacilityDemo_Address1" value="{{FacilityAddress.AddressLine1}}" placeholder="Address Line 1" />
+                <input type="text" id="edit_FacilityDemo_Address2" value="{{FacilityAddress.AddressLine2}}" placeholder="Address Line 2" /><br />
+                <input type="text" id="edit_FacilityDemo_City" value="{{FacilityAddress.City}}" placeholder="City" />
+                <input type="text" id="edit_FacilityDemo_State" value="{{FacilityAddress.State}}" placeholder="State" />
+                <input type="text" id="edit_FacilityDemo_ZipCode" value="{{FacilityAddress.ZipCode}}" placeholder="Zip" />
               </span>
             </td>
           </tr>
@@ -66,11 +66,12 @@
             <td>Phone</td>
             <td>
               <span id="FacilityPhoneNumber" class="not-editing">
-                {{FacilityAddress.PhoneNumber | nullable}} <span *ngIf="!FacilityAddress.HidePhoneExtension">ext. {{FacilityAddress.PhoneExtension}}</span>
+                {{FacilityAddress.PhoneNumber | phonefromdb}}
+                <span *ngIf="!FacilityAddress.HidePhoneExtension">ext. {{FacilityAddress.PhoneExtension}}</span>
               </span>
               <span class="is-editing">
-                <input type="text" id="edit_FacilityDemo_PhoneNumber" value="{{FacilityAddress.PhoneNumber}}" />
-                <input *ngIf="!FacilityAddress.HidePhoneExtension" type="text" id="edit_FacilityDemo_PhoneExtension" value="{{FacilityAddress.PhoneExtension}}" />
+                <input type="text" id="edit_FacilityDemo_PhoneNumber" placeholder="Phone #" value="{{FacilityAddress.PhoneNumber | phonefromdb}}" />
+                <input type="text" id="edit_FacilityDemo_PhoneExtension" placeholder="ext." value="{{FacilityAddress.PhoneExtension}}" />
               </span>
             </td>
           </tr>
@@ -78,12 +79,22 @@
             <td>Fax</td>
             <td>
               <span id="FacilityFaxNumber" class="not-editing">{{FacilityAddress.FaxNumber | nullable}}</span>
-              <span class="is-editing"><input type="text" id="edit_FacilityDemo_FaxNumber" value="{{FacilityAddress.FaxNumber}}" /></span>
+              <span class="is-editing"><input type="text" id="edit_FacilityDemo_FaxNumber" placeholder="Fax #" value="{{FacilityAddress.FaxNumber}}" /></span>
             </td>
           </tr>
-          <tr *ngIf="!FacilityAddress.HideAlternatePhoneNumber">
+          <tr *ngIf="!FacilityAddress.HideAlternatePhoneNumber" class="not-editing">
             <td>Alt. Phone</td>
-            <td>{{FacilityAddress.AlternatePhoneNumber}}</td>
+            <td>
+              {{FacilityAddress.AlternatePhoneNumber | phonefromdb}}
+              <span *ngIf="!FacilityAddress.HideAltExtension">ext. {{FacilityAddress.AlternateExtension}}</span>
+            </td>
+          </tr>
+          <tr class="is-editing">
+            <td>Alt. Phone</td>
+            <td>
+              <input type="text" id="edit_FacilityDemo_AltNumber" placeholder="Alt Phone #" value="{{FacilityAddress.AlternatePhoneNumber | phonefromdb}}" />
+              <input type="text" id="edit_FacilityDemo_AltExtension" placeholder="ext." value="{{FacilityAddress.AlternateExtension}}" />
+            </td>
           </tr>
           <tr>
             <td>Website</td>
@@ -105,13 +116,13 @@
     </div>
     <!--VENDOR-->
     <div id="spec-card" class="card specWrapper" [hidden]="nav!='Vendor'">
-      <div class="card-body">
+      <div id="facVendorBody" class="card-body">
         <h5 class="card-title red">Vendor</h5>
         <div id="facList" class="card-text ui-sortable">
           <!--EACH FACILITY-->
           <div class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;width:100%;">
             <div class="card-body specCardBody">
-              <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)">{{Facility.VendorName}}</h5>
+              <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)"><a href="../vendor/{{Facility.VID}}" style="color:#fff;">{{Facility.VendorName}}</a></h5>
               <table id="facTable" class="card-text specTable">
                 <tbody *ngFor="let v of Facility.VendorAddresses">
                   <tr>
@@ -140,10 +151,10 @@
                     <td>Website</td>
                     <td><a href="{{v.Website | nullable:''}}" target="_blank">{{v.Website | nullable:''}}</a></td>
                   </tr>
-                  <tr>
+                  <!--tr>
                     <td>Hours</td>
                     <td>Coming Soon</td>
-                  </tr>
+                  </tr-->
                 </tbody>
               </table>
             </div>

@@ -167,6 +167,8 @@ input[type='search'] {
 #providers_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
 #facilities_wrapper .row:first-child > div:first-child{display:none;width:0;}
 #facilities_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
+#vendors_wrapper .row:first-child > div:first-child{display:none;width:0;}
+#vendors_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
 #providersTableDT_wrapper .row:first-child > div:first-child{display:none;width:0;}
 #providersTableDT_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
 .left-sidebar h2 {
@@ -256,7 +258,7 @@ tr.footer td {
   background: #ccc;
   text-align: right;
   font-size: 11px !important;
-  font-family: Courier;
+  font-family: sans-serif; /*Courier;*/
   padding: 5px;
   padding-left: 16px;
 }
@@ -406,7 +408,7 @@ span.expand {
   border-bottom-left-radius: 5px !important;
   border-bottom-right-radius: 5px !important;
   font-size: 12px;
-  font-family: Courier;
+  font-family: sans-serif; /*Courier;*/
 }
 .provSpecFooter{display:none;}
 .provFacFooter {
@@ -415,3 +417,24 @@ span.expand {
 }
 .provFacFooter span:first-child{float:left;}
 .provFacFooter span:last-child{float:right;}
+.card-text-v {
+  margin-top: 0px;
+  /*width: 400px;*/
+  margin-left: 20px;
+  /* margin-bottom: 20px; */
+  padding-left: 0px;
+  display: inline-block;
+}
+.card-text-v td{padding:5px;}
+.card-text-v td.midHead{width:500px;padding:0px;}
+#vendorMainTable td:nth-child(odd), #vendorAddressTable td:nth-child(odd){
+  text-align: right;
+  font-size: 14px;
+}
+#vendorMainTable td:nth-child(even), #vendorAddressTable td:nth-child(even) {
+  text-align: left;
+  font-size: 20px;
+  padding-left: 20px;
+}
+.status_INACTIVE{opacity:0.6!important;}
+#facVendorBody td.midHead{width:500px;}

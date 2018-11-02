@@ -1,6 +1,8 @@
 import { Component, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, RoutesRecognized } from '@angular/router';
 import { API } from './globals';
+import { environment } from '../environments/environment';
+import { ProviderHubService } from './app.service';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +14,12 @@ export class AppComponent implements OnInit {
   selectedTab = "P";
   compactDesign = false;
   hasBeenAdjusted = false;
+  public Service: any;
+  public apiRoot: string;
+  public username: string;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, private service: ProviderHubService) {
+    this.Service = service;
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         console.log(this.router.url.split('/')[1]);
@@ -22,6 +28,8 @@ export class AppComponent implements OnInit {
           case "Provider": this.selectedTab = "P"; break;
           case "facility": //from search before redirect
           case "Facility": this.selectedTab = "F"; break;
+          case "vendor": //from search before redirect
+          case "Vendor": this.selectedTab = "V"; break;
           default: this.selectedTab = "N"; console.log("a url in this app without a '/'? or something wrong"); break;
         }
         this.compactDesign = (this.router.url.indexOf("Search") == -1);
@@ -40,7 +48,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    this.apiRoot = environment.apiRoot; var _dis = this;
+    this.service.hitAPI(this.apiRoot).subscribe(
+      data => {
+        console.log(data); //{"result":"GHC-HMO\spillai","username":"spillai","isSuperUser":"False","isEditor":"False","isUser":"False"}
+        this.username = data.username;
+      }
+    );
   }
 
   public nav(route,tab): void {

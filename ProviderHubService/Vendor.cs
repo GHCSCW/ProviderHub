@@ -45,6 +45,15 @@ namespace ProviderHubService
         public string CreatedBy { get; set; }
 
         [DataMember]
+        public string City { get; set; }
+
+        [DataMember]
+        public string State { get; set; }
+
+        [DataMember]
+        public string ZipCode { get; set; }
+
+        [DataMember]
         public DateTime LastUpdatedDate { get; set; }
 
         [DataMember]

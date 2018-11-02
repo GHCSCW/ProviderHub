@@ -21,15 +21,21 @@ namespace ProviderHubServiceNew
             );
 
             routes.MapRoute(
-                name: "SaveProvider", 
+                name: "SaveProvider",
                 url: "Provider/Save/{type}/{id}",
-                defaults: new { controller = "Provider", action="Save", type=0, id=UrlParameter.Optional }
+                defaults: new { controller = "Provider", action = "Save", type = 0, id = UrlParameter.Optional }
             );
 
             routes.MapRoute(
                 name: "SaveFacility",
                 url: "Facility/Save/{type}/{id}",
                 defaults: new { controller = "Facility", action = "Save", type = 0, id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "SaveVendor",
+                url: "Vendor/Save/{type}/{id}",
+                defaults: new { controller = "Vendor", action = "Save", type = 0, id=UrlParameter.Optional }
             );
         }
     }

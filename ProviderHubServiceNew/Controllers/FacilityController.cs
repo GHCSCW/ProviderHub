@@ -53,6 +53,7 @@ namespace ProviderHubServiceNew.Controllers
             }
             //return everything passed in: type, id, and POST body object
             dynamic toReturn = new ExpandoObject(); inputJSON.type = type; inputJSON.ID = id;
+            inputJSON.User = (!User.Identity.IsAuthenticated) ? "Not Authorized" : User.Identity.Name;
             toReturn.result = false; toReturn.POSTvars = JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(inputJSON));
             //handle each type accordingly
             //0="FACILITY HEADER"

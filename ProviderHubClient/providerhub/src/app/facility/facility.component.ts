@@ -4,7 +4,7 @@ import { API } from '../globals';
 import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule, Location } from '@angular/common';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe } from '../pipes';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe, PhoneToDBPipe, PhoneFromDBPipe } from '../pipes';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
@@ -142,15 +142,17 @@ export class FacilityComponent implements OnInit {
             this.onRowSelect(this.providerDT.rows(indexes).data().pluck("ID"));
           }
         );
-        //2b. Vendor
+        //2b. Vendor 
         // Facility-level properties to set from Vendor: VendorName ([0].VendorName) | VLastUpdatedBy ([0].LastUpdatedBy) | VLastUpdatedDate ([0].LastUpdatedDate)
         this.Facility.VendorName = this.Facility.VendorAddresses[0].VendorName;
+        this.Facility.VID = this.Facility.VendorAddresses[0].VID;
         this.Facility.VLastUpdatedBy = this.Facility.VendorAddresses[0].LastUpdatedBy;
-        this.Facility.VLastUpdatedDate = this.Facility.VendorAddresses[0].LastUpdatedDate;
+        this.Facility.VLastUpdatedDate = new PHDatePipe().transform(this.Facility.VendorAddresses[0].LastUpdatedDate.replace(/\D/g, '').slice(0, -4));
         // Any tweaking of vendor properties needed: mess with this.Facility.VendorAddresses[i] -- do for PhoneExtension and AlternatePhoneNumber
         //3. Additional properties for UI conditionals ('novalue' pipe doesn't work??)
         this.FacilityAddress.HidePhoneExtension = (this.FacilityAddress.PhoneExtension == null || this.FacilityAddress.PhoneExtension == '');
         this.FacilityAddress.HideAlternatePhoneNumber = (this.FacilityAddress.AlternatePhoneNumber == null || this.FacilityAddress.AlternatePhoneNumber == '');
+        this.FacilityAddress.HideAltExtension = (this.FacilityAddress.AlternateExtension == null || this.FacilityAddress.AlternateExtension == '');
         /*this.providerDT.on('search.dt', () => {
           document.getElementById('providersTableDT').getElementsByTagName('tbody')[0].style.visibility = (document.getElementById('providersTableDT_filter').getElementsByTagName('input')[0].value.length < 2) ? "hidden" : "visible";
         });
@@ -195,8 +197,12 @@ export class FacilityComponent implements OnInit {
         body = { Name:val("Name"), NPI: val("NPI"), User: "GHC-HMO\\spillai" };
         break;
       case 1: //Demographics (Really just an address)
+        var phoneFixer = new PhoneToDBPipe();
         body = { Address1: val2("Address1"), Address2: val2("Address2"), City: val2("City"), State: val2("State"), Zip: val2("ZipCode"), User: "GHC-HMO\\spillai" };
-        body.PhoneNumber = val2("PhoneNumber"); body.FaxNumber = val2("FaxNumber"); body.Website = val2("Website");
+        body.PhoneNumber = phoneFixer.transform(val2("PhoneNumber")); body.PhoneExtension = val2("PhoneExtension");
+        body.AlternatePhoneNumber = phoneFixer.transform(val2("AltNumber")); body.AlternateExtension = val2("AltExtension");
+        if (isNaN(body.PhoneNumber) || isNaN(body.AlternatePhoneNumber)) { alert("Invalid Phone Number. (must be 10 digit number, leading +1 allowed, dashes and parentheses allowed)"); return; }
+        body.FaxNumber = val2("FaxNumber"); body.Website = val2("Website");
         break;
       case 2: //Specialties
         break;
@@ -216,7 +222,12 @@ export class FacilityComponent implements OnInit {
             //demo data to just transform over (also replace with partial arr matching fxn)
             this.FacilityAddress.AddressLine1 = data.POSTvars.Address1; this.FacilityAddress.AddressLine2 = data.POSTvars.Address2;
             this.FacilityAddress.City = data.POSTvars.City; this.FacilityAddress.State = data.POSTvars.State; this.FacilityAddress.ZipCode = data.POSTvars.Zip;
-            this.FacilityAddress.PhoneNumber = data.POSTvars.PhoneNumber; this.FacilityAddress.FaxNumber = data.POSTvars.FaxNumber; this.FacilityAddress.Website = data.POSTvars.Website;
+            this.FacilityAddress.PhoneNumber = data.POSTvars.PhoneNumber; this.FacilityAddress.PhoneExtension = data.POSTvars.PhoneExtension;
+            this.FacilityAddress.AlternatePhoneNumber = data.POSTvars.AlternatePhoneNumber; this.FacilityAddress.AlternateExtension = data.POSTvars.AlternateExtension;
+            this.FacilityAddress.FaxNumber = data.POSTvars.FaxNumber; this.FacilityAddress.Website = data.POSTvars.Website;
+            this.FacilityAddress.HideAlternatePhoneNumber = (data.POSTvars.AlternatePhoneNumber.trim() == "");
+            this.FacilityAddress.HideAltExtension = (data.POSTvars.AlternateExtension.trim() == "");
+            this.FacilityAddress.HidePhoneExtension = (data.POSTvars.PhoneExtension.trim() == "");
             break;
           case 2:
             break;

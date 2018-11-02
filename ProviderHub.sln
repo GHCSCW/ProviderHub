@@ -36,6 +36,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ProviderHubClient", "Provid
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProviderHubServiceNew", "ProviderHubServiceNew\ProviderHubServiceNew.csproj", "{042AD770-577F-4680-97F1-6DF74B4228F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PHDataImportJob", "PHDataImportJob\PHDataImportJob.csproj", "{02092E63-1A1B-4B4C-BE9F-17A6474CF331}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{042AD770-577F-4680-97F1-6DF74B4228F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{042AD770-577F-4680-97F1-6DF74B4228F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{042AD770-577F-4680-97F1-6DF74B4228F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02092E63-1A1B-4B4C-BE9F-17A6474CF331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02092E63-1A1B-4B4C-BE9F-17A6474CF331}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02092E63-1A1B-4B4C-BE9F-17A6474CF331}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02092E63-1A1B-4B4C-BE9F-17A6474CF331}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

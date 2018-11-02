@@ -47,7 +47,7 @@ export class FacilitysearchComponent implements OnInit {
           return a1 + "<br/>" + a2;
         }, searchable: false
       },
-        { data: "FacilityAddress.City" }, { data: "FacilityAddress.State", searchable: false }, { data: "FacilityAddress.ZipCode" }, { data: "FacilityAddress.PhoneNumber" }/*, { data: "FacilityAddress.Region", visible:false, searchable:true}*/
+        { data: "FacilityAddress.City" }, { data: "FacilityAddress.State", searchable: false }, { data: "FacilityAddress.ZipCode" }, { data: "FacilityAddress.PhoneNumber", searchable:false }/*, { data: "FacilityAddress.Region", visible:false, searchable:true}*/
       ],
       order: [[0, "asc"]],
       rowId: 'ID',

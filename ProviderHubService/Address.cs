@@ -66,6 +66,9 @@ namespace ProviderHubService
         public string PhoneExtension { get; set; }
 
         [DataMember]
+        public string AlternateExtension { get; set; }
+
+        [DataMember]
         public string AlternatePhoneNumber { get; set; }
 
         [DataMember]

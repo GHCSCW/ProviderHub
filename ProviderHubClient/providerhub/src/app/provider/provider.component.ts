@@ -25,6 +25,7 @@ export class ProviderComponent implements OnInit {
   public editingDivWrappers: any;
   public editingDivHeaderWrappers: any;
   public editingHeaderDivs: any;
+  public _specsList: any;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private service: ProviderHubService, private location: Location) {
@@ -85,6 +86,7 @@ export class ProviderComponent implements OnInit {
         //1. Main and Demo
         this.Provider = data.p; var _c = this.Provider.CredentialListStr; console.log(this.Provider);
         var _credArr = this.Provider.CredentialListStr.split(","); var _langArr = this.Provider.Languages.split(",");
+        //for (var i = 0; i < this.Provider.CredentialList.length;i++)
         for (var i = 0; i < _credArr.length; i++) { _credArr[i] = _credArr[i].trim(); } for (var i = 0; i < _langArr.length; i++) { _langArr[i] = _langArr[i].trim(); }
         this.Provider.LastUpdatedDate = this.Provider.LastUpdatedDate.replace(/\D/g, '').slice(0,-4);
         this.Provider.Credentials = (_c==null)? "" : _c.slice(0, -1).replace(/,/g,", ");//trailing comma
@@ -99,15 +101,21 @@ export class ProviderComponent implements OnInit {
           this.Provider.MedicareEffectiveDate = "Jan 1, 2015"; this.Provider.MedicareTerminationDate = "Jan 1, 2019"; this.Provider.MedicaidProviderID = "1825465";
         }
         //1b. SELECTIZE from 'full entity' lists: Credentials and Languages
-        let toSelectize: any = $("#edit_Provider_Credentials,#edit_ProviderDemo_Language");
+        let toSelectize: any = $("#edit_Provider_Credentials,#edit_ProviderDemo_Language,#add_Provider_Specialty");
         //POPULATE CREDENTIALS AND LANGUAGES SELECT TAG, THEN SET PROVIDER'S CURRENT VALUES AS SELECTED OPTION(S)
-        let credsList: any = data.c; let languagesList: any = data.l; var lSelectHTML, cSelectHTML = "";
-        let lSelect: any = $("#edit_ProviderDemo_Language"); let cSelect: any = $("#edit_Provider_Credentials");
+        let credsList: any = data.c; let languagesList: any = data.l; let specsList: any = data.s; var lSelectHTML, cSelectHTML, sSelectHTML = ""; this._specsList = [];
+        let lSelect: any = $("#edit_ProviderDemo_Language"); let cSelect: any = $("#edit_Provider_Credentials"); let sSelect: any = $("#add_Provider_Specialty");
         for (var i = 0; i < credsList.length; i++) { var selected = (_credArr.includes(credsList[i].Value)) ? "selected" : ""; cSelectHTML += "<option value='" + credsList[i].ID + "' " + selected + ">" + credsList[i].Value + " - " + credsList[i].Description + "</option>"; }
-        for (var i = 0; i < languagesList.length; i++) { var selected = (_langArr.includes(languagesList[i].Name)) ? "selected" : ""; lSelectHTML += "<option value='" + languagesList[i].ID +"' " + selected + ">"+languagesList[i].Name+"</option>"; }
-        lSelect.html("<select>"+lSelectHTML+"</select>"); cSelect.html("<select>"+cSelectHTML+"</select>");
-        //SELECTIZE ALL SELECTS, SEND VAR TO GARBAGE COLLECTOR
-        toSelectize.selectize(); toSelectize = null;
+        for (var i = 0; i < languagesList.length; i++) { var selected = (_langArr.includes(languagesList[i].Name)) ? "selected" : ""; lSelectHTML += "<option value='" + languagesList[i].ID + "' " + selected + ">" + languagesList[i].Name + "</option>"; }
+        for (var i = 0; i < specsList.length; i++) {
+          sSelectHTML += "<option value='" + specsList[i].ID + "'>" + specsList[i].Name + "</option>";
+          var toAdd = specsList[i]; toAdd.SequenceNumber = this.Provider.ProviderSpecialties.length; toAdd.MappingID = 0; toAdd.LastUpdatedBy = 'spillai';
+          toAdd.EffectiveDate = "/Date(1451628000000-0600)/".replace(/\D/g, '').slice(0, -4); toAdd.TerminationDate = ''; toAdd.LastUpdatedDate = '';
+          toAdd.Status = "ACTIVE"; toAdd.ParentName = ''; toAdd.ParentSpecialtyID = 0; this._specsList[toAdd.ID]=toAdd;
+        }
+        sSelect.html("<select>" + sSelectHTML + "</select>"); lSelect.html("<select>"+lSelectHTML+"</select>"); cSelect.html("<select>"+cSelectHTML+"</select>");
+        //SELECTIZE ALL SELECTS, SEND VAR TO GARBAGE COLLECTOR. IF DRAG_DROP DOESNT WORK WITH SINGLE SELECTS, MOVE SPEC SELECTIZE TO ITS OWN INITIALIZATION
+        toSelectize.selectize({plugins:['drag_drop']}); toSelectize = null;
         //"BOOL" SELECTS (YES/NO/UNKNOWN) NOT TO BE SELECTIZED. JUST SET PROVIDER'S CURRENT VALUE AS SELECTED
         //2. Specialties
         // Object spec (per Provider):
@@ -158,6 +166,23 @@ export class ProviderComponent implements OnInit {
   public toggleInactiveSpecialties() {
     let inactiveSpecs: any = $("div.status_INACTIVE");
     inactiveSpecs.toggle();
+  }
+
+  public toggleFields() {
+    let select: any = $("#edit_ProviderDemo_MedicareIndicator option:selected");
+    this.Provider.MedicareIndicator = (select.val()=="Yes")? true: (select.val()=="No")? false : null;
+  }
+
+  public toggleFields2() {
+    let select: any = $("#edit_ProviderDemo_MedicaidIndicator option:selected");
+    this.Provider.MedicaidIndicator = (select.val() == "Yes") ? true : (select.val() == "No") ? false : null;
+  }
+
+  public addSpecToList(event: any) {
+    let select: any = $("#add_Provider_Specialty option:selected");
+    var specID = select.val(); var spec = this._specsList[specID];
+    console.log(spec); this.Provider.ProviderSpecialties.push(spec);
+    console.log(this.Provider.ProviderSpecialties);
   }
 
   public onSpecClick(event: any) {

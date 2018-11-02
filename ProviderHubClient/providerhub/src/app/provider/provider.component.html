@@ -74,7 +74,7 @@
             <td>Accepts Medicare?</td>
             <td [attr.colspan]="!Provider.MedicareIndicator?3:1"><span class="not-editing">{{Provider.MedicareIndicator | bool}}</span><span class="is-editing">
                   <!--BOOL CONTROL: Yes/No/Unknown-->
-                  <select id="edit_ProviderDemo_MedicareIndicator" class="is-editing" value="{{Provider.MedicareIndicator | bool}}">
+                  <select id="edit_ProviderDemo_MedicareIndicator" (change)="toggleFields()" class="is-editing" value="{{Provider.MedicareIndicator | bool}}">
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                     <option value="Unknown">Unknown</option>
@@ -93,7 +93,7 @@
             <td>Accepts Medicaid?</td>
             <td><span class="not-editing">{{Provider.MedicaidIndicator | bool}}</span><span class="is-editing">
                   <!--BOOL CONTROL: Yes/No/Unknown-->
-                  <select id="edit_ProviderDemo_MedicaidIndicator" class="is-editing" value="{{Provider.MedicaidIndicator | bool}}">
+                  <select id="edit_ProviderDemo_MedicaidIndicator" (change)="toggleFields2()" class="is-editing" value="{{Provider.MedicaidIndicator | bool}}">
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                     <option value="Unknown">Unknown</option>
@@ -121,7 +121,18 @@
       <div class="card-body">
         <h5 class="card-title red">Specialties</h5>
         <div id="specList" class="card-text ui-sortable">
-          <h4><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties</h4>
+          <h4>
+            <span style="display:none;">
+              Add Specialty:
+              <select id="add_Provider_Specialty" class="toSelectize">
+                <option value=10>Family Medicine</option>
+                <option value=1>Dermatology</option>
+                <option value=3>Chiropractic</option>
+              </select>
+              <input type="button" value="Add" (click)="addSpecToList($event)" />
+            </span>
+            <br /><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
+          </h4>
           <!--EACH SPECIALTY-->
           <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard ui-sortable-handle status_{{s.Status}}" style="position: relative; left: 0px; top: 0px;">
             <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
@@ -157,13 +168,13 @@
           <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;width:100%;">
             <span [hidden]="true">spec-id:{{f.ID}}</span>
             <div class="card-body specCardBody">
-              <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)">{{f.FacilityName}}</h5>
+              <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)"><a href="../facility/{{f.ID}}" style="color:#fff;">{{f.FacilityName}}</a></h5>
               <table id="facTable" class="card-text specTable">
                 <!-- basically Facility Demographics (Facility + FacilityAddress)-->
                 <tbody>
                   <tr>
-                    <td>Facility Type</td>
-                    <td><a href="../facility/{{f.ID}}">{{f.FacilityAddress.AddressTypeName}}</a></td><!-- class="rowHeader" id="rH" colspan="4"-->
+                    <td>Address Type</td>
+                    <td>{{f.FacilityAddress.AddressTypeName}}</td><!-- class="rowHeader" id="rH" colspan="4"-->
                   </tr>
                   <tr>
                     <td>NPI</td>

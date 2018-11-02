@@ -69,7 +69,7 @@ namespace ProviderHubService
                     provider.LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE");
                     provider.LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY");
                     provider.LanguageList = GetProviderLanguageByID(providerID, true);
-                    provider.CredentialList = GetProviderCredentialByID(providerID);
+                    provider.CredentialList = GetProviderCredentialByID(providerID, true);
                     provider.CredentialListStr = (calledFromPH)? x.Field<string>("CREDENTIAL_LIST") : "";
                     provider.ParentSpecialtyList = (calledFromPH) ? x.Field<string>("PARENT_SPECIALTY_LIST") : "";
                     provider.ChildSpecialtyList = (calledFromPH) ? x.Field<string>("CHILD_SPECIALTY_LIST") : "";
@@ -139,6 +139,7 @@ namespace ProviderHubService
                                         AddressTypeName = x.Field<string>("ADDRESS_TYPE_NAME"),
                                         PhoneExtension = x.Field<string>("PHONE_EXTENSION"),
                                         AlternatePhoneNumber = x.Field<string>("ALTERNATE_PHONE_NUMBER"),
+                                        AlternateExtension = x.Field<string>("ALTERNATE_PHONE_EXTENSION"),
                                         FaxNumber = x.Field<string>("FAX_NUMBER"),
                                         LastUpdatedBy = x.Field<string>("ADDRESS_LAST_UPDATED_BY"),
                                         LastUpdatedDate = x.Field<DateTime>("ADDRESS_LAST_UPDATED_DATE")
@@ -320,7 +321,10 @@ namespace ProviderHubService
             for (var i=0; i < ds.Tables[0].Rows.Count; i++)
             {
                 dynamic toAdd = new ExpandoObject(); var row = ds.Tables[0].Rows[i];
+                toAdd.VID = row.Field<int>("VENDOR_ID");
                 toAdd.VendorName = row.Field<string>("VENDOR_NAME");
+                toAdd.LastUpdatedBy = row.Field<string>("LAST_UPDATED_BY");
+                toAdd.LastUpdatedDate = row.Field<DateTime>("LAST_UPDATED_DATE");
                 //AddressTypeName, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber, PhoneExtension, FaxNumber, AlternatePhoneNumber, Website
                 toAdd.AddressTypeName = row.Field<string>("ADDRESS_TYPE_NAME");
                 toAdd.AddressLine1 = row.Field<string>("ADDRESS_LINE_1");
@@ -331,12 +335,84 @@ namespace ProviderHubService
                 toAdd.PhoneNumber = row.Field<string>("PHONE_NUMBER");
                 toAdd.PhoneExtension = row.Field<string>("PHONE_EXTENSION");
                 toAdd.AlternatePhoneNumber = row.Field<string>("ALTERNATE_PHONE_NUMBER");
+                toAdd.AlternateExtension = row.Field<string>("ALTERNATE_PHONE_EXTENSION");
                 toAdd.FaxNumber = row.Field<string>("FAX_NUMBER");
                 toAdd.Website = row.Field<string>("WEBSITE");
                 //TODO: ORDER BY ADDRESS LAST_UPDATED DESC... AKA VERY LATEST UPDATED ONE FIRST
                 VendorAddressList.Add(toAdd);
             }
             return VendorAddressList;
+        }
+
+        public dynamic PHGetVendorByID(int vendorID)
+        {
+            //ToReturn: Vendor.VendorField | Vendor.Addresses[i] | Vendor.Facilities[i]
+            dynamic vendor = new ExpandoObject();
+            //OLD METHOD 1. Populate Vendor base object (Vendor.xx) with fields from GetVendorByID
+                /*string sql = "providerhub.dbo.sp_GetVendorBaseByID";
+                SqlParameter[] sqlParams = { new SqlParameter("@VID", SqlDbType.Int) { Value = vendorID } };
+                DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+                var row = ds.Tables[0].Rows[0]; //only 1 row result no matter what
+                vendor.VID = row.Field<int>("VENDOR_ID");
+                vendor.VendorName = row.Field<string>("VENDOR_NAME");
+                vendor.NPI = row.Field<string>("VENDOR_NPI");
+                vendor.TaxID = row.Field<string>("VENDOR_TAX_ID");
+                vendor.EpicID = row.Field<string>("VENDOR_EPIC_ID");*/
+            //1 AND 2. Populate Vendor.Addresses[i] with fields from GetVendorAddressesByVendorID (clone of -ByFacilityID)
+            string sql = "providerhub.dbo.sp_GetVendorByID";
+            SqlParameter[] sqlParams = { new SqlParameter("@VENDOR_ID", SqlDbType.Int) { Value = vendorID } };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            vendor.Addresses = new List<dynamic>();
+            for (var i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                var row = ds.Tables[0].Rows[i]; dynamic _toAdd = new ExpandoObject();
+                //1. Populate vendor base object ONCE
+                if (i == 0) {
+                    vendor.VID = row.Field<int>("VENDOR_ID");
+                    vendor.VendorName = row.Field<string>("VENDOR_NAME");
+                    vendor.NPI = row.Field<string>("VENDOR_NPI");
+                    vendor.TaxID = row.Field<string>("VENDOR_TAX_ID");
+                    vendor.EpicID = row.Field<string>("VENDOR_EPIC_ID");
+                }
+                //2. AddressTypeName, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber, FaxNumber, AlternatePhoneNumber, Website, Exts LOOP
+                _toAdd.AddressID = row.Field<int>("ADDRESS_ID");
+                _toAdd.AddressTypeName = row.Field<string>("ADDRESS_TYPE_NAME");
+                _toAdd.AddressLine1 = row.Field<string>("ADDRESS_LINE_1");
+                _toAdd.AddressLine2 = row.Field<string>("ADDRESS_LINE_2");
+                _toAdd.City = row.Field<string>("CITY");
+                _toAdd.State = row.Field<string>("STATE");
+                _toAdd.ZipCode = row.Field<string>("ZIP_CODE");
+                _toAdd.PhoneNumber = row.Field<string>("PHONE_NUMBER");
+                _toAdd.PhoneExtension = row.Field<string>("PHONE_EXTENSION");
+                _toAdd.AlternatePhoneNumber = row.Field<string>("ALTERNATE_PHONE_NUMBER");
+                _toAdd.AlternateExtension = row.Field<string>("ALTERNATE_PHONE_EXTENSION");
+                _toAdd.FaxNumber = row.Field<string>("FAX_NUMBER");
+                _toAdd.Website = row.Field<string>("WEBSITE");
+                _toAdd.LastUpdatedBy = row.Field<string>("ALAST_UPDATED_BY");
+                _toAdd.LastUpdatedDate = row.Field<DateTime>("ALAST_UPDATED_DATE");
+                vendor.Addresses.Add(_toAdd);
+            }
+            //3. Vendor.Facilities[i] with fields from GetFacilitiesByVendorID
+            sql = "providerhub.dbo.sp_GetFacilitiesByVendorID";
+            sqlParams[0] = new SqlParameter("@VID", SqlDbType.Int) { Value = vendorID };
+            ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            vendor.Facilities = new List<dynamic>();
+            for (var i = 0; i < ds.Tables[0].Rows.Count; i++) {
+                var row = ds.Tables[0].Rows[i]; dynamic _toAdd = new ExpandoObject();
+                //Fields that are displayed in FacilitySearch, for the Vendor Fac DT on Vendor - Facilities page
+                /*F.FACILITY_ID, F.FACILITY_NAME, F.FACILITY_NPI, A.ADDRESS_LINE_1, A.ADDRESS_LINE_2, A.CITY, A.STATE, A.ZIP_CODE, A.PHONE_NUMBER*/
+                _toAdd.ID = row.Field<int>("FACILITY_ID");
+                _toAdd.FacilityName = row.Field<string>("FACILITY_NAME");
+                _toAdd.AddressLine1 = row.Field<string>("ADDRESS_LINE_1");
+                _toAdd.AddressLine2 = row.Field<string>("ADDRESS_LINE_2");
+                _toAdd.City = row.Field<string>("CITY");
+                _toAdd.State = row.Field<string>("STATE");
+                _toAdd.ZipCode = row.Field<string>("ZIP_CODE");
+                _toAdd.PhoneNumber = row.Field<string>("PHONE_NUMBER");
+                vendor.Facilities.Add(_toAdd);
+            }
+            //spit out object!
+            return vendor;
         }
 
         #region FUNCTION: GetAddressByFacilityID(int facilityID)
@@ -368,6 +444,7 @@ namespace ProviderHubService
                     address.PhoneNumber = x.Field<string>("PHONE_NUMBER");
                     address.PhoneExtension = x.Field<string>("PHONE_EXTENSION");
                     address.AlternatePhoneNumber = x.Field<string>("ALTERNATE_PHONE_NUMBER");
+                    if (isCalledFromPH) { address.AlternateExtension = x.Field<string>("ALTERNATE_PHONE_EXTENSION"); }
                     address.FaxNumber = x.Field<string>("FAX_NUMBER");
                     address.Email = x.Field<string>("EMAIL");
                     address.Website = x.Field<string>("WEBSITE");
@@ -682,12 +759,37 @@ namespace ProviderHubService
         public int SaveFacilityDemo(dynamic p) {
             string sql = "providerhub.dbo.sp_SaveFacilityDemo";
             /*body = { Address1: val2("Address1"), Address2: val2("Address2"), City: val2("City"), State: val2("State"), Zip: val2("ZipCode"), User: "GHC-HMO\\spillai" };
-                 body.PhoneNumber = val2("PhoneNumber"); body.FaxNumber = val2("FaxNumber"); body.Website = val2("Website");*/
+                 body.PhoneNumber = val2("PhoneNumber"); body.FaxNumber = val2("FaxNumber"); body.Website = val2("Website");*/ //add alternate phone and alternate phone ext, and phone ext
             SqlParameter[] sqlParams = { new SqlParameter("@Address1", SqlDbType.VarChar){ Value = p.Address1 }, new SqlParameter("@Address2", SqlDbType.VarChar){ Value = p.Address2 },
                                          new SqlParameter("@City", SqlDbType.VarChar){ Value = p.City }, new SqlParameter("@State", SqlDbType.VarChar){ Value = p.State },
                                          new SqlParameter("@Zip", SqlDbType.VarChar){  Value = p.Zip }, new SqlParameter("@User", SqlDbType.VarChar){ Value = p.User },
-                                         new SqlParameter("@PhoneNumber", SqlDbType.VarChar){ Value = p.PhoneNumber }, new SqlParameter("@FaxNumber", SqlDbType.VarChar){ Value = p.FaxNumber },
+                                         new SqlParameter("@PhoneNumber", SqlDbType.VarChar){ Value = p.PhoneNumber }, new SqlParameter("@PhoneExtension", SqlDbType.VarChar){ Value = p.PhoneExtension },
+                                         new SqlParameter("@AltPhoneNumber", SqlDbType.VarChar){ Value = p.AlternatePhoneNumber }, new SqlParameter("@AltPhoneExtension", SqlDbType.VarChar){ Value = p.AlternateExtension },
+                                         new SqlParameter("@FaxNumber", SqlDbType.VarChar){ Value = p.FaxNumber },
                                          new SqlParameter("@Website",SqlDbType.VarChar){ Value = p.Website }, new SqlParameter("@ID", SqlDbType.Int){ Value = p.ID } };
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
+        public int SaveVendorHeader(dynamic p) {
+            string sql = "providerhub.dbo.sp_SaveVendorHeader";
+            //body = { Name:val("Name"), NPI: val("NPI"), TaxID + EpicID, User: "GHC-HMO\\spillai" };
+            SqlParameter[] sqlParams = { new SqlParameter("@Name", SqlDbType.VarChar){ Value = p.Name }, new SqlParameter("@NPI", SqlDbType.VarChar){ Value = p.NPI },
+                                         new SqlParameter("@TaxID", SqlDbType.VarChar){ Value = p.TaxID }, new SqlParameter("@EpicID", SqlDbType.VarChar){ Value = p.EpicID },
+                                         new SqlParameter("@VID", SqlDbType.Int){ Value = p.ID }, new SqlParameter("@User", SqlDbType.VarChar){ Value = p.User } };
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
+        public int SaveVendorAddress(dynamic p) {
+            string sql = "providerhub.dbo.sp_SaveVendorAddress";
+            /*body = { AddressID: x, Address1: val2("Address1"), Address2: val2("Address2"), City: val2("City"), State: val2("State"), Zip: val2("ZipCode"), User: "GHC-HMO\\spillai" };
+                 body.PhoneNumber = val2("PhoneNumber"); body.FaxNumber = val2("FaxNumber"); body.Website = val2("Website");*/ //add alternate phone and alternate phone ext, and phone ext
+            SqlParameter[] sqlParams = { new SqlParameter("@Address1", SqlDbType.VarChar){ Value = p.Address1 }, new SqlParameter("@Address2", SqlDbType.VarChar){ Value = p.Address2 },
+                                         new SqlParameter("@City", SqlDbType.VarChar){ Value = p.City }, new SqlParameter("@State", SqlDbType.VarChar){ Value = p.State },
+                                         new SqlParameter("@Zip", SqlDbType.VarChar){  Value = p.Zip }, new SqlParameter("@User", SqlDbType.VarChar){ Value = p.User },
+                                         new SqlParameter("@PhoneNumber", SqlDbType.VarChar){ Value = p.PhoneNumber }, new SqlParameter("@PhoneExtension", SqlDbType.VarChar){ Value = p.PhoneExtension },
+                                         new SqlParameter("@AltPhoneNumber", SqlDbType.VarChar){ Value = p.AlternatePhoneNumber }, new SqlParameter("@AltPhoneExtension", SqlDbType.VarChar){ Value = p.AlternateExtension },
+                                         new SqlParameter("@FaxNumber", SqlDbType.VarChar){ Value = p.FaxNumber },
+                                         new SqlParameter("@Website",SqlDbType.VarChar){ Value = p.Website }, new SqlParameter("@AID", SqlDbType.Int){ Value = p.AddressID } };
             return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
         }
 
@@ -776,12 +878,28 @@ namespace ProviderHubService
 
         #endregion
 
+        public List<Specialty> GetSpecialtyList(bool isCalledFromPH = false) {
+            List<Specialty> toReturn = new List<Specialty>();
+            string sql = "providerhub.dbo.sp_GetSpecialtyList";
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure);
+            if (ds.Tables[0].Rows.Count > 0) {
+                toReturn = (from spec in ds.Tables[0].AsEnumerable()
+                            select new Specialty() {
+                                ID = spec.Field<int>("SPECIALTY_ID"),
+                                Name = spec.Field<string>("SPECIALTY_NAME"),
+                                SpecialtyType = spec.Field<int>("SPECIALTY_TYPE_ID") == 1 ? "Parent" : spec.Field<int>("SPECIALTY_TYPE_ID") == 2 ? "Child" : "Sub-Specialty",
+                                ParentSpecialtyID = spec.Field<int>("SPECIALTY_TYPE_ID")
+                            }).ToList();
+            }
+            return toReturn;
+        }
+
         #region FUNCTION: GetCredentialList()
 
         public List<Credential> GetCredentialList(bool isCalledFromPH=false)
         {
             List<Credential> credentialList = new List<Credential>();
-            string sql = (isCalledFromPH)? "providerhub.dbo.sp_getCredentialList" : "providerhub.bh.sp_GetCredentialList";
+            string sql = (isCalledFromPH)? "providerhub.dbo.sp_GetCredentialList" : "providerhub.bh.sp_GetCredentialList";
 
             DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure);
 
@@ -803,7 +921,7 @@ namespace ProviderHubService
 
         #region FUNCTION: GetVendorList(string searchValue)
 
-        public List<Vendor> GetVendorList(string searchValue, bool isCalledFromPH = false)
+        public List<Vendor> GetVendorList(string searchValue = "", bool isCalledFromPH = false)
         {
             List<Vendor> vendors = new List<Vendor>();
 
@@ -824,7 +942,10 @@ namespace ProviderHubService
                            CreatedDate = v.Field<DateTime>("CREATED_DATE"),
                            CreatedBy = v.Field<string>("CREATED_BY"),
                            LastUpdatedDate = v.Field<DateTime>("LAST_UPDATED_DATE"),
-                           LastUpdatedBy = v.Field<string>("LAST_UPDATED_BY")
+                           LastUpdatedBy = v.Field<string>("LAST_UPDATED_BY"),
+                           City = (isCalledFromPH)? v.Field<string>("CITY") : "",
+                           State = (isCalledFromPH)? v.Field<string>("STATE") : "",
+                           ZipCode = (isCalledFromPH)? v.Field<string>("ZIP_CODE") : ""
                        }).ToList();
 
             return vendors;
@@ -1209,6 +1330,566 @@ namespace ProviderHubService
         }
 
         #endregion
+
+        /*      toReturn.id_result = DataLayer.GetIDResult(records);
+                toReturn.map_result = DataLayer.GetMapResult(toReturn.id_result, records);
+                toReturn.term_result = DataLayer.GetTermResult(toReturn.id_result, toReturn.map_result, records);*/
+        public dynamic GetIDResult(IEnumerable<dynamic> records) {
+            dynamic toReturn = new ExpandoObject();
+            //I. populate base tables (used by MapResult and TermResult via idResult.baseTables
+            toReturn.baseTables = new ExpandoObject(); toReturn.baseCounts = new ExpandoObject(); 
+            //toReturn.provider_alias_to_create_arr = new List<dynamic>(); toReturn.provider_data_to_change_arr = new List<dynamic>();
+            //EX_1 = SqlParameter[] sqlParams = { new SqlParameter("@RELATIONSHIP_ID", SqlDbType.Int) { Value = relationshipID } };
+            //1. Provider table
+            DataSet ds = dataLayer.ExecuteDataSet("select * from dbo.PROVIDER", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            List<Dictionary<string, string>> rows = new List<Dictionary<string, string>>();
+            Dictionary<string, string> row;
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.Provider = rows;
+            toReturn.baseCounts.ProviderCount = rows.Count;
+            //1a. Provider mapping tables
+            /*    SELECT * FROM dbo.CREDENTIAL WHERE CREDENTIAL_VALUE='MD';
+                  SELECT * FROM dbo.PROVIDER_LANGUAGE WHERE LANGUAGE_NAME='English';*/
+            ds = dataLayer.ExecuteDataSet("select * from dbo.CREDENTIAL", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.Credential = rows;
+            toReturn.baseCounts.CredentialCount = rows.Count;
+            //
+            ds = dataLayer.ExecuteDataSet("select * from dbo.PROVIDER_LANGUAGE", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.Language = rows;
+            toReturn.baseCounts.LanguageCount = rows.Count;
+            //2. Facility table
+            ds = dataLayer.ExecuteDataSet("select * from dbo.FACILITY", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.Facility = rows;
+            toReturn.baseCounts.FacilityCount = rows.Count;
+            //fax ext + fac ext mapping
+            ds = dataLayer.ExecuteDataSet("select * from dbo.FACILITY_EXTERNAL", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.FacilityExternal = rows;
+            toReturn.baseCounts.FacilityCountExternal = rows.Count;
+            ds = dataLayer.ExecuteDataSet("select * from dbo.FACILITY_EXTERNAL_MAPPING", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.FacilityExternalMapping = rows;
+            toReturn.baseCounts.FacilityCountExternalMapping = rows.Count;
+            //3. Specialty table
+            ds = dataLayer.ExecuteDataSet("select * from dbo.SPECIALTY", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.Specialty = rows;
+            toReturn.baseCounts.SpecialtyCount = rows.Count;
+            //spec ext + spec ext mapping
+            ds = dataLayer.ExecuteDataSet("select * from dbo.SPECIALTY_EXTERNAL", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.SpecialtyExternal = rows;
+            toReturn.baseCounts.SpecialtyCountExternal = rows.Count;
+            ds = dataLayer.ExecuteDataSet("select * from dbo.SPECIALTY_EXTERNAL_MAPPING", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.SpecialtyExternalMapping = rows;
+            toReturn.baseCounts.SpecialtyCountExternalMapping = rows.Count;
+            //4. FACILITY_PROVIDER_RELATIONSHIP
+            ds = dataLayer.ExecuteDataSet("select * from dbo.FACILITY_PROVIDER_RELATIONSHIP", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.FacilityProvider = rows;
+            toReturn.baseCounts.FacilityProviderCount = rows.Count;
+            //5. PROVIDER_SPECIALTY_MAPPING, ADD FOR EVERY FAC PROVIDER SPEC THAT ISN'T A PROV SPEC
+            ds = dataLayer.ExecuteDataSet("select * from dbo.PROVIDER_SPECIALTY_MAPPING", CommandType.Text);//to add params: ",0,{ EX_1 }"
+            rows = new List<Dictionary<string, string>>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                row = new Dictionary<string, string>();
+                foreach (DataColumn col in ds.Tables[0].Columns)
+                {
+                    row.Add(col.ColumnName, dr[col].ToString());
+                }
+                rows.Add(row);
+            }
+            toReturn.baseTables.ProviderSpecialty = rows;
+            toReturn.baseCounts.ProviderSpecialtyCount = rows.Count;
+            //6. (todo) FACILITY_SPECIALTY_MAPPING, ADD FOR EVERY FAC PROVIDER SPEC THAT ISN'T A FAC SPEC
+            //II. actually get ID result now
+            //store blank NPI providers in DB to compare with blank NPI providers in records
+            toReturn.idCounts = new ExpandoObject();
+            toReturn.idCounts.ProvidersIDd = 0; toReturn.idCounts.ProvidersNotIDd = 0;
+            toReturn.counts = new ExpandoObject(); toReturn.counts.name_different_for_matched_npi = 0; toReturn.counts.blankNpiCSV = 0;
+            List<Dictionary<string,string>> providers_with_blank_npi_in_db = new List<Dictionary<string,string>>(); toReturn.counts.blankNpiDB = 0;
+            List<dynamic> providers_with_blank_npi_in_records = new List<dynamic>(); //each dynamic record can be cast into IDictionary<string,object>...see npi_match conditional's first line of true condition below
+            foreach (Dictionary<string, string> provider in toReturn.baseTables.Provider) {
+                string _tmp; provider.TryGetValue("NATIONAL_PROVIDER_IDENTIFIER", out _tmp);
+                if (_tmp==null || _tmp.Trim() == "") { providers_with_blank_npi_in_db.Add(provider); toReturn.counts.blankNpiDB++; }
+            }
+            toReturn.providers_with_blank_npi_in_db = providers_with_blank_npi_in_db;
+            var uniqueNPIs =new List<string>(); toReturn.idCounts.UProvidersIDd = 0; toReturn.idCounts.UProvidersNotIDd = 0;
+            /*toReturn.IDd_providers_to_update_arr = new List<dynamic>(); toReturn.provider_to_be_created_arr = new List<dynamic>();
+            toReturn.IDd_facs_for_providerNPI = new List<dynamic>(); toReturn.IDd_specs_for_providerNPI = new List<dynamic>();*/
+            toReturn.staging_rows = new List<dynamic>(); int _counter = 0;
+            foreach (var record in records) {
+                dynamic staging_row = new ExpandoObject(); staging_row.record = record; staging_row.NPI = record.NPI;
+                _counter++; staging_row.unique_id = _counter; bool? add_to_staging_rows = null; dynamic _staging_row = new ExpandoObject();
+                staging_row.add_to_staging_rows = null;
+                //1. look for NPI match.
+                bool npi_match = false; string _NPI=""; Dictionary<string, string> matchedProvider = new Dictionary<string, string>(); string _DBID = "0";
+                foreach (Dictionary<string,string> provider in toReturn.baseTables.Provider) {
+                    provider.TryGetValue("NATIONAL_PROVIDER_IDENTIFIER", out _NPI); provider.TryGetValue("PROVIDER_ID", out _DBID);
+                    if (String.Equals(_NPI, record.NPI) && _NPI.Trim() != "")
+                     { npi_match = true; matchedProvider = provider; staging_row.matched_provider = provider; break; }
+                }
+                staging_row.npi_match = npi_match;
+                //***IF NPI MATCH: Provider is IDd, if Name is different, "alias to create" array, if other fields different "data to change" arr
+                if (npi_match) {
+                    //if Name is different, add to "provider_alias_to_create_arr" for storing alias, and count as name_different_for_matched_npi
+                    string _fn, _ln; var dict = (IDictionary<string, object>)record; staging_row.alias_to_create = null;
+                    var fn = dict["First Name"] as string; var ln = dict["Last Name"] as string;
+                    matchedProvider.TryGetValue("PROVIDER_FIRST_NAME", out _fn); matchedProvider.TryGetValue("PROVIDER_LAST_NAME", out _ln);
+                    if ((!uniqueNPIs.Contains(record.NPI)) && (!String.Equals(_fn, fn) || !String.Equals(_ln, ln)))
+                    {
+                        toReturn.counts.name_different_for_matched_npi++; dynamic toAdd = new ExpandoObject();
+                        toAdd.oldFN = _fn; toAdd.oldLN = _ln; toAdd.newFN = fn; toAdd.newLN = ln; toAdd.NPI = _NPI; toAdd.DBID = _DBID;
+                        staging_row.alias_to_create=toAdd;
+                    }
+                    //check other fields for difference, if found, add to IDd_providers_to_update_arr (NPI and changed fields/values)
+                    /*  CSV VALUES: TIN # = EXTERNAL_PROVIDER_ID
+                        NPI = NATIONAL_PROVIDER_IDENTIFIER (already used to match/ID, so no use checking for diff.)
+                        Last Name = PROVIDER_LAST_NAME (already used for alias check)
+                        First Name = PROVIDER_FIRST_NAME (already used for alias check)
+                        MI = PROVIDER_MIDDLE_NAME
+                        Credentials and Languages = Split by |, then try add Provider mapping like we do from selectize tag in UI, in sequence order
+                        --while adding to Provider mapping, if cred/language doesn't exist yet, add it (w/o description) to base table, then add to Provider mapping.
+                        Gender - Update DB to csvRecord value every time
+                    */
+                    //fields for dff. TIN/ExtID, Middle, Gender
+                    //--csv = ["TIN #", "MI", "Gender"] | db = ["NOTHING_YET","PROVIDER_MIDDLE_NAME","PROVIDER_GENDER_ID"];
+                    string[] genders = { "", "Female", "Male", "Unknown" }; dynamic providerToUpdate = new ExpandoObject();
+                    providerToUpdate.additional_matched_rows = new List<dynamic>(); providerToUpdate.unique_id = _counter;
+                    var tin_csv = dict["TIN #"] as string; var mi_csv = dict["MI"] as string; var gender_csv = dict["Gender"];
+                    string tin_db, mi_db, gender_id_db; matchedProvider.TryGetValue("EXTERNAL_PROVIDER_ID", out tin_db);
+                    matchedProvider.TryGetValue("PROVIDER_MIDDLE_NAME", out mi_db); matchedProvider.TryGetValue("PROVIDER_GENDER_ID", out gender_id_db);
+                    if (!uniqueNPIs.Contains(record.NPI) && 
+                       (!String.Equals(tin_db, tin_csv) || !String.Equals(mi_db, mi_csv) || !String.Equals(gender_csv, genders[Int32.Parse(gender_id_db)]))) { 
+                        providerToUpdate.tin_csv = tin_csv; providerToUpdate.mi_csv = mi_csv; providerToUpdate.gender_csv = gender_csv;
+                        providerToUpdate.tin_db = tin_db; providerToUpdate.mi_db = mi_db; providerToUpdate.gender_db = genders[Int32.Parse(gender_id_db)];
+                    }
+                    //Credentials and Languages split by | then try add Provider mapping, just like from selectize tag. Use SEQUENCE_NUMBER by order in fields
+                    //--drop all current, and re-add, again, just like when updating these in UI via slectize
+                    //--add new now, again...like UI via selectize does
+                    var creds = dict["Credentials"]; var langs = dict["Languages"]; string[] credsArr = creds.ToString().Split('|');
+                    string[] langsArr = langs.ToString().Split('|'); providerToUpdate.NPI = record.NPI;
+                    providerToUpdate.Languages = new List<string>(); providerToUpdate.Credentials = new List<String>();
+                    foreach (string cred in credsArr) {
+                        providerToUpdate.Credentials.Add(cred);//ID, add if not exist, add mapping
+                    }
+                    foreach (string lang in langsArr) {
+                        providerToUpdate.Languages.Add(lang);//ID, add if not exist, add mapping
+                    }
+                    /* Additional Fields to use
+                        Primary Specialty - check against ProvSpecs and set sequence_number 0, bump rest up
+                        Primary Practice Location - set this ProvFac to sequence_number 0, bump rest up
+                        Start Date - set all Provider mappings' Effective Date to this value, if defined (Prov-Fac/Spec/Language/Cred, Prov itself?)
+                        PC Panel Status - Map to Accepting New Patients in ProvFac if trivial.
+                        Hospital - map to hospital affiliations table (hospital<==>provider), and add new hospital if not in hospital table
+                       Not Confirmed on what to do / Don't currently use
+                        Fam Med w/OB - not using atm, but could just check to verify provider has FamMed and OB in specs
+                        Status - not using atm
+                        Directories/Web - do we do anything with this? not at the moment, we might though
+                        Primary Care - is this stored on our end anywhere
+                        Board Certifications - do we use anywhere? not yet
+                    */
+                    providerToUpdate.PrimarySpecialty = dict["Primary Specialty"]; providerToUpdate.PrimaryPracticeLocation = dict["Primary Practice Location"];
+                    providerToUpdate.StartDate = dict["Start Date"]; providerToUpdate.PCPanelStatus = dict["PC Panel Status"];
+                    providerToUpdate.HospitalAffiliation = dict["Hospitals"]; providerToUpdate.Specialty = dict["Specialty"];
+                    //mark Provider as IDd
+                    toReturn.idCounts.ProvidersIDd++;
+                    if (!uniqueNPIs.Contains(record.NPI)) { //if a new, unique NPI, add provider to array
+                        toReturn.idCounts.UProvidersIDd++; uniqueNPIs.Add(record.NPI); add_to_staging_rows = true; staging_row.add_to_staging_rows = true;
+                        staging_row.provider_row = providerToUpdate; staging_row.provider_action = "update";
+                    } else { //else append object to already identified provider (object with same NPI)
+                        _staging_row = (toReturn.staging_rows as List<dynamic>).Where(p => p.NPI == record.NPI).First();
+                        _staging_row.provider_row.additional_matched_rows.Add(providerToUpdate); add_to_staging_rows = false; staging_row.add_to_staging_rows = false;
+                    }
+                }
+                //***IF NO NPI MATCH: Provider "to_be_created" w/ "IDd PID"=0, also "possible_provider_match" array with F/L and listed P_SpecFac matching
+                else {
+                    //mark Provider as Not IDd
+                    toReturn.idCounts.ProvidersNotIDd++; 
+                    //if blank NPI, handle accordingly -- try to match provider, may be less likely to create_new
+                    if (record.NPI.Trim() == "")
+                    {
+                        toReturn.counts.blankNpiCSV++;
+                        providers_with_blank_npi_in_records.Add(record);
+                    }
+                    else
+                    {
+                        //generate provider_likely_match_arr with likelihood_of_match, record, and likely_match (from Provider base table - use NPI and DBID) 
+                        //--Likelihood_of_match field = 1 if F/L and SpecFac match, 2 if one doesnt match, 3 if two dont, >2 dont = dont even consider...
+                        //LIKELY MATCH CODE_HERE
+
+                        //curate fields for new insert --basically fields specific to each potential additional_matched_rows entry
+                        dynamic providerToCreate = new ExpandoObject(); providerToCreate.NPI = record.NPI; providerToCreate.unique_id = _counter;
+                        providerToCreate.additional_matched_rows = new List<dynamic>(); var ptcDict = (IDictionary<string, object>)record;
+                        providerToCreate.PrimarySpecialty = ptcDict["Primary Specialty"]; providerToCreate.PrimaryPracticeLocation = ptcDict["Primary Practice Location"];
+                        providerToCreate.StartDate = ptcDict["Start Date"]; providerToCreate.PCPanelStatus = ptcDict["PC Panel Status"];
+                        providerToCreate.Specialty = ptcDict["Specialty"]; providerToCreate.HospitalAffiliation = ptcDict["Hospitals"];
+                        //
+                        var creds = ptcDict["Credentials"]; var langs = ptcDict["Languages"]; string[] credsArr = creds.ToString().Split('|');
+                        string[] langsArr = langs.ToString().Split('|');
+                        providerToCreate.Languages = new List<string>(); providerToCreate.Credentials = new List<String>();
+                        foreach (string cred in credsArr)
+                        {
+                            providerToCreate.Credentials.Add(cred);//ID, add if not exist, add mapping
+                        }
+                        foreach (string lang in langsArr)
+                        {
+                            providerToCreate.Languages.Add(lang);//ID, add if not exist, add mapping
+                        }
+                        //
+
+                        if (!uniqueNPIs.Contains(record.NPI))
+                        { //if a new, unique NPI, add provider to array
+                            toReturn.idCounts.UProvidersNotIDd++; uniqueNPIs.Add(record.NPI); add_to_staging_rows = true; staging_row.add_to_staging_rows = true;
+                            staging_row.provider_row = providerToCreate; staging_row.provider_action = "create";
+                        }
+                        else
+                        { //else append object to already identified provider (object with same NPI)
+                            _staging_row = (toReturn.staging_rows as List<dynamic>).Where(p => p.NPI == record.NPI).First();
+                            _staging_row.provider_row.additional_matched_rows.Add(providerToCreate); add_to_staging_rows = false; staging_row.add_to_staging_rows = false;
+                        }
+                    }
+                }
+                /*FacSpec stuff
+                    Specialty = Lookup in DB by name, try add active providerSpec mapping if not exist (if exist, and active, don't add) (if exist, and not active, add new active)
+                    --lookup Ext mapping as well if not found directly in Spec, mark for add (*to spec and/or map?) if not found in either
+                    ClinicName,Address,City,State,Zip,Phone = Try IDing Fac by ClinicName/ExtNames + Address + City + State + Zip, if full match found mark as IDd with FacID
+                    --if not found mark Facility(ClinicName), Address(Address,City,State,Zip,Phone), and FacilityAddressMap(FacIDPlaceholder,AddrIDPlaceholder) for creation
+                    ----also add FacVendor (whatever vendor the file is, in this case UW)
+                    --(name match, diff. address = Fac IDd, but mark address for update) **ASK if there could be same name'd clinic + diff addr in a given vendor (wont happen w UW but stilll)
+                    --(address match, diff. name = new fac at same address as another, not IDd, mark for create like above UNLESS ALIAS**so ask about alias case??)
+                */
+                //IDd_facs_for_providerNPI | IDd_specs_for_providerNPI -- both Dictionary<string,string>
+                //FacilityExternal, FacilityExternalMapping : SpecialtyExternal, SpecialtyExternalMapping -- base table names
+                //2. Look for Fac match: "to create" if not exist, flag to map "new fac id #xxx" to provider (whether prov is new or existing)
+                dynamic IDd_fac = new ExpandoObject(); string fac_name = ""; var dict2 = (IDictionary<string, object>)record; var fac_match = false;
+                var matchedFac = new Dictionary<string, string>();  var fac_match_type = "no match direct or indirect"; string feid, _feid;
+                Dictionary<string,Dictionary<string,string>> FacByID = new Dictionary<string, Dictionary<string,string>>(); string fac_id = "";
+                foreach (Dictionary<string, string> facility in toReturn.baseTables.Facility) {
+                    facility.TryGetValue("FACILITY_ID", out fac_id); FacByID.Add(fac_id, facility);
+                }
+                foreach (Dictionary<string, string> facilityExt in toReturn.baseTables.FacilityExternal)
+                {
+                    facilityExt.TryGetValue("FACILITY_EXTERNAL_NAME", out fac_name);
+                    if (String.Equals(fac_name, dict2["ClinicName"]) && fac_name.Trim() != "")
+                    {
+                        fac_match = true; fac_match_type = "indirect from Facility External table's FacilityName";
+                        foreach (Dictionary<string, string> facilityExtMap in toReturn.baseTables.FacilityExternalMapping)
+                        {
+                            facilityExt.TryGetValue("FACILITY_EXTERNAL_ID", out feid); facilityExtMap.TryGetValue("FACILITY_EXTERNAL_ID", out _feid);
+                            facilityExtMap.TryGetValue("FACILITY_ID", out fac_id);
+                            if (String.Equals(feid, _feid)) { FacByID.TryGetValue(fac_id, out matchedFac); }
+                        }
+                        break;
+                    }
+                }
+                if (!fac_match) {
+                    foreach (Dictionary<string, string> facility in toReturn.baseTables.Facility)
+                    {
+                        facility.TryGetValue("FACILITY_NAME", out fac_name); facility.TryGetValue("FACILITY_ID", out fac_id);
+                        if (String.Equals(fac_name, dict2["ClinicName"]) && fac_name.Trim() != "")
+                        { fac_match = true; matchedFac = facility; fac_match_type = "direct from Facility table's FacilityName"; break; }
+                    }
+                }
+                IDd_fac.fac_match = fac_match; IDd_fac.fac_match_type = fac_match_type; IDd_fac.matchedFac = matchedFac;
+                //IDd_fac.linked_csv_record = record; IDd_fac.linked_csv_record_npi = record.NPI;
+                //WE check explicily because we use "add_to_staging_rows == null" as a third case for rows that shouldn't be processed (like blank NPI rows)
+                if (add_to_staging_rows==true) //again, since it's "bool?" (not just bool) and we use the bool?==null case we need ==true/false
+                { //staging_row
+                    staging_row.IDd_fac = IDd_fac;
+                } else if(add_to_staging_rows==false) { //_staging_row
+                    dynamic subRow = (_staging_row.provider_row.additional_matched_rows as List<dynamic>).Last();
+                    subRow.IDd_fac = IDd_fac;
+                }
+                //if fac not IDd, mark to create (as non-external by default?) then use new Fac's ID for provider and add to base_table for subsequent providers
+
+                //3. Look for Spec match: "to create" if not exist, flag to map "new spec id #xxx" to provider (whether new or existing)
+                dynamic IDd_spec = new ExpandoObject(); string spec_name = ""; var dict3 = (IDictionary<string, object>)record; var spec_match = false;
+                var matchedSpec = new Dictionary<string, string>(); var spec_match_type = "no match direct or indirect"; string sid, _sid;
+                Dictionary<string, Dictionary<string, string>> SpecByID = new Dictionary<string, Dictionary<string, string>>(); string spec_id = "";
+                foreach (Dictionary<string, string> specialty in toReturn.baseTables.Specialty) {
+                    specialty.TryGetValue("SPECIALTY_ID", out spec_id); SpecByID.Add(spec_id, specialty);
+                }
+                foreach (Dictionary<string, string> specialtyExt in toReturn.baseTables.SpecialtyExternal)
+                {
+                    specialtyExt.TryGetValue("SPECIALTY_EXTERNAL_NAME", out spec_name);
+                    if (String.Equals(spec_name, dict3["Specialty"]) && spec_name.Trim() != "")
+                    {
+                        spec_match = true; spec_match_type = "indirect from Specialty External table's SpecName";
+                        foreach (Dictionary<string, string> specialtyExtMap in toReturn.baseTables.SpecialtyExternalMapping)
+                        {
+                            specialtyExt.TryGetValue("SPECIALTY_EXTERNAL_ID", out sid); specialtyExtMap.TryGetValue("SPECIALTY_EXTERNAL_ID", out _sid);
+                            specialtyExtMap.TryGetValue("SPECIALTY_ID", out spec_id);
+                            if (String.Equals(sid, _sid)) { SpecByID.TryGetValue(spec_id, out matchedSpec); }
+                        }
+                        break;
+                    }
+                }
+                if (!spec_match)
+                {
+                    foreach (Dictionary<string, string> specialty in toReturn.baseTables.Specialty)
+                    {
+                        specialty.TryGetValue("SPECIALTY_NAME", out spec_name); specialty.TryGetValue("SPECIALTY_ID", out spec_id);
+                        if (String.Equals(spec_name, dict3["Specialty"]) && spec_name.Trim() != "")
+                        { spec_match = true; matchedSpec = specialty; spec_match_type = "direct from Spec table's SpecName"; break; }
+                    }
+                }
+                IDd_spec.spec_match = spec_match; IDd_spec.spec_match_type = spec_match_type; IDd_spec.matchedSpec = matchedSpec;
+                //IDd_spec.linked_csv_record = record; IDd_spec.linked_csv_record_npi = record.NPI;
+                //WE check explicily because we use "add_to_staging_rows == null" as a third case for rows that shouldn't be processed (like blank NPI rows)
+                if (add_to_staging_rows==true) //again, since it's "bool?" (not just bool) and we use the bool?==null case we need ==true/false
+                { //staging_row
+                    staging_row.IDd_spec = IDd_spec;
+                }
+                else if (add_to_staging_rows==false)
+                { //_staging_row
+                    dynamic subRow = (_staging_row.provider_row.additional_matched_rows as List<dynamic>).Last();
+                    subRow.IDd_spec = IDd_spec;
+                }
+                //if spec not IDd, mark to create (as non-external by default?) then use new Spec's ID for provider and add to base_table for subsequent providers
+
+                //M1. (definitely best to do here) try matching non-NPI id'd providers
+                //M2. (maybe not here, but sometime before GetTermResult) store "in db and not in file"...just add to term lists
+
+                //if new staging_row modified with this record (i.e. "is a parent row" and not a sub-row/'additional row') add to list
+                if (add_to_staging_rows == true) { toReturn.staging_rows.Add(staging_row); }
+            }
+            //
+            toReturn.providers_with_blank_npi_in_records = providers_with_blank_npi_in_records;
+            //FIN. QED. 
+            return toReturn;
+        }
+        public dynamic GetMapResult(dynamic idResult, IEnumerable<dynamic> records) {
+            dynamic toReturn = new ExpandoObject(); toReturn.db_transaction = ""; int seed_id = 457; int fpr_seed_id = 4487;
+            foreach (var staging_row in idResult.staging_rows)
+            {
+                List<string> alreadyUpdatedFacs = new List<string>(); List<string> alreadyUpdatedSpecs = new List<string>();
+                toReturn.validFacProvSpecs = new List<dynamic>();//--for TermResult, valid for Vendor/Facilities of course
+                //***NOW WE HAVE IDd PROV FAC SPEC in vars x y z, respectively (or 0 if not IDd***\\
+                //3a. If any not IDd + 'toCreate', insert new (provider, fac, or spec), If IDd + 'toUpdate', update changed info
+                //PROVIDER 1. INSERT/UPDATE PROVIDER ROW
+                var goto_45 = false; string _pid = "0"; string _set = ""; string _query = ""; var _dict = (IDictionary<string, object>)staging_row.record;
+                if (staging_row.npi_match)
+                {
+                    //generate UPDATE sql for parent row of this provider (i.e. not an 'additional row')
+                    //UPDATE EXISTING RECORD for 'parent row' and store PROVIDER_ID as PROV_ID / _DBID
+                    // get PROVIDER_ID from staging_row.matched_provider, which should always be populated for npi_match==true
+                    /*--"mi_csv": "L.","gender_csv": "Female","tin_db": "","mi_db": "","gender_db": "Female",*/
+                    if (staging_row.provider_row.mi_csv != staging_row.provider_row.mi_db) { _set += "PROVIDER_MIDDLE_NAME='"+staging_row.provider_row.mi_csv+"'"; }
+                    if (staging_row.provider_row.gender_csv != staging_row.provider_row.gender_db) {
+                        string _gender = (staging_row.provider_row.gender_csv == "Female") ? "1" : (staging_row.provider_row.gender_csv == "Male") ? "2" : "3";
+                        _set += (_set!="")? "," : "" + "PROVIDER_GENDER_ID='" + _gender + "'";
+                    }
+                    if (((IDictionary<string,string>)staging_row.matched_provider)["EFFECTIVE_DATE"] as string != _dict["Start Date"] as string)
+                    {
+                        string _effdate = _dict["Start Date"] as string;
+                        _set += (_set != "") ? "," : "" + "EFFECTIVE_DATE='" + _effdate + "'";
+                    }
+                    _pid = ((IDictionary<string, string>)staging_row.matched_provider)["PROVIDER_ID"];
+                    if (_set != "") { _query = "UPDATE dbo.PROVIDER SET " + _set + " WHERE PROVIDER_ID=" + _pid; }
+                    //debug only
+                        //row check level: staging_row.queryOne = _query;
+                        //manualdb level:
+                        toReturn.db_transaction += _query + ";";
+                    //production
+                        //(run update query)
+                        //
+
+                    //NOTE: we have both staging_row and _staging_row.provider_row.additional_matched_rows[x] to imply 3, 4 and 5 from...
+                    //      as well as staging_row.record or _staging_row.record to base additional changes from...(if needed, prob not)
+                    goto_45 = true;
+                }
+                else if (!staging_row.npi_match && staging_row.NPI.Trim() != "")
+                { //include !npi_match for clarity only; not needed
+                    //generate INSERT sql for parent row of provider (like above, i.e. not an 'additional row')
+                        //INSERT NEW RECORD for 'parent row' and store LAST_INSERT_ID as PROV_ID / _DBID, _query, _pid
+                        var _fields = "NATIONAL_PROVIDER_IDENTIFIER,PROVIDER_FIRST_NAME,PROVIDER_MIDDLE_NAME,PROVIDER_LAST_NAME,PROVIDER_GENDER_ID,CSP_INDICATOR,EFFECTIVE_DATE";
+                        string _gender = (_dict["Gender"] as string == "Female") ? "1" : (_dict["Gender"] as string == "Male") ? "2" : "3";
+                        var _values = "'"+_dict["NPI"] as string+"','"+ _dict["First Name"] as string + "','"+_dict["MI"] as string+"','"+_dict["Last Name"] as string+"',"+_gender+",0,'"+_dict["Start Date"] as string+"'";
+                        _query = "INSERT INTO dbo.PROVIDER("+_fields+") VALUES("+_values+")";
+                        _pid = seed_id.ToString();
+                        toReturn.db_transaction += _query + ";";
+                        // get LAST_INSERT_ID after insert statement or as part of result from insert statement, or just from DBConnection object
+
+                    //NOTE: we have both staging_row and _staging_row.provider_row.additional_matched_rows[x] to imply 3, 4 and 5 from...
+                    //      as well as staging_row.record or _staging_row.record to base additional changes from...(if needed, prob not)
+                    goto_45 = true; seed_id++;
+                }
+
+                if (goto_45)
+                {
+                    //PROVIDER 2. Create alias if needed / set in object (staging_row.alias_to_create!=null)
+                    //--toAdd.oldFN = _fn; toAdd.oldLN = _ln; toAdd.newFN = fn; toAdd.newLN = ln; toAdd.NPI = _NPI; toAdd.DBID = _DBID;
+
+                    //PROVIDER 3. (Drop & Re)Create creds/languages mappings (and any other "based on prov data only" mappings), from parent row + PROV_ID / _DBID
+                    /*    SELECT * FROM dbo.CREDENTIAL WHERE CREDENTIAL_VALUE='MD'; ds = dataLayer.ExecuteDataSet("select * from dbo.PROVIDER_LANGUAGE", CommandType.Text);
+                          SELECT * FROM dbo.PROVIDER_LANGUAGE WHERE LANGUAGE_NAME='English';*/
+                    string _tmp; string _tmpid; string _lid="0"; string _cid="0"; int _seq = 0;
+                    var _drop = "DELETE FROM dbo.PROVIDER_LANGUAGE_MAPPING WHERE PROVIDER_ID=" + _pid + ";DELETE FROM dbo.PROVIDER_CREDENTIAL_MAPPING WHERE PROVIDER_ID=" + _pid + ";";
+                    toReturn.db_transaction += _drop;
+                    foreach (string langName in staging_row.provider_row.Languages) { 
+                        foreach (Dictionary<string, string> language in idResult.baseTables.Language)
+                        {
+                            language.TryGetValue("LANGUAGE_NAME", out _tmp); language.TryGetValue("LANGUAGE_ID", out _tmpid);
+                            if (String.Equals(_tmp, langName))
+                            { _lid = _tmpid; break; }
+                        }
+                        string _fields2 = "PROVIDER_ID,LANGUAGE_ID,SEQUENCE_NUMBER"; string _values2 = _pid+","+_lid+","+_seq.ToString();
+                        var _reinsert = "INSERT INTO dbo.PROVIDER_LANGUAGE_MAPPING(" + _fields2 + ") VALUES (" + _values2 + ");";
+                        toReturn.db_transaction += _reinsert;
+                        _seq++;
+                    }
+                    _seq = 0;
+                    foreach (string credName in staging_row.provider_row.Credentials) {
+                        foreach (Dictionary<string, string> credential in idResult.baseTables.Credential) {
+                            credential.TryGetValue("CREDENTIAL_VALUE", out _tmp); credential.TryGetValue("CREDENTIAL_ID", out _tmpid);
+                            if (String.Equals(_tmp, credName))
+                            { _cid = _tmpid; break; }
+                        }
+                        string _fields2 = "PROVIDER_ID,CREDENTIAL_ID,SEQUENCE_NUMBER"; string _values2 = _pid + "," + _cid + "," + _seq.ToString();
+                        var _reinsert = "INSERT INTO dbo.PROVIDER_LANGUAGE_MAPPING(" + _fields2 + ") VALUES (" + _values2 + ");";
+                        toReturn.db_transaction += _reinsert;
+                        _seq++;
+                    }
+                    //PROVIDER 4. add FacProvSpec IDs to validFacProvSpec so they aren't mistakenly marked for removal in Terms
+
+                    //PROVIDER 5-6. Update IDd_fac and IDd_spec info if different than DB record for matched Fac/Spec/TableLinkedToFacOrSpec, and not in alreadyUpdatedFacs/Specs
+
+                    //7. FacProv + Employment (FP+Spec) toMap, create Active FacSpec/ProvSpec if not exist 
+                    //   for ProvSpec, (what seq #? by default add to end/last seq #...but if set as "Primary Specialty" then move to 1 and push all others down by 1)
+                    //   USE prov_id/_DBID, IDd_fac.matchedFac.FACILITY_ID, IDd_spec.matchedSpec.SPECIALTY_ID
+                    // _pid | staging_row.IDd_fac.matchedFac.FACILITY_ID | staging_row.IDd_spec.matchedSpec.SPECIALTY_ID
+                    var __values = _pid+","+ ((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"] + ",'"+ _dict["Start Date"] as string+"'";
+                    string _fpr = "INSERT INTO dbo.FACILITY_PROVIDER_RELATIONSHIP(FACILITY_ID,PROVIDER_ID,EFFECTIVE_DATE) VALUES("+__values+")";
+                    toReturn.db_transaction += _fpr + ";";
+                    __values= fpr_seed_id.ToString()+","+ ((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"] + ",'"+_dict["Start Date"] as string+"'";
+                    string _e = "INSERT INTO dbo.EMPLOYMENT(FACILITY_PROVIDER_RELATIONSHIP_ID,SPECIALTY_ID,EFFECTIVE_DATE) VALUES("+__values+");";
+                    toReturn.db_transaction += _e; fpr_seed_id++;
+                    /*try
+                    {
+                        foreach (dynamic additional_row in staging_row.additional_matched_rows)
+                        {
+                            //_PID | additional_row.IDd_fac_matchedFac.FACILITY_ID | additional_row.IDd_spec.matchedSpec.SPECIALTY_ID
+                            var ___values = _pid + "," + ((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"] + "," + _dict["Start Date"] as string;
+                            string __fpr = "INSERT INTO dbo.FACILITY_PROVIDER_RELATIONSHIP(FACILITY_ID,PROVIDER_ID,EFFECTIVE_DATE) VALUES(" + ___values + ")";
+                            toReturn.db_transaction += __fpr + ";";
+                            ___values = fpr_seed_id.ToString() + "," + ((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"] + "," + _dict["Start Date"] as string;
+                            string __e = "INSERT INTO dbo.EMPLOYMENT(FACILITY_PROVIDER_RELATIONSHIP_ID,SPECIALTY_ID,EFFECTIVE_DATE) VALUES(" + ___values + ");";
+                            toReturn.db_transaction += __e; fpr_seed_id++;
+                        }
+                    }
+                    catch (Exception e) { }*/
+                }
+            }
+            toReturn.staging_rows = idResult.staging_rows;
+            return toReturn;
+        }
+        public dynamic GetTermResult(dynamic mapResult, dynamic idResult, IEnumerable<dynamic> records) {
+            dynamic toReturn = new ExpandoObject();
+            foreach (var staging_row in mapResult.staging_rows)
+            {
+                //8. FacProv to Term (term Employment for removed FacProv ID, and Directory for removed Employment ID to keep DB clean)
+                //  FOR every row's IDd_fac:
+                //   FIND all Employment for Provider, if Fac/Prov/Spec exist in DB and not added in 4 / in validFacProvSpecs, remove
+                //   FIND all FacProvRelationship for Provider, if Fac/Prov exist in DB and not added in 4 / in validFacProvSpecs, remove
+
+            }
+            return toReturn;
+        }
 
         #region FUNCTION: IsProviderAndFacilityMapped(int providerID, facilityID)
 

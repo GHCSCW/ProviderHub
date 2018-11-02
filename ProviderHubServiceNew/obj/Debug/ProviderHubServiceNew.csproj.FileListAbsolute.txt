@@ -51,3 +51,5 @@ C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Web.H
 C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Net.Http.Formatting.xml
 C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Web.Http.xml
 C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\System.Web.Http.Cors.xml
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\CsvHelper.dll
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubServiceNew\bin\CsvHelper.xml

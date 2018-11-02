@@ -21,11 +21,14 @@ import { CustomInterceptor } from './app.service';
 import { FacilitysearchComponent } from './facilitysearch/facilitysearch.component';
 import { FacilityComponent } from './facility/facility.component';
 import { PresetValueExampleComponent } from './selectize/preset-value-example/presetValueExample.component';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, PHDatePipe, NoValuePipe, SpecStatusPipe } from './pipes';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, PHDatePipe, NoValuePipe, SpecStatusPipe, PhoneFromDBPipe, PhoneToDBPipe } from './pipes';
 import { VendorsearchComponent } from './vendorsearch/vendorsearch.component';
 import { VendorComponent } from './vendor/vendor.component';
+import { UwimportComponent } from './uwimport/uwimport.component';
 
 const routes: Routes = [
+  /*misc*/
+  { path: 'uwimport', component: UwimportComponent },
   /*Root: Provider List & Basic Search (Name/NPI)*/
   //, data: { apiRoot: (environment.production) ? API.prod : API.dev }
   { path: 'Provider/Search', component: DatatableComponent },
@@ -37,7 +40,11 @@ const routes: Routes = [
   { path: 'Facility/Search', component: FacilitysearchComponent },
   /*Individual Facility View*/
   { path: 'Facility/:tabURL/:id', component: FacilityComponent },
-  { path: 'facility/:id', component: FacilityComponent }
+  { path: 'facility/:id', component: FacilityComponent },
+  /*Vendor*/
+  { path: 'vendor/:id', component: VendorComponent },
+  { path: 'Vendor/:tabURL/:id', component: VendorComponent },
+  { path: 'Vendor/Search', component: VendorsearchComponent }
 ];
 
 @NgModule({
@@ -48,6 +55,8 @@ const routes: Routes = [
     ProviderComponent,
     FacilitysearchComponent,
     FacilityComponent,
+    VendorsearchComponent,
+    VendorComponent,
     PresetValueExampleComponent,
     GenderPipe,
     NullablePipe,
@@ -57,8 +66,11 @@ const routes: Routes = [
     SpecStatusPipe,
     PHDatePipe,
     NoValuePipe,
+    PhoneToDBPipe,
+    PhoneFromDBPipe,
     VendorsearchComponent,
-    VendorComponent
+    VendorComponent,
+    UwimportComponent
   ],
   imports: [
     DatatableModule,

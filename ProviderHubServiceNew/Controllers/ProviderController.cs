@@ -26,8 +26,9 @@ namespace ProviderHubServiceNew.Controllers
                 provider = dataLayer.GetProviderByID(id,true);
                 List<Language> l = dataLayer.GetLanguageList(true);
                 List<Credential> c = dataLayer.GetCredentialList(true);
+                List<Specialty> s = dataLayer.GetSpecialtyList(true);
                 var uname = User.Identity;
-                toReturn.p = provider; toReturn.l = l; toReturn.c = c; toReturn.n = uname;
+                toReturn.p = provider; toReturn.l = l; toReturn.c = c; toReturn.n = uname; toReturn.s = s;
             }
             var json = JsonConvert.SerializeObject(toReturn, new JsonSerializerSettings{ DateFormatHandling = DateFormatHandling.MicrosoftDateFormat, DateTimeZoneHandling = DateTimeZoneHandling.Unspecified });
             return Content(json, "application/json");
@@ -46,6 +47,7 @@ namespace ProviderHubServiceNew.Controllers
             }
             //return everything passed in: type, id, and POST body object
             dynamic toReturn = new ExpandoObject(); inputJSON.type = type; inputJSON.ID = id;
+            inputJSON.User = (!User.Identity.IsAuthenticated) ? "Not Authorized" : User.Identity.Name;
             toReturn.result = false; toReturn.POSTvars = JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(inputJSON));
             //handle each type accordingly
             //0="PROVIDER HEADER"

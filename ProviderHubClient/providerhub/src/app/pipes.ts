@@ -73,3 +73,27 @@ export class SpecStatusPipe implements PipeTransform {
     return (value.TerminationDate !== null && parseInt(value.TerminationDate) <= todaysDate.getTime()) ? "INACTIVE" : "ACTIVE";
   }
 }
+
+@Pipe({
+  name: 'phonetodb'
+})
+export class PhoneToDBPipe implements PipeTransform {
+  transform(value: any, args?: any): any {
+    if (typeof value=="undefined" || value===null || value.trim() == "") { return ""; }
+    value = value.replace(/\D/g, '');//strip any non digit character (including +, -, ())
+    if (value.substring(0, 1) == "1" && value.length > 10) { value = value.substring(1, value.length); }//leading 1
+    return (value.length==10)? value : "NaN";//ANOTHER OPTION: client can check for desired # of digits aka 10 and we can return value
+  }
+}
+
+@Pipe({
+  name: 'phonefromdb'
+})
+export class PhoneFromDBPipe implements PipeTransform {
+  transform(value: any, args?: any): any {
+    if (typeof value == "undefined" || value === null || value.trim() == "") { return ""; }
+    if (value != value.replace(/\D/g, '')) { return value; }
+    return value.substring(0, 3) + "-" + value.substring(3, 6) + "-" + value.substring(6, 10);
+  }
+}
+

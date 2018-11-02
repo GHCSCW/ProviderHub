@@ -3,9 +3,9 @@
   <span class="navbar-left menu-links">
     <a [class.tabselected]="selectedTab=='P'" (click)="nav('/Provider/Search','P')">Provider</a>
     <a [class.tabselected]="selectedTab=='F'" (click)="nav('/Facility/Search','F')">Facility</a>
-    <a>Vendor</a>
+    <a [class.tabselected]="selectedTab=='V'" (click)="nav('/Vendor/Search','V')">Vendor</a>
   </span>
-  <span class="navbar-right">spillai</span>
+  <span class="navbar-right">{{username}}</span>
   <button type="submit" id="header-advanced-search-button"><i class="fa fa-search"></i></button>
   <span class="navbar-right" id="header-advanced-search-wrapper">
     <input id="header-advanced-search" type="search" class="form-control form-control-sm" placeholder="Search All (Provider, Facility, Vendor)" />
