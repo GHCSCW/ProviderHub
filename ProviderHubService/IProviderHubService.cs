@@ -23,7 +23,7 @@ namespace ProviderHubService
 
         [OperationContract]
         List<Credential> GetProviderCredentialByID(int providerID);
-        
+
         [OperationContract]
         Facility GetFacilityByID(int facilityID);
 
@@ -83,13 +83,13 @@ namespace ProviderHubService
 
         [OperationContract]
         int MapFacilityToVendor(int facilityID, int vendorID, string createdBy);
-        
+
         [OperationContract]
         bool SaveLanguageByProviderID(int providerID, List<Language> languages);
 
         [OperationContract]
         bool SaveCredentialByProviderID(int providerID, List<Credential> credentials);
-        
+
         [OperationContract]
         List<FacilityProviderRelationship> AdvancedSearch(Dictionary<string, List<string>> args);
 
@@ -102,6 +102,17 @@ namespace ProviderHubService
         [OperationContract]
         bool SaveBHAttributeToRelationship(int relationshipID, List<BehavioralHealthAttribute> bhAttributeList);
 
+        [OperationContract]
+        int SaveFacilityAndAddress(Facility facility);
+
+        [OperationContract]
+        List<FacilityProviderRelationship> GetRelationshipDataByFacilityID(int facilityID);
+
+        [OperationContract]
+        List<FacilityProviderRelationship> GetRelationshipDataByProviderID(int providerID);
+
+        [OperationContract]
+        int MapProviderToFacility(int providerID, int facilityID, string createdBy);
 
     }
 }

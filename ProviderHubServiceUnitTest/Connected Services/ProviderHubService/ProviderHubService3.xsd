@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ProviderHubService" />
+  <xs:import schemaLocation="http://behavioralhealthservicedev/ProviderHubService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="GetData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="value" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDataResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetDataResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProviderByID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="providerID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProviderByIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetProviderByIDResult" nillable="true" type="q1:Provider" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProviderLanguageByID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="providerID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProviderLanguageByIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetProviderLanguageByIDResult" nillable="true" type="q2:ArrayOfLanguage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProviderCredentialByID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="providerID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProviderCredentialByIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetProviderCredentialByIDResult" nillable="true" type="q3:ArrayOfCredential" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFacilityByID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFacilityByIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetFacilityByIDResult" nillable="true" type="q4:Facility" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAddressByFacilityID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAddressByFacilityIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetAddressByFacilityIDResult" nillable="true" type="q5:Address" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProviderList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProviderListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetProviderListResult" nillable="true" type="q6:ArrayOfProvider" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFacilityList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFacilityListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetFacilityListResult" nillable="true" type="q7:ArrayOfFacility" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchForValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchForValueResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="SearchForValueResult" nillable="true" type="q8:SearchResults" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFacilityProviderRelationshipList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFacilityProviderRelationshipListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetFacilityProviderRelationshipListResult" nillable="true" type="q9:ArrayOfFacilityProviderRelationship" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFacilityProviderRelationshipByID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="relationshipID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFacilityProviderRelationshipByIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetFacilityProviderRelationshipByIDResult" nillable="true" type="q10:FacilityProviderRelationship" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveProviderDetail">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="provider" nillable="true" type="q11:Provider" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveProviderDetailResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveProviderDetailResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFacility">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="facility" nillable="true" type="q12:Facility" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFacilityResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveFacilityResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFacilityProviderRelationship">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="relationship" nillable="true" type="q13:FacilityProviderRelationship" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFacilityProviderRelationshipResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveFacilityProviderRelationshipResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveAddress">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="address" nillable="true" type="q14:Address" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveAddressResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveAddressResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MapAddressToFacility">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+        <xs:element minOccurs="0" name="addressID" type="xs:int" />
+        <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MapAddressToFacilityResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MapAddressToFacilityResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetLanguageList">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetLanguageListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetLanguageListResult" nillable="true" type="q15:ArrayOfLanguage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCredentialList">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCredentialListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetCredentialListResult" nillable="true" type="q16:ArrayOfCredential" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVendorList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="searchValue" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVendorListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetVendorListResult" nillable="true" type="q17:ArrayOfVendor" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveVendor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="vendor" nillable="true" type="q18:Vendor" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveVendorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveVendorResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MapAddressToVendor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="vendorID" type="xs:int" />
+        <xs:element minOccurs="0" name="addressID" type="xs:int" />
+        <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MapAddressToVendorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MapAddressToVendorResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVendorByID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="vendorID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVendorByIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetVendorByIDResult" nillable="true" type="q19:Vendor" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAddressByVendorID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="vendorID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAddressByVendorIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetAddressByVendorIDResult" nillable="true" type="q20:ArrayOfAddress" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MapFacilityToVendor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+        <xs:element minOccurs="0" name="vendorID" type="xs:int" />
+        <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MapFacilityToVendorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MapFacilityToVendorResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveLanguageByProviderID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="providerID" type="xs:int" />
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="languages" nillable="true" type="q21:ArrayOfLanguage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveLanguageByProviderIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveLanguageByProviderIDResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveCredentialByProviderID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="providerID" type="xs:int" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="credentials" nillable="true" type="q22:ArrayOfCredential" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveCredentialByProviderIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveCredentialByProviderIDResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AdvancedSearch">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="args" nillable="true" type="q23:ArrayOfKeyValueOfstringArrayOfstringty7Ep6D1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AdvancedSearchResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="AdvancedSearchResult" nillable="true" type="q24:ArrayOfFacilityProviderRelationship" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBehavioralHealthAttributeByID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="bHAttributeType" type="q25:BHAttributeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBehavioralHealthAttributeByIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetBehavioralHealthAttributeByIDResult" nillable="true" type="q26:ArrayOfBehavioralHealthAttribute" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBHAttributeByRelationshipID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="relationshipID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBHAttributeByRelationshipIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetBHAttributeByRelationshipIDResult" nillable="true" type="q27:ArrayOfBehavioralHealthAttribute" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveBHAttributeToRelationship">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="relationshipID" type="xs:int" />
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="bhAttributeList" nillable="true" type="q28:ArrayOfBehavioralHealthAttribute" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveBHAttributeToRelationshipResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveBHAttributeToRelationshipResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFacilityAndAddress">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="facility" nillable="true" type="q29:Facility" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFacilityAndAddressResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveFacilityAndAddressResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRelationshipDataByFacilityID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRelationshipDataByFacilityIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetRelationshipDataByFacilityIDResult" nillable="true" type="q30:ArrayOfFacilityProviderRelationship" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRelationshipDataByProviderID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="providerID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRelationshipDataByProviderIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/ProviderHubService" minOccurs="0" name="GetRelationshipDataByProviderIDResult" nillable="true" type="q31:ArrayOfFacilityProviderRelationship" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MapProviderToFacility">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="providerID" type="xs:int" />
+        <xs:element minOccurs="0" name="facilityID" type="xs:int" />
+        <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MapProviderToFacilityResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MapProviderToFacilityResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

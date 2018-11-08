@@ -1,0 +1,157 @@
+<div *ngIf="facilityProviderRelationship != 0">
+  <facility-provider-relationship-component></facility-provider-relationship-component>
+</div>
+<mat-accordion multi="true">
+  <mat-expansion-panel class="card-header facilty-background" [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="col-sm-11">
+          <b>Clinic: </b>{{facility.facilityName}}
+        </div>
+        <div class="col-md-1">
+          <span *ngIf="canEdit">
+            <edit-facility-details [facility]="facility">loading</edit-facility-details>
+          </span>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+
+            <div class="form-row">
+              <div class="col-md-5"><label>Address Type: </label></div>
+              <div class="col-md-7">  {{facility.facilityAddress?.addressType | eNumAsString }}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Address Line 1: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.addressLine1}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Address Line 2: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.addressLine2}}</div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-row">
+              <div class="col-md-5"><label>City: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.city}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>State: </label> </div>
+              <div class="col-md-7">{{facility.facilityAddress?.state}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Zip: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.zipCode}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>External ID: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.externalID}}</div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-row">
+              <div class="col-md-5"><label>Region: </label></div>
+              <div class="col-md-7">{{facility.facilityAddress?.region}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Website: </label> </div>
+              <div class="col-md-7">
+                <a target="_blank" href="{{facility.facilityAddress?.website}}">{{facility.facilityAddress?.website}}</a>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Email: </label> </div>
+              <div class="col-md-7">{{facility.facilityAddress?.email}}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-5"><label>Clinic NPI: </label> </div>
+              <div class="col-md-7">{{facility.npi}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row center_div"><b>Contact Information</b></div>
+        <div class="row">
+          <div class="col">
+            <div class="form-row">
+              <div class="col-md-3"><label>Name: </label> </div>
+              <div class="col-md-9">
+                {{facility.facilityAddress?.contactFirstName}} - {{facility.facilityAddress?.contactLastName}}
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-3"><label>Phone Number: </label> </div>
+              <div class="col-md-9">{{facility.facilityAddress?.phoneNumber}}</div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-row">
+              <div class="col-md-3"><label>Fax Number: </label></div>
+              <div class="col-md-9">  {{facility.facilityAddress?.faxNumber }}</div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4"><label>Alternate Phone Number: </label> </div>
+              <div class="col-md-8">{{facility.facilityAddress?.alternatePhoneNumber}}</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-row" style="background-color:#f6f6f6">
+              <div class="col-md-2"><label>Internal Notes: </label></div>
+              <div class="col-md-10">{{facility.internalNotes}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div>
+          <small class="text-muted">
+            Last Updated: {{facility.lastUpdatedDate | date: 'M/d/yy, h:mm a'}} - Last Updated By: {{facility.lastUpdatedBy}}
+          </small>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel class="facilityProviderRelationship">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div>
+          Other Providers at {{facility.facilityName}} ({{relationshipDataByProvider.length}})
+        </div>
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col card-block">
+            <table class="table">
+              <tr>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Credentials</th>
+                <th>Clinic Address</th>
+                <th>Clinic Phone Number</th>
+              </tr>
+              <tr *ngFor="let data of relationshipDataByProvider" (click)="RouteNewProvider(data)">
+                <td>{{data.provider.lastName}}</td>
+                <td>{{data.provider.firstName}}</td>
+                <td>{{data.provider.credentials}}</td>
+                <td>{{data.facility.facilityAddress.addressLine1}} - {{data.facility.facilityAddress.addressLine2}}</td>
+                <td>{{data.facility.facilityAddress.phoneNumber}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+

@@ -1,0 +1,18 @@
+<div class="full-width2">
+  <form [formGroup]="facilityNameGroup" novalidate (ngSubmit)="onFormSubmit(facilityNameGroup.value)">
+    <div class="col">
+      <label for="clinicMapping">Pick a Clinic to map to:</label>
+      <angular2-multiselect [data]="clinicList" [(ngModel)]="selectedValue"
+                            [settings]="DropdownSettings"
+                            (onSelect)="onItemSelect($event)"
+                            (onDeSelect)="OnItemDeSelect($event)"
+                            (onSelectAll)="onSelectAll($event)"
+                            (onDeSelectAll)="onDeSelectAll($event)" formControlName="facility">
+      </angular2-multiselect>
+      <div style="padding-top:1em">
+        <button mat-raised-button color="accent">Map</button>
+      </div>
+    </div>
+  </form>
+</div>
+

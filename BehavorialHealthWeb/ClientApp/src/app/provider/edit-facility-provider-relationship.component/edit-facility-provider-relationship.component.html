@@ -1,0 +1,48 @@
+<button type="button" class="close" aria-label="Close" (click)="onNoClick()">
+  <span aria-hidden="true">&times;</span>
+</button>
+<h1 mat-dialog-title> {{data.facilityProviderRelationship.facility.facilityName}}</h1>
+<mat-dialog-content>
+
+  <div class="full-width">
+    <div>
+      <mat-form-field>
+        <input matInput [matDatepicker]="pickerEffDate" placeholder="Effective Date" [(ngModel)]="data.facilityProviderRelationship.effectiveDate" name="effectiveDate">
+        <mat-datepicker-toggle matSuffix [for]="pickerEffDate"></mat-datepicker-toggle>
+        <mat-datepicker #pickerEffDate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="pickerTermDate" placeholder="Termination Date" [(ngModel)]="data.facilityProviderRelationship.terminationDate" name="terminationDate">
+        <mat-datepicker-toggle matSuffix [for]="pickerTermDate"></mat-datepicker-toggle>
+        <mat-datepicker #pickerTermDate></mat-datepicker>
+      </mat-form-field>
+
+    </div>
+    <div>
+      <mat-checkbox [(ngModel)]="data.facilityProviderRelationship.acceptingNewPatientIndicator" name="acceptingNewPatientIndicator">Accepting New Patients</mat-checkbox>
+      <mat-checkbox [(ngModel)]="data.facilityProviderRelationship.externalProviderIndicator" name="externalProviderIndicator">External Provider</mat-checkbox>
+      <mat-checkbox [(ngModel)]="data.facilityProviderRelationship.floatProviderIndicator" name="floatProviderIndicator">Float Provider</mat-checkbox>
+      <mat-checkbox [(ngModel)]="data.facilityProviderRelationship.referralIndicator" name="referralIndicator">Referral Indicator</mat-checkbox>
+      <mat-checkbox [(ngModel)]="data.facilityProviderRelationship.prescriberIndicator" name="prescriberIndicator">Presciber Indicator</mat-checkbox>
+    </div>
+    <mat-form-field>
+      <input matInput placeholder="Provider Email" [(ngModel)]="data.facilityProviderRelationship.providerEmail" [formControl]="email" name="providerEmail" />
+      <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Phone Number" [(ngModel)]="data.facilityProviderRelationship.providerPhoneNumber" name="providerPhoneNumber" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="number" placeholder="Phone Extension" [(ngModel)]="data.facilityProviderRelationship.providerExtensionNumber" name="providerExtensionNumber" />
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput placeholder="Internal Notes" [(ngModel)]="data.facilityProviderRelationship.internalNotes" name="internalNotes"> </textarea>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="pull-right">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSubmit()" cdkFocusInitial>Save and Close</button>
+</div>
+

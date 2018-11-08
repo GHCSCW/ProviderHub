@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>New Clinic</h1>
+
+  <form [formGroup]="createFacilityForm">
+    <div class="mat-container">
+      <mat-form-field>
+        <input matInput formControlName="FacilityName" placeholder="Clinic Name" required>
+      </mat-form-field>
+      <div class="alert alert-danger" *ngIf="!createFacilityForm.get('FacilityName').valid &&createFacilityForm.get('FacilityName').hasError('required')">
+        Facility Name is required. A minimum of 5 characters is required.
+      </div>
+    </div>
+    <mat-form-field>
+      <input id="number" type="number" formControlName="NPI" placeholder="NPI" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <input id="number" type="number" formControlName="ExternalId" placeholder="External Id" matInput>
+    </mat-form-field>
+    <div class="mat-container">
+      <mat-form-field>
+        <textarea matInput placeholder="Internal Notes" formControlName="InternalNotes"> </textarea>
+      </mat-form-field>
+    </div>
+    <create-address (notify)='onNotify($event)'></create-address>
+  </form>
+
+

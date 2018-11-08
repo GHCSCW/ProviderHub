@@ -1,0 +1,19 @@
+.top-buffer {
+    margin-top: 100px;
+}
+.facilty-background {
+  background-color: #b3ebff;
+}
+
+.card {
+  margin-bottom: 10px;
+}
+
+.center_div {
+  margin: 0 auto;
+  width: 80% /* value of your choice which suits your alignment */
+}
+
+.facilityProviderRelationship {
+  background-color: papayawhip;
+}

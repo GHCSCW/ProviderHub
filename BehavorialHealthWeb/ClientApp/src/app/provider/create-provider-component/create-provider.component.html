@@ -1,0 +1,79 @@
+<div class="container">
+  <h1 mat-dialog-title>Create Provider</h1>
+
+  <form [formGroup]="createProviderForm" (ngSubmit)="onFormSubmit(createProviderForm.value)">
+      <div class="row">
+        <div class="col-sm-4">
+          <mat-form-field>
+            <input matInput formControlName="FirstName" placeholder="First Name" required>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput formControlName="MiddleName" placeholder="Middle Name">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput formControlName="LastName" placeholder="Last Name" required>
+          </mat-form-field>
+
+
+          <mat-form-field>
+            <mat-select placeholder="Gender" formControlName="Gender" required>
+              <mat-option *ngFor="let option of genders" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput formControlName="DateOfBirth" [matDatepicker]="pickerDOB" placeholder="DOB">
+            <mat-datepicker-toggle matSuffix [for]="pickerDOB"></mat-datepicker-toggle>
+            <mat-datepicker #pickerDOB></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-8">
+          <label for="credentials">Credentials</label>
+          <angular2-multiselect [data]="credentialList" formControlName="CredentialList"
+                                [settings]="credentialDropdownSettings"
+                                (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)">
+          </angular2-multiselect>
+
+          <label for="languages">Languages</label>
+          <angular2-multiselect [data]="languageList" formControlName="LanguageList"
+                                [settings]="languageDropdownSettings"
+                                (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)">
+          </angular2-multiselect>
+          <mat-form-field>
+            <input id="number" type="number" formControlName="NPI" placeholder="NPI" matInput>
+          </mat-form-field>
+          <mat-form-field>
+            <input id="number" type="number" formControlName="EpicProviderID" placeholder="EPIC Prov Id" matInput>
+          </mat-form-field>
+          <div>
+            <mat-form-field>
+              <input matInput formControlName="MedicareEffectiveDate" [matDatepicker]="pickerMedEffDate" placeholder="Medicare Effective Date">
+              <mat-datepicker-toggle matSuffix [for]="pickerMedEffDate"></mat-datepicker-toggle>
+              <mat-datepicker #pickerMedEffDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput formControlName="MedicareTerminationDate" [matDatepicker]="pickerMedTermDate" placeholder="Medicare Termination Date">
+              <mat-datepicker-toggle matSuffix [for]="pickerMedTermDate"></mat-datepicker-toggle>
+              <mat-datepicker #pickerMedTermDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-checkbox formControlName="MedicareIndicator">Medicare Indicator</mat-checkbox>
+            <mat-checkbox formControlName="MedicaidIndicator">Medicaid Indicator</mat-checkbox>
+            <mat-checkbox formControlName="CSP_Indicator">CSP Indicator</mat-checkbox>
+          </div>
+        </div>
+
+      </div>
+      <button type="button" routerLink="../" mat-raised-button color="accent">Cancel</button>
+      <button mat-raised-button color="accent" [disabled]="!createProviderForm.valid">Save</button>
+  </form>
+</div>
+
