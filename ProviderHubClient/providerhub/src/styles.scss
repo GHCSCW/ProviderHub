@@ -242,8 +242,15 @@ i.is-editor{
   border-top: 1px solid #111;
   margin-top: .5rem; margin-bottom:0;
 }
+#networksTableDT_filter{display:none!important;}
 #provider-wrapper .provider-display #demoTable, #provider-specialties table, #facility-wrapper .facility-display #demoTable {
   width:100%;margin-left:32px;
+}
+#provider-wrapper #resetSpecs, #facility-wrapper #resetSpecs {
+  margin-left:20px;
+}
+#provider-wrapper #addSpec, #facility-wrapper #addSpec, #provider-wrapper #saveSpecs, #facility-wrapper #saveSpecs {
+  margin-left: 10px;
 }
 #provider-wrapper .provider-display #demoTable, #facility-wrapper .facility-display #demoTable{margin-left:0px;}
 .provider-display #demoTable tr td:first-child, .facility-display #demoTable tr td:first-child{padding-left:32px;}

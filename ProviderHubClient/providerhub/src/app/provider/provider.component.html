@@ -2,11 +2,11 @@
   <div class="left-sidebar">
     <h2>Provider</h2>
     <ul id="provider-nav">
+      <li tab-id="Networks" tab-url="Network" [class.selected]="nav=='Networks'">Networks</li>
       <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
       <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
       <li tab-id="Facility" tab-url="Facility" [class.selected]="nav=='Facility'">Facilities</li>
       <li tab-id="FacSpecMap" tab-url="Employment" [class.selected]="nav=='FacSpecMap'">Employment</li>
-      <li tab-id="Networks" tab-url="Network" [class.selected]="nav=='Networks'">Networks</li>
     </ul>
   </div>
   <div class="provider-display main-display">
@@ -29,23 +29,27 @@
       </tr>
       <tr>
         <td>Credentials</td>
-        <td><span class="not-editing">{{Provider.Credentials}}</span><span class="is-editing">
-           <!--EDIT CREDENTIALS CONTROL: selectize, tag-based autocomplete select box: cred abbreviations + description-->
-           <select id="edit_Provider_Credentials" multiple="multiple" class="toSelectize">
+        <td>
+          <span class="not-editing">{{Provider.Credentials}}</span><span class="is-editing">
+            <!--EDIT CREDENTIALS CONTROL: selectize, tag-based autocomplete select box: cred abbreviations + description-->
+            <select id="edit_Provider_Credentials" multiple="multiple" class="toSelectize">
               <option value="MD">MD</option>
               <option value="DO">DO</option>
               <option value="PhD">PhD</option>
             </select>
-        </span></td>
+          </span>
+        </td>
         <td>Gender</td>
-        <td><span class="not-editing">{{Provider.Gender | gender}}</span><span class="is-editing">
-             <!--EDIT GENDER CONTROL: normal select tag, Male/Female/Unknown-->
-             <select id="edit_Provider_Gender" value="{{Provider.Gender | gender}}">
+        <td>
+          <span class="not-editing">{{Provider.Gender | gender}}</span><span class="is-editing">
+            <!--EDIT GENDER CONTROL: normal select tag, Male/Female/Unknown-->
+            <select id="edit_Provider_Gender" value="{{Provider.Gender | gender}}">
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Unknown">Unknown</option>
             </select>
-        </span></td>
+          </span>
+        </td>
       </tr>
       <tr>
         <td></td>
@@ -61,25 +65,29 @@
         <table id="demoTable">
           <tr>
             <td>Languages</td>
-            <td colspan="3"><span class="not-editing">{{Provider.Languages}}</span><span class="is-editing">
+            <td colspan="3">
+              <span class="not-editing">{{Provider.Languages}}</span><span class="is-editing">
                 <!--EDIT LANGUAGE CONTROL: selectize, tag-based autocomplete select box: language names-->
                 <select id="edit_ProviderDemo_Language" multiple="multiple" class="toSelectize">
                   <option value="English">English</option>
                   <option value="Spanish">Spanish</option>
                   <option value="Gujarati">Gujarati</option>
                 </select>
-            </span></td>
+              </span>
+            </td>
           </tr>
           <tr>
             <td>Accepts Medicare?</td>
-            <td [attr.colspan]="!Provider.MedicareIndicator?3:1"><span class="not-editing">{{Provider.MedicareIndicator | bool}}</span><span class="is-editing">
-                  <!--BOOL CONTROL: Yes/No/Unknown-->
-                  <select id="edit_ProviderDemo_MedicareIndicator" (change)="toggleFields()" class="is-editing" value="{{Provider.MedicareIndicator | bool}}">
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                    <option value="Unknown">Unknown</option>
-                  </select>
-            </span></td>
+            <td [attr.colspan]="!Provider.MedicareIndicator?3:1">
+              <span class="not-editing">{{Provider.MedicareIndicator | bool}}</span><span class="is-editing">
+                <!--BOOL CONTROL: Yes/No/Unknown-->
+                <select id="edit_ProviderDemo_MedicareIndicator" (change)="toggleFields()" class="is-editing" value="{{Provider.MedicareIndicator | bool}}">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Unknown">Unknown</option>
+                </select>
+              </span>
+            </td>
             <td [hidden]="!Provider.MedicareIndicator">Medicare PTAN</td>
             <td [hidden]="!Provider.MedicareIndicator"><span class="not-editing">{{Provider.MedicarePTAN | nullable}}</span><span class="is-editing"><input type="text" id="edit_ProviderDemo_MedicarePTAN" value="{{Provider.MedicarePTAN | nullable}}" /></span></td>
           </tr>
@@ -91,20 +99,22 @@
           </tr>
           <tr [class.whiteTR]="!Provider.MedicareIndicator">
             <td>Accepts Medicaid?</td>
-            <td><span class="not-editing">{{Provider.MedicaidIndicator | bool}}</span><span class="is-editing">
-                  <!--BOOL CONTROL: Yes/No/Unknown-->
-                  <select id="edit_ProviderDemo_MedicaidIndicator" (change)="toggleFields2()" class="is-editing" value="{{Provider.MedicaidIndicator | bool}}">
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                    <option value="Unknown">Unknown</option>
-                  </select>
-            </span></td>
+            <td>
+              <span class="not-editing">{{Provider.MedicaidIndicator | bool}}</span><span class="is-editing">
+                <!--BOOL CONTROL: Yes/No/Unknown-->
+                <select id="edit_ProviderDemo_MedicaidIndicator" (change)="toggleFields2()" class="is-editing" value="{{Provider.MedicaidIndicator | bool}}">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Unknown">Unknown</option>
+                </select>
+              </span>
+            </td>
             <td [hidden]="!Provider.MedicaidIndicator">Medicaid Provider ID</td>
             <td [hidden]="!Provider.MedicaidIndicator"><span class="not-editing">{{Provider.MedicaidProviderID | nullable}}</span><span class="is-editing"><input type="text" id="edit_ProviderDemo_MedicaidProviderID" value="{{Provider.MedicaidProviderID | nullable}}" /></span></td>
           </tr>
           <tr [class.greyTR]="!Provider.MedicareIndicator">
             <td>Hospital Affiliations</td>
-            <td>{{Provider.FacilityNames | nullable:"Coming Soon"}}</td><!--TODO: implement editing/saving once pulling real data for this field!-->
+            <td>{{Provider.HospitalAffiliations | nullable:"-"}}</td><!--TODO: implement editing/saving once pulling real data for this field!-->
             <td></td>
             <td></td>
           </tr>
@@ -119,10 +129,13 @@
     </div>
     <div id="spec-card" class="card specWrapper" [hidden]="nav!='Specialties'">
       <div class="card-body">
-        <h5 class="card-title red">Specialties</h5>
+        <h5 class="card-title red">
+          Specialties <i class="fa fa-plus" [hidden]="specsEdited" id="addSpec"></i>
+          <i class="fa fa-save" [hidden]="!specsEdited" id="saveSpecs"></i><i class="fa fa-times" [hidden]="!specsEdited" id="resetSpecs"></i>
+        </h5>
         <div id="specList" class="card-text ui-sortable">
-          <h4>
-            <span style="display:none;">
+          <h4 id="addSpecArea">
+            <span id="addSpecBody" style="display:none;">
               Add Specialty:
               <select id="add_Provider_Specialty" class="toSelectize">
                 <option value=10>Family Medicine</option>
@@ -134,7 +147,7 @@
             <br /><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
           </h4>
           <!--EACH SPECIALTY-->
-          <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard ui-sortable-handle status_{{s.Status}}" style="position: relative; left: 0px; top: 0px;">
+          <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard indivSpecWrapper ui-sortable-handle status_{{s.Status}}" id="specWrapper_{{s.ID}}" style="position: relative; left: 0px; top: 0px;">
             <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
             <div class="card-body specCardBody">
               <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{s.Name}} <br /><span>{{s | specialtyType}} | {{s | parentSpecialty}}</span></h5>
@@ -241,6 +254,24 @@
         </div>
       </div>
     </div>
-    <table id="networksTable" [hidden]="nav!='Networks'"></table>
+    <!--table id="networksTable" [hidden]="nav!='Networks'"></table-->
+    <div id="demo-card" class="card" [hidden]="nav!='Networks'">
+      <div class="card-body">
+        <h5 class="card-title red">Providers</h5>
+        <table id="networksTableDT" [hidden]="nav!='Networks'" class="table table-striped table-bordered" cellspacing="0">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Network</th>
+              <!--th>Network Effective Date</th-->
+              <th>Provider</th>
+              <th>Facility</th>
+              <th>Specialty</th>
+              <!--<th>EPIC Network ID</th>-->
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
   </div>
 </div>

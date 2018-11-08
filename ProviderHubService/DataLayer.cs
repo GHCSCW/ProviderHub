@@ -876,6 +876,51 @@ namespace ProviderHubService
             return languageList;
         }
 
+        public string GetHospitalAffiliationByPID(int pid) {
+            string toReturn = "";
+            string sql = "providerhub.dbo.sp_GetHospitalAffiliationByID";
+            SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = pid } };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            foreach (DataRow dr in ds.Tables[0].Rows) {
+                toReturn += dr.Field<string>("HOSPITAL_NAME") + ",";
+            }
+            return toReturn.TrimEnd(',');
+        }
+
+        //            { data: "Network" }, { data: "NetworkEffectiveDate" }, { data: "Provider" }, { data: "Facility" }, { data: "Specialty" }, { data: "EpicNetworkID" }
+        public List<NetworkTab> GetNetworkTabByPID(int pid) {
+            List<NetworkTab> toReturn = new List<NetworkTab>();
+            string sql = "providerhub.dbo.sp_GetProviderNetworkTabByID";
+            SqlParameter[] sqlParams = {
+                                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = pid }
+                                        };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                toReturn = (from spec in ds.Tables[0].AsEnumerable()
+                            select new NetworkTab()
+                            {
+                                ID = spec.Field<int>("DIRECTORY_ID"),
+                                Network = spec.Field<string>("NETWORK_NAME"),
+                                NetworkEffectiveDate = spec.Field<DateTime>("NETWORK_EFFECTIVE_DATE"),
+                                Provider = spec.Field<string>("PROVIDER_NAME"),
+                                Facility = spec.Field<string>("FACILITY_NAME"),
+                                Specialty = spec.Field<string>("SPECIALTY_NAME"),
+                                EpicNetworkID = spec.Field<int>("EPIC_NETWORK_ID"),
+                                /*indicators*/
+                                FPRelationship = new FacilityProviderRelationship() {
+                                    ExternalProviderIndicator = spec.Field<bool?>("EXTERNAL_PROVIDER_INDICATOR"),
+                                    AcceptingNewPatientIndicator = spec.Field<bool?>("ACCEPTING_NEW_PATIENT_INDICATOR"),
+                                    PrescriberIndicator = spec.Field<bool?>("PRESCRIBER_INDICATOR"),
+                                    ReferralIndicator = spec.Field<bool?>("REFERRALL_INDICATOR"),
+                                    PCPEligibleIndicator = spec.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
+                                    FloatProviderIndicator = spec.Field<bool?>("FLOAT_PROVIDER_INDICATOR")
+                                }
+                            }).ToList();
+            }
+            return toReturn;
+        }
+
         #endregion
 
         public List<Specialty> GetSpecialtyList(bool isCalledFromPH = false) {
@@ -1762,55 +1807,70 @@ namespace ProviderHubService
                 //***NOW WE HAVE IDd PROV FAC SPEC in vars x y z, respectively (or 0 if not IDd***\\
                 //3a. If any not IDd + 'toCreate', insert new (provider, fac, or spec), If IDd + 'toUpdate', update changed info
                 //PROVIDER 1. INSERT/UPDATE PROVIDER ROW
-                var goto_45 = false; string _pid = "0"; string _set = ""; string _query = ""; var _dict = (IDictionary<string, object>)staging_row.record;
+                var valid_match = false; string _pid = "0"; string _set = ""; string _query = ""; var _dict = (IDictionary<string, object>)staging_row.record;
+                string _gender="",_effdate = "";
                 if (staging_row.npi_match)
                 {
                     //generate UPDATE sql for parent row of this provider (i.e. not an 'additional row')
                     //UPDATE EXISTING RECORD for 'parent row' and store PROVIDER_ID as PROV_ID / _DBID
                     // get PROVIDER_ID from staging_row.matched_provider, which should always be populated for npi_match==true
                     /*--"mi_csv": "L.","gender_csv": "Female","tin_db": "","mi_db": "","gender_db": "Female",*/
-                    if (staging_row.provider_row.mi_csv != staging_row.provider_row.mi_db) { _set += "PROVIDER_MIDDLE_NAME='"+staging_row.provider_row.mi_csv+"'"; }
-                    if (staging_row.provider_row.gender_csv != staging_row.provider_row.gender_db) {
-                        string _gender = (staging_row.provider_row.gender_csv == "Female") ? "1" : (staging_row.provider_row.gender_csv == "Male") ? "2" : "3";
-                        _set += (_set!="")? "," : "" + "PROVIDER_GENDER_ID='" + _gender + "'";
-                    }
-                    if (((IDictionary<string,string>)staging_row.matched_provider)["EFFECTIVE_DATE"] as string != _dict["Start Date"] as string)
-                    {
-                        string _effdate = _dict["Start Date"] as string;
-                        _set += (_set != "") ? "," : "" + "EFFECTIVE_DATE='" + _effdate + "'";
-                    }
-                    _pid = ((IDictionary<string, string>)staging_row.matched_provider)["PROVIDER_ID"];
-                    if (_set != "") { _query = "UPDATE dbo.PROVIDER SET " + _set + " WHERE PROVIDER_ID=" + _pid; }
+                        if (staging_row.provider_row.mi_csv != staging_row.provider_row.mi_db) { _set += "PROVIDER_MIDDLE_NAME='"+staging_row.provider_row.mi_csv+"'"; }
+                        if (staging_row.provider_row.gender_csv != staging_row.provider_row.gender_db) {
+                            _gender = (staging_row.provider_row.gender_csv == "Female") ? "1" : (staging_row.provider_row.gender_csv == "Male") ? "2" : "3";
+                            //_set += (_set!="")? "," : "" + "PROVIDER_GENDER_ID='" + _gender + "'";
+                        }
+                        if (((IDictionary<string,string>)staging_row.matched_provider)["EFFECTIVE_DATE"] as string != _dict["Start Date"] as string)
+                        {
+                            _effdate = _dict["Start Date"] as string;
+                            //_set += (_set != "") ? "," : "" + "EFFECTIVE_DATE='" + _effdate + "'";
+                        }
+                        _pid = ((IDictionary<string, string>)staging_row.matched_provider)["PROVIDER_ID"];
+                        //if (_set != "") { _query = "UPDATE dbo.PROVIDER SET " + _set + " WHERE PROVIDER_ID=" + _pid; }
+                        string sql = "providerhub.dbo.sp_UWImport_UpdateExisting";
+                        SqlParameter[] sqlParams = {
+                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid }, new SqlParameter("@PROVIDER_GENDER_ID", SqlDbType.Int) { Value = _gender },
+                            new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _effdate }
+                        };
+                        DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);//TODO: check result
                     //debug only
                         //row check level: staging_row.queryOne = _query;
                         //manualdb level:
-                        toReturn.db_transaction += _query + ";";
+                        //toReturn.db_transaction += _query + ";";
                     //production
-                        //(run update query)
-                        //
+                    //(run update query)
+                    //
 
                     //NOTE: we have both staging_row and _staging_row.provider_row.additional_matched_rows[x] to imply 3, 4 and 5 from...
                     //      as well as staging_row.record or _staging_row.record to base additional changes from...(if needed, prob not)
-                    goto_45 = true;
+                    valid_match = true;
                 }
                 else if (!staging_row.npi_match && staging_row.NPI.Trim() != "")
                 { //include !npi_match for clarity only; not needed
                     //generate INSERT sql for parent row of provider (like above, i.e. not an 'additional row')
                         //INSERT NEW RECORD for 'parent row' and store LAST_INSERT_ID as PROV_ID / _DBID, _query, _pid
                         var _fields = "NATIONAL_PROVIDER_IDENTIFIER,PROVIDER_FIRST_NAME,PROVIDER_MIDDLE_NAME,PROVIDER_LAST_NAME,PROVIDER_GENDER_ID,CSP_INDICATOR,EFFECTIVE_DATE";
-                        string _gender = (_dict["Gender"] as string == "Female") ? "1" : (_dict["Gender"] as string == "Male") ? "2" : "3";
+                        _gender = (_dict["Gender"] as string == "Female") ? "1" : (_dict["Gender"] as string == "Male") ? "2" : "3";
                         var _values = "'"+_dict["NPI"] as string+"','"+ _dict["First Name"] as string + "','"+_dict["MI"] as string+"','"+_dict["Last Name"] as string+"',"+_gender+",0,'"+_dict["Start Date"] as string+"'";
-                        _query = "INSERT INTO dbo.PROVIDER("+_fields+") VALUES("+_values+")";
+                        //_query = "INSERT INTO dbo.PROVIDER("+_fields+") VALUES("+_values+")";
                         _pid = seed_id.ToString();
-                        toReturn.db_transaction += _query + ";";
-                        // get LAST_INSERT_ID after insert statement or as part of result from insert statement, or just from DBConnection object
+                        string sql = "providerhub.dbo.sp_UWImport_CreateNew";
+                        SqlParameter[] sqlParams = {
+                                new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid }, new SqlParameter("@PROVIDER_GENDER_ID", SqlDbType.Int) { Value = _dict["Gender"] },
+                                new SqlParameter("@PROVIDER_FIRST_NAME", SqlDbType.VarChar) { Value = _dict["First Name"] }, new SqlParameter("@NPI", SqlDbType.VarChar) { Value = _dict["NPI"] },
+                                new SqlParameter("@PROVIDER_LAST_NAME", SqlDbType.VarChar) { Value = _dict["Last Name"] },new SqlParameter("@PROVIDER_MIDDLE_NAME", SqlDbType.VarChar) { Value = _gender },
+                                new SqlParameter("@CSP_INDICATOR", SqlDbType.Int) { Value =0 }, new SqlParameter("@EFFECTIVE_DATE", SqlDbType.VarChar) { Value = _dict["Start Date"] }
+                        };
+                        DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+                    //toReturn.db_transaction += _query + ";";
+                    // get LAST_INSERT_ID after insert statement or as part of result from insert statement, or just from DBConnection object
 
                     //NOTE: we have both staging_row and _staging_row.provider_row.additional_matched_rows[x] to imply 3, 4 and 5 from...
                     //      as well as staging_row.record or _staging_row.record to base additional changes from...(if needed, prob not)
-                    goto_45 = true; seed_id++;
+                    valid_match = true; seed_id++;
                 }
 
-                if (goto_45)
+                if (valid_match)
                 {
                     //PROVIDER 2. Create alias if needed / set in object (staging_row.alias_to_create!=null)
                     //--toAdd.oldFN = _fn; toAdd.oldLN = _ln; toAdd.newFN = fn; toAdd.newLN = ln; toAdd.NPI = _NPI; toAdd.DBID = _DBID;
