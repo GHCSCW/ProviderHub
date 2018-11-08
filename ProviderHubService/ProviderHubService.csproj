@@ -84,6 +84,7 @@
     <Compile Include="FacilityProviderRelationship.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="BehavioralHealthAttribute.cs" />
+    <Compile Include="NetworkTab.cs" />
     <Compile Include="Provider.cs" />
     <Compile Include="SearchResults.cs" />
     <Compile Include="ProviderHubService.svc.cs">

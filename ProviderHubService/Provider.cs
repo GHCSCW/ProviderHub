@@ -70,6 +70,9 @@ namespace ProviderHubService
 
         [DataMember]
         public ProviderGender Gender { get; set; }
+
+        [DataMember]
+        public Dictionary<string,bool?> FPRelationship { get; set; }
         
         [DataMember]
         public bool CSP_Indicator { get; set; }
@@ -120,7 +123,25 @@ namespace ProviderHubService
         public List<Credential> CredentialList { get; set; }
 
         [DataMember]
+        public string CredentialListStr { get; set; }
+
+        [DataMember]
         public List<Specialty> ProviderSpecialties { get; set; }
+
+        [DataMember]
+        public List<Facility> ProviderFacilities { get; set; }
+
+        [DataMember]
+        public string ParentSpecialtyList { get; set; }
+
+        [DataMember]
+        public string ChildSpecialtyList { get; set; }
+
+        [DataMember]
+        public string SubSpecialtyList { get; set; }
+
+        [DataMember]
+        public string PrimarySpecialty { get; set; }
 
         [DataMember]
         private string FullName

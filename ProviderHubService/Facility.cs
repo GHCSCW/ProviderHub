@@ -25,6 +25,18 @@ namespace ProviderHubService
         public Address FacilityAddress { get; set; }
 
         [DataMember]
+        public FacilityProviderRelationship FPRelationship { get; set; }
+
+        [DataMember]
+        public List<Specialty> FacilitySpecialties { get; set; }
+
+        [DataMember]
+        public List<Provider> FacilityProviders { get; set; }
+
+        [DataMember]
+        public List<dynamic> VendorAddresses { get; set; }
+
+        [DataMember]
         public string ExternalID { get; set; }
 
         [DataMember]

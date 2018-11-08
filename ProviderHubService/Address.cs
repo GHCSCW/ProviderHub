@@ -36,6 +36,9 @@ namespace ProviderHubService
         public AddressType AddressType { get; set; }
 
         [DataMember]
+        public string AddressTypeName { get; set; }
+
+        [DataMember]
         public string AddressLine1 { get; set; }
 
         [DataMember]
@@ -61,6 +64,9 @@ namespace ProviderHubService
 
         [DataMember]
         public string PhoneExtension { get; set; }
+
+        [DataMember]
+        public string AlternateExtension { get; set; }
 
         [DataMember]
         public string AlternatePhoneNumber { get; set; }

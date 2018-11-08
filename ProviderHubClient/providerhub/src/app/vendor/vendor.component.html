@@ -1,0 +1,162 @@
+<div id="facility-wrapper">
+  <div class="left-sidebar">
+    <h2>Vendor</h2>
+    <ul id="facility-nav">
+      <li tab-id="Addresses" tab-url="Addresses" [class.selected]="nav=='Addresses'">Addresses</li>
+      <li tab-id="Facilities" tab-url="Facilities" [class.selected]="nav=='Facilities'">Facilities</li>
+      <span style="visibility:hidden;">
+        <li tab-id="Providers" tab-url="Providers" [class.selected]="nav=='Providers'">Providers</li>
+        <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
+        <li tab-id="ProviderSpecialtyMapping" tab-url="Employment" [class.selected]="nav=='ProviderSpecialtyMapping'">Employment</li>
+        <li tab-id="Networks" tab-url="Networks" [class.selected]="nav=='Networks'">Networks</li>
+      </span>
+    </ul>
+  </div>
+  <div class="facility-display main-display">
+    <h2 id="vendor-main-header" class="one red">
+      {{Vendor.VendorName}}
+      <i id="editVendorHeader" class="fa fa-edit is-editor not-editing"></i>
+      <i id="saveVendorHeader" class="fa fa-save is-editor is-editing"></i>
+      <i id="cancelEditVendorHeader" class="fa fa-times is-editor is-editing"></i>
+    </h2>
+    <table id="vendorMainTable">
+      <tr>
+        <td>Vendor Name</td>
+        <td>
+          <span class="not-editing">{{Vendor.VendorName}}</span>
+          <span class="is-editing"><input type="text" id="edit_Vendor_Name" value="{{Vendor.VendorName}}" /></span>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Tax ID</td>
+        <td>
+          <span class="not-editing">{{Vendor.TaxID}}</span>
+          <span class="is-editing"><input type="text" id="edit_Vendor_TaxID" value="{{Vendor.TaxID}}" /></span>
+        </td>
+        <td>Epic ID</td>
+        <td>
+          <span class="not-editing">{{Vendor.EpicID}}</span>
+          <span class="is-editing"><input type="text" id="edit_Vendor_EpicID" value="{{Vendor.EpicID}}" /></span>
+        </td>
+      </tr>
+      <tr>
+        <td>NPI</td>
+        <td>
+          <span class="not-editing">{{Vendor.NPI}}</span>
+          <span class="is-editing"><input type="text" id="edit_Vendor_NPI" value="{{Vendor.NPI}}" /></span>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <hr />
+    <div id="demo-card" class="card" [hidden]="nav!='Addresses'">
+      <div class="card-body">
+        <h5 class="card-title red">Addresses</h5><!--Copy Fac Vendor-->
+        <!--<i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>-->
+        <table id="vendorAddressTable{{v.AddressID}}" class="card-text card-text-v" *ngFor="let v of Vendor.Addresses">
+          <tbody>
+            <tr>
+              <td colspan="4" class="midHead">
+                <h5 class="card-title specTitle blu" id="{{v.AddressID}}">
+                  {{v.AddressTypeName}}
+                  <i (click)="onEditAddressClick(v.AddressID,$event)" class="fa fa-edit is-editor not-editing"></i>
+                  <i (click)="onSaveAddressClick(v.AddressID,$event)" class="fa fa-save is-editor is-editing" style="display:none;"></i>
+                  <i (click)="onCancelEditAddressClick(v.AddressID,$event)" class="fa fa-times is-editor is-editing" style="display:none;"></i>
+                </h5>
+              </td>
+            </tr>
+            <tr>
+              <td>Address</td>
+              <td>
+                <span id="VendorAddress{{v.AddressID}}" class="not-editing">
+                  <span id="VA_A1">{{v.AddressLine1}}</span>&nbsp;&nbsp;<span id="VA_A2">{{v.AddressLine2}}</span><br />
+                  <span id="VA_C">{{v.City}}</span>,&nbsp;<span id="VA_S">{{v.State}}</span>&nbsp;&nbsp;<span id="VA_Z">{{v.ZipCode}}</span>
+                </span>
+                <span class="is-editing">
+                  <input type="text" id="edit_Vendor_Address1_{{v.AddressID}}" value="{{v.AddressLine1}}" placeholder="Address Line 1" />
+                  <input type="text" id="edit_Vendor_Address2_{{v.AddressID}}" value="{{v.AddressLine2}}" placeholder="Address Line 2" /><br />
+                  <input type="text" id="edit_Vendor_City_{{v.AddressID}}" value="{{v.City}}" placeholder="City" />
+                  <input type="text" id="edit_Vendor_State_{{v.AddressID}}" value="{{v.State}}" placeholder="State" />
+                  <input type="text" id="edit_Vendor_ZipCode_{{v.AddressID}}" value="{{v.ZipCode}}" placeholder="Zip" />
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Phone</td>
+              <td>
+                <span id="VendorPhoneNumber{{v.AddressID}}" class="not-editing">
+                  {{v.PhoneNumber | phonefromdb}}
+                  <span *ngIf="!v.HidePhoneExtension">ext. {{v.PhoneExtension}}</span>
+                </span>
+                <span class="is-editing">
+                  <input type="text" id="edit_Vendor_PhoneNumber_{{v.AddressID}}" placeholder="Phone #" value="{{v.PhoneNumber | phonefromdb}}" />
+                  <input type="text" id="edit_Vendor_PhoneExtension_{{v.AddressID}}" placeholder="ext." value="{{v.PhoneExtension}}" />
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Fax</td>
+              <td>
+                <span id="VendorFaxNumber{{v.AddressID}}" class="not-editing">{{v.FaxNumber | nullable}}</span>
+                <span class="is-editing"><input type="text" id="edit_Vendor_FaxNumber_{{v.AddressID}}" placeholder="Fax #" value="{{v.FaxNumber}}" /></span>
+              </td>
+            </tr>
+            <tr *ngIf="!v.HideAlternatePhoneNumber" class="not-editing">
+              <td>Alt. Phone</td>
+              <td>
+                {{v.AlternatePhoneNumber | phonefromdb}}
+                <span *ngIf="!v.HideAltExtension">ext. {{v.AlternateExtension}}</span>
+              </td>
+            </tr>
+            <tr class="is-editing">
+              <td>Alt. Phone</td>
+              <td>
+                <input type="text" id="edit_Vendor_AltNumber_{{v.AddressID}}" placeholder="Alt Phone #" value="{{v.AlternatePhoneNumber | phonefromdb}}" />
+                <input type="text" id="edit_Vendor_AltExtension_{{v.AddressID}}" placeholder="ext." value="{{v.AlternateExtension}}" />
+              </td>
+            </tr>
+            <tr>
+              <td>Website</td>
+              <td>
+                <span id="VendorWebsite{{v.AddressID}}" class="not-editing"><a target="_blank" href="{{v.Website | nullable:''}}">{{v.Website | nullable:''}}</a></span>
+                <span class="is-editing"><input type="text" id="edit_Vendor_Website_{{v.AddressID}}" value="{{v.Website}}" /></span>
+              </td>
+            </tr>
+            <!--tr>
+    <td>Hours</td>
+    <td>Coming Soon</td>
+  </tr-->
+            <tr class="footer">
+              <td colspan="2" style="text-align:left;">
+                Last Updated By: {{v.LastUpdatedBy}}<br />
+                Last Updated On: {{v.LastUpdatedDate}}
+              </td><!--:'MMM d, y h:mm a'-->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--FACILITIES (copy Facility Providers DT, but for Vendor.Facilities)-->
+    <div id="facilities-dt" class="card" [hidden]="nav!='Facilities'">
+      <div class="card-body">
+        <h5 class="card-title red">Facilities</h5>
+        <table id="providersTableDT" [hidden]="nav!='Facilities'" class="table table-striped table-bordered" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Facility Name</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Zip</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <!--END FACILITIES-->
+  </div>
+</div>

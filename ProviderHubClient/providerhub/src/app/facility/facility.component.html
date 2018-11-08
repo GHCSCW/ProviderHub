@@ -1,0 +1,241 @@
+<div id="facility-wrapper">
+  <div class="left-sidebar">
+    <h2>Facility</h2>
+    <ul id="facility-nav">
+      <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
+      <li tab-id="Vendor" tab-url="Vendor" [class.selected]="nav=='Vendor'">Vendor</li>
+      <li tab-id="Providers" tab-url="Providers" [class.selected]="nav=='Providers'">Providers</li>
+      <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
+      <li tab-id="ProviderSpecialtyMapping" tab-url="Employment" [class.selected]="nav=='ProviderSpecialtyMapping'">Employment</li>
+      <li tab-id="Networks" tab-url="Networks" [class.selected]="nav=='Networks'">Networks</li>
+    </ul>
+  </div>
+  <div class="facility-display main-display">
+    <h2 id="facility-main-header" class="one red">
+      {{Facility.FacilityName}}
+      <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
+    </h2>
+    <table id="facility-demo">
+      <tr>
+        <td>Facility Name</td>
+        <td>
+          <span class="not-editing">{{Facility.FacilityName}}</span>
+          <span class="is-editing"><input type="text" id="edit_Facility_Name" value="{{Facility.FacilityName}}" /></span>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Address Type</td>
+        <td>{{FacilityAddress.AddressTypeName}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>NPI</td>
+        <td>
+          <span class="not-editing">{{Facility.NPI}}</span>
+          <span class="is-editing"><input type="text" id="edit_Facility_NPI" value="{{Facility.NPI}}" /></span>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <hr />
+    <div id="demo-card" class="card" [hidden]="nav!='Demographics'">
+      <div class="card-body">
+        <h5 class="card-title red">Demographics<i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i></h5>
+        <table id="demoTable">
+          <tr>
+            <td>Address</td>
+            <td>
+              <span id="FacilityAddress" class="not-editing">
+                <span id="FA_A1">{{FacilityAddress.AddressLine1}}</span>&nbsp;&nbsp;<span id="FA_A2">{{FacilityAddress.AddressLine2}}</span><br />
+                <span id="FA_C">{{FacilityAddress.City}}</span>,&nbsp;<span id="FA_S">{{FacilityAddress.State}}</span>&nbsp;&nbsp;<span id="FA_Z">{{FacilityAddress.ZipCode}}</span>
+              </span>
+              <span class="is-editing">
+                <input type="text" id="edit_FacilityDemo_Address1" value="{{FacilityAddress.AddressLine1}}" placeholder="Address Line 1" />
+                <input type="text" id="edit_FacilityDemo_Address2" value="{{FacilityAddress.AddressLine2}}" placeholder="Address Line 2" /><br />
+                <input type="text" id="edit_FacilityDemo_City" value="{{FacilityAddress.City}}" placeholder="City" />
+                <input type="text" id="edit_FacilityDemo_State" value="{{FacilityAddress.State}}" placeholder="State" />
+                <input type="text" id="edit_FacilityDemo_ZipCode" value="{{FacilityAddress.ZipCode}}" placeholder="Zip" />
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Phone</td>
+            <td>
+              <span id="FacilityPhoneNumber" class="not-editing">
+                {{FacilityAddress.PhoneNumber | phonefromdb}}
+                <span *ngIf="!FacilityAddress.HidePhoneExtension">ext. {{FacilityAddress.PhoneExtension}}</span>
+              </span>
+              <span class="is-editing">
+                <input type="text" id="edit_FacilityDemo_PhoneNumber" placeholder="Phone #" value="{{FacilityAddress.PhoneNumber | phonefromdb}}" />
+                <input type="text" id="edit_FacilityDemo_PhoneExtension" placeholder="ext." value="{{FacilityAddress.PhoneExtension}}" />
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Fax</td>
+            <td>
+              <span id="FacilityFaxNumber" class="not-editing">{{FacilityAddress.FaxNumber | nullable}}</span>
+              <span class="is-editing"><input type="text" id="edit_FacilityDemo_FaxNumber" placeholder="Fax #" value="{{FacilityAddress.FaxNumber}}" /></span>
+            </td>
+          </tr>
+          <tr *ngIf="!FacilityAddress.HideAlternatePhoneNumber" class="not-editing">
+            <td>Alt. Phone</td>
+            <td>
+              {{FacilityAddress.AlternatePhoneNumber | phonefromdb}}
+              <span *ngIf="!FacilityAddress.HideAltExtension">ext. {{FacilityAddress.AlternateExtension}}</span>
+            </td>
+          </tr>
+          <tr class="is-editing">
+            <td>Alt. Phone</td>
+            <td>
+              <input type="text" id="edit_FacilityDemo_AltNumber" placeholder="Alt Phone #" value="{{FacilityAddress.AlternatePhoneNumber | phonefromdb}}" />
+              <input type="text" id="edit_FacilityDemo_AltExtension" placeholder="ext." value="{{FacilityAddress.AlternateExtension}}" />
+            </td>
+          </tr>
+          <tr>
+            <td>Website</td>
+            <td>
+              <span id="FacilityWebsite" class="not-editing"><a target="_blank" href="{{FacilityAddress.Website | nullable:''}}">{{FacilityAddress.Website | nullable:''}}</a></span>
+              <span class="is-editing"><input type="text" id="edit_FacilityDemo_Website" value="{{FacilityAddress.Website}}" /></span>
+            </td>
+          </tr>
+          <tr>
+            <td>Hours</td>
+            <td>Coming Soon</td><!--Facility.Hours.DisplayValues-->
+          </tr>
+          <tr class="footer">
+            <td>Last Updated By: {{Facility.LastUpdatedBy}}</td>
+            <td>Last Updated On: {{Facility.LastUpdatedDate}}</td><!--:'MMM d, y h:mm a'-->
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!--VENDOR-->
+    <div id="spec-card" class="card specWrapper" [hidden]="nav!='Vendor'">
+      <div id="facVendorBody" class="card-body">
+        <h5 class="card-title red">Vendor</h5>
+        <div id="facList" class="card-text ui-sortable">
+          <!--EACH FACILITY-->
+          <div class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;width:100%;">
+            <div class="card-body specCardBody">
+              <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)"><a href="../vendor/{{Facility.VID}}" style="color:#fff;">{{Facility.VendorName}}</a></h5>
+              <table id="facTable" class="card-text specTable">
+                <tbody *ngFor="let v of Facility.VendorAddresses">
+                  <tr>
+                    <td colspan="4" class="midHead"><h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{v.AddressTypeName}}</h5></td>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>
+                      {{v.AddressLine1}}&nbsp;&nbsp;{{v.AddressLine2}}<br />
+                      {{v.City}},&nbsp;{{v.State}}&nbsp;&nbsp;{{v.ZipCode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Phone</td>
+                    <td>{{v.PhoneNumber | nullable}}</td>
+                  </tr>
+                  <tr>
+                    <td>Fax</td>
+                    <td>{{v.FaxNumber | nullable}}</td>
+                  </tr>
+                  <!--tr>
+                    <td>Alt. Phone</td>
+                    <td>{{v.AlternatePhoneNumber | nullable}}</td>
+                  </tr-->
+                  <tr>
+                    <td>Website</td>
+                    <td><a href="{{v.Website | nullable:''}}" target="_blank">{{v.Website | nullable:''}}</a></td>
+                  </tr>
+                  <!--tr>
+                    <td>Hours</td>
+                    <td>Coming Soon</td>
+                  </tr-->
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer provFacFooter">
+              <span>Last Updated By: {{Facility.VLastUpdatedBy}}</span><span>Last Updated On: {{Facility.VLastUpdatedDate}}</span>
+            </div>
+          </div>
+          <!--END FOR EACH VENDOR ADDRESS-->
+        </div>
+      </div>
+    </div>
+    <!--END VENDOR-->
+    <div id="demo-card" class="card" [hidden]="nav!='Specialties'">
+      <div class="card-body">
+        <h5 class="card-title red">Specialties</h5>
+        <div id="specList" class="card-text ui-sortable">
+          <h4><input type="checkbox" /> Show Inactive Specialties</h4>
+          <!--EACH SPECIALTY-->
+          <div *ngFor="let s of Facility.FacilitySpecialties" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;">
+            <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
+            <div class="card-body specCardBody">
+              <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{s.Name}} <br /><span>{{s | specialtyType}} | {{s | parentSpecialty}}</span></h5>
+              <table id="specialtyTable" class="card-text specTable">
+                <tbody>
+                  <tr>
+                    <td>Specialty Status</td>
+                    <td>ACTIVE</td>
+                  </tr>
+                  <tr class="whenExpand">
+                    <td>Effective Dates</td>
+                    <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer provSpecFooter">
+              <span>Last Updated By: {{s.LastUpdatedBy}}</span><br /><span>Last Updated On: {{s.LastUpdatedDate | date}}</span>
+            </div>
+          </div>
+          <!--END FOR EACH SPECIALTY-->
+        </div>
+      </div>
+    </div>
+    <div id="demo-card" class="card" [hidden]="nav!='Providers'">
+      <div class="card-body">
+        <h5 class="card-title red">Providers</h5>
+        <table id="providersTableDT" [hidden]="nav!='Providers'" class="table table-striped table-bordered" cellspacing="0">
+          <thead>
+            <tr>
+              <th></th>
+              <th>NPI</th>
+              <th>Last</th>
+              <th>First</th>
+              <th>Credential</th>
+              <th>Gender</th>
+              <th>Primary Specialty</th>
+              <th>Vendor</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <table id="psmTable" [hidden]="nav!='ProviderSpecialtyMapping'">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <table id="networksTable" [hidden]="nav!='Networks'">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+    </div>

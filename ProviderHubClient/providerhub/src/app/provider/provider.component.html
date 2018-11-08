@@ -1,0 +1,277 @@
+<div id="provider-wrapper">
+  <div class="left-sidebar">
+    <h2>Provider</h2>
+    <ul id="provider-nav">
+      <li tab-id="Networks" tab-url="Network" [class.selected]="nav=='Networks'">Networks</li>
+      <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
+      <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
+      <li tab-id="Facility" tab-url="Facility" [class.selected]="nav=='Facility'">Facilities</li>
+      <li tab-id="FacSpecMap" tab-url="Employment" [class.selected]="nav=='FacSpecMap'">Employment</li>
+    </ul>
+  </div>
+  <div class="provider-display main-display">
+    <h2 id="provider-main-header" class="one red">
+      {{Provider.FirstName}} {{Provider.LastName}}<span [hidden]="Provider.Credentials==''">, {{Provider.Credentials}}</span>
+      <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
+    </h2>
+    <table id="provider-demo">
+      <tr>
+        <td>First Name</td>
+        <td><span class="not-editing">{{Provider.FirstName}}</span><span class="is-editing"><input type="text" id="edit_Provider_FirstName" value="{{Provider.FirstName}}" /></span></td>
+        <td>NPI</td>
+        <td><span class="not-editing">{{Provider.NPI}}</span><span class="is-editing"><input type="text" id="edit_Provider_NPI" value="{{Provider.NPI}}" /></span></td>
+      </tr>
+      <tr>
+        <td>Last Name</td>
+        <td><span class="not-editing">{{Provider.LastName}}</span><span class="is-editing"><input type="text" id="edit_Provider_LastName" value="{{Provider.LastName}}" /></span></td>
+        <td>Epic Provider ID</td>
+        <td><span class="not-editing">{{Provider.EpicProviderID}}</span><span class="is-editing"><input type="text" id="edit_Provider_EpicProviderID" value="{{Provider.EpicProviderID}}" /></span></td>
+      </tr>
+      <tr>
+        <td>Credentials</td>
+        <td>
+          <span class="not-editing">{{Provider.Credentials}}</span><span class="is-editing">
+            <!--EDIT CREDENTIALS CONTROL: selectize, tag-based autocomplete select box: cred abbreviations + description-->
+            <select id="edit_Provider_Credentials" multiple="multiple" class="toSelectize">
+              <option value="MD">MD</option>
+              <option value="DO">DO</option>
+              <option value="PhD">PhD</option>
+            </select>
+          </span>
+        </td>
+        <td>Gender</td>
+        <td>
+          <span class="not-editing">{{Provider.Gender | gender}}</span><span class="is-editing">
+            <!--EDIT GENDER CONTROL: normal select tag, Male/Female/Unknown-->
+            <select id="edit_Provider_Gender" value="{{Provider.Gender | gender}}">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Unknown">Unknown</option>
+            </select>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td><!--this will be a new standalone comma separated field like languages--></td>
+        <td><!--and coming from a join, instead of an additional SP--></td>
+      </tr>
+    </table>
+    <hr />
+    <div id="demo-card" class="card" [hidden]="nav!='Demographics'">
+      <div class="card-body">
+        <h5 class="card-title red">Demographics<i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i></h5>
+        <table id="demoTable">
+          <tr>
+            <td>Languages</td>
+            <td colspan="3">
+              <span class="not-editing">{{Provider.Languages}}</span><span class="is-editing">
+                <!--EDIT LANGUAGE CONTROL: selectize, tag-based autocomplete select box: language names-->
+                <select id="edit_ProviderDemo_Language" multiple="multiple" class="toSelectize">
+                  <option value="English">English</option>
+                  <option value="Spanish">Spanish</option>
+                  <option value="Gujarati">Gujarati</option>
+                </select>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Accepts Medicare?</td>
+            <td [attr.colspan]="!Provider.MedicareIndicator?3:1">
+              <span class="not-editing">{{Provider.MedicareIndicator | bool}}</span><span class="is-editing">
+                <!--BOOL CONTROL: Yes/No/Unknown-->
+                <select id="edit_ProviderDemo_MedicareIndicator" (change)="toggleFields()" class="is-editing" value="{{Provider.MedicareIndicator | bool}}">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Unknown">Unknown</option>
+                </select>
+              </span>
+            </td>
+            <td [hidden]="!Provider.MedicareIndicator">Medicare PTAN</td>
+            <td [hidden]="!Provider.MedicareIndicator"><span class="not-editing">{{Provider.MedicarePTAN | nullable}}</span><span class="is-editing"><input type="text" id="edit_ProviderDemo_MedicarePTAN" value="{{Provider.MedicarePTAN | nullable}}" /></span></td>
+          </tr>
+          <tr [hidden]="!Provider.MedicareIndicator">
+            <td>Medicare Effective Date</td>
+            <td><span class="not-editing">{{Provider.MedicareEffectiveDate | date}}</span><span class="is-editing"><input type="text" class="datepicker" id="edit_ProviderDemo_MedicareEffectiveDate" value="{{Provider.MedicareEffectiveDate | date}}" /></span></td>
+            <td style="padding-left:20px;">Medicare Termination Date</td>
+            <td><span class="not-editing">{{Provider.MedicareTerminationDate | date}}</span><span class="is-editing"><input type="text" class="datepicker" id="edit_ProviderDemo_MedicareTerminationDate" value="{{Provider.MedicareTerminationDate | date}}" /></span></td>
+          </tr>
+          <tr [class.whiteTR]="!Provider.MedicareIndicator">
+            <td>Accepts Medicaid?</td>
+            <td>
+              <span class="not-editing">{{Provider.MedicaidIndicator | bool}}</span><span class="is-editing">
+                <!--BOOL CONTROL: Yes/No/Unknown-->
+                <select id="edit_ProviderDemo_MedicaidIndicator" (change)="toggleFields2()" class="is-editing" value="{{Provider.MedicaidIndicator | bool}}">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Unknown">Unknown</option>
+                </select>
+              </span>
+            </td>
+            <td [hidden]="!Provider.MedicaidIndicator">Medicaid Provider ID</td>
+            <td [hidden]="!Provider.MedicaidIndicator"><span class="not-editing">{{Provider.MedicaidProviderID | nullable}}</span><span class="is-editing"><input type="text" id="edit_ProviderDemo_MedicaidProviderID" value="{{Provider.MedicaidProviderID | nullable}}" /></span></td>
+          </tr>
+          <tr [class.greyTR]="!Provider.MedicareIndicator">
+            <td>Hospital Affiliations</td>
+            <td>{{Provider.HospitalAffiliations | nullable:"-"}}</td><!--TODO: implement editing/saving once pulling real data for this field!-->
+            <td></td>
+            <td></td>
+          </tr>
+          <tr class="footer">
+            <td colspan="2">Last Updated By: {{Provider.LastUpdatedBy}}</td><!--updated on edit+save, so no need to toggle when editing/saving, BUT need to pull values (by+on) post-save-->
+            <td></td>
+            <td>Last Updated On: {{Provider.LastUpdatedDate | date}}</td><!--:'MMM d, y h:mm a'-->
+          </tr>
+        </table>
+        <!--OPTIONAL EXPAND FUNCTION a href="#" class="btn btn-primary">Expand?</a-->
+      </div>
+    </div>
+    <div id="spec-card" class="card specWrapper" [hidden]="nav!='Specialties'">
+      <div class="card-body">
+        <h5 class="card-title red">
+          Specialties <i class="fa fa-plus" [hidden]="specsEdited" id="addSpec"></i>
+          <i class="fa fa-save" [hidden]="!specsEdited" id="saveSpecs"></i><i class="fa fa-times" [hidden]="!specsEdited" id="resetSpecs"></i>
+        </h5>
+        <div id="specList" class="card-text ui-sortable">
+          <h4 id="addSpecArea">
+            <span id="addSpecBody" style="display:none;">
+              Add Specialty:
+              <select id="add_Provider_Specialty" class="toSelectize">
+                <option value=10>Family Medicine</option>
+                <option value=1>Dermatology</option>
+                <option value=3>Chiropractic</option>
+              </select>
+              <input type="button" value="Add" (click)="addSpecToList($event)" />
+            </span>
+            <br /><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
+          </h4>
+          <!--EACH SPECIALTY-->
+          <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard indivSpecWrapper ui-sortable-handle status_{{s.Status}}" id="specWrapper_{{s.ID}}" style="position: relative; left: 0px; top: 0px;">
+            <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
+            <div class="card-body specCardBody">
+              <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{s.Name}} <br /><span>{{s | specialtyType}} | {{s | parentSpecialty}}</span></h5>
+              <table id="specialtyTable" class="card-text specTable">
+                <tbody>
+                  <tr>
+                    <td>Specialty Status</td>
+                    <td>{{s | specStatus}}</td>
+                  </tr>
+                  <tr class="whenExpand">
+                    <td>Effective Dates</td>
+                    <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer provSpecFooter">
+              <span>Last Updated By: {{s.LastUpdatedBy}}</span><br /><span>Last Updated On: {{s.LastUpdatedDate | date}}</span>
+            </div>
+          </div>
+          <!--END FOR EACH SPECIALTY-->
+        </div>
+      </div>
+    </div>
+    <table id="facSpecMapTable" [hidden]="nav!='FacSpecMap'"></table>
+    <div id="spec-card" class="card specWrapper" [hidden]="nav!='Facility'">
+      <div class="card-body">
+        <h5 class="card-title red">Facilities</h5>
+        <div id="facList" class="card-text ui-sortable">
+          <!--EACH FACILITY-->
+          <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;width:100%;">
+            <span [hidden]="true">spec-id:{{f.ID}}</span>
+            <div class="card-body specCardBody">
+              <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)"><a href="../facility/{{f.ID}}" style="color:#fff;">{{f.FacilityName}}</a></h5>
+              <table id="facTable" class="card-text specTable">
+                <!-- basically Facility Demographics (Facility + FacilityAddress)-->
+                <tbody>
+                  <tr>
+                    <td>Address Type</td>
+                    <td>{{f.FacilityAddress.AddressTypeName}}</td><!-- class="rowHeader" id="rH" colspan="4"-->
+                  </tr>
+                  <tr>
+                    <td>NPI</td>
+                    <td>{{f.NPI}}</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>
+                      {{f.FacilityAddress.AddressLine1}}&nbsp;&nbsp;{{f.FacilityAddress.AddressLine2}}<br />
+                      {{f.FacilityAddress.City}},&nbsp;{{f.FacilityAddress.State}}&nbsp;&nbsp;{{f.FacilityAddress.ZipCode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Phone</td>
+                    <td>{{f.FacilityAddress.PhoneNumber | nullable}} <span *ngIf="!f.FacilityAddress.HidePhoneExtension">ext. {{f.FacilityAddress.PhoneExtension}}</span></td>
+                  </tr>
+                  <tr>
+                    <td>Fax</td>
+                    <td>{{f.FacilityAddress.FaxNumber | nullable}}</td>
+                  </tr>
+                  <tr *ngIf="!f.FacilityAddress.HideAlternatePhoneNumber">
+                    <td>Alt. Phone</td>
+                    <td>{{f.FacilityAddress.AlternatePhoneNumber}}</td>
+                  </tr>
+                  <tr>
+                    <td>Website</td>
+                    <td><a href="{{f.FacilityAddress.Website | nullable:''}}" target="_blank">{{f.FacilityAddress.Website | nullable:''}}</a></td>
+                  </tr>
+                  <tr>
+                    <td>Hours</td>
+                    <td>Coming Soon</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="midHead"><h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{Provider.FirstName}} {{Provider.LastName}} @ {{f.FacilityName}}</h5></td>
+                  </tr>
+                  <tr>
+                    <td>External Provider: </td>
+                    <td>{{f.FPRelationship.ExternalProviderIndicator | bool}}</td>
+                    <td>Accepting New Patients: </td>
+                    <td>{{f.FPRelationship.AcceptingNewPatientIndicator | bool}}</td>
+                  </tr>
+                  <tr>
+                    <td>Prescriber: </td>
+                    <td>{{f.FPRelationship.PrescriberIndicator | bool}}</td>
+                    <td>Referral: </td>
+                    <td>{{f.FPRelationship.ReferralIndicator | bool}}</td>
+                  </tr>
+                  <tr>
+                    <td>PCP Eligible: </td>
+                    <td>{{f.FPRelationship.PCPEligibleIndicator | bool}}</td>
+                    <td>Float Provider: </td>
+                    <td>{{f.FPRelationship.FloatProviderIndicator | bool}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer provFacFooter">
+              <span>Last Updated By: {{f.FPRelationship.LastUpdatedBy}}</span><span>Last Updated On: {{f.FPRelationship.LastUpdatedDate}}</span>
+            </div>
+          </div>
+          <!--END FOR EACH FACILITY-->
+        </div>
+      </div>
+    </div>
+    <!--table id="networksTable" [hidden]="nav!='Networks'"></table-->
+    <div id="demo-card" class="card" [hidden]="nav!='Networks'">
+      <div class="card-body">
+        <h5 class="card-title red">Providers</h5>
+        <table id="networksTableDT" [hidden]="nav!='Networks'" class="table table-striped table-bordered" cellspacing="0">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Network</th>
+              <!--th>Network Effective Date</th-->
+              <th>Provider</th>
+              <th>Facility</th>
+              <th>Specialty</th>
+              <!--<th>EPIC Network ID</th>-->
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,447 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+@import "../node_modules/selectize/dist/css/selectize.css";
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+h2{
+  font-family:Arial, sans-serif;
+  font-size:1.5em;
+  font-weight:normal;
+  color:#535559;
+}
+a{
+  color:#E6003E;
+  text-decoration:underline;
+}
+a:hover{color:#E6003E}
+.navbar-right {
+  float: right;
+  color: #9d9d9d;
+  line-height: 20px;
+  padding: 15px;
+}
+.turq {
+  background: #32a89c !important;
+  color: #fff !important;
+}
+.red {
+  background: #E6003E !important;
+  color: #fff !important;
+}
+.midHead{text-align:left!important;}
+i.fa {cursor:pointer;}
+h2.one {
+  text-align: left;
+  font-size: 40px;
+  padding-left: 23px;
+  /* font-weight: bold; */
+  padding-top: 15px;
+  padding-bottom:3px;
+}
+
+/*Selectize Styles*/
+.selectize-control.multi .selectize-input > div {
+  background: #B2a570;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.selectize-control.multi .selectize-input > div.active {
+  background: rgba(178,165,112,0.4);
+  color:#fff;
+  border: 0px #ccc;
+}
+
+/*Header Styles*/
+#outer-wrapper {
+  width: 90%;
+  margin: 0 auto;
+}
+#nav-bar{
+  background-color:rgb(35,31,32); border-color:rgb(51,51,51);
+  width:100%;display:block;color:rgb(51,51,51); font-size:14px;
+  line-height:20px; margin-bottom:20px; min-height:50px; position:fixed;
+  right:0; top:0; text-size-adjust:100%; z-index:1030; -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+#title-wrapper {
+  text-align:center; padding-top:100px;
+}
+#title-wrapper h1{
+  font-family: Arial, sans-serif;
+  font-size:2em;
+  font-weight:normal;
+  color:#535559;
+}
+.navbar-brand {
+  height: 50px;
+  padding: 15px 22px; /*15x15*/
+  font-size: 18px;
+  line-height: 20px;
+  text-decoration:none;
+  color:#ddd; /*#9d9d9d*/
+}
+.navbar-brand:hover{ color:#ffffff; }
+.menu-links{ margin-left:50px; color:#eee; }/*15*/
+.menu-links a { margin-left:25px;cursor:pointer; }/*20*/
+.menu-links a:hover{color:#fff;text-decoration:underline;}
+#header-advanced-search-wrapper{padding:0;}
+#header-advanced-search{
+  margin-top:8px;border-top-right-radius:0;border-bottom-right-radius:0;background-color:#312c2d;color:#fff;border:1px solid #ddd;
+}
+#header-advanced-search::-webkit-input-placeholder{color:#ddd;}
+#header-advanced-search:-moz-placeholder{color:#ddd;}
+#header-advanced-search::-moz-placeholder{color:#ddd;}
+#header-advanced-search:-ms-input-placeholder{color:#ddd;}
+#header-advanced-search-button{
+  float:right;margin-top:8px;height:34px;border-top-right-radius:6px;border-bottom-right-radius:6px;background:#231f20;border-color:#eee;color:#eee;
+}
+#header-advanced-search-button i { position:relative;bottom:1px;right:1px; }
+
+/*Datatables Styles*/
+.table td {
+  padding: 0.45rem;
+}
+#providers,#facilities{width:100%;margin:0 auto;}
+.dataTables_info span.select-info {
+  display: none !important;
+}
+table.dataTable tr { cursor:pointer; }
+table.dataTable tr.selected {
+  /*background-color:rgba(4,255,0,0.32)!important;*/
+  background-color:#B2a570;
+  color:#fff;
+}
+table.dataTable tr:hover {
+  background-color: #ddd;
+}
+#providersTableDT tr:not(.expandedFP):hover {
+  background-color: rgba(178,162,112,0.9);
+  color: #fff;
+}
+.plainjane td {
+  background-color: rgba(178,162,112,0.4)!important;
+  color: #000!important;
+}
+.plainjane tr:hover {
+  background-color: rgba(178,162,112,0.4) !important;
+}
+.dataTables_filter, .dataTables_filter label {
+  width: 100%;
+}
+div.dataTables_filter input{
+  width:100%;
+}
+.visible{display:block}
+.invisible{display:none}
+.outer-wrapper-cD{padding-top:50px;width:100%!important;}
+.expandedFP{padding:0!important;background-color:rgba(4, 255, 0, 0.32);border:0!important;border-spacing:0px!important;}
+.expandedFP { /**new, remove for old style*/
+  background-color: rgba(178,162,112,0.4);
+  color: #000;
+}
+.expandedFP td:first-child{padding-left:65px;}
+.plainjane tr td{text-align:center!important;}
+input[type='search'] {
+  display: block;
+  width: 100%!important;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+#providers_wrapper .row:first-child > div:first-child{display:none;width:0;}
+#providers_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
+#facilities_wrapper .row:first-child > div:first-child{display:none;width:0;}
+#facilities_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
+#vendors_wrapper .row:first-child > div:first-child{display:none;width:0;}
+#vendors_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
+#providersTableDT_wrapper .row:first-child > div:first-child{display:none;width:0;}
+#providersTableDT_wrapper .row:first-child > div:nth-child(2){width:100%;max-width:100%;flex:0 0 100%;}
+.left-sidebar h2 {
+  font-size: 40px;
+  padding: 0;
+  margin: 0;
+  margin-left: 20px;
+  margin-top: 14px;
+  opacity: 0.8;
+  color:rgb(238,238,238);
+}
+
+/*Provider View Styles (shared with most "single object" CRUD views aka Facility View, Vendor View, etc...*/
+i.is-editor{
+  font-size:0.7em; padding-left:10px; padding-right:10px;
+}
+.is-editing{display:none;}
+#provider-wrapper .left-sidebar, #facility-wrapper .left-sidebar{
+  background:#231f20; color:#eee; width:210px; float:left; margin:0;padding:0;border:0;
+}
+.whiteTR{background:#fff!important;}.greyTR{background:#ddd!important;}
+#provider-wrapper .left-sidebar ul, #facility-wrapper .left-sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 13px;
+  padding-bottom: 200px;
+}
+#provider-wrapper .left-sidebar ul li, #facility-wrapper .left-sidebar ul li {
+  font-size: 16px;
+  line-height: 24px;
+  cursor:pointer;
+  padding-bottom:3px;
+  padding-left:40px;
+}
+#provider-wrapper .left-sidebar ul li.selected, #facility-wrapper .left-sidebar ul li.selected {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background: #444;
+}
+#provider-wrapper .left-sidebar ul li:hover, #facility-wrapper .left-sidebar ul li:hover { color:#fff; }
+#provider-wrapper .provider-display, #facility-wrapper .facility-display {
+  /* As per https://caniuse.com/#feat=calc this should work with 94% of global users' browsers aka anything GHC staff will use */
+  width: calc(100% - 210px); /*note: need spaces around - sign or fail CSS validation. weird.*/
+  float: left;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#provider-demo, #facility-demo, #providersTable {
+  margin-left:32px;
+}
+#demoTable tr:nth-child(even) {
+  background:#ddd;
+}
+#provider-demo td:nth-child(odd), #facility-demo td:nth-child(odd), #providersTable td:nth-child(odd) {
+  text-align: right; /*Labels*/
+  font-size: 14px;
+}
+#provider-demo td:nth-child(even), #facility-demo td:nth-child(even), #providersTable td:nth-child(even) {
+  text-align: left; /*Values*/
+  font-size: 20px;
+  padding-left: 20px;
+}
+#provider-demo td:not(:first-child){padding-left:20px;}
+#provider-wrapper hr, #facility-wrapper hr {
+  width: 100%;
+  margin: 0 auto;
+  color: #111;
+  border-top: 1px solid #111;
+  margin-top: .5rem; margin-bottom:0;
+}
+#networksTableDT_filter{display:none!important;}
+#provider-wrapper .provider-display #demoTable, #provider-specialties table, #facility-wrapper .facility-display #demoTable {
+  width:100%;margin-left:32px;
+}
+#provider-wrapper #resetSpecs, #facility-wrapper #resetSpecs {
+  margin-left:20px;
+}
+#provider-wrapper #addSpec, #facility-wrapper #addSpec, #provider-wrapper #saveSpecs, #facility-wrapper #saveSpecs {
+  margin-left: 10px;
+}
+#provider-wrapper .provider-display #demoTable, #facility-wrapper .facility-display #demoTable{margin-left:0px;}
+.provider-display #demoTable tr td:first-child, .facility-display #demoTable tr td:first-child{padding-left:32px;}
+#provider-wrapper .provider-display #demoTable tr, #specTable tr {
+}
+tr.footer{
+  background:#ccc;
+}
+tr.footer td {
+  position: relative;
+  /*right: 32px;*/
+  background: #ccc;
+  text-align: right;
+  font-size: 11px !important;
+  font-family: sans-serif; /*Courier;*/
+  padding: 5px;
+  padding-left: 16px;
+}
+#provider-wrapper .provider-display #demoTable tr td:first-child, #facility-wrapper .facility-display #demoTable tr td:first-child {
+  text-align: left;
+}
+#provider-wrapper .provider-display #demoTable td:nth-child(odd), #specTable td:nth-child(odd), #facility-wrapper .facility-display #demoTable td:nth-child(odd) {
+  text-align: right; /*Labels*/
+  font-size: 14px;
+}
+.status_INACTIVE{display:none;}
+#provider-wrapper .provider-display #demoTable td:nth-child(even), #facility-wrapper .facility-display #demoTable td:nth-child(even), 
+#specTable td:nth-child(even) {
+  text-align: left; /*Values*/
+  font-size: 20px;
+  padding-left: 20px;
+}
+#specialtyTable tr td {
+  padding: 10px;
+  font-size: 14px;
+  text-align:right;
+}
+#specialtyTable tr td:nth-child(2) {
+  font-size:18px;
+  text-align:left;
+}
+#specialtyTable tr:first-child td {
+  padding-bottom: 0px;
+}
+#specList h4 {
+  font-size: 14px;
+  line-height: 14px;
+}
+#specList h4 input[type='checkbox'] {
+  height: 14px;
+  position: relative;
+  top: 2px;
+}
+#provider-wrapper .provider-display #demoTable tr.footer td:last-child, #facility-wrapper .facility-display #demoTable tr.footer td:last-child {
+  text-align: left !important;
+}
+#facTable{margin-left:13px;margin-top:-20px;display:block;}
+#facTable tr:first-child td{ padding-top:10px; }
+.tabselected{font-weight:bold!important;font-size:15px!important;}
+#specTable td.rowHeader, #facTable td#rH{
+  font-size:32px; text-align:left;
+}
+#rH { padding-left:20px;padding-top:10px; }
+#providersTable a{text-decoration:none;color:#111;}
+#rH a {
+  font-size: 16px;
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+}
+#rH a:hover, #providersTable a:hover{text-decoration:underline;}
+#specTable tr td{}
+#specTable {
+  margin-left: 33px;/*20 default,50 for real center*/
+}
+#specTable td:nth-child(even) {
+  text-align:right;
+}
+#specTable td:nth-child(odd) {
+  text-align: left;
+}
+#facTable td:nth-child(even) {
+  text-align: left;
+  vertical-align: top;
+  font-size: 20px;
+  padding-left: 20px;
+}
+#facTable td:nth-child(odd) {
+  text-align: right;
+  vertical-align: top;
+  font-size: 14px;
+  line-height:27px;
+}
+.inter-table-separator{ border-bottom:2px solid #111; }
+i.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  position: relative;
+  bottom: 3px;
+}
+.down{
+  transform:rotate(45deg);
+  -webkit-transform:rotate(45deg);
+}
+.up{
+  transform:rotate(-135deg);
+  -webkit-transform:rotate(-135deg);
+  bottom:1px!important;
+}
+span.expand {
+  padding: 0px;
+  padding-left: 5px;
+  border: 2px solid #111;
+  padding-right: 5px;
+  cursor:pointer;
+}
+#providersTableDT td{font-size:16px!important;}
+/*datepickers*/
+#ui-datepicker-div{background:#fff;padding:20px;}
+.ui-datepicker-title{text-align:center;font-weight:bold;}
+.ui-datepicker-prev{position:absolute;left:20px;top:20px;display:inline-block;}
+.ui-datepicker-next{position:absolute;right:20px;top:20px;display:inline-block;}
+.ui-datepicker-next span, .ui-datepicker-prev span{cursor:pointer;font-weight:bold;}
+.ui-datepicker-calendar td a{color:#000;padding:5px;text-decoration:none;}
+.ui-datepicker-calendar td a:hover{text-decoration:underline;}
+.ui-datepicker-calendar td.ui-datepicker-other-month a{color:#999;}
+/*card*/
+.card {
+  border: none;
+}
+.card-body{padding:0;}
+.card-title,.card-text{padding:5px;}
+.card-title {
+  padding-left: 23px;
+  margin-bottom: 8px;
+}
+.card-text {
+  padding-left: 32px;
+  margin-top: 0px;
+}
+.specTitle {
+  padding-left: 5px;
+  border-radius: 5px;
+  color: #fff;
+  /*#86bf2f=green*/ background:#B2a570;
+  cursor: pointer;
+}
+.specTitle span {
+  font-size: 15px;
+}
+.specCard {
+  border: 1px solid rgba(0,0,0,0.125);
+  border-radius: 10px;
+  width:500px;
+  margin-bottom:10px;
+}
+.specTable{display:none;}
+.provFacFooter, .provSpecFooter {
+  background: rgb(204, 204, 204);
+  border-bottom-left-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  font-size: 12px;
+  font-family: sans-serif; /*Courier;*/
+}
+.provSpecFooter{display:none;}
+.provFacFooter {
+  padding-left: 45px;
+  padding-right: 91px;
+}
+.provFacFooter span:first-child{float:left;}
+.provFacFooter span:last-child{float:right;}
+.card-text-v {
+  margin-top: 0px;
+  /*width: 400px;*/
+  margin-left: 20px;
+  /* margin-bottom: 20px; */
+  padding-left: 0px;
+  display: inline-block;
+}
+.card-text-v td{padding:5px;}
+.card-text-v td.midHead{width:500px;padding:0px;}
+#vendorMainTable td:nth-child(odd), #vendorAddressTable td:nth-child(odd){
+  text-align: right;
+  font-size: 14px;
+}
+#vendorMainTable td:nth-child(even), #vendorAddressTable td:nth-child(even) {
+  text-align: left;
+  font-size: 20px;
+  padding-left: 20px;
+}
+.status_INACTIVE{opacity:0.6!important;}
+#facVendorBody td.midHead{width:500px;}

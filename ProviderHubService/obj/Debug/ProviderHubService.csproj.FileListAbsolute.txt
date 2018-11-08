@@ -16,6 +16,7 @@ E:\repositories\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.cspr
 E:\repositories\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.csproj.CopyComplete
 E:\repositories\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.dll
 E:\repositories\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.pdb
+<<<<<<< HEAD
 E:\cminnickel\workspace\ProviderHub\ProviderHubService\bin\ProviderHubService.dll.config
 E:\cminnickel\workspace\ProviderHub\ProviderHubService\bin\ProviderHubService.dll
 E:\cminnickel\workspace\ProviderHub\ProviderHubService\bin\ProviderHubService.pdb
@@ -24,3 +25,13 @@ E:\cminnickel\workspace\ProviderHub\ProviderHubService\obj\Debug\ProviderHubServ
 E:\cminnickel\workspace\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.csproj.CoreCompileInputs.cache
 E:\cminnickel\workspace\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.dll
 E:\cminnickel\workspace\ProviderHub\ProviderHubService\obj\Debug\ProviderHubService.pdb
+=======
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubService\bin\ProviderHubService.dll.config
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubService\bin\ProviderHubService.dll
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubService\bin\ProviderHubService.pdb
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubService\bin\GHCDataAccess.dll
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubService\obj\Debug\ProviderHubService.csprojResolveAssemblyReference.cache
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubService\obj\Debug\ProviderHubService.csproj.CoreCompileInputs.cache
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubService\obj\Debug\ProviderHubService.dll
+C:\Users\spillai\Documents\ProviderHubApp\ProviderHubService\obj\Debug\ProviderHubService.pdb
+>>>>>>> ProviderHubApp
