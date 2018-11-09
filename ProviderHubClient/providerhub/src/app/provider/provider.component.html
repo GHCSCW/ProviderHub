@@ -6,7 +6,7 @@
       <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
       <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
       <li tab-id="Facility" tab-url="Facility" [class.selected]="nav=='Facility'">Facilities</li>
-      <li tab-id="FacSpecMap" tab-url="Employment" [class.selected]="nav=='FacSpecMap'">Employment</li>
+      <li tab-id="FacSpecMap" tab-url="Employment" [class.selected]="nav=='FacSpecMap'">Employment</li><!--ALEX: delete this row of code AND do it in Facility.component.html ALSO-->
     </ul>
   </div>
   <div class="provider-display main-display">
@@ -150,7 +150,12 @@
           <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard indivSpecWrapper ui-sortable-handle status_{{s.Status}}" id="specWrapper_{{s.ID}}" style="position: relative; left: 0px; top: 0px;">
             <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
             <div class="card-body specCardBody">
-              <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{s.Name}} <br /><span>{{s | specialtyType}} | {{s | parentSpecialty}}</span></h5>
+              <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">
+                {{s.Name}} <!-- EDIT/SAVE/CANCEL for individual SPEC HERE, trigger #specWrapper_{{s.ID}} .not-editing / .is-editing -->
+                <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
+                <br />
+                <span>{{s | specialtyType}} | {{s | parentSpecialty}}</span>
+              </h5>
               <table id="specialtyTable" class="card-text specTable">
                 <tbody>
                   <tr>
@@ -159,7 +164,13 @@
                   </tr>
                   <tr class="whenExpand">
                     <td>Effective Dates</td>
-                    <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+                    <td>
+                      <span class="not-editing">{{s.EffectiveDate | date}}</span>
+                      <span class="is-editing"><input type="text" class="datepicker" id="edit_ProviderSpec{{s.ID}}_EffectiveDate" value="{{s.EffectiveDate | date}}" /></span>
+                      -
+                      <span class="not-editing">{{s.TerminationDate | date}}</span>
+                      <span class="is-editing"><input type="text" class="datepicker" id="edit_ProviderSpec{{s.ID}}_TerminationDate" value="{{s.TerminationDate | date}}" /></span>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -264,7 +275,7 @@
               <th></th>
               <th>Network</th>
               <!--th>Network Effective Date</th-->
-              <th>Provider</th>
+              <!--th>Provider</th-->
               <th>Facility</th>
               <th>Specialty</th>
               <!--<th>EPIC Network ID</th>-->

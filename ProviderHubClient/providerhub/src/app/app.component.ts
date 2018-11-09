@@ -53,6 +53,8 @@ export class AppComponent implements OnInit {
       data => {
         console.log(data); //{"result":"GHC-HMO\spillai","username":"spillai","isSuperUser":"False","isEditor":"False","isUser":"False"}
         this.username = data.username;
+        environment.authUser = data;
+        //GITHUB ISSUE XX - LOCKDOWN APPLICATION FOR ANONYMOUS USER if no result or no auth/user detected, lock down application here
       }
     );
   }

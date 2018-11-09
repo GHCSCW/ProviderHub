@@ -52,6 +52,7 @@ export class ProviderComponent implements OnInit {
         this.location.replaceState("/Provider/Demographics/" + this.providerId);
       }
     });
+    //_dis used as an alias for this as in the Angular this, for async JS to access the Angular 'this'. (otherwise most async JS functions' "this" means the event target)
     var _dis = this; var toClick = null;
     //0. nav
     var navs = document.getElementById("provider-nav").getElementsByTagName("li");
@@ -138,12 +139,6 @@ export class ProviderComponent implements OnInit {
         //MEDICARE DATES
         this.Provider.MedicareEffectiveDate = (this.Provider.MedicareEffectiveDate && this.Provider.MedicareEffectiveDate != null) ? this.Provider.MedicareEffectiveDate.replace(/\D/g, '').slice(0, -4) : "";
         this.Provider.MedicareTerminationDate = (this.Provider.MedicareTerminationDate && this.Provider.MedicareTerminationDate != null) ? this.Provider.MedicareTerminationDate.replace(/\D/g, '').slice(0, -4) : "";
-        //FAKE MEDICARE+MEDICAID INFO TO TEST MEDICARE+MEDICAID UI WITH MARY KARLS (id:231)
-        if (this.Provider.FirstName == "Mary " && this.Provider.LastName == "Karls")
-        {
-          this.Provider.MedicareIndicator = true; this.Provider.MedicaidIndicator = true; this.Provider.MedicarePTAN = "9284654";
-          this.Provider.MedicareEffectiveDate = "Jan 1, 2015"; this.Provider.MedicareTerminationDate = "Jan 1, 2019"; this.Provider.MedicaidProviderID = "1825465";
-        }
         //1b. SELECTIZE from 'full entity' lists: Credentials and Languages
         let toSelectize: any = $("#edit_Provider_Credentials,#edit_ProviderDemo_Language,#add_Provider_Specialty");
         //POPULATE CREDENTIALS AND LANGUAGES SELECT TAG, THEN SET PROVIDER'S CURRENT VALUES AS SELECTED OPTION(S)
@@ -153,8 +148,8 @@ export class ProviderComponent implements OnInit {
         for (var i = 0; i < languagesList.length; i++) { var selected = (_langArr.includes(languagesList[i].Name)) ? "selected" : ""; lSelectHTML += "<option value='" + languagesList[i].ID + "' " + selected + ">" + languagesList[i].Name + "</option>"; }
         for (var i = 0; i < specsList.length; i++) {
           sSelectHTML += "<option value='" + specsList[i].ID + "'>" + specsList[i].Name + "</option>";
-          var toAdd = specsList[i]; toAdd.SequenceNumber = this.Provider.ProviderSpecialties.length; toAdd.MappingID = 0; toAdd.LastUpdatedBy = 'spillai';
-          toAdd.EffectiveDate = "/Date(1451628000000-0600)/".replace(/\D/g, '').slice(0, -4); toAdd.TerminationDate = ''; toAdd.LastUpdatedDate = '';
+          var toAdd = specsList[i]; toAdd.SequenceNumber = this.Provider.ProviderSpecialties.length; toAdd.MappingID = 0; toAdd.LastUpdatedBy = environment.authUser.username;
+          toAdd.EffectiveDate = "/Date(1451628000000-0600)/".replace(/\D/g, '').slice(0, -4); toAdd.TerminationDate = ''; toAdd.LastUpdatedDate = '';//use datepipe
           toAdd.Status = "ACTIVE"; toAdd.ParentName = ''; toAdd.ParentSpecialtyID = 0; this._specsList[toAdd.ID]=toAdd;
         }
         sSelect.html("<select>" + sSelectHTML + "</select>"); lSelect.html("<select>"+lSelectHTML+"</select>"); cSelect.html("<select>"+cSelectHTML+"</select>");
@@ -215,7 +210,7 @@ export class ProviderComponent implements OnInit {
           language: { search: "", searchPlaceholder: "Begin typing in a Provider Name or NPI to filter search results" },
           data: this.Provider.NetworkTab,
           columns: [{ data: null, orderable: false, searchable: false, defaultContent: '' },
-            { data: "Network" }, { data: "Provider" }, { data: "Facility" }, { data: "Specialty" }//, { data: "EpicNetworkID" } //, { data: "NetworkEffectiveDate" }, 
+            { data: "Network" }, { data: "Facility" }, { data: "Specialty" }//SKP FIELDS NO LONGER USED, but returned from Service if needed - { data: "Provider" }, { data: "EpicNetworkID" }, { data: "NetworkEffectiveDate" }, 
           ],
           order: [[1, "asc"]],
           rowId: 'ID',
@@ -304,11 +299,11 @@ export class ProviderComponent implements OnInit {
     }
     function format(d) {
       return "<table class='plainjane'>" + "<tr><td><b>DIRECTORY ID:" + d.ID + "</b></td>"
-        + "<td>External Provider <br/>" + new BoolPipe().transform(d.FPRelationship.ExternalProviderIndicator) + "</td>"
+        + "<td><span class='childRowHeader'>External Provider</span> <br/>" + new BoolPipe().transform(d.FPRelationship.ExternalProviderIndicator) + "</td>"
         + "<td>Accepting New Patients <br/>" + new BoolPipe().transform(d.FPRelationship.AcceptingNewPatientIndicator) + "</td>"
         + "<td>Prescriber <br/>" + new BoolPipe().transform(d.FPRelationship.PrescriberIndicator) + "</td>"
         + "<td>Referral <br/>" + new BoolPipe().transform(d.FPRelationship.ReferralIndicator) + "</td>"
-        + "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.FPRelationship.PCPEligibleIndicator) + "</td>"
+        + "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.FPRelationship.PCPEligibleIndicator) + "</td>" //BRANDON - When you create new PCPEligible in Directory table, pull from that field instead of FPRelationship
         + "<td>Float Provider <br/>" + new BoolPipe().transform(d.FPRelationship.FloatProviderIndicator) + "</td></tr>";
     }
   }
@@ -330,10 +325,10 @@ export class ProviderComponent implements OnInit {
     function val2(which) { let _e: any = $("#edit_ProviderDemo_" + which); return _e.val(); } let body: any;
     switch (type) {
       case 0: //"Main" Provider-Header Info
-        body = { FirstName: val("FirstName"), LastName: val("LastName"), Credentials: val("Credentials"), NPI: val("NPI"), EpicProviderID: val("EpicProviderID"), Gender: val("Gender"), User: "GHC-HMO\\spillai" };
+        body = { FirstName: val("FirstName"), LastName: val("LastName"), Credentials: val("Credentials"), NPI: val("NPI"), EpicProviderID: val("EpicProviderID"), Gender: val("Gender"), User: environment.authUser.username };
         break;
       case 1: //Demographics
-        body = { Languages: val2("Language"), MedicareIndicator: val2("MedicareIndicator"), MedicaidIndicator: val2("MedicaidIndicator"), User: "GHC-HMO\\spillai" };
+        body = { Languages: val2("Language"), MedicareIndicator: val2("MedicareIndicator"), MedicaidIndicator: val2("MedicaidIndicator"), User: environment.authUser.username };
         if (body.MedicareIndicator == "Yes") { body.MedicarePTAN = val2("MedicarePTAN"); body.MedicareEffectiveDate = this.transformDateForPHDB("edit_ProviderDemo_MedicareEffectiveDate"); body.MedicareTerminationDate = this.transformDateForPHDB("edit_ProviderDemo_MedicareTerminationDate"); }
         //val2("MedicareEffectiveDate"), val2("MedicareTerminationDate")
         if (body.MedicaidIndicator == "Yes") { body.MedicaidProviderID = val2("MedicaidProviderID"); }

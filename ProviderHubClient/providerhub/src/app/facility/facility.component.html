@@ -6,7 +6,7 @@
       <li tab-id="Vendor" tab-url="Vendor" [class.selected]="nav=='Vendor'">Vendor</li>
       <li tab-id="Providers" tab-url="Providers" [class.selected]="nav=='Providers'">Providers</li>
       <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
-      <li tab-id="ProviderSpecialtyMapping" tab-url="Employment" [class.selected]="nav=='ProviderSpecialtyMapping'">Employment</li>
+      <li tab-id="ProviderSpecialtyMapping" tab-url="Employment" [class.selected]="nav=='ProviderSpecialtyMapping'">Employment</li><!--ALEX: delete this row of code, do it in provider too-->
       <li tab-id="Networks" tab-url="Networks" [class.selected]="nav=='Networks'">Networks</li>
     </ul>
   </div>
@@ -82,7 +82,7 @@
               <span class="is-editing"><input type="text" id="edit_FacilityDemo_FaxNumber" placeholder="Fax #" value="{{FacilityAddress.FaxNumber}}" /></span>
             </td>
           </tr>
-          <tr *ngIf="!FacilityAddress.HideAlternatePhoneNumber" class="not-editing">
+          <tr class="not-editing"><!-- SKP WE DECIDED NOT TO USE *ngIf="!FacilityAddress.HideAlternatePhoneNumber" HERE ANYMORE, BUT STILL AVAILABLE IF YOU WANT TO REAPPLY + FIX ALTERNATING CSS ISSUE -->
             <td>Alt. Phone</td>
             <td>
               {{FacilityAddress.AlternatePhoneNumber | phonefromdb}}
@@ -103,7 +103,7 @@
               <span class="is-editing"><input type="text" id="edit_FacilityDemo_Website" value="{{FacilityAddress.Website}}" /></span>
             </td>
           </tr>
-          <tr>
+          <tr><!--CLAUDIA: recommend you just use [hidden]=Facility.HasHours here and set Facility.HasHours to false by default; and true when object loaded with non-null value-->
             <td>Hours</td>
             <td>Coming Soon</td><!--Facility.Hours.DisplayValues-->
           </tr>

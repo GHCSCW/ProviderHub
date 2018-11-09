@@ -178,14 +178,14 @@ export class FacilityComponent implements OnInit {
     function format(d) {
       return "<table class='plainjane'>" + "<tr><td><a href='../provider/"+d.ID+"'>View Provider</a></td>"
         + "<td><span class='childRowHeader'>External Provider</span> <br/>" + new BoolPipe().transform(d.FPRelationship.ExternalProviderIndicator) + "</td>"
-        + "<td>Accepting New Patients <br/>" + new BoolPipe().transform(d.FPRelationship.AcceptingNewPatientIndicator) + "</td>"
-        + "<td>Prescriber <br/>" + new BoolPipe().transform(d.FPRelationship.PrescriberIndicator) + "</td>"
-        + "<td>Referral <br/>" + new BoolPipe().transform(d.FPRelationship.ReferralIndicator) + "</td>"
-        + "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.FPRelationship.PCPEligibleIndicator) + "</td>"
-        + "<td>Float Provider <br/>" + new BoolPipe().transform(d.FPRelationship.FloatProviderIndicator) + "</td></tr>";
+        + "<td><span class='childRowHeader'>Accepting New Patients</span> <br/>" + new BoolPipe().transform(d.FPRelationship.AcceptingNewPatientIndicator) + "</td>"
+        + "<td><span class='childRowHeader'>Prescriber</span> <br/>" + new BoolPipe().transform(d.FPRelationship.PrescriberIndicator) + "</td>"
+        + "<td><span class='childRowHeader'>Referral</span> <br/>" + new BoolPipe().transform(d.FPRelationship.ReferralIndicator) + "</td>"
+        //+ "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.FPRelationship.PCPEligibleIndicator) + "</td>" BRANDON - Moved to Directory Table. Safe to delete this row of code -SKP
+        + "<td><span class='childRowHeader'>Float Provider</span> <br/>" + new BoolPipe().transform(d.FPRelationship.FloatProviderIndicator) + "</td></tr>";
     }
   }
-  //save/edit
+  //save/edit Facility for Main/Demographics
   public saveFacility(type: number, event: any) {
     let _editDivs: any = $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing"); _editDivs.hide(); _editDivs = null;
     let _notEditDivs: any = $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
@@ -194,11 +194,11 @@ export class FacilityComponent implements OnInit {
     function val2(which) { let _e: any = $("#edit_FacilityDemo_" + which); return _e.val(); } let body: any;
     switch (type) {
       case 0: //"Main" Facility-Header Info
-        body = { Name:val("Name"), NPI: val("NPI"), User: "GHC-HMO\\spillai" };
+        body = { Name: val("Name"), NPI: val("NPI"), User: environment.authUser.username };
         break;
       case 1: //Demographics (Really just an address)
         var phoneFixer = new PhoneToDBPipe();
-        body = { Address1: val2("Address1"), Address2: val2("Address2"), City: val2("City"), State: val2("State"), Zip: val2("ZipCode"), User: "GHC-HMO\\spillai" };
+        body = { Address1: val2("Address1"), Address2: val2("Address2"), City: val2("City"), State: val2("State"), Zip: val2("ZipCode"), User: environment.authUser.username };
         body.PhoneNumber = phoneFixer.transform(val2("PhoneNumber")); body.PhoneExtension = val2("PhoneExtension");
         body.AlternatePhoneNumber = phoneFixer.transform(val2("AltNumber")); body.AlternateExtension = val2("AltExtension");
         if (isNaN(body.PhoneNumber) || isNaN(body.AlternatePhoneNumber)) { alert("Invalid Phone Number. (must be 10 digit number, leading +1 allowed, dashes and parentheses allowed)"); return; }

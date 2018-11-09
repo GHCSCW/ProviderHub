@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiRoot: "http://localhost:51660/"
+  apiRoot: "http://localhost:51660/",
+  authUser: { result: "", username: "", isSuperUser: false, isEditor: false, isUser: false }
 };
 
 /*
