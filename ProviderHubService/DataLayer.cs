@@ -747,6 +747,16 @@ namespace ProviderHubService
                                          new SqlParameter("@ID",SqlDbType.Int){ Value = p.ID } };
             return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
         }
+        public int SaveProviderSpecialty(dynamic ps) {
+            //Stored Proc needs: (@SpecialtyID VARCHAR(10), @User VARCHAR(20), @ID INT,      @SEQ INT, @EDATE DATE,       @TDATE DATE = NULL,   @First BIT = 0)
+            //                    ps.SpecialtyID            ps.User            ps.ID         ps.SEQ    ps.EDATE           ps.TDATE              ps.First
+            string sql = "providerhub.dbo.sp_SaveProviderSpecialty";
+            SqlParameter[] sqlParams = { new SqlParameter("@SpecialtyID", SqlDbType.VarChar){ Value = ps.SpecialtyID }, new SqlParameter("@User", SqlDbType.VarChar){ Value = ps.User },
+                                         new SqlParameter("@ID", SqlDbType.Int){ Value = ps.ID }, new SqlParameter("@SEQ", SqlDbType.VarChar){ Value = ps.SEQ },
+                                         new SqlParameter("@EDATE", SqlDbType.Date){ Value = ps.EDATE }, new SqlParameter("@TDATE", SqlDbType.Date){ Value = (ps.TDATE==null)? (DateTime?)null : ps.TDATE, IsNullable = true },
+                                         new SqlParameter("@First", SqlDbType.Bit){ Value = ps.First }, new SqlParameter("@Last", SqlDbType.Bit){ Value = ps.Last } };
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
 
         public int SaveFacilityHeader(dynamic p) {
             string sql = "providerhub.dbo.sp_SaveFacilityHeader";
@@ -767,6 +777,17 @@ namespace ProviderHubService
                                          new SqlParameter("@AltPhoneNumber", SqlDbType.VarChar){ Value = p.AlternatePhoneNumber }, new SqlParameter("@AltPhoneExtension", SqlDbType.VarChar){ Value = p.AlternateExtension },
                                          new SqlParameter("@FaxNumber", SqlDbType.VarChar){ Value = p.FaxNumber },
                                          new SqlParameter("@Website",SqlDbType.VarChar){ Value = p.Website }, new SqlParameter("@ID", SqlDbType.Int){ Value = p.ID } };
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+        public int SaveFacilitySpecialty(dynamic ps)
+        {
+            //Stored Proc needs: (@SpecialtyID VARCHAR(10), @User VARCHAR(20), @ID INT,      @SEQ INT, @EDATE DATE,       @TDATE DATE = NULL,   @First BIT = 0)
+            //                    ps.SpecialtyID            ps.User            ps.ID (FAC)   ps.SEQ    ps.EDATE           ps.TDATE              ps.First
+            string sql = "providerhub.dbo.sp_SaveFacilitySpecialty";
+            SqlParameter[] sqlParams = { new SqlParameter("@SpecialtyID", SqlDbType.VarChar){ Value = ps.SpecialtyID }, new SqlParameter("@User", SqlDbType.VarChar){ Value = ps.User },
+                                         new SqlParameter("@ID", SqlDbType.Int){ Value = ps.ID }, new SqlParameter("@SEQ", SqlDbType.VarChar){ Value = ps.SEQ },
+                                         new SqlParameter("@EDATE", SqlDbType.Date){ Value = ps.EDATE }, new SqlParameter("@TDATE", SqlDbType.Date){ Value = (ps.TDATE==null)? (DateTime?)null : ps.TDATE, IsNullable = true },
+                                         new SqlParameter("@First", SqlDbType.Bit){ Value = ps.First }, new SqlParameter("@Last",SqlDbType.Bit){ Value = ps.Last } };
             return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
         }
 
