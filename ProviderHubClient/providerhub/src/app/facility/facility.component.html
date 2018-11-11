@@ -85,15 +85,14 @@
           <tr class="not-editing"><!-- SKP WE DECIDED NOT TO USE *ngIf="!FacilityAddress.HideAlternatePhoneNumber" HERE ANYMORE, BUT STILL AVAILABLE IF YOU WANT TO REAPPLY + FIX ALTERNATING CSS ISSUE -->
             <td>Alt. Phone</td>
             <td>
-              {{FacilityAddress.AlternatePhoneNumber | phonefromdb}}
-              <span *ngIf="!FacilityAddress.HideAltExtension">ext. {{FacilityAddress.AlternateExtension}}</span>
-            </td>
-          </tr>
-          <tr class="is-editing">
-            <td>Alt. Phone</td>
-            <td>
-              <input type="text" id="edit_FacilityDemo_AltNumber" placeholder="Alt Phone #" value="{{FacilityAddress.AlternatePhoneNumber | phonefromdb}}" />
-              <input type="text" id="edit_FacilityDemo_AltExtension" placeholder="ext." value="{{FacilityAddress.AlternateExtension}}" />
+              <span class="not-editing">
+                {{FacilityAddress.AlternatePhoneNumber | phonefromdb}}
+                <span *ngIf="!FacilityAddress.HideAltExtension">ext. {{FacilityAddress.AlternateExtension}}</span>
+              </span>
+              <span class="is-editing">
+                <input type="text" id="edit_FacilityDemo_AltNumber" placeholder="Alt Phone #" value="{{FacilityAddress.AlternatePhoneNumber | phonefromdb}}" />
+                <input type="text" id="edit_FacilityDemo_AltExtension" placeholder="ext." value="{{FacilityAddress.AlternateExtension}}" />
+              </span>
             </td>
           </tr>
           <tr>
@@ -169,23 +168,51 @@
     <!--END VENDOR-->
     <div id="demo-card" class="card" [hidden]="nav!='Specialties'">
       <div class="card-body">
-        <h5 class="card-title red">Specialties</h5>
+        <h5 class="card-title red">
+          Specialties <i class="fa fa-plus" [hidden]="specsEdited" id="addSpec"></i>
+          <i class="fa fa-save" [hidden]="!specsEdited" id="saveSpecs"></i><i class="fa fa-times" [hidden]="!specsEdited" id="resetSpecs"></i>
+        </h5>
         <div id="specList" class="card-text ui-sortable">
-          <h4><input type="checkbox" /> Show Inactive Specialties</h4>
+          <h4 id="addSpecArea">
+            <span id="addSpecBody" style="display:none;">
+              Add Specialty:
+              <select id="add_Facility_Specialty" class="toSelectize">
+                <option value=10>Family Medicine</option>
+                <option value=1>Dermatology</option>
+                <option value=3>Chiropractic</option>
+              </select>
+              <input type="button" value="Add" (click)="addSpecToList($event)" />
+            </span>
+            <br /><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
+          </h4>
           <!--EACH SPECIALTY-->
-          <div *ngFor="let s of Facility.FacilitySpecialties" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;">
+          <div *ngFor="let s of Facility.FacilitySpecialties" class="card specCard indivSpecWrapper ui-sortable-handlestatus_{{s.Status}}" id="specWrapper_{{s.ID}}"  style="position: relative; left: 0px; top: 0px;">
             <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
             <div class="card-body specCardBody">
-              <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{s.Name}} <br /><span>{{s | specialtyType}} | {{s | parentSpecialty}}</span></h5>
+              <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">
+                {{s.Name}}
+                <!-- EDIT/SAVE/CANCEL for individual SPEC HERE, trigger #specWrapper_{{s.ID}} .not-editing / .is-editing -->
+                <i (click)="editFacility(2,$event,s.ID,s.MappingID)" class="fa fa-edit is-editor not-editing"></i>
+                <i (click)="saveFacility(2,$event,s.ID,s.MappingID)" class="fa fa-save is-editor is-editing" style="display:none;"></i>
+                <i (click)="cancelEdit(2,$event,s.ID,s.MappingID)" class="fa fa-times is-editor is-editing" style="display:none;"></i>
+                <br />
+                <span>{{s | specialtyType}} | {{s | parentSpecialty}}</span>
+              </h5>
               <table id="specialtyTable" class="card-text specTable">
                 <tbody>
                   <tr>
                     <td>Specialty Status</td>
-                    <td>ACTIVE</td>
+                    <td>{{s | specStatus}}</td>
                   </tr>
                   <tr class="whenExpand">
                     <td>Effective Dates</td>
-                    <td>{{s.EffectiveDate | date}} - {{s.TerminationDate | date}}</td>
+                    <td>
+                      <span class="not-editing">{{s.EffectiveDate | date}}</span>
+                      <span class="is-editing" style="display:none;"><input type="text" ph-initialized="false" class="datepicker" id="edit_FacilitySpec{{s.ID}}_EffectiveDate" value="{{s.EffectiveDate | date}}" /></span>
+                      - <!-- To save memory and not initialize every Specialties' DatePicker, init when corresponding edit button clicked for a given Spec only, then set ph-initialized to 'true' to avoid double-init -->
+                      <span class="not-editing">{{s.TerminationDate | date}}</span>
+                      <span class="is-editing" style="display:none;"><input type="text" ph-initialized="false" class="datepicker" id="edit_FacilitySpec{{s.ID}}_TerminationDate" value="{{s.TerminationDate | date}}" /></span>
+                    </td>
                   </tr>
                 </tbody>
               </table>

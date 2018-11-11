@@ -151,8 +151,11 @@
             <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
             <div class="card-body specCardBody">
               <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">
-                {{s.Name}} <!-- EDIT/SAVE/CANCEL for individual SPEC HERE, trigger #specWrapper_{{s.ID}} .not-editing / .is-editing -->
-                <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
+                {{s.Name}}
+                <!-- EDIT/SAVE/CANCEL for individual SPEC HERE, trigger #specWrapper_{{s.ID}} .not-editing / .is-editing -->
+                <i (click)="editProvider(2,$event,s.ID,s.MappingID)" class="fa fa-edit is-editor not-editing"></i>
+                <i (click)="saveProvider(2,$event,s.ID,s.MappingID)" class="fa fa-save is-editor is-editing" style="display:none;"></i>
+                <i (click)="cancelEdit(2,$event,s.ID,s.MappingID)" class="fa fa-times is-editor is-editing" style="display:none;"></i>
                 <br />
                 <span>{{s | specialtyType}} | {{s | parentSpecialty}}</span>
               </h5>
@@ -166,10 +169,10 @@
                     <td>Effective Dates</td>
                     <td>
                       <span class="not-editing">{{s.EffectiveDate | date}}</span>
-                      <span class="is-editing"><input type="text" class="datepicker" id="edit_ProviderSpec{{s.ID}}_EffectiveDate" value="{{s.EffectiveDate | date}}" /></span>
-                      -
+                      <span class="is-editing" style="display:none;"><input type="text" ph-initialized="false" class="datepicker" id="edit_ProviderSpec{{s.ID}}_EffectiveDate" value="{{s.EffectiveDate | date}}" /></span>
+                      - <!-- To save memory and not initialize every Specialties' DatePicker, init when corresponding edit button clicked for a given Spec only, then set ph-initialized to 'true' to avoid double-init -->
                       <span class="not-editing">{{s.TerminationDate | date}}</span>
-                      <span class="is-editing"><input type="text" class="datepicker" id="edit_ProviderSpec{{s.ID}}_TerminationDate" value="{{s.TerminationDate | date}}" /></span>
+                      <span class="is-editing" style="display:none;"><input type="text" ph-initialized="false" class="datepicker" id="edit_ProviderSpec{{s.ID}}_TerminationDate" value="{{s.TerminationDate | date}}" /></span>
                     </td>
                   </tr>
                 </tbody>

@@ -26,15 +26,20 @@ export class FacilityComponent implements OnInit {
   public Service: any;
   public nav: string;
   public providerDT: any;
+  public specsEdited: boolean = false;
   public editingDivWrappers: any;
   public editingDivHeaderWrappers: any;
   public editingHeaderDivs: any;
+  public _specsList: any;
+  public origSpecOrder: any;
+  public currentSpecOrder: any;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private service: ProviderHubService, private location: Location) {
     this.Service = service; this.Facility = {}; this.FacilityAddress = {};
     //TEST FACILITY FOR DEBUG
     this.nav = 'Demographics';//default=Demographics, change to test
+    this.specsEdited = false;
   }
 
   ngOnInit() {
@@ -78,6 +83,42 @@ export class FacilityComponent implements OnInit {
       })();
     }
 
+    //POTENTIAL OPTIMIZE, but makes code harder to read: convert to plain jane JS (like above click events), might save 100-300ms
+    let _addSpec: any = $("#addSpec"); let _resetSpec: any = $("#resetSpecs"); let _saveSpec: any = $("#saveSpecs"); let _addSpecBody: any = $("#addSpecBody");
+    _addSpec.click(function () {
+      _addSpecBody.show(); //_addSpec.hide(); _resetSpec.show(); _saveSpec.show();
+      _dis.specsEdited = true;
+    });
+    _saveSpec.click(function (e) {
+      var forIDs = _dis.Facility.FacilitySpecialties[0];
+      _dis.saveFacility(2, e, forIDs.ID, forIDs.MappingID);
+    });
+    _resetSpec.click(function () {
+      _addSpecBody.hide(); //_addSpec.show(); _resetSpec.hide(); _saveSpec.hide();
+      _dis.specsEdited = false;
+      let _unsavedSpec: any = $(".unsavedSpec");
+      _unsavedSpec.remove();
+      if (_dis.origSpecOrder != null) {
+        var specIDs = _dis.origSpecOrder.split("|");
+        //remove() all into memory to re-add?
+        for (var i = 0; i < specIDs.length; i++) {
+          var _specid = specIDs[i];
+          if (_specid.trim() != "") {
+            let _specWrapper: any = $("#specWrapper_" + _specid);
+            //use prepend/postpend to reorder specs
+            //$("h2").insertAfter($(".container"));
+            if (i == 0) { //< specIDs.length - 1
+              var _relation: any = $("#addSpecArea");//$("#specWrapper_" + specIDs[i + 1]);
+              _specWrapper.insertAfter(_relation);
+            } else {
+              var _relation: any = $("#specWrapper_" + specIDs[i - 1]);//$("#specWrapper_" + specIDs[i - 1]);
+              _specWrapper.insertAfter(_relation);
+            }
+          }
+        }
+      }
+    });
+
     this.service.hitAPI(this.apiRoot + "Facility/ByID/" + this.facilityId).subscribe(
       data => {
         //0. Edit/Save buttons and Misc UI
@@ -86,19 +127,52 @@ export class FacilityComponent implements OnInit {
           let _notEditDivs: any = $(this.editingDivHeaderWrappers[i] + " i.not-editing," + this.editingDivWrappers[i] + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
         }
         //1. header and address
-        this.Facility = data; this.FacilityAddress = this.Facility.FacilityAddress;
+        this.Facility = data.f; this.FacilityAddress = this.Facility.FacilityAddress;
         document.getElementById("page-title").innerHTML = this.Facility.FacilityName;
         this.Facility.LastUpdatedDate = new PHDatePipe().transform(this.Facility.LastUpdatedDate.replace(/\D/g, '').slice(0,-4));
         this.FacilityAddress.AddressLine1 = (this.FacilityAddress.AddressLine1 == null) ? "" : this.FacilityAddress.AddressLine1;
         this.FacilityAddress.AddressLine2 = (this.FacilityAddress.AddressLine2 == null) ? "" : this.FacilityAddress.AddressLine2;
+        //1a. selectize
+        //0b. SpecsList
+        let toSelectize: any = $("#add_Facility_Specialty"); let sSelect: any = $("#add_Provider_Specialty"); //separate vars because adding any new select tags would affect toSelectize but not sSelect
+        let specsList: any = data.s; var sSelectHTML = ""; this._specsList = [];
+        for (var i = 0; i < specsList.length; i++) {
+          sSelectHTML += "<option value='" + specsList[i].ID + "'>" + specsList[i].Name + "</option>";
+          var toAdd = specsList[i]; toAdd.SequenceNumber = this.Facility.FacilitySpecialties.length; toAdd.MappingID = 0; toAdd.ID = specsList[i].ID;
+          toAdd.LastUpdatedBy = environment.authUser.username; toAdd.LastUpdatedDate = new Date();
+          toAdd.EffectiveDate = "/Date(1451628000000-0600)/".replace(/\D/g, '').slice(0, -4); toAdd.TerminationDate = '';
+          toAdd.Status = "ACTIVE"; toAdd.ParentName = ''; toAdd.ParentSpecialtyID = 0; this._specsList[toAdd.ID] = toAdd;
+        }
+        sSelect.html("<select>" + sSelectHTML + "</select>");
+        //SELECTIZE ALL SELECTS, SEND VAR TO GARBAGE COLLECTOR. IF DRAG_DROP DOESNT WORK WITH SINGLE SELECTS, MOVE SPEC SELECTIZE TO ITS OWN INITIALIZATION
+        toSelectize.selectize({ plugins: ['drag_drop'] }); toSelectize = null;
         //1b. specs
+        this.origSpecOrder = ""; this.currentSpecOrder = "";
         for (var i = 0; i < this.Facility.FacilitySpecialties.length; i++) {
           var s = this.Facility.FacilitySpecialties[i];
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '').slice(0, -4);
           s.TerminationDate = (s.TerminationDate == null) ? '' : s.TerminationDate.replace(/\D/g, '').slice(0, -4);
           s.LastUpdatedDate = (s.LastUpdatedDate == null) ? '' : s.LastUpdatedDate.replace(/\D/g, '').slice(0, -4);
+          this.origSpecOrder += s.ID + "|";
+          this.currentSpecOrder += s.ID + ",";
         }
-        let list: any = $('#specList'); list.sortable();
+        if (this.origSpecOrder != "") { this.origSpecOrder = this.origSpecOrder.slice(0, -1); }
+        if (this.currentSpecOrder != "") { this.currentSpecOrder = this.currentSpecOrder.slice(0, -1); }
+        let list: any = $('#specList');
+        list.sortable({
+          update: function (event, ui) {
+            _dis.specsEdited = true;
+            let specs: any = $(".indivSpecWrapper"); //each one of these has an id="specWrapper_{{s.ID}}"
+            _dis.currentSpecOrder = "";
+            specs.each(function (this, index) {
+              let spec: any = $(this);
+              var _sid = spec.attr("id").replace("specWrapper_", "");//if you want you can make a custom attr and just do .attr("CUSTOM_ATTR_NAME");
+              _dis.currentSpecOrder += _sid + ",";
+            });
+            if (_dis.currentSpecOrder != "") { _dis.currentSpecOrder = _dis.currentSpecOrder.slice(0, -1); }
+            console.log(_dis.currentSpecOrder); console.log(_dis.origSpecOrder);
+          }
+        });
         let providersLink: any = $("#facility-nav li[tab-id='Providers']");
         providersLink.click(function () {
           if (typeof (Event) === 'function') { window.dispatchEvent(new Event('resize')); }
@@ -161,9 +235,25 @@ export class FacilityComponent implements OnInit {
     );
     document.getElementById("page-title").innerHTML = API.selectedFacility;
   }
+  public transformDateForPHDB(datepicker_element_id: any) {
+    var _e = document.getElementById(datepicker_element_id) as HTMLFormElement; var d = new Date(_e.value); var _jqe: any = $("#" + datepicker_element_id);
+    var datestring = (_e.value == "" || _jqe.val().trim() == "") ? null : d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); return datestring;
+  }
   public onSpecClick(event: any) {
     $(event.target).parent().children("table.specTable").toggle();
     $(event.target).parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
+  }
+  public addSpecToList(event: any) {
+    let select: any = $("#add_Facility_Specialty option:selected");
+    var specID = select.val(); var spec = this._specsList[specID];
+    console.log(spec); this.Facility.FacilitySpecialties.unshift(spec);//like push but to beginning of array, so new spec is at top of list and easy to edit/identify as the 'new one' -- SKP
+    //NOW USE EDIT BUTTON NOT SPEC CARD ITSELF
+    let _newSpecDiv: any = $($("#specList div")[0]); _newSpecDiv.click(); _newSpecDiv.addClass("unsavedSpec");
+    console.log(this.Facility.FacilitySpecialties);
+  }
+  public toggleInactiveSpecialties() {
+    let inactiveSpecs: any = $("div.status_INACTIVE");
+    inactiveSpecs.toggle();
   }
   private onRowSelect(indexes: number[]): void {
     var providerId = indexes[0];
@@ -186,7 +276,7 @@ export class FacilityComponent implements OnInit {
     }
   }
   //save/edit Facility for Main/Demographics
-  public saveFacility(type: number, event: any) {
+  public saveFacility(type: number, event: any, specID?: number, specRelationshipID?: number) {
     let _editDivs: any = $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing"); _editDivs.hide(); _editDivs = null;
     let _notEditDivs: any = $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
     this.loading(true, type);//load starting, show overlay
@@ -205,6 +295,21 @@ export class FacilityComponent implements OnInit {
         body.FaxNumber = val2("FaxNumber"); body.Website = val2("Website");
         break;
       case 2: //Specialties
+        //reorganize specs first
+        var specOrderArr = this.currentSpecOrder.split(",");
+        var _FacilitySpecialties = JSON.parse(JSON.stringify(this.Facility.FacilitySpecialties));/*<--DEEP CLONE, so no circular references*/ this.Facility.FacilitySpecialties = [];
+        for (var i = 0; i < specOrderArr.length; i++) {
+          for (var j = 0; j < _FacilitySpecialties.length; j++) {
+            if (_FacilitySpecialties[j].ID == specOrderArr[i]) { this.Facility.FacilitySpecialties.push(_FacilitySpecialties[j]); break; }
+          }
+        }
+        //Stored Proc needs: (@SpecialtyID VARCHAR(10),@User VARCHAR(20),@ID INT, @SEQ INT, @EDATE DATE, @TDATE DATE = NULL, @First BIT = 0) for each Specialty
+        for (var i = 0; i < this.Facility.FacilitySpecialties.length; i++) {
+          var provSpec = this.Facility.FacilitySpecialties[i];
+          provSpec.EffectiveDate = this.transformDateForPHDB("edit_FacilitySpec" + provSpec.ID + "_EffectiveDate");
+          provSpec.TerminationDate = this.transformDateForPHDB("edit_FacilitySpec" + provSpec.ID + "_TerminationDate");
+        }
+        body = { type: type, id: this.facilityId }; body.FacilitySpecialties = this.Facility.FacilitySpecialties;
         break;
       default: //log error + weird behavior
         break;
@@ -217,6 +322,7 @@ export class FacilityComponent implements OnInit {
           case 0:
             //header data to just transform over (replace with partial arr matching function)
             this.Facility.FacilityName = data.POSTvars.Name; this.Facility.NPI = data.POSTvars.NPI;
+            this.Facility.LastUpdatedDate = new Date(); this.Facility.LastUpdatedBy = data.POSTvars.User;
             break;
           case 1:
             //demo data to just transform over (also replace with partial arr matching fxn)
@@ -228,8 +334,14 @@ export class FacilityComponent implements OnInit {
             this.FacilityAddress.HideAlternatePhoneNumber = (data.POSTvars.AlternatePhoneNumber.trim() == "");
             this.FacilityAddress.HideAltExtension = (data.POSTvars.AlternateExtension.trim() == "");
             this.FacilityAddress.HidePhoneExtension = (data.POSTvars.PhoneExtension.trim() == "");
+            this.Facility.LastUpdatedDate = new Date(); this.Facility.LastUpdatedBy = data.POSTvars.User;
             break;
           case 2:
+            let _editDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing") : $("#specWrapper_" + specID + " .is-editing"); _editDivs.hide(); _editDivs = null;
+            let _notEditDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing") : $("#specWrapper_" + specID + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
+            for (var i = 0; i < this.Facility.FacilitySpecialties.length; i++) { var _ps = this.Facility.FacilitySpecialties[i]; _ps.LastUpdatedDate = new Date(); _ps.LastUpdatedBy = data.POSTvars.User; }
+            let _addSpec: any = $("#addSpec"); let _resetSpec: any = $("#resetSpecs"); let _saveSpec: any = $("#saveSpecs"); let _addSpecBody: any = $("#addSpecBody");
+            this.origSpecOrder = this.currentSpecOrder.replace(/\,/g, "|"); this.specsEdited = false;
             break;
           default: //log error + weird behavior
             break;
@@ -238,14 +350,33 @@ export class FacilityComponent implements OnInit {
     );
   }
 
-  public editFacility(type: number, event: any) {
-    let _editDivs: any = $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing"); _editDivs.show(); _editDivs = null;
-    let _notEditDivs: any = $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing"); _notEditDivs.hide(); _notEditDivs = null;
+  public editFacility(type: number, event: any, specID?: number, specRelationshipID?: number) {
+    let _editDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing") : $("#specWrapper_" + specID + " .is-editing"); _editDivs.show(); _editDivs = null;
+    let _notEditDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing") : $("#specWrapper_" + specID + " .not-editing"); _notEditDivs.hide(); _notEditDivs = null;
+    if (type == 2) { //specialty-specific edit: show card if not expanded + init Datepickers if not already init
+      let _effDate: any = document.getElementById("edit_FacilitySpec" + specID + "_EffectiveDate"); let _termDate: any = document.getElementById("edit_FacilitySpec" + specID + "_TerminationDate");
+      if (_effDate.getAttribute("ph-initialized") == "false") {
+        let jQ_effDate: any = $(_effDate); jQ_effDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
+      }
+      if (_termDate.getAttribute("ph-initialized") == "false") {
+        let jQ_termDate: any = $(_termDate); jQ_termDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
+      }
+      if (document.getElementById('specialtyTable').style.display != "table") {
+        $(event.target).parent().parent().children("table.specTable").toggle();
+        $(event.target).parent().parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
+      }
+    }
   }
 
-  public cancelEdit(type: number, event: any) {
-    let _editDivs: any = $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing"); _editDivs.hide(); _editDivs = null;
-    let _notEditDivs: any = $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
+  public cancelEdit(type: number, event: any, specID?: number, specRelationshipID?: number) {
+    let _editDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing") : $("#specWrapper_" + specID + " .is-editing"); _editDivs.hide(); _editDivs = null;
+    let _notEditDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing") : $("#specWrapper_" + specID + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
+    if (type == 2) { //specialty-specific cancel: hide card if not hidden
+      if (document.getElementById('specialtyTable').style.display == "table") {
+        $(event.target).parent().parent().children("table.specTable").toggle();
+        $(event.target).parent().parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
+      }
+    }
   }
 
   public loading(isLoading, saveType) {
