@@ -53,34 +53,51 @@ namespace ProviderHubServiceNew.Controllers
             toReturn.result = false; toReturn.POSTvars = JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(inputJSON));
             //handle each type accordingly
             //0="PROVIDER HEADER"
-            if (type == 0) {
-                inputJSON.Credstr = "";
-                for (var i = 0; i < inputJSON.Credentials.Count; i++) { inputJSON.Credstr += inputJSON.Credentials[i]; if (i != inputJSON.Credentials.Count - 1) { inputJSON.Credstr += ","; } }
-                var _v = 0; if (inputJSON.Gender == "Male") { _v = 2; } if (inputJSON.Gender == "Female") { _v = 1; } inputJSON.Gender = _v; toReturn.POSTvars.Gender = _v;
-                //actually save now and set toReturn.result if successful
-                using (DataLayer dataLayer = new DataLayer()) {
-                    toReturn.result = dataLayer.SaveProviderHeader(inputJSON); toReturn.success = true;
-                }
+            switch (type) { 
+                case 0: 
+                    inputJSON.Credstr = "";
+                    for (var i = 0; i < inputJSON.Credentials.Count; i++) { inputJSON.Credstr += inputJSON.Credentials[i]; if (i != inputJSON.Credentials.Count - 1) { inputJSON.Credstr += ","; } }
+                    var _v = 0; if (inputJSON.Gender == "Male") { _v = 2; } if (inputJSON.Gender == "Female") { _v = 1; } inputJSON.Gender = _v; toReturn.POSTvars.Gender = _v;
+                    //actually save now and set toReturn.result if successful
+                    using (DataLayer dataLayer = new DataLayer()) {
+                        toReturn.result = dataLayer.SaveProviderHeader(inputJSON); toReturn.success = true;
+                    }
+                    break;
+                //1="PROVIDER DEMOGRAPHICS"
+                case 1:
+                    inputJSON.Langstr = "";
+                    for (var i = 0; i < inputJSON.Languages.Count; i++) { inputJSON.Langstr += inputJSON.Languages[i]; if (i != inputJSON.Languages.Count - 1) { inputJSON.Langstr += ","; } }
+                    //convert Yes/No(/Unknown) into BIT values 1/0(/NULL) if applicable
+                    inputJSON.MedicareIndicator = (inputJSON.MedicareIndicator == "Yes") ? 1 : (inputJSON.MedicareIndicator == "No") ? (int?)0 : null;
+                    inputJSON.MedicaidIndicator = (inputJSON.MedicaidIndicator == "Yes") ? 1 : (inputJSON.MedicaidIndicator == "No") ? (int?)0 : null;
+                    //If Yes for any of the indicators, show corresponding indicators' other fields
+                    //Medicare: MedicarePTAN, MedicareEffectiveDate, MedicareTerminationDate | Medicaid: MedicaidProviderID
+                    inputJSON.MedicarePTAN = (inputJSON.MedicareIndicator == 1) ? inputJSON.MedicarePTAN : null;//need ==true since in C#, null does not eval to false
+                    inputJSON.MedicareEffectiveDate = (inputJSON.MedicareIndicator == 1) ? inputJSON.MedicareEffectiveDate : null;
+                    inputJSON.MedicareTerminationDate = (inputJSON.MedicareIndicator == 1) ? inputJSON.MedicareTerminationDate : null;
+                    inputJSON.MedicaidProviderID = (inputJSON.MedicaidIndicator == 1) ? inputJSON.MedicaidProviderID : null;
+                    using (DataLayer dataLayer = new DataLayer()) {
+                        toReturn.result = dataLayer.SaveProviderDemo(inputJSON); toReturn.success = true;
+                    }
+                    break;
+                //2="PROVIDER SPECS"
+                case 2:
+                    toReturn.result = new List<dynamic>(); //we have potential for multiple SQL results in this case, so store them all in 'result'
+                    for (var i = 0; i < inputJSON.ProviderSpecialties.Count; i++) {
+                        dynamic ps = inputJSON.ProviderSpecialties[i];
+                        //Stored Proc needs: (@SpecialtyID VARCHAR(10),@User VARCHAR(20), @ID INT,      @SEQ INT, @EDATE DATE,       @TDATE DATE = NULL,   @First BIT = 0)
+                        //                    ps.ID                    inputJSON.User     inputJSON.ID  i+1       ps.EffectiveDate   ps.TerminationDate    i==0? 1 : 0
+                        dynamic forSP = new ExpandoObject(); forSP.SpecialtyID = ps.ID; forSP.User = inputJSON.User; forSP.ID = inputJSON.ID;
+                        forSP.SEQ = i + 1; forSP.EDATE = ps.EffectiveDate; forSP.TDATE = ps.TerminationDate; forSP.First = (i == 0)? 1 : 0;
+                        forSP.Last = (i == inputJSON.ProviderSpecialties.Count - 1) ? 1 : 0;
+                        using (DataLayer dataLayer = new DataLayer()) {
+                            toReturn.result.Add(dataLayer.SaveProviderSpecialty(forSP));
+                        }
+                    }
+                    break;
+                default:
+                    break;//log weird error / server side error / invalid type error
             }
-            //1="PROVIDER DEMO"
-            if (type == 1) {
-                inputJSON.Langstr = "";
-                for (var i = 0; i < inputJSON.Languages.Count; i++) { inputJSON.Langstr += inputJSON.Languages[i]; if (i != inputJSON.Languages.Count - 1) { inputJSON.Langstr += ","; } }
-                //convert Yes/No(/Unknown) into BIT values 1/0(/NULL) if applicable
-                inputJSON.MedicareIndicator = (inputJSON.MedicareIndicator == "Yes") ? 1 : (inputJSON.MedicareIndicator == "No") ? (int?)0 : null;
-                inputJSON.MedicaidIndicator = (inputJSON.MedicaidIndicator == "Yes") ? 1 : (inputJSON.MedicaidIndicator == "No") ? (int?)0 : null;
-                //If Yes for any of the indicators, show corresponding indicators' other fields
-                //Medicare: MedicarePTAN, MedicareEffectiveDate, MedicareTerminationDate | Medicaid: MedicaidProviderID
-                inputJSON.MedicarePTAN = (inputJSON.MedicareIndicator == 1) ? inputJSON.MedicarePTAN : null;//need ==true since in C#, null does not eval to false
-                inputJSON.MedicareEffectiveDate = (inputJSON.MedicareIndicator == 1) ? inputJSON.MedicareEffectiveDate : null;
-                inputJSON.MedicareTerminationDate = (inputJSON.MedicareIndicator == 1) ? inputJSON.MedicareTerminationDate : null;
-                inputJSON.MedicaidProviderID = (inputJSON.MedicaidIndicator == 1) ? inputJSON.MedicaidProviderID : null;
-                using (DataLayer dataLayer = new DataLayer()) {
-                    toReturn.result = dataLayer.SaveProviderDemo(inputJSON); toReturn.success = true;
-                }
-            }
-            //2="PROVIDER SPECS"
-
             //return JSON
             var json = JsonConvert.SerializeObject(toReturn);
             return Content(json, "application/json");
