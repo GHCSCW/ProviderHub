@@ -28,6 +28,8 @@ namespace ProviderHubService
         [DataMember]
         public string Specialty { get; set; }
         [DataMember]
+        public bool? PCPEligibleIndicator { get; set; }
+        [DataMember]
         public int EpicNetworkID { get; set; }
         [DataMember]
         public FacilityProviderRelationship FPRelationship { get; set; }
