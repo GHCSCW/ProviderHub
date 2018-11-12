@@ -57,7 +57,7 @@ namespace ProviderHubServiceNew.Controllers
                 case 0: 
                     inputJSON.Credstr = "";
                     for (var i = 0; i < inputJSON.Credentials.Count; i++) { inputJSON.Credstr += inputJSON.Credentials[i]; if (i != inputJSON.Credentials.Count - 1) { inputJSON.Credstr += ","; } }
-                    var _v = 0; if (inputJSON.Gender == "Male") { _v = 2; } if (inputJSON.Gender == "Female") { _v = 1; } inputJSON.Gender = _v; toReturn.POSTvars.Gender = _v;
+                    var _v = inputJSON.Gender; toReturn.POSTvars.Gender = _v;
                     //actually save now and set toReturn.result if successful
                     using (DataLayer dataLayer = new DataLayer()) {
                         toReturn.result = dataLayer.SaveProviderHeader(inputJSON); toReturn.success = true;
