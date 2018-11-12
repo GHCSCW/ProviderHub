@@ -42,10 +42,10 @@
         <td>
           <span class="not-editing">{{Provider.Gender | gender}}</span><span class="is-editing">
             <!--EDIT GENDER CONTROL: normal select tag, Male/Female/Unknown-->
-            <select id="edit_Provider_Gender" value="{{Provider.Gender | gender}}">
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Unknown">Unknown</option>
+            <select id="edit_Provider_Gender" value="{{Provider.Gender}}">
+              <option value=1>Female</option>
+              <option value=2>Male</option>
+              <option value=3>Unknown</option>
             </select>
           </span>
         </td>
