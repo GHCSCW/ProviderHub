@@ -116,7 +116,7 @@ namespace ProviderHubService
             toReturn.Add("AcceptingNewPatientIndicator", x.Field<bool?>("ACCEPTING_NEW_PATIENT_INDICATOR"));
             toReturn.Add("PrescriberIndicator", x.Field<bool?>("PRESCRIBER_INDICATOR"));
             toReturn.Add("ReferralIndicator", x.Field<bool?>("REFERRALL_INDICATOR"));
-            toReturn.Add("PCPEligibleIndicator", x.Field<bool?>("PCP_ELIGIBLE_INDICATOR"));
+            //toReturn.Add("PCPEligibleIndicator", x.Field<bool?>("PCP_ELIGIBLE_INDICATOR"));
             toReturn.Add("FloatProviderIndicator", x.Field<bool?>("FLOAT_PROVIDER_INDICATOR"));
             return toReturn;
         }

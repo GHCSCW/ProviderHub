@@ -149,7 +149,7 @@ namespace ProviderHubService
                                         AcceptingNewPatientIndicator = x.Field<bool?>("ACCEPTING_NEW_PATIENT_INDICATOR"),
                                         PrescriberIndicator = x.Field<bool?>("PRESCRIBER_INDICATOR"),
                                         ReferralIndicator = x.Field<bool?>("REFERRALL_INDICATOR"),
-                                        PCPEligibleIndicator = x.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
+                                        //PCPEligibleIndicator = x.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
                                         FloatProviderIndicator = x.Field<bool?>("FLOAT_PROVIDER_INDICATOR"),
                                         LastUpdatedDate = x.Field<DateTime>("FP_LAST_UPDATED_DATE"),
                                         LastUpdatedBy = x.Field<string>("FP_LAST_UPDATED_BY")
@@ -934,7 +934,7 @@ namespace ProviderHubService
                                     AcceptingNewPatientIndicator = spec.Field<bool?>("ACCEPTING_NEW_PATIENT_INDICATOR"),
                                     PrescriberIndicator = spec.Field<bool?>("PRESCRIBER_INDICATOR"),
                                     ReferralIndicator = spec.Field<bool?>("REFERRALL_INDICATOR"),
-                                    PCPEligibleIndicator = spec.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
+                                    //PCPEligibleIndicator = spec.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
                                     FloatProviderIndicator = spec.Field<bool?>("FLOAT_PROVIDER_INDICATOR")
                                 }
                             }).ToList();
