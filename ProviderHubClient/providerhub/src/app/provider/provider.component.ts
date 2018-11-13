@@ -308,7 +308,7 @@ export class ProviderComponent implements OnInit {
         + "<td>Accepting New Patients <br/>" + new BoolPipe().transform(d.FPRelationship.AcceptingNewPatientIndicator) + "</td>"
         + "<td>Prescriber <br/>" + new BoolPipe().transform(d.FPRelationship.PrescriberIndicator) + "</td>"
         + "<td>Referral <br/>" + new BoolPipe().transform(d.FPRelationship.ReferralIndicator) + "</td>"
-        + "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.FPRelationship.PCPEligibleIndicator) + "</td>" //BRANDON - When you create new PCPEligible in Directory table, pull from that field instead of FPRelationship
+        + "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.PCPEligibleIndicator) + "</td>" //BRANDON - When you create new PCPEligible in Directory table, pull from that field instead of FPRelationship
         + "<td>Float Provider <br/>" + new BoolPipe().transform(d.FPRelationship.FloatProviderIndicator) + "</td></tr>";
     }
   }
