@@ -927,6 +927,7 @@ namespace ProviderHubService
                                 Provider = spec.Field<string>("PROVIDER_NAME"),
                                 Facility = spec.Field<string>("FACILITY_NAME"),
                                 Specialty = spec.Field<string>("SPECIALTY_NAME"),
+                                PCPEligibleIndicator = spec.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
                                 EpicNetworkID = spec.Field<int>("EPIC_NETWORK_ID"),
                                 DirectoryEffectiveDate = spec.Field<DateTime>("EFFECTIVE_DATE"),  
                                 DirectoryTerminationDate = spec.Field<DateTime>("TERMINATION_DATE"),
