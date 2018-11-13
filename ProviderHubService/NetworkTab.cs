@@ -22,6 +22,10 @@ namespace ProviderHubService
         [DataMember]
         public DateTime NetworkEffectiveDate { get; set; }
         [DataMember]
+        public DateTime DirectoryEffectiveDate { get; set; }
+        [DataMember]
+        public DateTime DirectoryTerminationDate { get; set; }
+        [DataMember]
         public string Provider { get; set; }
         [DataMember]
         public string Facility { get; set; }
