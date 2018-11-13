@@ -929,6 +929,8 @@ namespace ProviderHubService
                                 Specialty = spec.Field<string>("SPECIALTY_NAME"),
                                 PCPEligibleIndicator = spec.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
                                 EpicNetworkID = spec.Field<int>("EPIC_NETWORK_ID"),
+                                DirectoryEffectiveDate = spec.Field<DateTime>("EFFECTIVE_DATE"),  
+                                DirectoryTerminationDate = spec.Field<DateTime>("TERMINATION_DATE"),
                                 /*indicators*/
                                 FPRelationship = new FacilityProviderRelationship() {
                                     ExternalProviderIndicator = spec.Field<bool?>("EXTERNAL_PROVIDER_INDICATOR"),
@@ -937,6 +939,7 @@ namespace ProviderHubService
                                     ReferralIndicator = spec.Field<bool?>("REFERRALL_INDICATOR"),
                                     //PCPEligibleIndicator = spec.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
                                     FloatProviderIndicator = spec.Field<bool?>("FLOAT_PROVIDER_INDICATOR")
+                                    
                                 }
                             }).ToList();
             }
