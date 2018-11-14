@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using CsvHelper;
 using System.IO;
 using ProviderHubService;
+using System.DirectoryServices.AccountManagement;
 
 namespace ProviderHubServiceNew.Controllers
 {
@@ -19,9 +20,26 @@ namespace ProviderHubServiceNew.Controllers
             toReturn.Add("result", toAdd);
             if (User.Identity.IsAuthenticated) {
                 toReturn.Add("username", User.Identity.Name.Substring(8));
+                /*DEPRECATED
                 toReturn.Add("isSuperUser",User.IsInRole(@"GHC-HMO\App_ProviderHub_Super_User").ToString());
                 toReturn.Add("isEditor", User.IsInRole(@"GHC-HMO\App_ProviderHub_Editor").ToString());
-                toReturn.Add("isUser", User.IsInRole(@"GHC-HMO\App_ProviderHub_User").ToString());
+                toReturn.Add("isUser", User.IsInRole(@"GHC-HMO\App_ProviderHub_User").ToString());*/
+                //Use System.DirectoryServices.AccountManagement instead!!
+                var isSuperUser = false; var isEditor = false; var isUser = false;
+                PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "GHC-HMO");
+                UserPrincipal user = UserPrincipal.FindByIdentity(ctx, User.Identity.Name.Substring(8));
+                GroupPrincipal group_su = GroupPrincipal.FindByIdentity(ctx, "App_ProviderHub_Super_User");
+                GroupPrincipal group_e = GroupPrincipal.FindByIdentity(ctx, "App_ProviderHub_Editor");
+                GroupPrincipal group_u = GroupPrincipal.FindByIdentity(ctx, "App_ProviderHub_User");
+                if (user != null)
+                {
+                    if (user.IsMemberOf(group_su)) { isSuperUser = true; }
+                    if (user.IsMemberOf(group_e)) { isEditor = true; }
+                    if (user.IsMemberOf(group_u)) { isUser = true; }
+                }
+                toReturn.Add("isSuperUser", isSuperUser.ToString());
+                toReturn.Add("isEditor", isEditor.ToString());
+                toReturn.Add("isUser", isUser.ToString());
             }
             return Json(toReturn, JsonRequestBehavior.AllowGet);
         }
