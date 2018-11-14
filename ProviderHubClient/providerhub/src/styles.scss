@@ -252,6 +252,19 @@ i.is-editor{
 #provider-wrapper #addSpec, #facility-wrapper #addSpec, #provider-wrapper #saveSpecs, #facility-wrapper #saveSpecs {
   margin-left: 10px;
 }
+#addSpecBody .selectize-control, #addFacBody .selectize-control{min-width: 400px;display: inline-block;}
+#addSpecBody .selectize-input, #addFacBody .selectize-input{max-width:400px!important;}
+#addSpecBtn, #addFacBtn {
+  height: 34px;
+  position: relative;
+  bottom: 13px;
+  left: 4px;
+  border-radius: 5px;
+  background: #E6003E !important;
+  color: #fff;
+  font-weight: bold;
+}
+
 #provider-wrapper .provider-display #demoTable, #facility-wrapper .facility-display #demoTable{margin-left:0px;}
 .provider-display #demoTable tr td:first-child, .facility-display #demoTable tr td:first-child{padding-left:32px;}
 #provider-wrapper .provider-display #demoTable tr, #specTable tr {
