@@ -560,7 +560,7 @@ export class ProviderComponent implements OnInit {
     }
   }
 
-  public cancelEdit(type: number, event: any, specID?: number, specRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
+  public cancelEdit(type: number, event: any, entityID?: number, entityRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
 
     $("#edit_Provider_LastName").val(this.Provider.LastName);
     $("#edit_Provider_FirstName").val(this.Provider.FirstName);
