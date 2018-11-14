@@ -444,7 +444,7 @@ export class ProviderComponent implements OnInit {
         var _ProviderSpecialties = JSON.parse(JSON.stringify(this.Provider.ProviderSpecialties));/*<--DEEP CLONE, so no circular references*/ this.Provider.ProviderSpecialties = [];
         for (var i = 0; i < specOrderArr.length; i++) {
           for (var j = 0; j < _ProviderSpecialties.length; j++) {
-            if (_ProviderSpecialties[j].ID == specOrderArr[i]) { this.Provider.ProviderSpecialties.push(_ProviderSpecialties[j]); break; }
+            if (_ProviderSpecialties[j].ID == specOrderArr[i]) { _ProviderSpecialties[j].SequenceNumber = i + 1; this.Provider.ProviderSpecialties.push(_ProviderSpecialties[j]); break; }
           }
         }
         //Stored Proc needs: (@SpecialtyID VARCHAR(10),@User VARCHAR(20),@ID INT, @SEQ INT, @EDATE DATE, @TDATE DATE = NULL, @First BIT = 0) for each Specialty
@@ -514,7 +514,12 @@ export class ProviderComponent implements OnInit {
             this.Provider.Languages = _l;
             break;
           case 2: //specialty save return
-            for (var i = 0; i < this.Provider.ProviderSpecialties.length; i++) { var _ps = this.Provider.ProviderSpecialties[i]; _ps.LastUpdatedDate = new Date(); _ps.LastUpdatedBy = data.POSTvars.User;}
+            for (var i = 0; i < this.Provider.ProviderSpecialties.length; i++) {
+              var _ps = this.Provider.ProviderSpecialties[i]; _ps.LastUpdatedDate = new Date();
+              _ps.LastUpdatedBy = data.POSTvars.User;
+              _ps.SequenceNumber = i + 1;
+            }
+            console.log(this.Provider.ProviderSpecialties);
             this.origSpecOrder = this.currentSpecOrder.replace(/\,/g, "|"); this.specsEdited = false;
             break;
           case 3: //provider facility save
