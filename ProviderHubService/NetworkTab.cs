@@ -12,7 +12,7 @@ namespace ProviderHubService
     #region VENDOR
 
     [DataContract]
-    public class NetworkTab
+    public class Directory
     {
         [DataMember]
         public int ID { get; set; }
@@ -39,7 +39,7 @@ namespace ProviderHubService
         public FacilityProviderRelationship FPRelationship { get; set; }
         #region CONSTRUCTOR
 
-        public NetworkTab()
+        public Directory()
         {
             //this.AddressesList = new List<Address>();
         }

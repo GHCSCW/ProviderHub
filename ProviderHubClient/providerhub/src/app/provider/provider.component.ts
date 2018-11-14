@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { API } from '../globals';
 import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
-import { CommonModule, Location } from '@angular/common';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe, SpecStatusPipe } from '../pipes';
+import { CommonModule, Location, DatePipe } from '@angular/common';
+import { GenderPipe, NullablePipe, BoolPipe, ReverseBoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe, SpecStatusPipe } from '../pipes';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
@@ -26,12 +26,16 @@ export class ProviderComponent implements OnInit {
   public Service: any;
   public nav: string;
   public specsEdited: boolean = false;
+  public facsEdited: boolean = false;
   public editingDivWrappers: any;
   public editingDivHeaderWrappers: any;
   public editingHeaderDivs: any;
   public _specsList: any;
+  public _facsList: any;
   public origSpecOrder: any = null;
+  public origFacOrder: any = null;
   public currentSpecOrder: any = null;
+  public currentFacOrder: any = null;
   public defaultSpecDate: any = null;
   public networksDT: any;
 
@@ -41,7 +45,7 @@ export class ProviderComponent implements OnInit {
     this.Service = service; this.Provider = {};
     //"(Primary)" to mark primary credential takes up too much space for no benefit
     this.nav = 'Networks'; //default tab should be Demographics ***SKP 11/6: NOW NETWORKS***
-    this.specsEdited = false;
+    this.specsEdited = false; this.facsEdited = false;
   }
 
   ngOnInit() {
@@ -122,6 +126,42 @@ export class ProviderComponent implements OnInit {
         }
       }
     });
+    //PROVIDER FAC EDIT, COULD BE COMBINED WITH SPEC TO SAVE LINES OF CODE BUT WOULD BE MESSY AND FILLED WITH TRINARIES AND SWITCHES
+    let _addFac: any = $("#addFac"); let _resetFac: any = $("#resetFacs"); let _saveFac: any = $("#saveFacs"); let _addFacBody: any = $("#addFacBody");
+    _addFac.click(function () {
+      _addFacBody.show(); //_addSpec.hide(); _resetSpec.show(); _saveSpec.show(); handled by facsEdited
+      _dis.facsEdited = true;
+    });
+    _saveFac.click(function (e) {
+      var forIDs = _dis.Provider.ProviderFacilities[0];
+      _dis.saveProvider(3, e, 0, forIDs.RelationshipID);
+    });
+    _resetFac.click(function () {
+      _addFacBody.hide(); //_addSpec.show(); _resetSpec.hide(); _saveSpec.hide(); handled by facsEdited
+      _dis.facsEdited = false;
+      let _unsavedFac: any = $(".unsavedFac");
+      _unsavedFac.remove();
+      if (_dis.origFacOrder != null) {
+        var facIDs = _dis.origFacOrder.split("|");
+        //remove() all into memory to re-add?
+        for (var i = 0; i < facIDs.length; i++) {
+          var _facid = facIDs[i];
+          if (_facid.trim() != "") {
+            let _facWrapper: any = $("#facWrapper_" + _facid);
+            //use prepend/postpend to reorder specs
+            //$("h2").insertAfter($(".container"));
+            if (i == 0) { //< specIDs.length - 1
+              var _relation: any = $("#addFacArea");//$("#specWrapper_" + specIDs[i + 1]);
+              _facWrapper.insertAfter(_relation);
+            } else {
+              var _relation: any = $("#facWrapper_" + facIDs[i - 1]);//$("#specWrapper_" + specIDs[i - 1]);
+              _facWrapper.insertAfter(_relation);
+            }
+          }
+        }
+      }
+    });
+
     
     this.service.hitAPI(this.apiRoot + "Provider/ByID/" + this.providerId).subscribe(
       data => {
@@ -166,7 +206,7 @@ export class ProviderComponent implements OnInit {
         // Each Specialty = {ID,Name,Description,MappingID,SequenceNumber,CreatedDate,
         // CreatedBy,EffectiveDate,TerminationDate,SpecialtyType,ParentSpecialtyID,ParentName}
         //this.origSpecOrder.split("|");
-        this.origSpecOrder = ""; this.currentSpecOrder = "";
+        this.origSpecOrder = ""; this.currentSpecOrder = ""; this.origFacOrder = ""; this.currentFacOrder = "";
         for (var i = 0; i < this.Provider.ProviderSpecialties.length; i++) {
           var s = this.Provider.ProviderSpecialties[i];
           s.EffectiveDate = s.EffectiveDate.replace(/\D/g, '').slice(0, -4); if (i == 0) { this.defaultSpecDate = s.EffectiveDate; }
@@ -193,6 +233,21 @@ export class ProviderComponent implements OnInit {
             });
             if (_dis.currentSpecOrder != "") { _dis.currentSpecOrder = _dis.currentSpecOrder.slice(0, -1); }
             console.log(_dis.currentSpecOrder); console.log(_dis.origSpecOrder);
+          }
+        });
+        let facList: any = $("#facList");
+        facList.sortable({
+          update: function (event, ui) {
+            _dis.facsEdited = true;
+            let facs: any = $(".indivFacWrapper"); //each one of these has an id="facWrapper_{{f.ID}}"
+            _dis.currentFacOrder = "";
+            facs.each(function (this, index) {
+              let spec: any = $(this);
+              var _fid = spec.attr("id").replace("facWrapper_", "");//if you want you can make a custom attr and just do .attr("CUSTOM_ATTR_NAME");
+              _dis.currentFacOrder += _fid + ",";
+            });
+            if (_dis.currentFacOrder != "") { _dis.currentFacOrder = _dis.currentFacOrder.slice(0, -1); }
+            console.log(_dis.currentFacOrder); console.log(_dis.origFacOrder);
           }
         });
         //2b. Networks tab (new default! tab)
@@ -236,14 +291,17 @@ export class ProviderComponent implements OnInit {
             this.onRowSelect(this.networksDT.rows(indexes).data().pluck("ID"));
           }
         );
-        //3. Additional properties for UI conditionals ('novalue' pipe doesn't work in HTML??)
+        //3. Additional properties for UI conditionals ('novalue' pipe doesn't work in HTML. Not sure why so we use it here)
+        //this.origFacOrder = ""; this.currentFacOrder = "";
         for (var i = 0; i < this.Provider.ProviderFacilities.length; i++) {
           var f = this.Provider.ProviderFacilities[i];
           f.FacilityAddress.HidePhoneExtension = new NoValuePipe().transform(f.FacilityAddress.PhoneExtension);
           f.FacilityAddress.HideAlternatePhoneNumber = new NoValuePipe().transform(f.FacilityAddress.AlternatePhoneNumber);
           var fp = f.FPRelationship; fp.LastUpdatedDate = new PHDatePipe().transform(fp.LastUpdatedDate.replace(/\D/g, '').slice(0, -4));
-          //console.log(f);
+          this.origFacOrder += f.ID + "|"; this.currentFacOrder += f.ID + ",";
         }
+        if (this.origFacOrder != "") { this.origFacOrder = this.origFacOrder.slice(0, -1); }
+        if (this.currentFacOrder != "") { this.currentFacOrder = this.currentFacOrder.slice(0, -1); }
         //4. Post-load UI actions
         let facilityLink: any = $("#provider-nav li[tab-id='Facility']");
         facilityLink.click(function () {
@@ -292,6 +350,14 @@ export class ProviderComponent implements OnInit {
     console.log(this.Provider.ProviderSpecialties);
   }
 
+  public addFacToList(event: any) {
+    let select: any = $("#add_Provider_Facility option:selected");
+    var facID = select.val(); var fac = this._facsList[facID];
+    console.log(fac); this.Provider.ProviderFacilities.unshift(fac);
+    let _newFacDiv: any = $($("#facList div")[0]); _newFacDiv.click(); _newFacDiv.addClass("unsavedSpec");
+    console.log(this.Provider.ProviderFacilities);
+  }
+
   private onRowSelect(indexes: number[]): void {
     var providerId = indexes[0];
     console.log(providerId);
@@ -324,12 +390,44 @@ export class ProviderComponent implements OnInit {
     alert("set sortable!");
   }
 
-  public saveProvider(type: number, event: any, specID?: number, specRelationshipID?: number) {
-    let _editDivs: any = $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing"); _editDivs.hide(); _editDivs = null;
-    let _notEditDivs: any = $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
-    this.loading(true, type);//load starting, show overlay
-    function val(which) { let _e: any = $("#edit_Provider_" + which); return _e.val(); }//MULTI SELECT VALS ARE ID ARRAYS
-    function val2(which) { let _e: any = $("#edit_ProviderDemo_" + which); return _e.val(); } let body: any;
+  public getEditDivsSelector(type: number, ID?: number, MappingID?: number) {
+    switch (type) {
+      case 0:
+      case 1: //Header, Demo
+        return this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing";
+      case 2: //Spec
+        return "#specWrapper_" + ID + " .is-editing";
+      case 3: //FPRelationship
+        var toReturn=""; for (var i = 0; i < 4; i++) { toReturn += "#row"+i+"FP_" + MappingID + " .is-editing,"; }//can extend rows if needed
+        return toReturn.slice(0, -1);
+      default: break;/*log invalid type*/
+    }
+  }
+
+  public getNotEditDivsSelector(type: number, ID?: number, MappingID?: number) {
+    switch (type) {
+      case 0:
+      case 1: //Header, Demo
+        return this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing";
+      case 2: //Spec
+        return "#specWrapper_" + ID + " .not-editing";
+      case 3: //FPRelationship
+        var toReturn = ""; for (var i = 0; i < 4; i++) { toReturn += "#row" + i + "FP_" + MappingID + " .not-editing,"; }//can extend rows if needed
+        return toReturn.slice(0, -1);
+      default: break;/*log invalid type*/
+    }
+  }
+
+  public saveProvider(type: number, event: any, entityID?: number, entityRelationshipID?: number) {
+    let _editDivs: any = $(this.getEditDivsSelector(type, entityID, entityRelationshipID)); _editDivs.hide(); _editDivs = null;
+    let _notEditDivs: any = $(this.getNotEditDivsSelector(type, entityID, entityRelationshipID)); _notEditDivs.show(); _notEditDivs = null;
+    this.loading(true, type);//load starting, can implement overlay w/ loading gif or animation of your choice (or completion bar) in the loading() function, or build a component/service
+    //...since 'val' and 'val2' are used only in the below 5 lines of code I didn't want to make function names long. If you do for more readability that's okay.They are only used in case 0 and case 1 of switch statement below
+    function val(which) { let _e: any = $("#edit_Provider_" + which); return _e.val(); }//MULTI SELECT VALS ARE ID ARRAYS, see SQL function intlist_to_tbl
+    function val2(which) { let _e: any = $("#edit_ProviderDemo_" + which); return _e.val(); }
+    //console.log((data.POSTvars.MedicareIndicator == "Yes") ? true : (data.POSTvars.MedicareIndicator == "No") ? false : null); console.log(this.Provider.MedicareIndicator);
+    function val3(which, id) { let _e: any = $("#edit_ProviderFP_" + id + "_" + which + " option:selected"); return _e.val()=="Yes"?true:_e.val()=="No"?false:null; }
+    let body: any;
     switch (type) {
       case 0: //"Main" Provider-Header Info
         body = { FirstName: val("FirstName"), LastName: val("LastName"), Credentials: val("Credentials"), NPI: val("NPI"), EpicProviderID: val("EpicProviderID"), Gender: val("Gender"), User: environment.authUser.username };
@@ -341,7 +439,7 @@ export class ProviderComponent implements OnInit {
         if (body.MedicaidIndicator == "Yes") { body.MedicaidProviderID = val2("MedicaidProviderID"); }
         break;
       case 2: //Specialties
-        //reorganize specs first
+        //reorganize specs first: DEEP CLONE array, then re-order by pushing elements back to old one from new one. then use re-organized old one (auto-updating HTML bindings in the process :D )
         var specOrderArr = this.currentSpecOrder.split(",");
         var _ProviderSpecialties = JSON.parse(JSON.stringify(this.Provider.ProviderSpecialties));/*<--DEEP CLONE, so no circular references*/ this.Provider.ProviderSpecialties = [];
         for (var i = 0; i < specOrderArr.length; i++) {
@@ -356,6 +454,26 @@ export class ProviderComponent implements OnInit {
           provSpec.TerminationDate = this.transformDateForPHDB("edit_ProviderSpec" + provSpec.ID + "_TerminationDate");
         }
         body = { type: type, id: this.providerId }; body.ProviderSpecialties = this.Provider.ProviderSpecialties;
+        break;
+      case 3: //FPRelationship aka Facility-Provider Relationship
+        //reorganize facs first: DEEP CLONE array then re-order just like spec
+        var facOrderArr = this.currentFacOrder.split(",");
+        var _ProviderFacilities = JSON.parse(JSON.stringify(this.Provider.ProviderFacilities)); this.Provider.ProviderFacilities = [];
+        for (var i = 0; i < facOrderArr.length; i++) {
+          for (var j = 0; j < _ProviderFacilities.length; j++) {
+            if (_ProviderFacilities[j].ID == facOrderArr[i]) { this.Provider.ProviderFacilities.push(_ProviderFacilities[j]); break; }
+          }
+        }
+        //nothing to really modify per object, since we only can add FacID's and add/edit FPR indicators (all nullable BITs)
+        body = { type: type, id: this.providerId }; body.ProviderFacilities = JSON.parse(JSON.stringify(this.Provider.ProviderFacilities)); console.log(body);
+        for (var i = 0; i < body.ProviderFacilities.length; i++) {
+          //indicator values from UI
+          var toSet = body.ProviderFacilities[i].FPRelationship;
+          //    function val3(which,id) { let _e: any = $("edit_ProviderFP_"+id+"_"+which); return _e.val(); }
+          toSet.ExternalProviderIndicator = val3("ExternalProviderIndicator", entityRelationshipID); toSet.PrescriberIndicator = val3("PrescriberIndicator", entityRelationshipID);
+          toSet.AcceptingNewPatientIndicator = val3("AcceptingNewPatientIndicator", entityRelationshipID); toSet.ReferralIndicator = val3("ReferralIndicator", entityRelationshipID);
+          toSet.FloatProviderIndicator = val3("FloatProviderIndicator", entityRelationshipID);
+        }
         break;
       default: //log error + weird behavior
         break;
@@ -380,8 +498,9 @@ export class ProviderComponent implements OnInit {
             break;
           case 1:
             //demographics data to just transform over (also replace with partial arr matching fxn)
-            this.Provider.MedicareIndicator = (data.POSTvars.MedicareIndicator == "Yes") ? true : (data.POSTvars.MedicareIndicator == "No") ? false : null;
-            this.Provider.MedicaidIndicator = (data.POSTvars.MedicaidIndicator == "Yes") ? true : (data.POSTvars.MedicaidIndicator == "No") ? false : null;
+            this.Provider.MedicareIndicator = new ReverseBoolPipe().transform(data.POSTvars.MedicareIndicator);
+            //console.log((data.POSTvars.MedicareIndicator == "Yes") ? true : (data.POSTvars.MedicareIndicator == "No") ? false : null); console.log(this.Provider.MedicareIndicator);
+            this.Provider.MedicaidIndicator = new ReverseBoolPipe().transform(data.POSTvars.MedicaidIndicator);//(data.POSTvars.MedicaidIndicator == "Yes") ? true : (data.POSTvars.MedicaidIndicator == "No") ? false : null
             this.Provider.MedicarePTAN = (this.Provider.MedicareIndicator === true) ? data.POSTvars.MedicarePTAN : null;//need ===true since it's nullable bit
             this.Provider.MedicareEffectiveDate = (this.Provider.MedicareIndicator === true) ? data.POSTvars.MedicareEffectiveDate : null;// TODO: format dates for datepipe/display, see what UI currently does first
             this.Provider.MedicareTerminationDate = (this.Provider.MedicareIndicator === true) ? data.POSTvars.MedicareTerminationDate : null;// TODO: format dates for datepipe/display, see what UI currently does first
@@ -394,12 +513,20 @@ export class ProviderComponent implements OnInit {
             }
             this.Provider.Languages = _l;
             break;
-          case 2:
-            let _editDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing") : $("#specWrapper_" + specID + " .is-editing"); _editDivs.hide(); _editDivs = null;
-            let _notEditDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing") : $("#specWrapper_" + specID + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
+          case 2: //specialty save return
             for (var i = 0; i < this.Provider.ProviderSpecialties.length; i++) { var _ps = this.Provider.ProviderSpecialties[i]; _ps.LastUpdatedDate = new Date(); _ps.LastUpdatedBy = data.POSTvars.User;}
-            let _addSpec: any = $("#addSpec"); let _resetSpec: any = $("#resetSpecs"); let _saveSpec: any = $("#saveSpecs"); let _addSpecBody: any = $("#addSpecBody");
             this.origSpecOrder = this.currentSpecOrder.replace(/\,/g, "|"); this.specsEdited = false;
+            break;
+          case 3: //provider facility save
+            //update FPR nullable bits like so
+            //EXAMPLE: this.Provider.MedicareIndicator = (data.POSTvars.MedicareIndicator == "Yes") ? true : (data.POSTvars.MedicareIndicator == "No") ? false : null;
+            for (var i = 0; i < this.Provider.ProviderFacilities.length; i++) {
+              var _pf = this.Provider.ProviderFacilities[i]; _pf.LastUpdatedDate = new Date(); _pf.LastUpdatedBy = data.POSTvars.User;
+              var _pfr = this.Provider.ProviderFacilities[i].FPRelationship; _pfr.ExternalProviderIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.ExternalProviderIndicator;
+              _pfr.AcceptingNewPatientIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.AcceptingNewPatientIndicator; _pfr.PrescriberIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.PrescriberIndicator;
+              _pfr.ReferralIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.ReferralIndicator; _pfr.FloatProviderIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.FloatProviderIndicator;
+            }
+            this.origFacOrder = this.currentFacOrder.replace(/\,/g, "|"); this.facsEdited = false;
             break;
           default: //log error + weird behavior
             break;
@@ -408,12 +535,12 @@ export class ProviderComponent implements OnInit {
     );
   }
 
-  public editProvider(type: number, event: any, specID?: number, specRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
+  public editProvider(type: number, event: any, entityID?: number, entityRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
     //every case except specialty edit will be the same, so we don't need a switch like with Save. if this changes, use a switch like with Save.
-    let _editDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing") : $("#specWrapper_" + specID + " .is-editing"); _editDivs.show(); _editDivs = null;
-    let _notEditDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing") : $("#specWrapper_" + specID + " .not-editing"); _notEditDivs.hide(); _notEditDivs = null;
+    let _editDivs: any = $(this.getEditDivsSelector(type, entityID, entityRelationshipID)); _editDivs.show(); _editDivs = null;
+    let _notEditDivs: any = $(this.getNotEditDivsSelector(type, entityID, entityRelationshipID)); _notEditDivs.hide(); _notEditDivs = null;
     if (type == 2) { //specialty-specific edit: show card if not expanded + init Datepickers if not already init
-      let _effDate: any = document.getElementById("edit_ProviderSpec" + specID + "_EffectiveDate"); let _termDate: any = document.getElementById("edit_ProviderSpec" + specID + "_TerminationDate");
+      let _effDate: any = document.getElementById("edit_ProviderSpec" + entityID + "_EffectiveDate"); let _termDate: any = document.getElementById("edit_ProviderSpec" + entityID + "_TerminationDate");
       if (_effDate.getAttribute("ph-initialized") == "false") {
         let jQ_effDate: any = $(_effDate); jQ_effDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
       }
@@ -427,9 +554,9 @@ export class ProviderComponent implements OnInit {
     }
   }
 
-  public cancelEdit(type: number, event: any, specID?: number, specRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
-    let _editDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing") : $("#specWrapper_" + specID + " .is-editing"); _editDivs.hide(); _editDivs = null;
-    let _notEditDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing") : $("#specWrapper_" + specID + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
+  public cancelEdit(type: number, event: any, entityID?: number, entityRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
+    let _editDivs: any = $(this.getEditDivsSelector(type, entityID, entityRelationshipID)); _editDivs.hide(); _editDivs = null;
+    let _notEditDivs: any = $(this.getNotEditDivsSelector(type, entityID, entityRelationshipID)); _notEditDivs.show(); _notEditDivs = null;
     if (type == 2) { //specialty-specific cancel: hide card if not hidden
       if (document.getElementById('specialtyTable').style.display == "table") {
         $(event.target).parent().parent().children("table.specTable").toggle();
