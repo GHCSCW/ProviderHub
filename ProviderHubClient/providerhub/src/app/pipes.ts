@@ -47,6 +47,15 @@ export class BoolPipe implements PipeTransform {
 }
 
 @Pipe({
+  name: 'reversebool'
+})
+export class ReverseBoolPipe implements PipeTransform {
+  transform(value: any, args?: any): any {
+    return (value == "Yes") ? true : (value == "No") ? false : null;
+  }
+}
+
+@Pipe({
   name: 'specialtyType'
 })
 export class SpecialtyTypePipe implements PipeTransform {

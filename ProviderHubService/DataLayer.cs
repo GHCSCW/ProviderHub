@@ -145,6 +145,7 @@ namespace ProviderHubService
                                         LastUpdatedDate = x.Field<DateTime>("ADDRESS_LAST_UPDATED_DATE")
                                     },
                                     FPRelationship = new FacilityProviderRelationship {
+                                        RelationshipID = x.Field<int>("FACILITY_PROVIDER_RELATIONSHIP_ID"),
                                         ExternalProviderIndicator = x.Field<bool?>("EXTERNAL_PROVIDER_INDICATOR"),
                                         AcceptingNewPatientIndicator = x.Field<bool?>("ACCEPTING_NEW_PATIENT_INDICATOR"),
                                         PrescriberIndicator = x.Field<bool?>("PRESCRIBER_INDICATOR"),
@@ -758,6 +759,31 @@ namespace ProviderHubService
             return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
         }
 
+        /*
+         dynamic forSP = new ExpandoObject(); forSP.FacilityID = inputJSON.ProviderFacilities[i].ID; forSP.ID = inputJSON.ID; forSP.User = inputJSON.User;
+            forSP.ExternalProviderIndicator = (pf.ExternalProviderIndicator == "Yes") ? 1 : (pf.ExternalProviderIndicator == "No") ? (int?)0 : null;
+            forSP.AcceptingNewPatientIndicator = (pf.AcceptingNewPatientIndicator == "Yes") ? 1 : (pf.AcceptingNewPatientIndicator == "No") ? (int?)0 : null;
+            forSP.PrescriberIndicator = (pf.PrescriberIndicator == "Yes") ? 1 : (pf.PrescriberIndicator == "No") ? (int?)0 : null;
+            forSP.ReferralIndicator = (pf.ReferralIndicator == "Yes") ? 1 : (pf.ReferralIndicator == "No") ? (int?)0 : null;
+            forSP.FloatProviderIndicator = (pf.FloatProviderIndicator == "Yes") ? 1 : (pf.FloatProviderIndicator == "No") ? (int?)0 : null;
+            forSP.First = (i == 0) ? 1 : 0; forSP.Last = (i == inputJSON.ProviderFacilities.Count - 1) ? 1 : 0;
+         */
+        public int SaveProviderFacility(dynamic ps) { //forSP passed into ps
+            //Stored Proc needs: @FacilityID VARCHAR(10),@User VARCHAR(20),@ID INT, @ExternalProviderIndicator BIT, @AcceptingNewPatientIndicator BIT, @PrescriberIndicator BIT,
+            //                   @ReferralIndicator BIT, @FloatProviderIndicator BIT, @First BIT = 0, @Last BIT = 0
+            //                   forSP.FacilityID, forSP.User, forSP.ExternalProviderIndicator, forSP.AcceptingNewPa...
+            string sql = "providerhub.dbo.sp_SaveProviderFacility";
+            SqlParameter[] sqlParams = { new SqlParameter("@FacilityID", SqlDbType.VarChar){ Value = ps.FacilityID }, new SqlParameter("@User", SqlDbType.VarChar){ Value = ps.User },
+                                         new SqlParameter("@ID", SqlDbType.Int){ Value = ps.ID },
+                                         new SqlParameter("@ExternalProviderIndicator", SqlDbType.Bit){ Value = ps.ExternalProviderIndicator, IsNullable=true },
+                                         new SqlParameter("@AcceptingNewPatientIndicator", SqlDbType.Bit){ Value = ps.AcceptingNewPatientIndicator, IsNullable=true },
+                                         new SqlParameter("@PrescriberIndicator", SqlDbType.Bit){ Value = ps.PrescriberIndicator, IsNullable=true },
+                                         new SqlParameter("@ReferralIndicator", SqlDbType.Bit){ Value = ps.ReferralIndicator, IsNullable=true },
+                                         new SqlParameter("@FloatProviderIndicator", SqlDbType.Bit){ Value = ps.FloatProviderIndicator, IsNullable=true },
+                                         new SqlParameter("@First", SqlDbType.Bit){ Value = ps.First }, new SqlParameter("@Last", SqlDbType.Bit){ Value = ps.Last } };
+            return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
+        }
+
         public int SaveFacilityHeader(dynamic p) {
             string sql = "providerhub.dbo.sp_SaveFacilityHeader";
             //body = { Name:val("Name"), NPI: val("NPI"), User: "GHC-HMO\\spillai" };
@@ -909,8 +935,8 @@ namespace ProviderHubService
         }
 
         //{ data: "Network" }, { data: "NetworkEffectiveDate" }, { data: "Provider" }, { data: "Facility" }, { data: "Specialty" }, { data: "EpicNetworkID" }
-        public List<NetworkTab> GetNetworkTabByPID(int pid) {
-            List<NetworkTab> toReturn = new List<NetworkTab>();
+        public List<Directory> GetNetworkTabByPID(int pid) {
+            List<Directory> toReturn = new List<Directory>();
             string sql = "providerhub.dbo.sp_GetProviderNetworkTabByID";
             SqlParameter[] sqlParams = {
                                             new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = pid }
@@ -919,7 +945,7 @@ namespace ProviderHubService
             if (ds.Tables[0].Rows.Count > 0)
             {
                 toReturn = (from spec in ds.Tables[0].AsEnumerable()
-                            select new NetworkTab()
+                            select new Directory()
                             {
                                 ID = spec.Field<int>("DIRECTORY_ID"),
                                 Network = spec.Field<string>("NETWORK_NAME"),
@@ -930,6 +956,7 @@ namespace ProviderHubService
                                 EpicNetworkID = spec.Field<int>("EPIC_NETWORK_ID"),
                                 /*indicators*/
                                 FPRelationship = new FacilityProviderRelationship() {
+                                    RelationshipID = spec.Field<int>("EMPLOYMENT_FACPROV_ID"),
                                     ExternalProviderIndicator = spec.Field<bool?>("EXTERNAL_PROVIDER_INDICATOR"),
                                     AcceptingNewPatientIndicator = spec.Field<bool?>("ACCEPTING_NEW_PATIENT_INDICATOR"),
                                     PrescriberIndicator = spec.Field<bool?>("PRESCRIBER_INDICATOR"),

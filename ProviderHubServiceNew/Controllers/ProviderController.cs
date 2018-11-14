@@ -27,7 +27,7 @@ namespace ProviderHubServiceNew.Controllers
                 List<Language> l = dataLayer.GetLanguageList(true);
                 List<Credential> c = dataLayer.GetCredentialList(true);
                 List<Specialty> s = dataLayer.GetSpecialtyList(true);
-                List<NetworkTab> n = dataLayer.GetNetworkTabByPID(id);
+                List<ProviderHubService.Directory> n = dataLayer.GetNetworkTabByPID(id);
                 string ha = dataLayer.GetHospitalAffiliationByPID(id);
                 var uname = User.Identity;
                 toReturn.p = provider; toReturn.l = l; toReturn.c = c; toReturn.n = uname; toReturn.s = s; toReturn.net = n; toReturn.ha = ha;
@@ -92,6 +92,27 @@ namespace ProviderHubServiceNew.Controllers
                         forSP.Last = (i == inputJSON.ProviderSpecialties.Count - 1) ? 1 : 0;
                         using (DataLayer dataLayer = new DataLayer()) {
                             toReturn.result.Add(dataLayer.SaveProviderSpecialty(forSP));
+                        }
+                    }
+                    break;
+                //3="PROVIDER FACS"
+                case 3:
+                    toReturn.result = new List<dynamic>();
+                    for (var i = 0; i < inputJSON.ProviderFacilities.Count; i++) {
+                        //convert Yes/No(/Unknown) into BIT values 1/0(/NULL) if applicable
+                        //EXAMPLE - inputJSON.MedicareIndicator = (inputJSON.MedicareIndicator == "Yes") ? 1 : (inputJSON.MedicareIndicator == "No") ? (int?)0 : null
+                        dynamic pf = inputJSON.ProviderFacilities[i].FPRelationship;
+                        //Stored Proc needs:  dd
+                        //                    dd
+                        dynamic forSP = new ExpandoObject(); forSP.FacilityID = inputJSON.ProviderFacilities[i].ID; forSP.ID = inputJSON.ID; forSP.User = inputJSON.User;
+                        forSP.ExternalProviderIndicator = (pf.ExternalProviderIndicator == true) ? 1 : (pf.ExternalProviderIndicator == false) ? (int?)0 : null;
+                        forSP.AcceptingNewPatientIndicator = (pf.AcceptingNewPatientIndicator == true) ? 1 : (pf.AcceptingNewPatientIndicator == false) ? (int?)0 : null;
+                        forSP.PrescriberIndicator = (pf.PrescriberIndicator == true) ? 1 : (pf.PrescriberIndicator == false) ? (int?)0 : null;
+                        forSP.ReferralIndicator = (pf.ReferralIndicator == true) ? 1 : (pf.ReferralIndicator == false) ? (int?)0 : null;
+                        forSP.FloatProviderIndicator = (pf.FloatProviderIndicator == true) ? 1 : (pf.FloatProviderIndicator == false) ? (int?)0 : null;
+                        forSP.First = (i == 0) ? 1 : 0; forSP.Last = (i == inputJSON.ProviderFacilities.Count - 1) ? 1 : 0;
+                        using (DataLayer dataLayer = new DataLayer()) {
+                            toReturn.result.Add(dataLayer.SaveProviderFacility(forSP));
                         }
                     }
                     break;

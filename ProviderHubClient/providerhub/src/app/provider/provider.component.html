@@ -135,13 +135,13 @@
         <div id="specList" class="card-text ui-sortable">
           <h4 id="addSpecArea">
             <span id="addSpecBody" style="display:none;">
-              Add Specialty:
+              <span style="display:block;">Add Specialty:</span>
               <select id="add_Provider_Specialty" class="toSelectize">
                 <option value=10>Family Medicine</option>
                 <option value=1>Dermatology</option>
                 <option value=3>Chiropractic</option>
               </select>
-              <input type="button" value="Add" (click)="addSpecToList($event)" />
+              <input id="addSpecBtn" type="button" value="Add" (click)="addSpecToList($event)" />
             </span>
             <br /><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
           </h4>
@@ -188,10 +188,23 @@
     <table id="facSpecMapTable" [hidden]="nav!='FacSpecMap'"></table>
     <div id="spec-card" class="card specWrapper" [hidden]="nav!='Facility'">
       <div class="card-body">
-        <h5 class="card-title red">Facilities</h5>
+        <h5 class="card-title red">
+          Facilities <i class="fa fa-plus" [hidden]="facsEdited" id="addFac"></i>
+          <i class="fa fa-save" [hidden]="!facsEdited" id="saveFacs"></i><i class="fa fa-times" [hidden]="!facsEdited" id="resetFacs"></i>
+        </h5>
         <div id="facList" class="card-text ui-sortable">
+          <h4 id="addFacArea">
+            <span id="addFacBody" style="display:none;">
+              <span style="display:block;">Add Facility:</span>
+              <select id="add_Provider_Facility" class="toSelectize">
+                <option value=0>Loading Facilities...</option>
+                <option value=19>GHC-SCW Sauk Trails Clinic</option>
+              </select>
+              <input id="addFacBtn" type="button" value="Add" (click)="addFacToList($event)" />
+            </span>
+          </h4>
           <!--EACH FACILITY-->
-          <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;width:100%;">
+          <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard indivFacWrapper ui-sortable-handle" id="facWrapper_{{f.ID}}" style="position: relative; left: 0px; top: 0px;width:100%;">
             <span [hidden]="true">spec-id:{{f.ID}}</span>
             <div class="card-body specCardBody">
               <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)"><a href="../facility/{{f.ID}}" style="color:#fff;">{{f.FacilityName}}</a></h5>
@@ -236,25 +249,79 @@
                     <td>Coming Soon</td>
                   </tr>
                   <tr>
-                    <td colspan="4" class="midHead"><h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{Provider.FirstName}} {{Provider.LastName}} @ {{f.FacilityName}}</h5></td>
+                    <td colspan="4" id="row0FP_{{f.FPRelationship.RelationshipID}}" class="midHead">
+                      <!--the IDs let us efficiently toggle edit / notEdit states in FPRelationship -->
+                      <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">
+                        {{Provider.FirstName}} {{Provider.LastName}} @ {{f.FacilityName}}
+                        <!-- EDIT/SAVE/CANCEL for individual FP HERE, .not-editing / .is-editing -->
+                        <i (click)="editProvider(3,$event,0,f.FPRelationship.RelationshipID)" class="fa fa-edit is-editor not-editing"></i>
+                        <i (click)="saveProvider(3,$event,0,f.FPRelationship.RelationshipID)" class="fa fa-save is-editor is-editing" style="display:none;"></i>
+                        <i (click)="cancelEdit(3,$event,0,f.FPRelationship.RelationshipID)" class="fa fa-times is-editor is-editing" style="display:none;"></i>
+                      </h5>
+                    </td>
                   </tr>
-                  <tr>
+                  <tr id="row1FP_{{f.FPRelationship.RelationshipID}}">
                     <td>External Provider: </td>
-                    <td>{{f.FPRelationship.ExternalProviderIndicator | bool}}</td>
+                    <td>
+                      <span class="not-editing">{{f.FPRelationship.ExternalProviderIndicator | bool}}</span><span class="is-editing">
+                        <!--BOOL CONTROL: Yes/No/Unknown-->
+                        <select id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_ExternalProviderIndicator" (change)="toggleFieldsFP()" class="is-editing" value="{{f.FPRelationship.ExternalProviderIndicator | bool}}">
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                          <option value="Unknown">Unknown</option>
+                        </select>
+                      </span>
+                    </td>
                     <td>Accepting New Patients: </td>
-                    <td>{{f.FPRelationship.AcceptingNewPatientIndicator | bool}}</td>
+                    <td>
+                      <span class="not-editing">{{f.FPRelationship.AcceptingNewPatientIndicator | bool}}</span><span class="is-editing">
+                        <!--BOOL CONTROL: Yes/No/Unknown-->
+                        <select id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_AcceptingNewPatientIndicator" (change)="toggleFieldsFP()" class="is-editing" value="{{f.FPRelationship.AcceptingNewPatientIndicator | bool}}">
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                          <option value="Unknown">Unknown</option>
+                        </select>
+                      </span>
+                    </td>
                   </tr>
-                  <tr>
+                  <tr id="row2FP_{{f.FPRelationship.RelationshipID}}">
                     <td>Prescriber: </td>
-                    <td>{{f.FPRelationship.PrescriberIndicator | bool}}</td>
+                    <td>
+                      <span class="not-editing">{{f.FPRelationship.PrescriberIndicator | bool}}</span><span class="is-editing">
+                        <!--BOOL CONTROL: Yes/No/Unknown-->
+                        <select id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_PrescriberIndicator" (change)="toggleFieldsFP()" class="is-editing" value="{{f.FPRelationship.PrescriberIndicator | bool}}">
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                          <option value="Unknown">Unknown</option>
+                        </select>
+                      </span>
+                    </td>
                     <td>Referral: </td>
-                    <td>{{f.FPRelationship.ReferralIndicator | bool}}</td>
+                    <td>
+                      <span class="not-editing">{{f.FPRelationship.ReferralIndicator | bool}}</span><span class="is-editing">
+                        <!--BOOL CONTROL: Yes/No/Unknown-->
+                        <select id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_ReferralIndicator" (change)="toggleFieldsFP()" class="is-editing" value="{{f.FPRelationship.ReferralIndicator | bool}}">
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                          <option value="Unknown">Unknown</option>
+                        </select>
+                      </span>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>PCP Eligible: </td>
-                    <td>{{f.FPRelationship.PCPEligibleIndicator | bool}}</td>
+                  <tr id="row3FP_{{f.FPRelationship.RelationshipID}}">
+                    <td></td>
+                    <td></td>
                     <td>Float Provider: </td>
-                    <td>{{f.FPRelationship.FloatProviderIndicator | bool}}</td>
+                    <td>
+                      <span class="not-editing">{{f.FPRelationship.FloatProviderIndicator | bool}}</span><span class="is-editing">
+                        <!--BOOL CONTROL: Yes/No/Unknown-->
+                        <select id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_FloatProviderIndicator" (change)="toggleFieldsFP()" class="is-editing" value="{{f.FPRelationship.FloatProviderIndicator | bool}}">
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                          <option value="Unknown">Unknown</option>
+                        </select>
+                      </span>
+                    </td>
                   </tr>
                 </tbody>
               </table>
