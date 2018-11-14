@@ -369,6 +369,19 @@ export class FacilityComponent implements OnInit {
   }
 
   public cancelEdit(type: number, event: any, specID?: number, specRelationshipID?: number) {
+
+    $("#edit_Facility_Name").val(this.Facility.FacilityName);
+    $("#edit_Facility_NPI").val(this.Facility.NPI);
+    $("#edit_FacilityDemo_Address1").val(this.Facility.FacilityAddress.AddressLine1);
+    $("#edit_FacilityDemo_Address2").val(this.Facility.FacilityAddress.AddressLine2);
+    $("#edit_FacilityDemo_City").val(this.Facility.FacilityAddress.City);
+    $("#edit_FacilityDemo_State").val(this.Facility.FacilityAddress.State);
+    $("#edit_FacilityDemo_ZipCode").val(this.Facility.FacilityAddress.ZipCode);
+    $("#edit_FacilityDemo_PhoneNumber").val(this.Facility.FacilityAddress.PhoneNumber);
+    $("#edit_FacilityDemo_PhoneExtension").val(this.Facility.FacilityAddress.PhoneExtension);
+    $("#edit_FacilityDemo_FaxNumber").val(this.Facility.FacilityAddress.FaxNumber);
+    $("#edit_FacilityDemo_Website").val(this.Facility.FacilityAddress.Website);
+
     let _editDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing") : $("#specWrapper_" + specID + " .is-editing"); _editDivs.hide(); _editDivs = null;
     let _notEditDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing") : $("#specWrapper_" + specID + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
     if (type == 2) { //specialty-specific cancel: hide card if not hidden
