@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule, Location, DatePipe } from '@angular/common';
 import { GenderPipe, NullablePipe, BoolPipe, ReverseBoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe, SpecStatusPipe } from '../pipes';
+
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
@@ -376,7 +377,7 @@ export class ProviderComponent implements OnInit {
         + "<td>Referral <br/>" + new BoolPipe().transform(d.FPRelationship.ReferralIndicator) + "</td>"
         + "<td>Directory Effective Date <br/>" + new PHDatePipe().transform(d.DirectoryEffectiveDate.replace(/\D/g, '').slice(0, -4)) + "</td>"
         + "<td>Directory Termination Date <br/>" + new PHDatePipe().transform(d.DirectoryTerminationDate.replace(/\D/g, '').slice(0, -4)) + "</td>"
-        + "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.PCPEligibleIndicator) + "</td>" //BRANDON - When you create new PCPEligible in Directory table, pull from that field instead of FPRelationship
+        + "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.PCPEligibleIndicator) + "</td>" 
         + "<td>Float Provider <br/>" + new BoolPipe().transform(d.FPRelationship.FloatProviderIndicator) + "</td></tr>";
     }
   }
@@ -559,9 +560,24 @@ export class ProviderComponent implements OnInit {
     }
   }
 
-  public cancelEdit(type: number, event: any, entityID?: number, entityRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
+  public cancelEdit(type: number, event: any, specID?: number, specRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
+
+    $("#edit_Provider_LastName").val(this.Provider.LastName);
+    $("#edit_Provider_FirstName").val(this.Provider.FirstName);
+    $("#edit_Provider_EpicProviderID").val(this.Provider.EpicProviderID);
+    $("#edit_Provider_NPI").val(this.Provider.NPI);
+    $("#edit_Provider_Gender").val(this.Provider.Gender);
+    //$("#edit_Provider_Credentials").val(this.Provider.CredentialList);//NOT WORKING
+    //$("#edit_ProviderDemo_Language").val(this.Provider.LanguageList);//NOT WORKING
+    $("#edit_ProviderDemo_MedicarePTAN").val(this.Provider.MedicarePTAN);
+    var transformDate = new DatePipe('en-us');
+    $("#edit_ProviderDemo_MedicareEffectiveDate").val(transformDate.transform(this.Provider.MedicareEffectiveDate));
+    $("#edit_ProviderDemo_MedicareTerminationDate").val(transformDate.transform(this.Provider.MedicareTerminationDate));
+    
+
     let _editDivs: any = $(this.getEditDivsSelector(type, entityID, entityRelationshipID)); _editDivs.hide(); _editDivs = null;
     let _notEditDivs: any = $(this.getNotEditDivsSelector(type, entityID, entityRelationshipID)); _notEditDivs.show(); _notEditDivs = null;
+
     if (type == 2) { //specialty-specific cancel: hide card if not hidden
       if (document.getElementById('specialtyTable').style.display == "table") {
         $(event.target).parent().parent().children("table.specTable").toggle();
