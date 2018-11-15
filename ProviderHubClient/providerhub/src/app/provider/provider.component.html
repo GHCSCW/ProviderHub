@@ -334,14 +334,14 @@
                       </span>
                     </td>
                   </tr>
-                  <tr>
+                  <tr id="row4FP_{{f.FPRelationship.RelationshipID}}">
                     <td>Effective Date:</td>
                     <td>
                       <span class="not-editing">
                         {{f.FPRelationship.EffectiveDate | phdate}}
                       </span>
                       <span class="is-editing" style="display:none;">
-                        <input type="text" class="datepicker" id="edit_ProviderFPDate_{{f.FPRelationship.RelationshipID}}_EffectiveDate" value="{{f.FPRelationship.EffectiveDate | phdate}}" />
+                        <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_EffectiveDate" value="{{f.FPRelationship.EffectiveDate | phdate}}" />
                         <!-- EDIT NOT WORKING -->
                       </span>
                     </td>
@@ -351,13 +351,13 @@
                         {{f.FPRelationship.TerminationDate | phdate}}
                       </span>
                       <span class="is-editing" style="display:none;">
-                        <input type="text" class="datepicker" id="edit_ProviderFPDate_{{f.FPRelationship.RelationshipID}}_TerminationDate" value="{{f.FPRelationship.TerminationDate | phdate}}" />
+                        <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_TerminationDate" value="{{f.FPRelationship.TerminationDate | phdate}}" />
                         <!-- EDIT NOT WORKING -->
                       </span>
                     </td>
 
                   </tr>
-                  <tr>
+                  <tr id="row5FP_{{f.FPRelationship.RelationshipID}}">
                     <td>Phone:</td>
                     <td>
                       <span id="FacilityRelationshipPhoneNumber" class="not-editing">
@@ -365,9 +365,8 @@
                         <span *ngIf="f.FPRelationship.PhoneExtension">ext. {{f.FPRelationship.PhoneExtension}}</span>
                       </span>
                       <span class="is-editing">
-
-                        <input type="text" id="edit_FacilityFP_{{f.FPRelationship.RelationshipID}}_PhoneNumber" placeholder="Phone #" value="{{f.FPRelationship.ProviderPhoneNumber | phonefromdb}}" />    <!-- EDIT NOT WORKING -->
-                        <input type="text" id="edit_FacilityFP_{{f.FPRelationship.RelationshipID}}_PhoneExtension" placeholder="ext." value="{{f.FPRelationship.ProviderPhoneExtension}}" />   <!-- EDIT NOT WORKING -->
+                        <input type="text" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_PhoneNumber" placeholder="Phone #" value="{{f.FPRelationship.ProviderPhoneNumber | phonefromdb}}" />    <!-- EDIT NOT WORKING -->
+                        <input type="text" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_PhoneExtension" placeholder="ext." value="{{f.FPRelationship.ProviderPhoneExtension}}" />   <!-- EDIT NOT WORKING -->
                       </span>
                     </td>
                   </tr>
@@ -377,9 +376,7 @@
             </div>
             <div class="card-footer provFacFooter">
               <span>
-                Last Updated By: {{
-f.FPRelationship.LastUpdatedBy
-                }}
+                Last Updated By: {{f.FPRelationship.LastUpdatedBy}}
               </span><span>Last Updated On: {{f.FPRelationship.LastUpdatedDate}}</span>
             </div>
           </div>

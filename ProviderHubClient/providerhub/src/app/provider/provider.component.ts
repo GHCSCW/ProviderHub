@@ -399,7 +399,7 @@ export class ProviderComponent implements OnInit {
       case 2: //Spec
         return "#specWrapper_" + ID + " .is-editing";
       case 3: //FPRelationship
-        var toReturn=""; for (var i = 0; i < 4; i++) { toReturn += "#row"+i+"FP_" + MappingID + " .is-editing,"; }//can extend rows if needed
+        var toReturn=""; for (var i = 0; i < 6; i++) { toReturn += "#row"+i+"FP_" + MappingID + " .is-editing,"; }//can extend rows if needed
         return toReturn.slice(0, -1);
       default: break;/*log invalid type*/
     }
@@ -413,7 +413,7 @@ export class ProviderComponent implements OnInit {
       case 2: //Spec
         return "#specWrapper_" + ID + " .not-editing";
       case 3: //FPRelationship
-        var toReturn = ""; for (var i = 0; i < 4; i++) { toReturn += "#row" + i + "FP_" + MappingID + " .not-editing,"; }//can extend rows if needed
+        var toReturn = ""; for (var i = 0; i < 6; i++) { toReturn += "#row" + i + "FP_" + MappingID + " .not-editing,"; }//can extend rows if needed
         return toReturn.slice(0, -1);
       default: break;/*log invalid type*/
     }
@@ -545,6 +545,7 @@ export class ProviderComponent implements OnInit {
     //every case except specialty edit will be the same, so we don't need a switch like with Save. if this changes, use a switch like with Save.
     let _editDivs: any = $(this.getEditDivsSelector(type, entityID, entityRelationshipID)); _editDivs.show(); _editDivs = null;
     let _notEditDivs: any = $(this.getNotEditDivsSelector(type, entityID, entityRelationshipID)); _notEditDivs.hide(); _notEditDivs = null;
+    //combine handling for any case with datepickers: TODO
     if (type == 2) { //specialty-specific edit: show card if not expanded + init Datepickers if not already init
       let _effDate: any = document.getElementById("edit_ProviderSpec" + entityID + "_EffectiveDate"); let _termDate: any = document.getElementById("edit_ProviderSpec" + entityID + "_TerminationDate");
       if (_effDate.getAttribute("ph-initialized") == "false") {
@@ -556,6 +557,15 @@ export class ProviderComponent implements OnInit {
       if (document.getElementById('specialtyTable').style.display != "table") {
           $(event.target).parent().parent().children("table.specTable").toggle();
           $(event.target).parent().parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
+      }
+    }
+    if (type == 3) {
+      let _effDate: any = document.getElementById("edit_ProviderFP_" + entityRelationshipID + "_EffectiveDate"); let _termDate: any = document.getElementById("edit_ProviderFP_" + entityRelationshipID + "_TerminationDate");
+      if (_effDate.getAttribute("ph-initialized") == "false") {
+        let jQ_effDate: any = $(_effDate); jQ_effDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
+      }
+      if (_termDate.getAttribute("ph-initialized") == "false") {
+        let jQ_termDate: any = $(_termDate); jQ_termDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
       }
     }
   }
