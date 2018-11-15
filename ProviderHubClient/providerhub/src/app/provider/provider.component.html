@@ -21,10 +21,27 @@
         <td><span class="not-editing">{{Provider.NPI}}</span><span class="is-editing"><input type="text" id="edit_Provider_NPI" value="{{Provider.NPI}}" /></span></td>
       </tr>
       <tr>
-        <td>Last Name</td>
-        <td><span class="not-editing">{{Provider.LastName}}</span><span class="is-editing"><input type="text" id="edit_Provider_LastName" value="{{Provider.LastName}}" /></span></td>
+        <td>Middle Name</td>
+        <td><span class="not-editing">{{Provider.MiddleName}}</span><span class="is-editing"><input type="text" id="edit_Provider_MiddleName" value="{{Provider.MiddleName}}" /></span></td>
+
         <td>Epic Provider ID</td>
         <td><span class="not-editing">{{Provider.EpicProviderID}}</span><span class="is-editing"><input type="text" id="edit_Provider_EpicProviderID" value="{{Provider.EpicProviderID}}" /></span></td>
+
+      </tr>
+      <tr>
+        <td>Last Name</td>
+        <td><span class="not-editing">{{Provider.LastName}}</span><span class="is-editing"><input type="text" id="edit_Provider_LastName" value="{{Provider.LastName}}" /></span></td>
+        <td>Gender</td>
+        <td>
+          <span class="not-editing">{{Provider.Gender | gender}}</span><span class="is-editing">
+            <!--EDIT GENDER CONTROL: normal select tag, Male/Female/Unknown-->
+            <select id="edit_Provider_Gender" value="{{Provider.Gender}}">
+              <option value=1>Female</option>
+              <option value=2>Male</option>
+              <option value=3>Unknown</option>
+            </select>
+          </span>
+        </td>
       </tr>
       <tr>
         <td>Credentials</td>
@@ -38,17 +55,9 @@
             </select>
           </span>
         </td>
-        <td>Gender</td>
-        <td>
-          <span class="not-editing">{{Provider.Gender | gender}}</span><span class="is-editing">
-            <!--EDIT GENDER CONTROL: normal select tag, Male/Female/Unknown-->
-            <select id="edit_Provider_Gender" value="{{Provider.Gender}}">
-              <option value=1>Female</option>
-              <option value=2>Male</option>
-              <option value=3>Unknown</option>
-            </select>
-          </span>
-        </td>
+        <td></td>
+        <td></td>
+
       </tr>
       <tr>
         <td></td>
@@ -168,7 +177,9 @@
                     <td>Effective Dates</td>
                     <td>
                       <span class="not-editing">{{s.EffectiveDate | date}}</span>
-                      <span class="is-editing" style="display:none;"><input type="text" ph-initialized="false" class="datepicker" id="edit_ProviderSpec{{s.ID}}_EffectiveDate" value="{{s.EffectiveDate | date}}" /></span>
+                      <span class="is-editing" style="display:none;">
+                        <input type="text" ph-initialized="false" class="datepicker" id="edit_ProviderSpec{{s.ID}}_EffectiveDate" value="{{s.EffectiveDate | date}}" />
+                      </span>
                       - <!-- To save memory and not initialize every Specialties' DatePicker, init when corresponding edit button clicked for a given Spec only, then set ph-initialized to 'true' to avoid double-init -->
                       <span class="not-editing">{{s.TerminationDate | date}}</span>
                       <span class="is-editing" style="display:none;"><input type="text" ph-initialized="false" class="datepicker" id="edit_ProviderSpec{{s.ID}}_TerminationDate" value="{{s.TerminationDate | date}}" /></span>
@@ -323,11 +334,53 @@
                       </span>
                     </td>
                   </tr>
+                  <tr>
+                    <td>Effective Date:</td>
+                    <td>
+                      <span class="not-editing">
+                        {{f.FPRelationship.EffectiveDate | phdate}}
+                      </span>
+                      <span class="is-editing" style="display:none;">
+                        <input type="text" class="datepicker" id="edit_ProviderFPDate_{{f.FPRelationship.RelationshipID}}_EffectiveDate" value="{{f.FPRelationship.EffectiveDate | phdate}}" />
+                        <!-- EDIT NOT WORKING -->
+                      </span>
+                    </td>
+                    <td>Termination Date:</td>
+                    <td>
+                      <span class="not-editing">
+                        {{f.FPRelationship.TerminationDate | phdate}}
+                      </span>
+                      <span class="is-editing" style="display:none;">
+                        <input type="text" class="datepicker" id="edit_ProviderFPDate_{{f.FPRelationship.RelationshipID}}_TerminationDate" value="{{f.FPRelationship.TerminationDate | phdate}}" />
+                        <!-- EDIT NOT WORKING -->
+                      </span>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>Phone:</td>
+                    <td>
+                      <span id="FacilityRelationshipPhoneNumber" class="not-editing">
+                        {{f.FPRelationship.ProviderPhoneNumber | phonefromdb}}
+                        <span *ngIf="f.FPRelationship.PhoneExtension">ext. {{f.FPRelationship.PhoneExtension}}</span>
+                      </span>
+                      <span class="is-editing">
+
+                        <input type="text" id="edit_FacilityFP_{{f.FPRelationship.RelationshipID}}_PhoneNumber" placeholder="Phone #" value="{{f.FPRelationship.ProviderPhoneNumber | phonefromdb}}" />    <!-- EDIT NOT WORKING -->
+                        <input type="text" id="edit_FacilityFP_{{f.FPRelationship.RelationshipID}}_PhoneExtension" placeholder="ext." value="{{f.FPRelationship.ProviderPhoneExtension}}" />   <!-- EDIT NOT WORKING -->
+                      </span>
+                    </td>
+                  </tr>
+
                 </tbody>
               </table>
             </div>
             <div class="card-footer provFacFooter">
-              <span>Last Updated By: {{f.FPRelationship.LastUpdatedBy}}</span><span>Last Updated On: {{f.FPRelationship.LastUpdatedDate}}</span>
+              <span>
+                Last Updated By: {{
+f.FPRelationship.LastUpdatedBy
+                }}
+              </span><span>Last Updated On: {{f.FPRelationship.LastUpdatedDate}}</span>
             </div>
           </div>
           <!--END FOR EACH FACILITY-->
