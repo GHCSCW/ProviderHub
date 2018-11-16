@@ -86,7 +86,6 @@ export class SpecStatusPipe implements PipeTransform {
 @Pipe({
   name: 'directoryStatus'
 })
-
 export class DirStatusPipe implements PipeTransform {
   transform(value: any, args?: any): any {
     var todaysDate = new Date(); todaysDate.setHours(0, 0, 0, 0);

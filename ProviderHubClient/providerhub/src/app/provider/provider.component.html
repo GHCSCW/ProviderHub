@@ -143,7 +143,7 @@
               </select>
               <input id="addSpecBtn" type="button" value="Add" (click)="addSpecToList($event)" />
             </span>
-            <input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
+            <br /><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
           </h4>
           <!--EACH SPECIALTY-->
           <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard indivSpecWrapper ui-sortable-handle status_{{s.Status}}" id="specWrapper_{{s.ID}}" style="position: relative; left: 0px; top: 0px;">
