@@ -143,7 +143,7 @@
               </select>
               <input id="addSpecBtn" type="button" value="Add" (click)="addSpecToList($event)" />
             </span>
-            <br /><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
+            <input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
           </h4>
           <!--EACH SPECIALTY-->
           <div *ngFor="let s of Provider.ProviderSpecialties" class="card specCard indivSpecWrapper ui-sortable-handle status_{{s.Status}}" id="specWrapper_{{s.ID}}" style="position: relative; left: 0px; top: 0px;">
@@ -338,6 +338,7 @@
     <div id="demo-card" class="card" [hidden]="nav!='Networks'">
       <div class="card-body">
         <h5 class="card-title red">Providers</h5>
+        <span id="inactive-dir-checkbox"><input type="checkbox" (change)="toggleInactiveDirectories()" /> Show Inactive Directory Records</span>
         <table id="networksTableDT" [hidden]="nav!='Networks'" class="table table-striped table-bordered" cellspacing="0">
           <thead>
             <tr>

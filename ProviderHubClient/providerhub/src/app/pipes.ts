@@ -84,6 +84,17 @@ export class SpecStatusPipe implements PipeTransform {
 }
 
 @Pipe({
+  name: 'directoryStatus'
+})
+
+export class DirStatusPipe implements PipeTransform {
+  transform(value: any, args?: any): any {
+    var todaysDate = new Date(); todaysDate.setHours(0, 0, 0, 0);
+    return (value !== null && parseInt(value) <= todaysDate.getTime()) ? "INACTIVE" : "ACTIVE";
+  }
+}
+
+@Pipe({
   name: 'phonetodb'
 })
 export class PhoneToDBPipe implements PipeTransform {
