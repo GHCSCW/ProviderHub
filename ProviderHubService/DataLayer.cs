@@ -514,6 +514,49 @@ namespace ProviderHubService
 
         #region FUNCTION: GetFacilityList(string searchValue)
 
+        public List<Facility> GetFacilityListForProviderTab(int pid)
+        {
+            List<Facility> facilities = new List<Facility>();
+
+            string sql = "providerHub.dbo.sp_GetFacilityListForProviderTab";
+            SqlParameter[] sqlParams = { new SqlParameter("@PID", SqlDbType.Int) { Value = pid } };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+
+            facilities = (from x in ds.Tables[0].AsEnumerable()
+                          select new Facility
+                          {
+                              ID = x.Field<int>("FACILITY_ID"),
+                              FacilityName = x.Field<string>("FACILITY_NAME"),
+                              NPI = x.Field<string>("FACILITY_NPI"),
+                              ExternalID = x.Field<string>("EXTERNAL_ID"),        //should this be by specialties
+                              InternalNotes = x.Field<string>("INTERNAL_NOTES"),
+                              CreatedDate = x.Field<DateTime>("CREATED_DATE"),
+                              CreatedBy = x.Field<string>("CREATED_BY"),
+                              LastUpdatedDate = x.Field<DateTime>("LAST_UPDATED_DATE"),
+                              LastUpdatedBy = x.Field<string>("LAST_UPDATED_BY"),
+                              FacilityAddress = new Address()
+                              {
+                                  AddressLine1 = x.Field<string>("ADDRESS_LINE_1"),
+                                  AddressLine2 = x.Field<string>("ADDRESS_LINE_2"),
+                                  City = x.Field<string>("CITY"),
+                                  State = x.Field<string>("STATE"),
+                                  ZipCode = x.Field<string>("ZIP_CODE"),
+                                  PhoneNumber = x.Field<string>("PHONE_NUMBER"),
+                                  Website = x.Field<string>("WEBSITE"),
+                                  AddressTypeName = x.Field<string>("ADDRESS_TYPE_NAME"),
+                                  PhoneExtension = x.Field<string>("PHONE_EXTENSION"),
+                                  AlternatePhoneNumber = x.Field<string>("ALTERNATE_PHONE_NUMBER"),
+                                  AlternateExtension = x.Field<string>("ALTERNATE_PHONE_EXTENSION"),
+                                  FaxNumber = x.Field<string>("FAX_NUMBER"),
+                                  LastUpdatedBy = x.Field<string>("ADDRESS_LAST_UPDATED_BY"),
+                                  LastUpdatedDate = x.Field<DateTime>("ADDRESS_LAST_UPDATED_DATE")
+                              }
+                          }).ToList();
+
+            return facilities;
+
+        }
+
         public List<Facility> GetFacilityList(string searchValue, bool isCalledFromPH = false)
         {
             List<Facility> facilities = new List<Facility>();

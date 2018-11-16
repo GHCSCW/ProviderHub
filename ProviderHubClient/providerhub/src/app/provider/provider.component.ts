@@ -206,8 +206,8 @@ export class ProviderComponent implements OnInit {
         //1b. SELECTIZE from 'full entity' lists: Credentials and Languages
         let toSelectize: any = $("#edit_Provider_Credentials,#edit_ProviderDemo_Language,#add_Provider_Specialty");
         //POPULATE CREDENTIALS AND LANGUAGES SELECT TAG, THEN SET PROVIDER'S CURRENT VALUES AS SELECTED OPTION(S)
-        let credsList: any = data.c; let languagesList: any = data.l; let specsList: any = data.s; var lSelectHTML, cSelectHTML, sSelectHTML = ""; this._specsList = []; let facsList: any = data.f; this._facsList = [];
-        let lSelect: any = $("#edit_ProviderDemo_Language"); let cSelect: any = $("#edit_Provider_Credentials"); let sSelect: any = $("#add_Provider_Specialty");
+        let credsList: any = data.c; let languagesList: any = data.l; let specsList: any = data.s; var lSelectHTML, fSelectHTML, cSelectHTML, sSelectHTML = ""; this._specsList = []; let facsList: any = data.f; this._facsList = [];
+        let lSelect: any = $("#edit_ProviderDemo_Language"); let cSelect: any = $("#edit_Provider_Credentials"); let sSelect: any = $("#add_Provider_Specialty"); let fSelect: any = $("#add_Provider_Facility");
         for (var i = 0; i < credsList.length; i++) { var selected = (_credArr.includes(credsList[i].Value)) ? "selected" : ""; cSelectHTML += "<option value='" + credsList[i].ID + "' " + selected + ">" + credsList[i].Value + " - " + credsList[i].Description + "</option>"; }
         for (var i = 0; i < languagesList.length; i++) { var selected = (_langArr.includes(languagesList[i].Name)) ? "selected" : ""; lSelectHTML += "<option value='" + languagesList[i].ID + "' " + selected + ">" + languagesList[i].Name + "</option>"; }
         for (var i = 0; i < specsList.length; i++) {
@@ -216,11 +216,29 @@ export class ProviderComponent implements OnInit {
           toAdd.EffectiveDate = "/Date(1451628000000-0600)/".replace(/\D/g, '').slice(0, -4); toAdd.TerminationDate = ''; toAdd.LastUpdatedDate = new Date();//use datepipe if needed
           toAdd.Status = "ACTIVE"; toAdd.ParentName = ''; toAdd.ParentSpecialtyID = 0; this._specsList[toAdd.ID]=toAdd;
         }
+        console.log(facsList);
         for (var i = 0; i < facsList.length; i++){
           var toAdd = facsList[i];
+          fSelectHTML += "<option value='"+facsList[i].ID + "'>" + facsList[i].FacilityName + "</option>";
+          toAdd.FPRelationship = {
+            RelationshipID: 0,
+              ExternalProviderIndicator:null,
+                AcceptingNewPatientIndicator:null,
+                  PrescriberIndicator:null,
+                    ReferralIndicator:null,
+                      FloatProviderIndicator:null,
+                      EffectiveDate : "Date(1451628000000)",
+                      TerminationDate : null,
+                        ProviderPhoneNumber:'',
+                          PhoneExtension:'',
+                            LastUpdatedBy:environment.authUser.username,
+                              LastUpdatedDate:new Date()
+          }
+          //dates like spec
           this._facsList[toAdd.ID] = toAdd; //set fields
         }
-        sSelect.html("<select>" + sSelectHTML + "</select>"); lSelect.html("<select>"+lSelectHTML+"</select>"); cSelect.html("<select>"+cSelectHTML+"</select>");
+        //MAKE THIS INTO A HELPER FUNCTION THAT ITERATES THROUGH EACH SELECT TAG AND APPLIES APPROPRIATE SELECT HTML
+        sSelect.html("<select>" + sSelectHTML + "</select>"); lSelect.html("<select>" + lSelectHTML + "</select>"); cSelect.html("<select>" + cSelectHTML + "</select>"); fSelect.html("<select>" + fSelectHTML + "</select>");
         //SELECTIZE ALL SELECTS, SEND VAR TO GARBAGE COLLECTOR. IF DRAG_DROP DOESNT WORK WITH SINGLE SELECTS, MOVE SPEC SELECTIZE TO ITS OWN INITIALIZATION
         toSelectize.selectize({plugins:['drag_drop']}); toSelectize = null;
         //"BOOL" SELECTS (YES/NO/UNKNOWN) NOT TO BE SELECTIZED. JUST SET PROVIDER'S CURRENT VALUE AS SELECTED
@@ -383,6 +401,10 @@ export class ProviderComponent implements OnInit {
     var facID = select.val(); var fac = this._facsList[facID];
     console.log(fac); this.Provider.ProviderFacilities.unshift(fac);
     let _newFacDiv: any = $($("#facList div")[0]); _newFacDiv.click(); _newFacDiv.addClass("unsavedSpec");
+    let facs: any = $(".indivFacWrapper"); //each one of these has an id="facWrapper_{{f.ID}}"
+    this.currentFacOrder = facID + "," + this.currentFacOrder;
+    //if (this.currentFacOrder != "") { this.currentFacOrder = this.currentFacOrder.slice(0, -1); }
+    console.log(this.currentFacOrder); console.log(this.origFacOrder);
     console.log(this.Provider.ProviderFacilities);
   }
 

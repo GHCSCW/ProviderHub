@@ -209,7 +209,7 @@
       <div class="card-body">
         <h5 class="card-title red">
           Facilities <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')"><i class="fa fa-plus" [hidden]="facsEdited" id="addFac"></i>
-          <i class="fa fa-save" [hidden]="!facsEdited" id="saveFacs"></i><i class="fa fa-times" [hidden]="!facsEdited" id="resetFacs"></i></span>
+          <i class="fa fa-save" [hidden]="!facsEdited" id="saveFacs" style="margin-left: 10px;"></i><i class="fa fa-times" [hidden]="!facsEdited" id="resetFacs" style="margin-left: 10px;"></i></span>
         </h5>
         <div id="facList" class="card-text ui-sortable">
           <h4 id="addFacArea">

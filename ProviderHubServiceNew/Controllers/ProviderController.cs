@@ -27,7 +27,7 @@ namespace ProviderHubServiceNew.Controllers
                 List<Language> l = dataLayer.GetLanguageList(true);
                 List<Credential> c = dataLayer.GetCredentialList(true);
                 List<Specialty> s = dataLayer.GetSpecialtyList(true);
-                List<Facility> f = dataLayer.GetFacilityList("",true);
+                List<Facility> f = dataLayer.GetFacilityListForProviderTab(id);
                 List<ProviderHubService.Directory> n = dataLayer.GetNetworkTabByPID(id);
                 string ha = dataLayer.GetHospitalAffiliationByPID(id);
                 var uname = User.Identity;
