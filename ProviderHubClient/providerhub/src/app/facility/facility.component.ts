@@ -33,6 +33,7 @@ export class FacilityComponent implements OnInit {
   public _specsList: any;
   public origSpecOrder: any;
   public currentSpecOrder: any;
+  public environment: any;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private service: ProviderHubService, private location: Location) {
@@ -42,8 +43,13 @@ export class FacilityComponent implements OnInit {
     this.specsEdited = false;
   }
 
+  public canEdit() {
+    //SKP: Don't want to waste time: ask M$ why the fuck we have to make (or use) a custom JSON boolean serializer class, and it spits out "True" and "False" by default.
+    return (environment.authUser.isSuperUser == 'True' || environment.authUser.isEditor == 'True');
+  }
+
   ngOnInit() {
-    this.apiRoot = environment.apiRoot; var _dis = this; var toClick = null;
+    this.apiRoot = environment.apiRoot; this.environment = environment; var _dis = this; var toClick = null;
     this.route.params.subscribe(params => {
       this.facilityId = +params['id'];
       if (params['tabURL']) { this.initialTab = params['tabURL']; } else {
@@ -72,13 +78,13 @@ export class FacilityComponent implements OnInit {
       (function () {
         var divs = _dis.editingHeaderDivs[i]; var _i = i;
         divs.getElementsByClassName("not-editing")[0].addEventListener("click", function (event) { //edit
-          _dis.editFacility(_i, event);
+          if (_dis.canEdit()) { _dis.editFacility(_i, event); }
         });
         divs.getElementsByClassName("is-editing")[0].addEventListener("click", function (event) { //save
-          _dis.saveFacility(_i, event);
+          if (_dis.canEdit()) { _dis.saveFacility(_i, event); }
         });
         divs.getElementsByClassName("is-editing")[1].addEventListener("click", function (event) { //cancel
-          _dis.cancelEdit(_i, event);
+          if (_dis.canEdit()) { _dis.cancelEdit(_i, event); }
         });
       })();
     }
@@ -86,33 +92,39 @@ export class FacilityComponent implements OnInit {
     //POTENTIAL OPTIMIZE, but makes code harder to read: convert to plain jane JS (like above click events), might save 100-300ms
     let _addSpec: any = $("#addSpec"); let _resetSpec: any = $("#resetSpecs"); let _saveSpec: any = $("#saveSpecs"); let _addSpecBody: any = $("#addSpecBody");
     _addSpec.click(function () {
-      _addSpecBody.show(); //_addSpec.hide(); _resetSpec.show(); _saveSpec.show();
-      _dis.specsEdited = true;
+      if (_dis.canEdit()) {
+        _addSpecBody.show(); //_addSpec.hide(); _resetSpec.show(); _saveSpec.show();
+        _dis.specsEdited = true;
+      }
     });
     _saveSpec.click(function (e) {
-      var forIDs = _dis.Facility.FacilitySpecialties[0];
-      _dis.saveFacility(2, e, forIDs.ID, forIDs.MappingID);
+      if (_dis.canEdit()) {
+        var forIDs = _dis.Facility.FacilitySpecialties[0];
+        _dis.saveFacility(2, e, forIDs.ID, forIDs.MappingID);
+      }
     });
     _resetSpec.click(function () {
-      _addSpecBody.hide(); //_addSpec.show(); _resetSpec.hide(); _saveSpec.hide();
-      _dis.specsEdited = false;
-      let _unsavedSpec: any = $(".unsavedSpec");
-      _unsavedSpec.remove();
-      if (_dis.origSpecOrder != null) {
-        var specIDs = _dis.origSpecOrder.split("|");
-        //remove() all into memory to re-add?
-        for (var i = 0; i < specIDs.length; i++) {
-          var _specid = specIDs[i];
-          if (_specid.trim() != "") {
-            let _specWrapper: any = $("#specWrapper_" + _specid);
-            //use prepend/postpend to reorder specs
-            //$("h2").insertAfter($(".container"));
-            if (i == 0) { //< specIDs.length - 1
-              var _relation: any = $("#addSpecArea");//$("#specWrapper_" + specIDs[i + 1]);
-              _specWrapper.insertAfter(_relation);
-            } else {
-              var _relation: any = $("#specWrapper_" + specIDs[i - 1]);//$("#specWrapper_" + specIDs[i - 1]);
-              _specWrapper.insertAfter(_relation);
+      if (_dis.canEdit()) {
+        _addSpecBody.hide(); //_addSpec.show(); _resetSpec.hide(); _saveSpec.hide();
+        _dis.specsEdited = false;
+        let _unsavedSpec: any = $(".unsavedSpec");
+        _unsavedSpec.remove();
+        if (_dis.origSpecOrder != null) {
+          var specIDs = _dis.origSpecOrder.split("|");
+          //remove() all into memory to re-add?
+          for (var i = 0; i < specIDs.length; i++) {
+            var _specid = specIDs[i];
+            if (_specid.trim() != "") {
+              let _specWrapper: any = $("#specWrapper_" + _specid);
+              //use prepend/postpend to reorder specs
+              //$("h2").insertAfter($(".container"));
+              if (i == 0) { //< specIDs.length - 1
+                var _relation: any = $("#addSpecArea");//$("#specWrapper_" + specIDs[i + 1]);
+                _specWrapper.insertAfter(_relation);
+              } else {
+                var _relation: any = $("#specWrapper_" + specIDs[i - 1]);//$("#specWrapper_" + specIDs[i - 1]);
+                _specWrapper.insertAfter(_relation);
+              }
             }
           }
         }
@@ -134,7 +146,7 @@ export class FacilityComponent implements OnInit {
         this.FacilityAddress.AddressLine2 = (this.FacilityAddress.AddressLine2 == null) ? "" : this.FacilityAddress.AddressLine2;
         //1a. selectize
         //0b. SpecsList
-        let toSelectize: any = $("#add_Facility_Specialty"); let sSelect: any = $("#add_Provider_Specialty"); //separate vars because adding any new select tags would affect toSelectize but not sSelect
+        let toSelectize: any = $("#add_Facility_Specialty"); let sSelect: any = $("#add_Facility_Specialty"); //separate vars because adding any new select tags would affect toSelectize but not sSelect
         let specsList: any = data.s; var sSelectHTML = ""; this._specsList = [];
         for (var i = 0; i < specsList.length; i++) {
           sSelectHTML += "<option value='" + specsList[i].ID + "'>" + specsList[i].Name + "</option>";
@@ -249,6 +261,9 @@ export class FacilityComponent implements OnInit {
     console.log(spec); this.Facility.FacilitySpecialties.unshift(spec);//like push but to beginning of array, so new spec is at top of list and easy to edit/identify as the 'new one' -- SKP
     //NOW USE EDIT BUTTON NOT SPEC CARD ITSELF
     let _newSpecDiv: any = $($("#specList div")[0]); _newSpecDiv.click(); _newSpecDiv.addClass("unsavedSpec");
+    let specs: any = $(".indivSpecWrapper"); //each one of these has an id="specWrapper_{{s.ID}}"
+    this.currentSpecOrder = specID + "," + this.currentSpecOrder;
+    console.log(this.currentSpecOrder);
     console.log(this.Facility.FacilitySpecialties);
   }
   public toggleInactiveSpecialties() {
@@ -277,6 +292,7 @@ export class FacilityComponent implements OnInit {
   }
   //save/edit Facility for Main/Demographics
   public saveFacility(type: number, event: any, specID?: number, specRelationshipID?: number) {
+    if (!this.canEdit()) { alert("You think you smart?"); return; } //can only get here when inspect hacking, request hacking, network packet sniff/insert hacking, etc...
     let _editDivs: any = $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing"); _editDivs.hide(); _editDivs = null;
     let _notEditDivs: any = $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
     this.loading(true, type);//load starting, show overlay
@@ -304,12 +320,15 @@ export class FacilityComponent implements OnInit {
           }
         }
         //Stored Proc needs: (@SpecialtyID VARCHAR(10),@User VARCHAR(20),@ID INT, @SEQ INT, @EDATE DATE, @TDATE DATE = NULL, @First BIT = 0) for each Specialty
-        for (var i = 0; i < this.Facility.FacilitySpecialties.length; i++) {
-          var provSpec = this.Facility.FacilitySpecialties[i];
-          provSpec.EffectiveDate = this.transformDateForPHDB("edit_FacilitySpec" + provSpec.ID + "_EffectiveDate");
-          provSpec.TerminationDate = this.transformDateForPHDB("edit_FacilitySpec" + provSpec.ID + "_TerminationDate");
+        body = { type: type, id: this.facilityId }; body.FacilitySpecialties = JSON.parse(JSON.stringify(this.Facility.FacilitySpecialties));
+        for (var i = 0; i < body.FacilitySpecialties.length; i++) {
+          var provSpec = body.FacilitySpecialties[i]; var pSpecLocal = this.Facility.FacilitySpecialties[i];
+          provSpec.EffectiveDate = this.transformDateForPHDB("edit_ProviderSpec" + provSpec.ID + "_EffectiveDate");
+          provSpec.TerminationDate = this.transformDateForPHDB("edit_ProviderSpec" + provSpec.ID + "_TerminationDate");
+          var _e = document.getElementById("edit_ProviderSpec" + provSpec.ID + "_EffectiveDate") as HTMLFormElement; var d = new Date(_e.value);
+          pSpecLocal.EffectiveDate = d.getTime(); _e = document.getElementById("edit_ProviderSpec" + provSpec.ID + "_TerminationDate") as HTMLFormElement; d = new Date(_e.value);
+          pSpecLocal.TerminationDate = d.getTime();
         }
-        body = { type: type, id: this.facilityId }; body.FacilitySpecialties = this.Facility.FacilitySpecialties;
         break;
       default: //log error + weird behavior
         break;
@@ -351,6 +370,7 @@ export class FacilityComponent implements OnInit {
   }
 
   public editFacility(type: number, event: any, specID?: number, specRelationshipID?: number) {
+    if (!this.canEdit()) { alert("You think you smart?"); return; } //can only get here when inspect hacking, request hacking, network packet sniff/insert hacking, etc...
     let _editDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing") : $("#specWrapper_" + specID + " .is-editing"); _editDivs.show(); _editDivs = null;
     let _notEditDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing") : $("#specWrapper_" + specID + " .not-editing"); _notEditDivs.hide(); _notEditDivs = null;
     if (type == 2) { //specialty-specific edit: show card if not expanded + init Datepickers if not already init
@@ -361,14 +381,15 @@ export class FacilityComponent implements OnInit {
       if (_termDate.getAttribute("ph-initialized") == "false") {
         let jQ_termDate: any = $(_termDate); jQ_termDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
       }
-      if (document.getElementById('specialtyTable').style.display != "table") {
-        $(event.target).parent().parent().children("table.specTable").toggle();
-        $(event.target).parent().parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
+      if (document.getElementById('specialtyTable_' + specID).style.display == "" || document.getElementById('specialtyTable_' + specID).style.display != "table") {
+        let cardfooter: any = $("#specFooter_" + specID); cardfooter.toggle();
+        let cardtable: any = $("#specialtyTable_" + specID); cardtable.toggle();
       }
     }
   }
 
   public cancelEdit(type: number, event: any, specID?: number, specRelationshipID?: number) {
+    if (!this.canEdit()) { alert("You think you smart?"); return; } //can only get here when inspect hacking, request hacking, network packet sniff/insert hacking, etc...
 
     $("#edit_Facility_Name").val(this.Facility.FacilityName);
     $("#edit_Facility_NPI").val(this.Facility.NPI);
@@ -385,9 +406,9 @@ export class FacilityComponent implements OnInit {
     let _editDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.is-editing," + this.editingDivWrappers[type] + " .is-editing") : $("#specWrapper_" + specID + " .is-editing"); _editDivs.hide(); _editDivs = null;
     let _notEditDivs: any = (type != 2) ? $(this.editingDivHeaderWrappers[type] + " i.not-editing," + this.editingDivWrappers[type] + " .not-editing") : $("#specWrapper_" + specID + " .not-editing"); _notEditDivs.show(); _notEditDivs = null;
     if (type == 2) { //specialty-specific cancel: hide card if not hidden
-      if (document.getElementById('specialtyTable').style.display == "table") {
-        $(event.target).parent().parent().children("table.specTable").toggle();
-        $(event.target).parent().parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
+      if (document.getElementById('specialtyTable_' + specID).style.display == "" || document.getElementById('specialtyTable_' + specID).style.display != "table") {
+        let cardfooter: any = $("#specFooter_" + specID); cardfooter.toggle();
+        let cardtable: any = $("#specialtyTable_" + specID); cardtable.toggle();
       }
     }
   }

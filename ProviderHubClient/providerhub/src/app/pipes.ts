@@ -60,7 +60,7 @@ export class ReverseBoolPipe implements PipeTransform {
 })
 export class SpecialtyTypePipe implements PipeTransform {
   transform(value: any, args?: any): any {
-    return (value.SequenceNumber==1) ? "Primary Specialty" : "Secondary Specialty";
+    return (value.SequenceNumber==1) ? "Primary Specialty" : (value.SequenceNumber==2)? "Secondary Specialty" : "Specialty "+value.SequenceNumber;
   }
 }
 

@@ -774,7 +774,7 @@ namespace ProviderHubService
             //                   forSP.FacilityID, forSP.User, forSP.ExternalProviderIndicator, forSP.AcceptingNewPa...
             string sql = "providerhub.dbo.sp_SaveProviderFacility";
             SqlParameter[] sqlParams = { new SqlParameter("@FacilityID", SqlDbType.VarChar){ Value = ps.FacilityID }, new SqlParameter("@User", SqlDbType.VarChar){ Value = ps.User },
-                                         new SqlParameter("@ID", SqlDbType.Int){ Value = ps.ID },
+                                         new SqlParameter("@ID", SqlDbType.Int){ Value = ps.ID }, new SqlParameter("@MappingID", SqlDbType.Int){ Value=ps.MappingID },
                                          new SqlParameter("@ExternalProviderIndicator", SqlDbType.Bit){ Value = ps.ExternalProviderIndicator, IsNullable=true },
                                          new SqlParameter("@AcceptingNewPatientIndicator", SqlDbType.Bit){ Value = ps.AcceptingNewPatientIndicator, IsNullable=true },
                                          new SqlParameter("@PrescriberIndicator", SqlDbType.Bit){ Value = ps.PrescriberIndicator, IsNullable=true },

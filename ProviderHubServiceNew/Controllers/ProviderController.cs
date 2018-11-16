@@ -27,10 +27,11 @@ namespace ProviderHubServiceNew.Controllers
                 List<Language> l = dataLayer.GetLanguageList(true);
                 List<Credential> c = dataLayer.GetCredentialList(true);
                 List<Specialty> s = dataLayer.GetSpecialtyList(true);
+                List<Facility> f = dataLayer.GetFacilityList("",true);
                 List<ProviderHubService.Directory> n = dataLayer.GetNetworkTabByPID(id);
                 string ha = dataLayer.GetHospitalAffiliationByPID(id);
                 var uname = User.Identity;
-                toReturn.p = provider; toReturn.l = l; toReturn.c = c; toReturn.n = uname; toReturn.s = s; toReturn.net = n; toReturn.ha = ha;
+                toReturn.p = provider; toReturn.l = l; toReturn.c = c; toReturn.n = uname; toReturn.s = s; toReturn.net = n; toReturn.ha = ha; toReturn.f = f;
             }
             var json = JsonConvert.SerializeObject(toReturn, new JsonSerializerSettings{ DateFormatHandling = DateFormatHandling.MicrosoftDateFormat, DateTimeZoneHandling = DateTimeZoneHandling.Unspecified });
             return Content(json, "application/json");
@@ -110,7 +111,7 @@ namespace ProviderHubServiceNew.Controllers
                         forSP.PrescriberIndicator = (pf.PrescriberIndicator == true) ? 1 : (pf.PrescriberIndicator == false) ? (int?)0 : null;
                         forSP.ReferralIndicator = (pf.ReferralIndicator == true) ? 1 : (pf.ReferralIndicator == false) ? (int?)0 : null;
                         forSP.FloatProviderIndicator = (pf.FloatProviderIndicator == true) ? 1 : (pf.FloatProviderIndicator == false) ? (int?)0 : null;
-                        forSP.First = (i == 0) ? 1 : 0; forSP.Last = (i == inputJSON.ProviderFacilities.Count - 1) ? 1 : 0;
+                        forSP.First = (i == 0) ? 1 : 0; forSP.Last = (i == inputJSON.ProviderFacilities.Count - 1) ? 1 : 0; forSP.MappingID = pf.RelationshipID;
                         using (DataLayer dataLayer = new DataLayer()) {
                             toReturn.result.Add(dataLayer.SaveProviderFacility(forSP));
                         }

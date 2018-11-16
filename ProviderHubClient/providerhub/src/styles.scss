@@ -299,16 +299,16 @@ tr.footer td {
   font-size: 20px;
   padding-left: 20px;
 }
-#specialtyTable tr td {
+.specialtyTable tr td {
   padding: 10px;
   font-size: 14px;
   text-align:right;
 }
-#specialtyTable tr td:nth-child(2) {
+.specialtyTable tr td:nth-child(2) {
   font-size:18px;
   text-align:left;
 }
-#specialtyTable tr:first-child td {
+.specialtyTable tr:first-child td {
   padding-bottom: 0px;
 }
 #specList h4 {

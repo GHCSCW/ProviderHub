@@ -38,6 +38,7 @@ export class ProviderComponent implements OnInit {
   public currentSpecOrder: any = null;
   public currentFacOrder: any = null;
   public defaultSpecDate: any = null;
+  public environment: any = null;
   public networksDT: any;
 
 
@@ -49,14 +50,20 @@ export class ProviderComponent implements OnInit {
     this.specsEdited = false; this.facsEdited = false;
   }
 
+  public canEdit() {
+    //SKP: Don't want to waste time: ask M$ why the fuck we have to make (or use) a custom JSON boolean serializer class, and it spits out "True" and "False" by default.
+    return (environment.authUser.isSuperUser == 'True' || environment.authUser.isEditor == 'True');  
+  }
+
   ngOnInit() {
-    this.apiRoot = environment.apiRoot;
+    this.apiRoot = environment.apiRoot; this.environment = environment;
     this.route.params.subscribe(params => {
       this.providerId = +params['id'];
       if (params['tabURL']) { this.initialTab = params['tabURL']; } else {
         this.location.replaceState("/Provider/Demographics/" + this.providerId);
       }
     });
+    console.log(environment.authUser);
     //_dis used as an alias for this as in the Angular this, for async JS to access the Angular 'this'. (otherwise most async JS functions' "this" means the event target)
     var _dis = this; var toClick = null;
     //0. nav
@@ -77,51 +84,57 @@ export class ProviderComponent implements OnInit {
     this.editingHeaderDivs = [document.getElementById("provider-main-header"), document.getElementById("demo-card").getElementsByClassName('card-title')[0]];
 
     //0=PROVIDER HEADER EDIT, 1=PROVIDER DEMO EDIT
-    for (var i = 0; i < this.editingHeaderDivs.length; i++) {
-      (function () {
-        var divs = _dis.editingHeaderDivs[i]; var _i = i;
-        divs.getElementsByClassName("not-editing")[0].addEventListener("click", function (event) { //edit
-          _dis.editProvider(_i, event);
-        });
-        divs.getElementsByClassName("is-editing")[0].addEventListener("click", function (event) { //save
-          _dis.saveProvider(_i, event);
-        });
-        divs.getElementsByClassName("is-editing")[1].addEventListener("click", function (event) { //cancel
-          _dis.cancelEdit(_i, event);
-        });
-      })();
-    }
+      for (var i = 0; i < this.editingHeaderDivs.length; i++) {
+        (function () {
+          var divs = _dis.editingHeaderDivs[i]; var _i = i;
+          divs.getElementsByClassName("not-editing")[0].addEventListener("click", function (event) { //edit
+            if (_dis.canEdit()) { _dis.editProvider(_i, event); }
+          });
+          divs.getElementsByClassName("is-editing")[0].addEventListener("click", function (event) { //save
+            if (_dis.canEdit()) { _dis.saveProvider(_i, event); }
+          });
+          divs.getElementsByClassName("is-editing")[1].addEventListener("click", function (event) { //cancel
+            if (_dis.canEdit()) { _dis.cancelEdit(_i, event); }
+          });
+        })();
+      }
     //PROVIDER SPEC EDIT, could be incorporated into above to save code, but enough is different about it that I separated it. - SKP
     //POTENTIAL OPTIMIZE, but makes code harder to read: convert to plain jane JS (like above click events), might save 100-300ms
     let _addSpec: any = $("#addSpec"); let _resetSpec: any = $("#resetSpecs"); let _saveSpec: any = $("#saveSpecs"); let _addSpecBody: any = $("#addSpecBody");
     _addSpec.click(function () {
-      _addSpecBody.show(); //_addSpec.hide(); _resetSpec.show(); _saveSpec.show();
-      _dis.specsEdited = true;
+      if (_dis.canEdit()) {
+        _addSpecBody.show(); //_addSpec.hide(); _resetSpec.show(); _saveSpec.show();
+        _dis.specsEdited = true;
+      }
     });
     _saveSpec.click(function (e) {
-      var forIDs = _dis.Provider.ProviderSpecialties[0];
-      _dis.saveProvider(2, e, forIDs.ID, forIDs.MappingID);
+      if (_dis.canEdit()) {
+        var forIDs = _dis.Provider.ProviderSpecialties[0];
+        _dis.saveProvider(2, e, forIDs.ID, forIDs.MappingID);
+      }
     });
     _resetSpec.click(function () {
-      _addSpecBody.hide(); //_addSpec.show(); _resetSpec.hide(); _saveSpec.hide();
-      _dis.specsEdited = false;
-      let _unsavedSpec: any = $(".unsavedSpec");
-      _unsavedSpec.remove();
-      if (_dis.origSpecOrder != null) {
-        var specIDs = _dis.origSpecOrder.split("|");
-        //remove() all into memory to re-add?
-        for (var i = 0; i < specIDs.length; i++) {
-          var _specid = specIDs[i];
-          if (_specid.trim() != "") {
-            let _specWrapper: any = $("#specWrapper_" + _specid);
-            //use prepend/postpend to reorder specs
-            //$("h2").insertAfter($(".container"));
-            if (i==0) { //< specIDs.length - 1
-              var _relation: any = $("#addSpecArea");//$("#specWrapper_" + specIDs[i + 1]);
-              _specWrapper.insertAfter(_relation);
-            } else {
-              var _relation: any = $("#specWrapper_" + specIDs[i - 1]);//$("#specWrapper_" + specIDs[i - 1]);
-              _specWrapper.insertAfter(_relation);
+      if (_dis.canEdit()) {
+        _addSpecBody.hide(); //_addSpec.show(); _resetSpec.hide(); _saveSpec.hide();
+        _dis.specsEdited = false;
+        let _unsavedSpec: any = $(".unsavedSpec");
+        _unsavedSpec.remove();
+        if (_dis.origSpecOrder != null) {
+          var specIDs = _dis.origSpecOrder.split("|");
+          //remove() all into memory to re-add?
+          for (var i = 0; i < specIDs.length; i++) {
+            var _specid = specIDs[i];
+            if (_specid.trim() != "") {
+              let _specWrapper: any = $("#specWrapper_" + _specid);
+              //use prepend/postpend to reorder specs
+              //$("h2").insertAfter($(".container"));
+              if (i==0) { //< specIDs.length - 1
+                var _relation: any = $("#addSpecArea");//$("#specWrapper_" + specIDs[i + 1]);
+                _specWrapper.insertAfter(_relation);
+              } else {
+                var _relation: any = $("#specWrapper_" + specIDs[i - 1]);//$("#specWrapper_" + specIDs[i - 1]);
+                _specWrapper.insertAfter(_relation);
+              }
             }
           }
         }
@@ -130,33 +143,39 @@ export class ProviderComponent implements OnInit {
     //PROVIDER FAC EDIT, COULD BE COMBINED WITH SPEC TO SAVE LINES OF CODE BUT WOULD BE MESSY AND FILLED WITH TRINARIES AND SWITCHES
     let _addFac: any = $("#addFac"); let _resetFac: any = $("#resetFacs"); let _saveFac: any = $("#saveFacs"); let _addFacBody: any = $("#addFacBody");
     _addFac.click(function () {
-      _addFacBody.show(); //_addSpec.hide(); _resetSpec.show(); _saveSpec.show(); handled by facsEdited
-      _dis.facsEdited = true;
+      if (_dis.canEdit()) {
+        _addFacBody.show(); //_addSpec.hide(); _resetSpec.show(); _saveSpec.show(); handled by facsEdited
+        _dis.facsEdited = true;
+      }
     });
     _saveFac.click(function (e) {
-      var forIDs = _dis.Provider.ProviderFacilities[0];
-      _dis.saveProvider(3, e, 0, forIDs.RelationshipID);
+      if (_dis.canEdit()) {
+        var forIDs = _dis.Provider.ProviderFacilities[0];
+        _dis.saveProvider(3, e, 0, forIDs.RelationshipID);
+      }
     });
     _resetFac.click(function () {
-      _addFacBody.hide(); //_addSpec.show(); _resetSpec.hide(); _saveSpec.hide(); handled by facsEdited
-      _dis.facsEdited = false;
-      let _unsavedFac: any = $(".unsavedFac");
-      _unsavedFac.remove();
-      if (_dis.origFacOrder != null) {
-        var facIDs = _dis.origFacOrder.split("|");
-        //remove() all into memory to re-add?
-        for (var i = 0; i < facIDs.length; i++) {
-          var _facid = facIDs[i];
-          if (_facid.trim() != "") {
-            let _facWrapper: any = $("#facWrapper_" + _facid);
-            //use prepend/postpend to reorder specs
-            //$("h2").insertAfter($(".container"));
-            if (i == 0) { //< specIDs.length - 1
-              var _relation: any = $("#addFacArea");//$("#specWrapper_" + specIDs[i + 1]);
-              _facWrapper.insertAfter(_relation);
-            } else {
-              var _relation: any = $("#facWrapper_" + facIDs[i - 1]);//$("#specWrapper_" + specIDs[i - 1]);
-              _facWrapper.insertAfter(_relation);
+      if (_dis.canEdit()) { 
+        _addFacBody.hide(); //_addSpec.show(); _resetSpec.hide(); _saveSpec.hide(); handled by facsEdited
+        _dis.facsEdited = false;
+        let _unsavedFac: any = $(".unsavedFac");
+        _unsavedFac.remove();
+        if (_dis.origFacOrder != null) {
+          var facIDs = _dis.origFacOrder.split("|");
+          //remove() all into memory to re-add?
+          for (var i = 0; i < facIDs.length; i++) {
+            var _facid = facIDs[i];
+            if (_facid.trim() != "") {
+              let _facWrapper: any = $("#facWrapper_" + _facid);
+              //use prepend/postpend to reorder specs
+              //$("h2").insertAfter($(".container"));
+              if (i == 0) { //< specIDs.length - 1
+                var _relation: any = $("#addFacArea");//$("#specWrapper_" + specIDs[i + 1]);
+                _facWrapper.insertAfter(_relation);
+              } else {
+                var _relation: any = $("#facWrapper_" + facIDs[i - 1]);//$("#specWrapper_" + specIDs[i - 1]);
+                _facWrapper.insertAfter(_relation);
+              }
             }
           }
         }
@@ -187,7 +206,7 @@ export class ProviderComponent implements OnInit {
         //1b. SELECTIZE from 'full entity' lists: Credentials and Languages
         let toSelectize: any = $("#edit_Provider_Credentials,#edit_ProviderDemo_Language,#add_Provider_Specialty");
         //POPULATE CREDENTIALS AND LANGUAGES SELECT TAG, THEN SET PROVIDER'S CURRENT VALUES AS SELECTED OPTION(S)
-        let credsList: any = data.c; let languagesList: any = data.l; let specsList: any = data.s; var lSelectHTML, cSelectHTML, sSelectHTML = ""; this._specsList = [];
+        let credsList: any = data.c; let languagesList: any = data.l; let specsList: any = data.s; var lSelectHTML, cSelectHTML, sSelectHTML = ""; this._specsList = []; let facsList: any = data.f; this._facsList = [];
         let lSelect: any = $("#edit_ProviderDemo_Language"); let cSelect: any = $("#edit_Provider_Credentials"); let sSelect: any = $("#add_Provider_Specialty");
         for (var i = 0; i < credsList.length; i++) { var selected = (_credArr.includes(credsList[i].Value)) ? "selected" : ""; cSelectHTML += "<option value='" + credsList[i].ID + "' " + selected + ">" + credsList[i].Value + " - " + credsList[i].Description + "</option>"; }
         for (var i = 0; i < languagesList.length; i++) { var selected = (_langArr.includes(languagesList[i].Name)) ? "selected" : ""; lSelectHTML += "<option value='" + languagesList[i].ID + "' " + selected + ">" + languagesList[i].Name + "</option>"; }
@@ -196,6 +215,10 @@ export class ProviderComponent implements OnInit {
           var toAdd = specsList[i]; toAdd.SequenceNumber = this.Provider.ProviderSpecialties.length; toAdd.MappingID = 0; toAdd.ID =specsList[i].ID; toAdd.LastUpdatedBy = environment.authUser.username;
           toAdd.EffectiveDate = "/Date(1451628000000-0600)/".replace(/\D/g, '').slice(0, -4); toAdd.TerminationDate = ''; toAdd.LastUpdatedDate = new Date();//use datepipe if needed
           toAdd.Status = "ACTIVE"; toAdd.ParentName = ''; toAdd.ParentSpecialtyID = 0; this._specsList[toAdd.ID]=toAdd;
+        }
+        for (var i = 0; i < facsList.length; i++){
+          var toAdd = facsList[i];
+          this._facsList[toAdd.ID] = toAdd; //set fields
         }
         sSelect.html("<select>" + sSelectHTML + "</select>"); lSelect.html("<select>"+lSelectHTML+"</select>"); cSelect.html("<select>"+cSelectHTML+"</select>");
         //SELECTIZE ALL SELECTS, SEND VAR TO GARBAGE COLLECTOR. IF DRAG_DROP DOESNT WORK WITH SINGLE SELECTS, MOVE SPEC SELECTIZE TO ITS OWN INITIALIZATION
@@ -348,6 +371,10 @@ export class ProviderComponent implements OnInit {
     console.log(spec); this.Provider.ProviderSpecialties.unshift(spec);//like push but to beginning of array, so new spec is at top of list and easy to edit/identify as the 'new one' -- SKP
     //NOW USE EDIT BUTTON NOT SPEC CARD ITSELF
     let _newSpecDiv: any = $($("#specList div")[0]); _newSpecDiv.click(); _newSpecDiv.addClass("unsavedSpec");
+    let specs: any = $(".indivSpecWrapper"); //each one of these has an id="specWrapper_{{s.ID}}"
+    this.currentSpecOrder = specID + "," + this.currentSpecOrder;
+    console.log(this.currentSpecOrder);
+    //console.log(_dis.currentSpecOrder); console.log(_dis.origSpecOrder);
     console.log(this.Provider.ProviderSpecialties);
   }
 
@@ -420,6 +447,7 @@ export class ProviderComponent implements OnInit {
   }
 
   public saveProvider(type: number, event: any, entityID?: number, entityRelationshipID?: number) {
+    if (!this.canEdit()) { alert("You think you smart?"); return; } //can only get here when inspect hacking, request hacking, network packet sniff/insert hacking, etc...
     let _editDivs: any = $(this.getEditDivsSelector(type, entityID, entityRelationshipID)); _editDivs.hide(); _editDivs = null;
     let _notEditDivs: any = $(this.getNotEditDivsSelector(type, entityID, entityRelationshipID)); _notEditDivs.show(); _notEditDivs = null;
     this.loading(true, type);//load starting, can implement overlay w/ loading gif or animation of your choice (or completion bar) in the loading() function, or build a component/service
@@ -442,6 +470,7 @@ export class ProviderComponent implements OnInit {
       case 2: //Specialties
         //reorganize specs first: DEEP CLONE array, then re-order by pushing elements back to old one from new one. then use re-organized old one (auto-updating HTML bindings in the process :D )
         var specOrderArr = this.currentSpecOrder.split(",");
+        console.log(this.Provider.ProviderSpecialties);
         var _ProviderSpecialties = JSON.parse(JSON.stringify(this.Provider.ProviderSpecialties));/*<--DEEP CLONE, so no circular references*/ this.Provider.ProviderSpecialties = [];
         for (var i = 0; i < specOrderArr.length; i++) {
           for (var j = 0; j < _ProviderSpecialties.length; j++) {
@@ -449,12 +478,17 @@ export class ProviderComponent implements OnInit {
           }
         }
         //Stored Proc needs: (@SpecialtyID VARCHAR(10),@User VARCHAR(20),@ID INT, @SEQ INT, @EDATE DATE, @TDATE DATE = NULL, @First BIT = 0) for each Specialty
-        for (var i = 0; i < this.Provider.ProviderSpecialties.length; i++) {
-          var provSpec = this.Provider.ProviderSpecialties[i];
+        console.log(this.Provider.ProviderSpecialties);
+        body = { type: type, id: this.providerId }; body.ProviderSpecialties = JSON.parse(JSON.stringify(this.Provider.ProviderSpecialties));
+        for (var i = 0; i < body.ProviderSpecialties.length; i++) {
+          var provSpec = body.ProviderSpecialties[i]; var pSpecLocal = this.Provider.ProviderSpecialties[i];
           provSpec.EffectiveDate = this.transformDateForPHDB("edit_ProviderSpec" + provSpec.ID + "_EffectiveDate");
           provSpec.TerminationDate = this.transformDateForPHDB("edit_ProviderSpec" + provSpec.ID + "_TerminationDate");
+          var _e = document.getElementById("edit_ProviderSpec"+provSpec.ID+"_EffectiveDate") as HTMLFormElement; var d = new Date(_e.value);
+          pSpecLocal.EffectiveDate = d.getTime(); _e = document.getElementById("edit_ProviderSpec" + provSpec.ID + "_TerminationDate") as HTMLFormElement; d = new Date(_e.value);
+          pSpecLocal.TerminationDate = d.getTime();
         }
-        body = { type: type, id: this.providerId }; body.ProviderSpecialties = this.Provider.ProviderSpecialties;
+        console.log(this.Provider.ProviderSpecialties);
         break;
       case 3: //FPRelationship aka Facility-Provider Relationship
         //reorganize facs first: DEEP CLONE array then re-order just like spec
@@ -542,6 +576,7 @@ export class ProviderComponent implements OnInit {
   }
 
   public editProvider(type: number, event: any, entityID?: number, entityRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
+    if (!this.canEdit()) { alert("You think you smart?"); return; } //can only get here when inspect hacking, request hacking, network packet sniff/insert hacking, etc...
     //every case except specialty edit will be the same, so we don't need a switch like with Save. if this changes, use a switch like with Save.
     let _editDivs: any = $(this.getEditDivsSelector(type, entityID, entityRelationshipID)); _editDivs.show(); _editDivs = null;
     let _notEditDivs: any = $(this.getNotEditDivsSelector(type, entityID, entityRelationshipID)); _notEditDivs.hide(); _notEditDivs = null;
@@ -554,9 +589,11 @@ export class ProviderComponent implements OnInit {
       if (_termDate.getAttribute("ph-initialized") == "false") {
         let jQ_termDate: any = $(_termDate); jQ_termDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
       }
-      if (document.getElementById('specialtyTable').style.display != "table") {
-          $(event.target).parent().parent().children("table.specTable").toggle();
-          $(event.target).parent().parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
+      if (document.getElementById('specialtyTable_' + entityID).style.display == "" || document.getElementById('specialtyTable_'+entityID).style.display != "table") {
+          //$(event.target).parent().parent().children("table.specTable").toggle();
+          //$(event.target).parent().parent().parent().children(".provSpecFooter,.provFacFooter");
+          let cardfooter: any = $("#specFooter_" + entityID);cardfooter.toggle();
+          let cardtable: any = $("#specialtyTable_" + entityID); cardtable.toggle();
       }
     }
     if (type == 3) {
@@ -571,6 +608,7 @@ export class ProviderComponent implements OnInit {
   }
 
   public cancelEdit(type: number, event: any, entityID?: number, entityRelationshipID?: number) { //add optional parameters just for spec case, doesn't warrant a separate function right now. If that changes, make a separate function. Also can try to make the param an object with 2 fields.
+    if (!this.canEdit()) { alert("You think you smart?"); return; } //can only get here when inspect hacking, request hacking, network packet sniff/insert hacking, etc...
 
     $("#edit_Provider_LastName").val(this.Provider.LastName);
     $("#edit_Provider_FirstName").val(this.Provider.FirstName);
@@ -589,9 +627,9 @@ export class ProviderComponent implements OnInit {
     let _notEditDivs: any = $(this.getNotEditDivsSelector(type, entityID, entityRelationshipID)); _notEditDivs.show(); _notEditDivs = null;
 
     if (type == 2) { //specialty-specific cancel: hide card if not hidden
-      if (document.getElementById('specialtyTable').style.display == "table") {
-        $(event.target).parent().parent().children("table.specTable").toggle();
-        $(event.target).parent().parent().parent().children(".provSpecFooter,.provFacFooter").toggle();
+      if (document.getElementById('specialtyTable_'+entityID).style.display == "table") {
+        let cardfooter: any = $("#specFooter_" + entityID); cardfooter.toggle();
+        let cardtable: any = $("#specialtyTable_" + entityID); cardtable.toggle();
       }
     }
   }

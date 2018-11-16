@@ -12,7 +12,9 @@
   <div class="facility-display main-display">
     <h2 id="facility-main-header" class="one red">
       {{Facility.FacilityName}}
-      <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
+      <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')">
+        <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
+      </span>
     </h2>
     <table id="facility-demo">
       <tr>
@@ -43,7 +45,12 @@
     <hr />
     <div id="demo-card" class="card" [hidden]="nav!='Demographics'">
       <div class="card-body">
-        <h5 class="card-title red">Demographics<i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i></h5>
+        <h5 class="card-title red">
+          Demographics
+          <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')">
+            <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
+          </span>
+        </h5>
         <table id="demoTable">
           <tr>
             <td>Address</td>
@@ -168,8 +175,8 @@
     <div id="demo-card" class="card" [hidden]="nav!='Specialties'">
       <div class="card-body">
         <h5 class="card-title red">
-          Specialties <i class="fa fa-plus" [hidden]="specsEdited" id="addSpec"></i>
-          <i class="fa fa-save" [hidden]="!specsEdited" id="saveSpecs"></i><i class="fa fa-times" [hidden]="!specsEdited" id="resetSpecs"></i>
+          Specialties <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')"><i class="fa fa-plus" [hidden]="specsEdited" id="addSpec"></i>
+          <i class="fa fa-save" [hidden]="!specsEdited" id="saveSpecs"></i><i class="fa fa-times" [hidden]="!specsEdited" id="resetSpecs"></i></span>
         </h5>
         <div id="specList" class="card-text ui-sortable">
           <h4 id="addSpecArea">
@@ -191,13 +198,15 @@
               <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">
                 {{s.Name}}
                 <!-- EDIT/SAVE/CANCEL for individual SPEC HERE, trigger #specWrapper_{{s.ID}} .not-editing / .is-editing -->
-                <i (click)="editFacility(2,$event,s.ID,s.MappingID)" class="fa fa-edit is-editor not-editing"></i>
-                <i (click)="saveFacility(2,$event,s.ID,s.MappingID)" class="fa fa-save is-editor is-editing" style="display:none;"></i>
-                <i (click)="cancelEdit(2,$event,s.ID,s.MappingID)" class="fa fa-times is-editor is-editing" style="display:none;"></i>
+                <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')">
+                  <i (click)="editFacility(2,$event,s.ID,s.MappingID)" class="fa fa-edit is-editor not-editing"></i>
+                  <i (click)="saveFacility(2,$event,s.ID,s.MappingID)" class="fa fa-save is-editor is-editing" style="display:none;"></i>
+                  <i (click)="cancelEdit(2,$event,s.ID,s.MappingID)" class="fa fa-times is-editor is-editing" style="display:none;"></i>
+                </span>
                 <br />
                 <span>{{s | specialtyType}} | {{s | parentSpecialty}}</span>
               </h5>
-              <table id="specialtyTable" class="card-text specTable">
+              <table id="specialtyTable_{{s.ID}}" class="card-text specTable specialtyTable">
                 <tbody>
                   <tr>
                     <td>Specialty Status</td>
@@ -216,7 +225,7 @@
                 </tbody>
               </table>
             </div>
-            <div class="card-footer provSpecFooter">
+            <div id="specFooter_{{s.ID}}" class="card-footer provSpecFooter">
               <span>Last Updated By: {{s.LastUpdatedBy}}</span><br /><span>Last Updated On: {{s.LastUpdatedDate | date}}</span>
             </div>
           </div>

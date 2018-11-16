@@ -51,9 +51,10 @@ export class AppComponent implements OnInit {
     this.apiRoot = environment.apiRoot; var _dis = this;
     this.service.hitAPI(this.apiRoot).subscribe(
       data => {
-        console.log(data); //{"result":"GHC-HMO\spillai","username":"spillai","isSuperUser":"False","isEditor":"False","isUser":"False"}
+        console.log(data); //{"result":"GHC-HMO\spillai","username":"spillai","isSuperUser":"True","isEditor":"False","isUser":"False"}
         this.username = data.username;
         environment.authUser = data;
+        //environment.authUser.isSuperUser = "False";
         //GITHUB ISSUE XX - LOCKDOWN APPLICATION FOR ANONYMOUS USER if no result or no auth/user detected, lock down application here
       }
     );
