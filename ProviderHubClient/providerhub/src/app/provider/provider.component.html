@@ -2,15 +2,16 @@
   <div class="left-sidebar">
     <h2>Provider</h2>
     <ul id="provider-nav">
-      <li tab-id="Networks" tab-url="Network" [class.selected]="nav=='Networks'">Networks</li>
+      <li tab-id="Networks" tab-url="Network" [hidden]="providerId==0" [class.selected]="nav=='Networks'">Networks</li>
       <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
-      <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
-      <li tab-id="Facility" tab-url="Facility" [class.selected]="nav=='Facility'">Facilities</li>
+      <li tab-id="Specialties" tab-url="Specialties" [hidden]="providerId==0" [class.selected]="nav=='Specialties'">Specialties</li>
+      <li tab-id="Facility" tab-url="Facility" [hidden]="providerId==0" [class.selected]="nav=='Facility'">Facilities</li>
     </ul>
   </div>
   <div class="provider-display main-display">
     <h2 id="provider-main-header" class="one red">
       {{Provider.FirstName}} {{Provider.LastName}}<span [hidden]="Provider.Credentials==''">, {{Provider.Credentials}}</span>
+      <span [hidden]="providerId!=0">Edit and then Save to Create a New Provider!</span>
       <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')"><i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i></span>
     </h2>
     <table id="provider-demo">
@@ -49,9 +50,9 @@
           <span class="not-editing">{{Provider.Credentials}}</span><span class="is-editing">
             <!--EDIT CREDENTIALS CONTROL: selectize, tag-based autocomplete select box: cred abbreviations + description-->
             <select id="edit_Provider_Credentials" multiple="multiple" class="toSelectize">
-              <option value="MD">MD</option>
-              <option value="DO">DO</option>
-              <option value="PhD">PhD</option>
+              <option value="202">MD</option>
+              <option value="128">DO</option>
+              <option value="242">PhD</option>
             </select>
           </span>
         </td>
@@ -67,7 +68,7 @@
       </tr>
     </table>
     <hr />
-    <div id="demo-card" class="card" [hidden]="nav!='Demographics'">
+    <div id="demo-card" class="card" [hidden]="nav!='Demographics' || providerId==0">
       <div class="card-body">
         <h5 class="card-title red">
           Demographics

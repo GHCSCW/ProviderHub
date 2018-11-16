@@ -78,13 +78,13 @@ namespace ProviderHubService
         public bool CSP_Indicator { get; set; }
         
         [DataMember]
-        public bool MedicaidIndicator { get; set; }
+        public bool? MedicaidIndicator { get; set; }
 
         [DataMember]
         public string MedicaidProviderID { get; set; }
 
         [DataMember]
-        public bool MedicareIndicator { get; set; }
+        public bool? MedicareIndicator { get; set; }
 
         [DataMember]
         public string MedicarePTAN { get; set; }

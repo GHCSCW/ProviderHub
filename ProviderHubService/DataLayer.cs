@@ -55,11 +55,11 @@ namespace ProviderHubService
                     provider.DateOfBirth = Convert.ToString(x.Field<DateTime?>("PROVIDER_DATE_OF_BIRTH")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("PROVIDER_DATE_OF_BIRTH"));
                     provider.Gender = (ProviderGender)Enum.Parse(typeof(ProviderGender), x.Field<int>("PROVIDER_GENDER_ID").ToString());
                     provider.CSP_Indicator = x.Field<bool>("CSP_INDICATOR");
-                    provider.MedicareIndicator = x.Field<bool>("MEDICARE_PROVIDER_INDICATOR");
+                    provider.MedicareIndicator = x.Field<bool?>("MEDICARE_PROVIDER_INDICATOR");
                     provider.MedicarePTAN = x.Field<string>("MEDICARE_PTAN");
                     provider.MedicareEffectiveDate = Convert.ToString(x.Field<DateTime?>("MEDICARE_EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("MEDICARE_EFFECTIVE_DATE"));
                     provider.MedicareTerminationDate = Convert.ToString(x.Field<DateTime?>("MEDICARE_TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("MEDICARE_TERMINATION_DATE"));
-                    provider.MedicaidIndicator = (bool)x.Field<bool>("MEDICAID_PROVIDER_INDICATOR");
+                    provider.MedicaidIndicator = (bool?)x.Field<bool?>("MEDICAID_PROVIDER_INDICATOR");
                     provider.MedicaidProviderID = x.Field<string>("MEDICAID_PROVIDER_ID");
                     provider.EffectiveDate = Convert.ToString(x.Field<DateTime?>("EFFECTIVE_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("EFFECTIVE_DATE"));
                     provider.TerminationDate = Convert.ToString(x.Field<DateTime?>("TERMINATION_DATE")).Length == 0 ? (DateTime?)null : Convert.ToDateTime(x.Field<DateTime>("TERMINATION_DATE"));

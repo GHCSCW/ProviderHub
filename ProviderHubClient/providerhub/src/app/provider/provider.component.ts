@@ -62,6 +62,9 @@ export class ProviderComponent implements OnInit {
       if (params['tabURL']) { this.initialTab = params['tabURL']; } else {
         this.location.replaceState("/Provider/Demographics/" + this.providerId);
       }
+      if (this.providerId == 0) {
+        this.nav = 'Demographics';
+      }
     });
     console.log(environment.authUser);
     //_dis used as an alias for this as in the Angular this, for async JS to access the Angular 'this'. (otherwise most async JS functions' "this" means the event target)
@@ -539,6 +542,7 @@ export class ProviderComponent implements OnInit {
     this.service.hitAPI(this.apiRoot + "Provider/Save/" + type + "/" + this.providerId, JSON.stringify(body)).subscribe(
       data => {
         console.log(data); this.loading(false, data.POSTvars.type);//load finished, hide overlay
+        if (this.providerId == 0) { document.location.href = "provider/"+data.result; }
         switch (data.POSTvars.type) {
           case 0:
             //header data to just transform over (replace with partial array matching function)
