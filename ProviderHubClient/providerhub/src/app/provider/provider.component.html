@@ -212,6 +212,7 @@
           Facilities <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')"><i class="fa fa-plus" [hidden]="facsEdited" id="addFac"></i>
           <i class="fa fa-save" [hidden]="!facsEdited" id="saveFacs" style="margin-left: 10px;"></i><i class="fa fa-times" [hidden]="!facsEdited" id="resetFacs" style="margin-left: 10px;"></i></span>
         </h5>
+        <span id="inactive-prov-fac-rel-cb"><input type="checkbox" (change)="toggleInactiveProvFacRel()" /> Show Inactive Facilities</span>
         <div id="facList" class="card-text ui-sortable">
           <h4 id="addFacArea">
             <span id="addFacBody" style="display:none;">
@@ -224,7 +225,7 @@
             </span>
           </h4>
           <!--EACH FACILITY-->
-          <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard indivFacWrapper ui-sortable-handle" id="facWrapper_{{f.ID}}" style="position: relative; left: 0px; top: 0px;width:100%;">
+          <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard indivFacWrapper ui-sortable-handle fac_status_{{f.FPRelationship.status}}" id="facWrapper_{{f.ID}}" style="position: relative; left: 0px; top: 0px;width:100%;">
             <span [hidden]="true">spec-id:{{f.ID}}</span>
             <div class="card-body specCardBody">
               <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)"><a href="../facility/{{f.ID}}" style="color:#fff;">{{f.FacilityName}}</a></h5>
