@@ -503,7 +503,7 @@ export class ProviderComponent implements OnInit {
         var _ProviderSpecialties = JSON.parse(JSON.stringify(this.Provider.ProviderSpecialties));/*<--DEEP CLONE, so no circular references*/ this.Provider.ProviderSpecialties = [];
         for (var i = 0; i < specOrderArr.length; i++) {
           for (var j = 0; j < _ProviderSpecialties.length; j++) {
-            if (_ProviderSpecialties[j].ID == specOrderArr[i]) { _ProviderSpecialties[j].SequenceNumber = i + 1; this.Provider.ProviderSpecialties.push(_ProviderSpecialties[j]); break; }
+            if (_ProviderSpecialties[j].ID == specOrderArr[i]) { this.Provider.ProviderSpecialties.push(_ProviderSpecialties[j]); break; }
           }
         }
         //Stored Proc needs: (@SpecialtyID VARCHAR(10),@User VARCHAR(20),@ID INT, @SEQ INT, @EDATE DATE, @TDATE DATE = NULL, @First BIT = 0) for each Specialty
@@ -515,7 +515,7 @@ export class ProviderComponent implements OnInit {
           provSpec.TerminationDate = this.transformDateForPHDB("edit_ProviderSpec" + provSpec.ID + "_TerminationDate");
           var _e = document.getElementById("edit_ProviderSpec"+provSpec.ID+"_EffectiveDate") as HTMLFormElement; var d = new Date(_e.value);
           pSpecLocal.EffectiveDate = d.getTime(); _e = document.getElementById("edit_ProviderSpec" + provSpec.ID + "_TerminationDate") as HTMLFormElement; d = new Date(_e.value);
-          pSpecLocal.TerminationDate = d.getTime();
+          pSpecLocal.TerminationDate = d.getTime(); provSpec.SequenceNumber = (d != null && d <= new Date()) ? 999 : i + 1; pSpecLocal.SequenceNumber = provSpec.SequenceNumber;
         }
         console.log(this.Provider.ProviderSpecialties);
         break;
@@ -532,21 +532,23 @@ export class ProviderComponent implements OnInit {
         body = { type: type, id: this.providerId }; body.ProviderFacilities = JSON.parse(JSON.stringify(this.Provider.ProviderFacilities)); console.log(body);
         for (var i = 0; i < body.ProviderFacilities.length; i++) {
           //indicator values from UI
-          var toSet = body.ProviderFacilities[i].FPRelationship; var pFacLocal = this.Provider.ProviderFacilities[i];
+          var toSet = body.ProviderFacilities[i].FPRelationship; var pFacLocal = this.Provider.ProviderFacilities[i].FPRelationship;
           //    function val3(which,id) { let _e: any = $("edit_ProviderFP_"+id+"_"+which); return _e.val(); }
-          toSet.ExternalProviderIndicator = val3("ExternalProviderIndicator", entityRelationshipID); toSet.PrescriberIndicator = val3("PrescriberIndicator", entityRelationshipID);
-          toSet.AcceptingNewPatientIndicator = val3("AcceptingNewPatientIndicator", entityRelationshipID); toSet.ReferralIndicator = val3("ReferralIndicator", entityRelationshipID);
-          toSet.FloatProviderIndicator = val3("FloatProviderIndicator", entityRelationshipID); toSet.SequenceNumber = i + 1;
-          toSet.ProviderPhone = val3("PhoneNumber", entityRelationshipID); toSet.ProviderExtension = val3("PhoneExtension", entityRelationshipID);
-          let _there_are_dates_to_update: any = $("#edit_ProviderFP_" + entityRelationshipID + "_EffectiveDate").length > 0;
+          var _entityRelationshipID = toSet.RelationshipID;
+          toSet.ExternalProviderIndicator = val3("ExternalProviderIndicator", _entityRelationshipID); toSet.PrescriberIndicator = val3("PrescriberIndicator", _entityRelationshipID);
+          toSet.AcceptingNewPatientIndicator = val3("AcceptingNewPatientIndicator", _entityRelationshipID); toSet.ReferralIndicator = val3("ReferralIndicator", _entityRelationshipID);
+          toSet.FloatProviderIndicator = val3("FloatProviderIndicator", _entityRelationshipID);
+          toSet.ProviderPhone = val3("PhoneNumber", _entityRelationshipID); toSet.ProviderExtension = val3("PhoneExtension", _entityRelationshipID);
+          let _there_are_dates_to_update: any = $("#edit_ProviderFP_" + _entityRelationshipID + "_EffectiveDate").length > 0;
           if (_there_are_dates_to_update) {
-            toSet.EffectiveDate = this.transformDateForPHDB("edit_ProviderFP_" + entityRelationshipID + "_EffectiveDate");
-            toSet.TerminationDate = this.transformDateForPHDB("edit_ProviderFP_" + entityRelationshipID + "_TerminationDate");
-            var _e = document.getElementById("edit_ProviderFP_" + entityRelationshipID + "_EffectiveDate") as HTMLFormElement; var d = new Date(_e.value);
-            pFacLocal.EffectiveDate = d.getTime(); _e = document.getElementById("edit_ProviderFP_" + entityRelationshipID + "_TerminationDate") as HTMLFormElement; d = new Date(_e.value);
-            pFacLocal.TerminationDate = d.getTime();
+            toSet.EffectiveDate = this.transformDateForPHDB("edit_ProviderFP_" + _entityRelationshipID + "_EffectiveDate");
+            toSet.TerminationDate = this.transformDateForPHDB("edit_ProviderFP_" + _entityRelationshipID + "_TerminationDate");
+            var _e = document.getElementById("edit_ProviderFP_" + _entityRelationshipID + "_EffectiveDate") as HTMLFormElement; var d = new Date(_e.value);
+            pFacLocal.EffectiveDate = d.getTime(); _e = document.getElementById("edit_ProviderFP_" + _entityRelationshipID + "_TerminationDate") as HTMLFormElement; d = new Date(_e.value);
+            pFacLocal.TerminationDate = d.getTime(); toSet.SequenceNumber = (d != null && d <= new Date()) ? 999 : i + 1; pFacLocal.SequenceNumber = toSet.SequenceNumber;
           }
           console.log(toSet.EffectiveDate); console.log(toSet.TerminationDate);//should be current values if !_there_are_dates_to_update
+          console.log(pFacLocal.EffectiveDate); console.log(pFacLocal.TerminationDate);
         }
         break;
       default: //log error + weird behavior
