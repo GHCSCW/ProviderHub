@@ -212,6 +212,7 @@
           Facilities <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')"><i class="fa fa-plus" [hidden]="facsEdited" id="addFac"></i>
           <i class="fa fa-save" [hidden]="!facsEdited" id="saveFacs" style="margin-left: 10px;"></i><i class="fa fa-times" [hidden]="!facsEdited" id="resetFacs" style="margin-left: 10px;"></i></span>
         </h5>
+        <span id="inactive-prov-fac-rel-cb"><input type="checkbox" (change)="toggleInactiveProvFacRel()" /> Show Inactive Facilities</span>
         <div id="facList" class="card-text ui-sortable">
           <h4 id="addFacArea">
             <span id="addFacBody" style="display:none;">
@@ -223,8 +224,8 @@
               <input id="addFacBtn" type="button" value="Add" (click)="addFacToList($event)" />
             </span>
           </h4>
-          <!--EACH FACILITY-->
-          <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard indivFacWrapper ui-sortable-handle" id="facWrapper_{{f.ID}}" style="position: relative; left: 0px; top: 0px;width:100%;">
+          <!--EACH FACILITY--> <!-- b.h ToDo add prov-fac-status class with interpolation for Active/Inactive from provider.component.ts on fac-prov-rel pipe (reuse dir status pipe)-->
+          <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard indivFacWrapper ui-sortable-handle fac_status_{{f.FPRelationship.status}}" id="facWrapper_{{f.ID}}" style="position: relative; left: 0px; top: 0px;width:100%;">
             <span [hidden]="true">spec-id:{{f.ID}}</span>
             <div class="card-body specCardBody">
               <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)"><a href="../facility/{{f.ID}}" style="color:#fff;">{{f.FacilityName}}</a></h5>
@@ -349,7 +350,7 @@
                     <td>Effective Date:</td>
                     <td>
                       <span class="not-editing">
-                        {{f.FPRelationship.EffectiveDate | phdate}}
+                        {{f.FPRelationship.EffectiveDate}}
                       </span>
                       <span class="is-editing" style="display:none;">
                         <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_EffectiveDate" value="{{f.FPRelationship.EffectiveDate | phdate}}" />
@@ -359,7 +360,7 @@
                     <td>Termination Date:</td>
                     <td>
                       <span class="not-editing">
-                        {{f.FPRelationship.TerminationDate | phdate}}
+                        {{f.FPRelationship.TerminationDate}}
                       </span>
                       <span class="is-editing" style="display:none;">
                         <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_TerminationDate" value="{{f.FPRelationship.TerminationDate | phdate}}" />

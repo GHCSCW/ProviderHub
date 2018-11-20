@@ -349,8 +349,12 @@ export class ProviderComponent implements OnInit {
           f.FacilityAddress.HidePhoneExtension = new NoValuePipe().transform(f.FacilityAddress.PhoneExtension);
           f.FacilityAddress.HideAlternatePhoneNumber = new NoValuePipe().transform(f.FacilityAddress.AlternatePhoneNumber);
           var fp = f.FPRelationship; fp.LastUpdatedDate = new PHDatePipe().transform(fp.LastUpdatedDate.replace(/\D/g, '').slice(0, -4));
+          fp.status = new DirStatusPipe().transform(fp.TerminationDate.replace(/\D/g, '').slice(0, -4)); 
+          fp.EffectiveDate = new PHDatePipe().transform(fp.EffectiveDate.replace(/\D/g, '').slice(0, -4)); //b.h
+          fp.TerminationDate = new PHDatePipe().transform(fp.TerminationDate.replace(/\D/g, '').slice(0, -4));//b.h
           this.origFacOrder += f.ID + "|"; this.currentFacOrder += f.ID + ",";
         }
+        //this.toggleInactiveProvFacRel(); //initially hide Inactive Provider-Facility Relationships
         if (this.origFacOrder != "") { this.origFacOrder = this.origFacOrder.slice(0, -1); }
         if (this.currentFacOrder != "") { this.currentFacOrder = this.currentFacOrder.slice(0, -1); }
         //4. Post-load UI actions
@@ -385,6 +389,11 @@ export class ProviderComponent implements OnInit {
   public toggleInactiveDirectories() {
     let inactiveDirs: any = $(".directory-inactive");
     inactiveDirs.toggle();
+  }
+
+  public toggleInactiveProvFacRel() {
+    let inactiveProvFacRel: any = $("div.fac_status_INACTIVE");
+    inactiveProvFacRel.toggle();
   }
 
   public toggleFields() {

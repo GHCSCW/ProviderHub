@@ -153,7 +153,9 @@ namespace ProviderHubService
                                         //PCPEligibleIndicator = x.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
                                         FloatProviderIndicator = x.Field<bool?>("FLOAT_PROVIDER_INDICATOR"),
                                         LastUpdatedDate = x.Field<DateTime>("FP_LAST_UPDATED_DATE"),
-                                        LastUpdatedBy = x.Field<string>("FP_LAST_UPDATED_BY")
+                                        LastUpdatedBy = x.Field<string>("FP_LAST_UPDATED_BY"),
+                                        EffectiveDate = x.Field<DateTime>("FP_EFFECTIVE_DATE"),
+                                        TerminationDate = x.Field<DateTime>("FP_TERMINATION_DATE")
                                     }
                                 }).ToList();
             }
