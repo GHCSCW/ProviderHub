@@ -6,13 +6,10 @@ import { DatePipe } from '@angular/common';
 })
 export class PHDatePipe implements PipeTransform {
   transform(value: any): any {
-    //console.log("PHDatePipe input: " + value);
     if (typeof value == 'number') { return new DatePipe("en-US").transform(value); }/*ALREADY CLEANED DATE*/
     if (value.charAt(value.length - 7) == '-') {
-      //console.log("PHDateOutput: " + new DatePipe('en-US').transform(value.replace(/\D/g, '').slice(0, -4)));
       return new DatePipe('en-US').transform(value.replace(/\D/g, '').slice(0, -4));
     }
-    //console.log("PHDateOutput: " + new DatePipe('en-US').transform(value.replace(/\D/g, '')));
     return new DatePipe('en-US').transform(value.replace(/\D/g, ''));
   }
 }

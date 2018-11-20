@@ -4,7 +4,7 @@ import { API } from '../globals';
 import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule, Location } from '@angular/common';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe, PhoneToDBPipe, PhoneFromDBPipe } from '../pipes';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe, PhoneToDBPipe, PhoneFromDBPipe, TermStatusPipe } from '../pipes';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';

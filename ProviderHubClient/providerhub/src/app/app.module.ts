@@ -21,7 +21,7 @@ import { CustomInterceptor } from './app.service';
 import { FacilitysearchComponent } from './facilitysearch/facilitysearch.component';
 import { FacilityComponent } from './facility/facility.component';
 import { PresetValueExampleComponent } from './selectize/preset-value-example/presetValueExample.component';
-import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, PHDatePipe, NoValuePipe, SpecStatusPipe, PhoneFromDBPipe, PhoneToDBPipe, ReverseBoolPipe } from './pipes';
+import { GenderPipe, NullablePipe, BoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, PHDatePipe, NoValuePipe, SpecStatusPipe, PhoneFromDBPipe, PhoneToDBPipe, ReverseBoolPipe, TermStatusPipe } from './pipes';
 import { VendorsearchComponent } from './vendorsearch/vendorsearch.component';
 import { VendorComponent } from './vendor/vendor.component';
 import { UwimportComponent } from './uwimport/uwimport.component';
@@ -69,6 +69,7 @@ const routes: Routes = [
     PhoneToDBPipe,
     ReverseBoolPipe,
     PhoneFromDBPipe,
+    TermStatusPipe,
     VendorsearchComponent,
     VendorComponent,
     UwimportComponent
