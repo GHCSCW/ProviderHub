@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   public Service: any;
   public apiRoot: string;
   public username: string;
+  public _interval: any;
 
   constructor(private route: ActivatedRoute, private router: Router, private service: ProviderHubService) {
     this.Service = service;
@@ -35,12 +36,14 @@ export class AppComponent implements OnInit {
         this.compactDesign = (this.router.url.indexOf("Search") == -1);
         if (this.compactDesign) {
           window.addEventListener('resize', function (event) {
-            var desiredSidebarHeight = Math.max(document.getElementsByClassName('main-display')[0].clientHeight, (window.innerHeight - 50)); var defaultSidebarHeight = 410;
-            var paddingBottomToAdd = desiredSidebarHeight - defaultSidebarHeight;
+            var desiredSidebarHeight = Math.max(document.getElementsByClassName('main-display')[0].clientHeight, (window.innerHeight - 50)); var defaultSidebarHeight = 410; var correctionalFactor = 10;
+            var paddingBottomToAdd = desiredSidebarHeight - defaultSidebarHeight + correctionalFactor;
             if (paddingBottomToAdd > 0) { (document.getElementsByClassName('left-sidebar')[0] as HTMLElement).style.paddingBottom = paddingBottomToAdd + "px"; }
           });
-          if (typeof (Event) === 'function') { window.dispatchEvent(new Event('resize')); }
-          else { var evt = window.document.createEvent('UIEvents'); evt.initUIEvent('resize', true, false, window, 0); window.dispatchEvent(evt); }
+          var _interval = setInterval(function () {
+            if (typeof (Event) === 'function') { window.dispatchEvent(new Event('resize')); }
+            else { var evt = window.document.createEvent('UIEvents'); evt.initUIEvent('resize', true, false, window, 0); window.dispatchEvent(evt); }
+          },100);
         }
       }
       // Other Events you might want to handle:NavigationStart,NavigationEnd,NavigationCancel,NavigationError,RoutesRecognized

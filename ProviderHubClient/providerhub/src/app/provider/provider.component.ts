@@ -367,11 +367,6 @@ export class ProviderComponent implements OnInit {
     //note: if navigated to from direct link, and not clicking a provider,
     //      it'll be empty til the provider object loads from AJAX...but that's okay
     document.getElementById("page-title").innerHTML = API.selectedProvider;
-    window.addEventListener('resize', function (event) {
-      for (var j = 0; j < document.getElementsByClassName('provFacFooter').length; j++) {
-        (document.getElementsByClassName('provFacFooter')[j] as HTMLElement).style.paddingRight = document.getElementsByClassName('provFacTitle')[0].clientWidth - document.getElementsByClassName('midHead')[0].clientWidth - 45 + "px";
-      }
-    });
   }
 
   public transformDateForPHDB(datepicker_element_id: any) {
@@ -517,9 +512,19 @@ export class ProviderComponent implements OnInit {
         var specOrderArr = this.currentSpecOrder.split(",");
         console.log(this.Provider.ProviderSpecialties);
         var _ProviderSpecialties = JSON.parse(JSON.stringify(this.Provider.ProviderSpecialties));/*<--DEEP CLONE, so no circular references*/ this.Provider.ProviderSpecialties = [];
+        var _inactiveIndexes = [];
         for (var i = 0; i < specOrderArr.length; i++) {
           for (var j = 0; j < _ProviderSpecialties.length; j++) {
-            if (_ProviderSpecialties[j].ID == specOrderArr[i]) { this.Provider.ProviderSpecialties.push(_ProviderSpecialties[j]); break; }
+            if (_ProviderSpecialties[j].ID == specOrderArr[i]) {
+              var TermTime = new Date((document.getElementById("edit_ProviderSpec" + _ProviderSpecialties[j].ID + "_TerminationDate") as HTMLFormElement).value);
+              if (TermTime == null || TermTime > new Date()) { this.Provider.ProviderSpecialties.push(_ProviderSpecialties[j]); break; }//ACTIVE push
+              if (TermTime != null && TermTime <= new Date()) { _inactiveIndexes.push(specOrderArr[i]); break; }//INACTIVE don't push til end
+            }
+          }
+        }
+        for (var i = 0; i < _inactiveIndexes.length; i++) {
+          for (var j = 0; j < _ProviderSpecialties.length; j++) {
+            if (_ProviderSpecialties[j].ID == _inactiveIndexes[i]) { this.Provider.ProviderSpecialties.push(_ProviderSpecialties[j]); break; }//INACTIVE push
           }
         }
         //Stored Proc needs: (@SpecialtyID VARCHAR(10),@User VARCHAR(20),@ID INT, @SEQ INT, @EDATE DATE, @TDATE DATE = NULL, @First BIT = 0) for each Specialty
@@ -531,17 +536,27 @@ export class ProviderComponent implements OnInit {
           provSpec.TerminationDate = this.transformDateForPHDB("edit_ProviderSpec" + provSpec.ID + "_TerminationDate");
           var _e = document.getElementById("edit_ProviderSpec"+provSpec.ID+"_EffectiveDate") as HTMLFormElement; var d = new Date(_e.value);
           pSpecLocal.EffectiveDate = d.getTime(); _e = document.getElementById("edit_ProviderSpec" + provSpec.ID + "_TerminationDate") as HTMLFormElement; d = new Date(_e.value);
-          pSpecLocal.TerminationDate = d.getTime(); provSpec.SequenceNumber = (d != null && d <= new Date()) ? 999 : i + 1; pSpecLocal.SequenceNumber = provSpec.SequenceNumber;
+          pSpecLocal.TerminationDate = d.getTime(); provSpec.SequenceNumber = i + 1; pSpecLocal.SequenceNumber = provSpec.SequenceNumber;// (d != null && d <= new Date()) ? 999 : i+1
+          pSpecLocal.Status = new SpecStatusPipe().transform(pSpecLocal);
         }
         console.log(this.Provider.ProviderSpecialties);
         break;
       case 3: //FPRelationship aka Facility-Provider Relationship
         //reorganize facs first: DEEP CLONE array then re-order just like spec
-        var facOrderArr = this.currentFacOrder.split(",");
+        var facOrderArr = this.currentFacOrder.split(","); var _inactiveIndexes = [];
         var _ProviderFacilities = JSON.parse(JSON.stringify(this.Provider.ProviderFacilities)); this.Provider.ProviderFacilities = [];
         for (var i = 0; i < facOrderArr.length; i++) {
           for (var j = 0; j < _ProviderFacilities.length; j++) {
-            if (_ProviderFacilities[j].ID == facOrderArr[i]) { this.Provider.ProviderFacilities.push(_ProviderFacilities[j]); break; }
+            if (_ProviderFacilities[j].ID == facOrderArr[i]) {
+              var TermTime = new Date((document.getElementById("edit_ProviderFP_" + _ProviderFacilities[j].FPRelationship.RelationshipID + "_TerminationDate") as HTMLFormElement).value);
+              if (TermTime == null || TermTime > new Date()) { this.Provider.ProviderFacilities.push(_ProviderFacilities[j]); break; }//ACTIVE push
+              if (TermTime != null && TermTime <= new Date()) { _inactiveIndexes.push(facOrderArr[i]); break; }//INACTIVE don't push til end
+            }
+          }
+        }
+        for (var i = 0; i < _inactiveIndexes.length; i++) {
+          for (var j = 0; j < _ProviderFacilities.length; j++) {
+            if (_ProviderFacilities[j].ID == _inactiveIndexes[i]) { this.Provider.ProviderFacilities.push(_ProviderFacilities[j]); break; }//INACTIVE push
           }
         }
         //nothing to really modify per object, since we only can add FacID's and add/edit FPR indicators (all nullable BITs)
@@ -562,6 +577,7 @@ export class ProviderComponent implements OnInit {
             var _e = document.getElementById("edit_ProviderFP_" + _entityRelationshipID + "_EffectiveDate") as HTMLFormElement; var d = new Date(_e.value);
             pFacLocal.EffectiveDate = d.getTime(); _e = document.getElementById("edit_ProviderFP_" + _entityRelationshipID + "_TerminationDate") as HTMLFormElement; d = new Date(_e.value);
             pFacLocal.TerminationDate = d.getTime(); toSet.SequenceNumber = (d != null && d <= new Date()) ? 999 : i + 1; pFacLocal.SequenceNumber = toSet.SequenceNumber;
+            pFacLocal.status = new TermStatusPipe().transform(pFacLocal.TerminationDate);
           }
           console.log(toSet.EffectiveDate); console.log(toSet.TerminationDate);//should be current values if !_there_are_dates_to_update
           console.log(pFacLocal.EffectiveDate); console.log(pFacLocal.TerminationDate);
