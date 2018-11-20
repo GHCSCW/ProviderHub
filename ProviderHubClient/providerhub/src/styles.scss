@@ -324,7 +324,10 @@ tr.footer td {
 #provider-wrapper .provider-display #demoTable tr.footer td:last-child, #facility-wrapper .facility-display #demoTable tr.footer td:last-child {
   text-align: left !important;
 }
-#facTable{margin-left:13px;margin-top:-20px;display:block;}
+#facTable {
+  margin-left: 13px;
+  margin-top: -20px; /*display:block;HIDE BY DEFAULT NOW*/
+}
 #facTable tr:first-child td{ padding-top:10px; }
 .tabselected{font-weight:bold!important;font-size:15px!important;}
 #specTable td.rowHeader, #facTable td#rH{
@@ -438,6 +441,7 @@ span.expand {
 .provFacFooter {
   padding-left: 45px;
   padding-right: 91px;
+  display:none;
 }
 .provFacFooter span:first-child{float:left;}
 .provFacFooter span:last-child{float:right;}

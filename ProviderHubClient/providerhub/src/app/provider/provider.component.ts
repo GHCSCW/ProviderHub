@@ -343,6 +343,10 @@ export class ProviderComponent implements OnInit {
           f.FacilityAddress.HidePhoneExtension = new NoValuePipe().transform(f.FacilityAddress.PhoneExtension);
           f.FacilityAddress.HideAlternatePhoneNumber = new NoValuePipe().transform(f.FacilityAddress.AlternatePhoneNumber);
           var fp = f.FPRelationship; fp.LastUpdatedDate = new PHDatePipe().transform(fp.LastUpdatedDate.replace(/\D/g, '').slice(0, -4));
+          console.log(fp.EffectiveDate); console.log(fp.TerminationDate);
+          fp.EffectiveDate = fp.EffectiveDate.replace(/\D/g, '').slice(0, -4);
+          fp.TerminationDate = fp.TerminationDate.replace(/\D/g, '').slice(0, -4);
+          console.log(fp.EffectiveDate); console.log(fp.TerminationDate);
           this.origFacOrder += f.ID + "|"; this.currentFacOrder += f.ID + ",";
         }
         if (this.origFacOrder != "") { this.origFacOrder = this.origFacOrder.slice(0, -1); }
@@ -528,11 +532,21 @@ export class ProviderComponent implements OnInit {
         body = { type: type, id: this.providerId }; body.ProviderFacilities = JSON.parse(JSON.stringify(this.Provider.ProviderFacilities)); console.log(body);
         for (var i = 0; i < body.ProviderFacilities.length; i++) {
           //indicator values from UI
-          var toSet = body.ProviderFacilities[i].FPRelationship;
+          var toSet = body.ProviderFacilities[i].FPRelationship; var pFacLocal = this.Provider.ProviderFacilities[i];
           //    function val3(which,id) { let _e: any = $("edit_ProviderFP_"+id+"_"+which); return _e.val(); }
           toSet.ExternalProviderIndicator = val3("ExternalProviderIndicator", entityRelationshipID); toSet.PrescriberIndicator = val3("PrescriberIndicator", entityRelationshipID);
           toSet.AcceptingNewPatientIndicator = val3("AcceptingNewPatientIndicator", entityRelationshipID); toSet.ReferralIndicator = val3("ReferralIndicator", entityRelationshipID);
-          toSet.FloatProviderIndicator = val3("FloatProviderIndicator", entityRelationshipID);
+          toSet.FloatProviderIndicator = val3("FloatProviderIndicator", entityRelationshipID); toSet.SequenceNumber = i + 1;
+          toSet.ProviderPhone = val3("PhoneNumber", entityRelationshipID); toSet.ProviderExtension = val3("PhoneExtension", entityRelationshipID);
+          let _there_are_dates_to_update: any = $("#edit_ProviderFP_" + entityRelationshipID + "_EffectiveDate").length > 0;
+          if (_there_are_dates_to_update) {
+            toSet.EffectiveDate = this.transformDateForPHDB("edit_ProviderFP_" + entityRelationshipID + "_EffectiveDate");
+            toSet.TerminationDate = this.transformDateForPHDB("edit_ProviderFP_" + entityRelationshipID + "_TerminationDate");
+            var _e = document.getElementById("edit_ProviderFP_" + entityRelationshipID + "_EffectiveDate") as HTMLFormElement; var d = new Date(_e.value);
+            pFacLocal.EffectiveDate = d.getTime(); _e = document.getElementById("edit_ProviderFP_" + entityRelationshipID + "_TerminationDate") as HTMLFormElement; d = new Date(_e.value);
+            pFacLocal.TerminationDate = d.getTime();
+          }
+          console.log(toSet.EffectiveDate); console.log(toSet.TerminationDate);//should be current values if !_there_are_dates_to_update
         }
         break;
       default: //log error + weird behavior
@@ -587,10 +601,14 @@ export class ProviderComponent implements OnInit {
             //update FPR nullable bits like so
             //EXAMPLE: this.Provider.MedicareIndicator = (data.POSTvars.MedicareIndicator == "Yes") ? true : (data.POSTvars.MedicareIndicator == "No") ? false : null;
             for (var i = 0; i < this.Provider.ProviderFacilities.length; i++) {
-              var _pf = this.Provider.ProviderFacilities[i]; _pf.LastUpdatedDate = new Date(); _pf.LastUpdatedBy = data.POSTvars.User;
-              var _pfr = this.Provider.ProviderFacilities[i].FPRelationship; _pfr.ExternalProviderIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.ExternalProviderIndicator;
+              //var _pf = this.Provider.ProviderFacilities[i]; _pf.LastUpdatedDate = new Date(); _pf.LastUpdatedBy = data.POSTvars.User;
+              var _pfr = this.Provider.ProviderFacilities[i].FPRelationship; _pfr.LastUpdatedDate = new Date(); _pfr.LastUpdatedBy = data.POSTvars.User;
+              _pfr.ExternalProviderIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.ExternalProviderIndicator;
               _pfr.AcceptingNewPatientIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.AcceptingNewPatientIndicator; _pfr.PrescriberIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.PrescriberIndicator;
               _pfr.ReferralIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.ReferralIndicator; _pfr.FloatProviderIndicator = data.POSTvars.ProviderFacilities[i].FPRelationship.FloatProviderIndicator;
+              //seq number, Phone, PhoneExt, EDATE, TDATE
+              _pfr.SequenceNumber = i + 1; _pfr.ProviderPhoneNumber = data.POSTvars.ProviderPhone; _pfr.ProviderPhoneExtension = data.POSTvars.ProviderExtension;
+              //_pfr.EffectiveDate  and TermDate already set in pFacLocal, like with Specs (and pSpecLocal) pre save
             }
             this.origFacOrder = this.currentFacOrder.replace(/\,/g, "|"); this.facsEdited = false;
             break;

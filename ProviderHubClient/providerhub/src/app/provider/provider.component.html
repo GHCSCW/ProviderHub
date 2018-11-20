@@ -352,7 +352,7 @@
                         {{f.FPRelationship.EffectiveDate | phdate}}
                       </span>
                       <span class="is-editing" style="display:none;">
-                        <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_EffectiveDate" value="{{f.FPRelationship.EffectiveDate | phdate}}" />
+                        <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_EffectiveDate" value="{{f.FPRelationship.EffectiveDate | date}}" />
                         <!-- EDIT NOT WORKING -->
                       </span>
                     </td>
@@ -362,7 +362,7 @@
                         {{f.FPRelationship.TerminationDate | phdate}}
                       </span>
                       <span class="is-editing" style="display:none;">
-                        <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_TerminationDate" value="{{f.FPRelationship.TerminationDate | phdate}}" />
+                        <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_TerminationDate" value="{{f.FPRelationship.TerminationDate | date}}" />
                         <!-- EDIT NOT WORKING -->
                       </span>
                     </td>
@@ -373,7 +373,7 @@
                     <td>
                       <span id="FacilityRelationshipPhoneNumber" class="not-editing">
                         {{f.FPRelationship.ProviderPhoneNumber | phonefromdb}}
-                        <span *ngIf="f.FPRelationship.PhoneExtension">ext. {{f.FPRelationship.PhoneExtension}}</span>
+                        <span *ngIf="f.FPRelationship.PhoneExtension">ext. {{f.FPRelationship.ProviderPhoneExtension}}</span>
                       </span>
                       <span class="is-editing">
                         <input type="text" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_PhoneNumber" placeholder="Phone #" value="{{f.FPRelationship.ProviderPhoneNumber | phonefromdb}}" />    <!-- EDIT NOT WORKING -->

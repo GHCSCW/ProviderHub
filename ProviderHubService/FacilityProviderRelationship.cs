@@ -57,6 +57,9 @@ namespace ProviderHubService
         public DateTime TerminationDate { get; set; }
 
         [DataMember]
+        public int SequenceNumber { get; set; }
+
+        [DataMember]
         public string ProviderEmail { get; set; }
 
         [DataMember]

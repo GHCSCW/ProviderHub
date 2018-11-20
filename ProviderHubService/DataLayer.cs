@@ -153,7 +153,12 @@ namespace ProviderHubService
                                         //PCPEligibleIndicator = x.Field<bool?>("PCP_ELIGIBLE_INDICATOR"),
                                         FloatProviderIndicator = x.Field<bool?>("FLOAT_PROVIDER_INDICATOR"),
                                         LastUpdatedDate = x.Field<DateTime>("FP_LAST_UPDATED_DATE"),
-                                        LastUpdatedBy = x.Field<string>("FP_LAST_UPDATED_BY")
+                                        LastUpdatedBy = x.Field<string>("FP_LAST_UPDATED_BY"),
+                                        SequenceNumber = x.Field<int>("SEQUENCE_NUMBER"),
+                                        EffectiveDate = x.Field<DateTime>("FP_EFFECTIVE_DATE"),
+                                        TerminationDate = x.Field<DateTime>("FP_TERMINATION_DATE"),
+                                        ProviderPhoneNumber = x.Field<string>("FP_PROVIDER_PHONE_NUMBER"),
+                                        ProviderExtensionNumber = x.Field<string>("FP_PROVIDER_PHONE_EXTENSION"),
                                     }
                                 }).ToList();
             }
@@ -823,7 +828,10 @@ namespace ProviderHubService
                                          new SqlParameter("@PrescriberIndicator", SqlDbType.Bit){ Value = ps.PrescriberIndicator, IsNullable=true },
                                          new SqlParameter("@ReferralIndicator", SqlDbType.Bit){ Value = ps.ReferralIndicator, IsNullable=true },
                                          new SqlParameter("@FloatProviderIndicator", SqlDbType.Bit){ Value = ps.FloatProviderIndicator, IsNullable=true },
-                                         new SqlParameter("@First", SqlDbType.Bit){ Value = ps.First }, new SqlParameter("@Last", SqlDbType.Bit){ Value = ps.Last } };
+                                         new SqlParameter("@First", SqlDbType.Bit){ Value = ps.First }, new SqlParameter("@Last", SqlDbType.Bit){ Value = ps.Last },
+                                         new SqlParameter("@SequenceNumber", SqlDbType.Int){ Value = ps.SequenceNumber },
+                                         new SqlParameter("@ProviderPhone", SqlDbType.VarChar){ Value = ps.Phone }, new SqlParameter("@ProviderPhoneExt", SqlDbType.VarChar){ Value = ps.PhoneExtension },
+                                         new SqlParameter("@FPEffectiveDate", SqlDbType.Date){ Value = ps.EDATE }, new SqlParameter("@FPTerminationDate", SqlDbType.Date){ Value = (ps.TDATE==null)? "2099-01-01" : ps.TDATE } };
             return Convert.ToInt32(dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams));
         }
 

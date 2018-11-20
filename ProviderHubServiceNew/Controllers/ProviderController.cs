@@ -112,6 +112,13 @@ namespace ProviderHubServiceNew.Controllers
                         forSP.ReferralIndicator = (pf.ReferralIndicator == true) ? 1 : (pf.ReferralIndicator == false) ? (int?)0 : null;
                         forSP.FloatProviderIndicator = (pf.FloatProviderIndicator == true) ? 1 : (pf.FloatProviderIndicator == false) ? (int?)0 : null;
                         forSP.First = (i == 0) ? 1 : 0; forSP.Last = (i == inputJSON.ProviderFacilities.Count - 1) ? 1 : 0; forSP.MappingID = pf.RelationshipID;
+                        forSP.SequenceNumber = pf.SequenceNumber; forSP.Phone = pf.ProviderPhone; forSP.PhoneExtension = pf.ProviderExtension;
+                        forSP.EDATE = pf.EffectiveDate; forSP.TDATE = pf.TerminationDate;
+                        /*FIELDS ADDED: 
+                         *  new SqlParameter("@SequenceNumber", SqlDbType.Int){ Value = ps.SequenceNumber },
+                            new SqlParameter("@ProviderPhone", SqlDbType.VarChar){ Value = ps.Phone }, new SqlParameter("@ProviderPhoneExt", SqlDbType.VarChar){ Value = ps.PhoneExtension },
+                            new SqlParameter("@FPEffectiveDate", SqlDbType.Date){ Value = ps.EDATE }, new SqlParameter("@FPTerminationDate", SqlDbType.Date){ Value = (ps.TDATE==null)? "2099-01-01" : ps.TDATE } };
+                        */
                         using (DataLayer dataLayer = new DataLayer()) {
                             toReturn.result.Add(dataLayer.SaveProviderFacility(forSP));
                         }
