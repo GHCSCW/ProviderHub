@@ -350,7 +350,7 @@
                     <td>Effective Date:</td>
                     <td>
                       <span class="not-editing">
-                        {{f.FPRelationship.EffectiveDate}}
+                        {{f.FPRelationship.EffectiveDate | phdate}}
                       </span>
                       <span class="is-editing" style="display:none;">
                         <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_EffectiveDate" value="{{f.FPRelationship.EffectiveDate | phdate}}" />
@@ -360,7 +360,7 @@
                     <td>Termination Date:</td>
                     <td>
                       <span class="not-editing">
-                        {{f.FPRelationship.TerminationDate}}
+                        {{f.FPRelationship.TerminationDate | phdate}}
                       </span>
                       <span class="is-editing" style="display:none;">
                         <input type="text" class="datepicker" ph-initialized="false" id="edit_ProviderFP_{{f.FPRelationship.RelationshipID}}_TerminationDate" value="{{f.FPRelationship.TerminationDate | phdate}}" />

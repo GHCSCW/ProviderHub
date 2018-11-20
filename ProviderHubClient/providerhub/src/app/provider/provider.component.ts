@@ -350,8 +350,6 @@ export class ProviderComponent implements OnInit {
           f.FacilityAddress.HideAlternatePhoneNumber = new NoValuePipe().transform(f.FacilityAddress.AlternatePhoneNumber);
           var fp = f.FPRelationship; fp.LastUpdatedDate = new PHDatePipe().transform(fp.LastUpdatedDate.replace(/\D/g, '').slice(0, -4));
           fp.status = new TermStatusPipe().transform(fp.TerminationDate.replace(/\D/g, '').slice(0, -4));
-          fp.EffectiveDate = new PHDatePipe().transform(fp.EffectiveDate.replace(/\D/g, '').slice(0, -4));
-          fp.TerminationDate = new PHDatePipe().transform(fp.TerminationDate.replace(/\D/g, '').slice(0, -4));
           this.origFacOrder += f.ID + "|"; this.currentFacOrder += f.ID + ",";
         }
         //this.toggleInactiveProvFacRel(); //initially hide Inactive Provider-Facility Relationships
