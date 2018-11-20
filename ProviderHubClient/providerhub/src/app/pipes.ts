@@ -6,6 +6,12 @@ import { DatePipe } from '@angular/common';
 })
 export class PHDatePipe implements PipeTransform {
   transform(value: any): any {
+    //console.log("PHDatePipe input: " + value);
+    if (value.charAt(value.length - 7) == '-') {
+      //console.log("PHDateOutput: " + new DatePipe('en-US').transform(value.replace(/\D/g, '').slice(0, -4)));
+      return new DatePipe('en-US').transform(value.replace(/\D/g, '').slice(0, -4));
+    }
+    //console.log("PHDateOutput: " + new DatePipe('en-US').transform(value.replace(/\D/g, '')));
     return new DatePipe('en-US').transform(value.replace(/\D/g, ''));
   }
 }
@@ -80,6 +86,16 @@ export class SpecStatusPipe implements PipeTransform {
   transform(value: any, args?: any): any {
     var todaysDate = new Date(); todaysDate.setHours(0, 0, 0, 0);
     return (value.TerminationDate !== null && parseInt(value.TerminationDate) <= todaysDate.getTime()) ? "INACTIVE" : "ACTIVE";
+  }
+}
+
+@Pipe({
+  name: 'directoryStatus'
+})
+export class TermStatusPipe implements PipeTransform {
+  transform(value: any, args?: any): any {
+    var todaysDate = new Date(); todaysDate.setHours(0, 0, 0, 0);
+    return (value !== null && parseInt(value) <= todaysDate.getTime()) ? "INACTIVE" : "ACTIVE";
   }
 }
 

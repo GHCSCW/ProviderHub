@@ -293,7 +293,6 @@ tr.footer td {
   text-align: right; /*Labels*/
   font-size: 14px;
 }
-.status_INACTIVE{display:none;}
 #provider-wrapper .provider-display #demoTable td:nth-child(even), #facility-wrapper .facility-display #demoTable td:nth-child(even), 
 #specTable td:nth-child(even) {
   text-align: left; /*Values*/
@@ -464,5 +463,10 @@ span.expand {
   font-size: 20px;
   padding-left: 20px;
 }
-.status_INACTIVE{opacity:0.6!important;}
+.status_INACTIVE, .fac_status_INACTIVE{display: none; opacity:0.6!important;}
 #facVendorBody td.midHead{width:500px;}
+
+#inactive-dir-checkbox, #inactive-prov-fac-rel-cb {
+  padding-top: 20px;
+  padding-left: 20px;
+}
