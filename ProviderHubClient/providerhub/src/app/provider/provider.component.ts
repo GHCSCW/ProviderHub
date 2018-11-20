@@ -349,10 +349,6 @@ export class ProviderComponent implements OnInit {
           f.FacilityAddress.HidePhoneExtension = new NoValuePipe().transform(f.FacilityAddress.PhoneExtension);
           f.FacilityAddress.HideAlternatePhoneNumber = new NoValuePipe().transform(f.FacilityAddress.AlternatePhoneNumber);
           var fp = f.FPRelationship; fp.LastUpdatedDate = new PHDatePipe().transform(fp.LastUpdatedDate.replace(/\D/g, '').slice(0, -4));
-          console.log(fp.EffectiveDate); console.log(fp.TerminationDate);
-          fp.EffectiveDate = fp.EffectiveDate.replace(/\D/g, '').slice(0, -4);
-          fp.TerminationDate = fp.TerminationDate.replace(/\D/g, '').slice(0, -4);
-          console.log(fp.EffectiveDate); console.log(fp.TerminationDate);
           fp.status = new TermStatusPipe().transform(fp.TerminationDate.replace(/\D/g, '').slice(0, -4));
           this.origFacOrder += f.ID + "|"; this.currentFacOrder += f.ID + ",";
         }
