@@ -4,7 +4,7 @@ import { API } from '../globals';
 import { environment } from '../../environments/environment';
 import { ProviderHubService } from '../app.service';
 import { CommonModule, Location, DatePipe } from '@angular/common';
-import { GenderPipe, NullablePipe, BoolPipe, ReverseBoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe, SpecStatusPipe, DirStatusPipe } from '../pipes';
+import { GenderPipe, NullablePipe, BoolPipe, ReverseBoolPipe, SpecialtyTypePipe, ParentSpecialtyPipe, NoValuePipe, PHDatePipe, SpecStatusPipe, TermStatusPipe } from '../pipes';
 
 import * as $ from 'jquery';
 import 'datatables.net';
@@ -319,7 +319,7 @@ export class ProviderComponent implements OnInit {
           order: [[1, "asc"]],
           rowId: 'ID',
           "createdRow": function ( row, data, index ) {
-            if ( new DirStatusPipe().transform(data.DirectoryTerminationDate.replace(/\D/g, '').slice(0,-4))  == "INACTIVE" ) {
+            if ( new TermStatusPipe().transform(data.DirectoryTerminationDate.replace(/\D/g, '').slice(0,-4))  == "INACTIVE" ) {
               $(row).addClass("directory-inactive");
             }
           },
@@ -349,9 +349,9 @@ export class ProviderComponent implements OnInit {
           f.FacilityAddress.HidePhoneExtension = new NoValuePipe().transform(f.FacilityAddress.PhoneExtension);
           f.FacilityAddress.HideAlternatePhoneNumber = new NoValuePipe().transform(f.FacilityAddress.AlternatePhoneNumber);
           var fp = f.FPRelationship; fp.LastUpdatedDate = new PHDatePipe().transform(fp.LastUpdatedDate.replace(/\D/g, '').slice(0, -4));
-          fp.status = new DirStatusPipe().transform(fp.TerminationDate.replace(/\D/g, '').slice(0, -4)); 
-          fp.EffectiveDate = new PHDatePipe().transform(fp.EffectiveDate.replace(/\D/g, '').slice(0, -4)); //b.h
-          fp.TerminationDate = new PHDatePipe().transform(fp.TerminationDate.replace(/\D/g, '').slice(0, -4));//b.h
+          fp.status = new TermStatusPipe().transform(fp.TerminationDate.replace(/\D/g, '').slice(0, -4));
+          fp.EffectiveDate = new PHDatePipe().transform(fp.EffectiveDate.replace(/\D/g, '').slice(0, -4));
+          fp.TerminationDate = new PHDatePipe().transform(fp.TerminationDate.replace(/\D/g, '').slice(0, -4));
           this.origFacOrder += f.ID + "|"; this.currentFacOrder += f.ID + ",";
         }
         //this.toggleInactiveProvFacRel(); //initially hide Inactive Provider-Facility Relationships

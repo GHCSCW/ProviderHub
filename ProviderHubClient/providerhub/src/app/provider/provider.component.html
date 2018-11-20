@@ -224,7 +224,7 @@
               <input id="addFacBtn" type="button" value="Add" (click)="addFacToList($event)" />
             </span>
           </h4>
-          <!--EACH FACILITY--> <!-- b.h ToDo add prov-fac-status class with interpolation for Active/Inactive from provider.component.ts on fac-prov-rel pipe (reuse dir status pipe)-->
+          <!--EACH FACILITY-->
           <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard indivFacWrapper ui-sortable-handle fac_status_{{f.FPRelationship.status}}" id="facWrapper_{{f.ID}}" style="position: relative; left: 0px; top: 0px;width:100%;">
             <span [hidden]="true">spec-id:{{f.ID}}</span>
             <div class="card-body specCardBody">
