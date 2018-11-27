@@ -1,9 +1,28 @@
 <div id="nav-bar">
   <a href="/" class="navbar-brand navbar-left">{{title}}</a>
-  <span class="navbar-left menu-links">
+
+  <span class="dropdown">
     <a [class.tabselected]="selectedTab=='P'" (click)="nav('/Provider/Search','P')">Provider</a>
-    <a [class.tabselected]="selectedTab=='F'" (click)="nav('/Facility/Search','F')">Facility</a>
+    <span class="dropdown-content">
+      <a href="#">Create Provider</a>
+    </span>
+  </span>
+
+  <span class="navbar-left menu-links">
+    <span class="dropdown">
+      <a [class.tabselected]="selectedTab=='P'" (click)="nav('/Provider/Search','P')">Provider</a>
+      <span class="dropdown-content">
+        <a href="#">Create Provider</a>
+      </span>
+    </span>
+    <span class="dropdown">
+      <a [class.tabselected]="selectedTab=='F'" (click)="nav('/Facility/Search','F')">Facility</a>
+      <span class="dropdown-content">
+        <a href="#">Create Facility</a>
+      </span>
+    </span>
     <a [class.tabselected]="selectedTab=='V'" (click)="nav('/Vendor/Search','V')">Vendor</a>
+
   </span>
   <span class="navbar-right">{{username}}</span>
   <!--
