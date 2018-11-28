@@ -3,6 +3,7 @@
     <h2>Provider</h2>
     <ul id="provider-nav">
       <li tab-id="Networks" tab-url="Network" [hidden]="providerId==0" [class.selected]="nav=='Networks'">Networks</li>
+      <li tab-id="Employments" tab-url="Employment" [hidden]="providerId==0" [class.selected]="nav=='Employment'">Employments</li>
       <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
       <li tab-id="Specialties" tab-url="Specialties" [hidden]="providerId==0" [class.selected]="nav=='Specialties'">Specialties</li>
       <li tab-id="Facility" tab-url="Facility" [hidden]="providerId==0" [class.selected]="nav=='Facility'">Facilities</li>
@@ -265,10 +266,12 @@
                     <td>Website</td>
                     <td><a href="{{f.FacilityAddress.Website | nullable:''}}" target="_blank">{{f.FacilityAddress.Website | nullable:''}}</a></td>
                   </tr>
+                  <!--
                   <tr>
                     <td>Hours</td>
                     <td>Coming Soon</td>
                   </tr>
+                  -->
                   <tr>
                     <td colspan="4" id="row0FP_{{f.FPRelationship.RelationshipID}}" class="midHead">
                       <!--the IDs let us efficiently toggle edit / notEdit states in FPRelationship -->
@@ -406,6 +409,29 @@
             <tr>
               <th></th>
               <th>Network</th>
+              <!--th>Network Effective Date</th-->
+              <!--th>Provider</th-->
+              <th>Facility</th>
+              <th>Specialty</th>
+              <!--<th>EPIC Network ID</th>-->
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <div id="demo-card" class="card" [hidden]="nav!='Employments'">
+      <div class="card-body">
+        <h5 class="card-title red">
+          Employments <i class="fa fa-plus" id="addEmployment"></i>
+        </h5>
+        <!--
+        <span id="inactive-dir-checkbox"><input type="checkbox" (change)="toggleInactiveDirectories()" /> Show Inactive Directory Records</span>
+        -->
+        <table id="employmentTableDT" [hidden]="nav!='Employments'" class="table table-striped table-bordered" cellspacing="0">
+          <thead>
+            <tr>
+              <th></th>
+              <!--<th>Network</th>-->
               <!--th>Network Effective Date</th-->
               <!--th>Provider</th-->
               <th>Facility</th>
