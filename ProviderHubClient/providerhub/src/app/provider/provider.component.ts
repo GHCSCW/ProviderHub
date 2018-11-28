@@ -670,7 +670,7 @@ export class ProviderComponent implements OnInit {
       }
       if (_termDate.getAttribute("ph-initialized") == "false") {
         let jQ_termDate: any = $(_termDate); jQ_termDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" });
-        _effDate.setAttribute("ph-initialized", "true");
+        _termDate.setAttribute("ph-initialized", "true");
       }
       if (document.getElementById('specialtyTable_' + entityID).style.display == "" || document.getElementById('specialtyTable_'+entityID).style.display != "table") {
           //$(event.target).parent().parent().children("table.specTable").toggle();
@@ -682,10 +682,12 @@ export class ProviderComponent implements OnInit {
     if (type == 3) {
       let _effDate: any = document.getElementById("edit_ProviderFP_" + entityRelationshipID + "_EffectiveDate"); let _termDate: any = document.getElementById("edit_ProviderFP_" + entityRelationshipID + "_TerminationDate");
       if (_effDate.getAttribute("ph-initialized") == "false") {
-        let jQ_effDate: any = $(_effDate); jQ_effDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
+        let jQ_effDate: any = $(_effDate); jQ_effDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" });
+        _effDate.setAttribute("ph-initialized", "true");
       }
       if (_termDate.getAttribute("ph-initialized") == "false") {
-        let jQ_termDate: any = $(_termDate); jQ_termDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
+        let jQ_termDate: any = $(_termDate); jQ_termDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" });
+        _termDate.setAttribute("ph-initialized", "true");
       }
     }
   }
