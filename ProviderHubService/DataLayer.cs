@@ -1928,7 +1928,8 @@ namespace ProviderHubService
                 else if (add_to_staging_rows==false)
                 { //_staging_row
                     dynamic subRow = (_staging_row.provider_row.additional_matched_rows as List<dynamic>).Last();
-                    subRow.IDd_spec = IDd_spec;
+                    var _dict4 = (IDictionary<string, object>)record;
+                    subRow.IDd_spec = IDd_spec; subRow.PrimarySpecialty = _dict4["Primary Specialty"]; subRow.Phone = _dict4["Phone"];
                 }
                 //if spec not IDd, mark to create (as non-external by default?) then use new Spec's ID for provider and add to base_table for subsequent providers
 
@@ -1949,6 +1950,7 @@ namespace ProviderHubService
             //int seed_id = 458; int fpr_seed_id = 408; int alias_seed_id = 852; 
             int seed_id=0, fpr_seed_id = 0, alias_seed_id = 0, emp_seed_id = 0;
             List<string> pid_cid_map = new List<string>(); List<string> pid_lid_map = new List<string>(); List<string> pid_fid_map = new List<string>(); List<string> pid_sid_map = new List<string>();
+            List<string> fid_phone_map = new List<string>();
             var test_num_rows = 10; var runFullJob = true; //only used to test subset (10 or any x < # import file rows) rows for validating basic syntax...
             //START TRANSACTION
             dataLayer.BeginTransaction();
@@ -2045,7 +2047,7 @@ namespace ProviderHubService
                     SqlParameter[] sqlParams = {
                         new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value =_pid }, new SqlParameter("@PROVIDER_GENDER_ID", SqlDbType.Int) { Value = _gender },
                         new SqlParameter("@PROVIDER_FIRST_NAME", SqlDbType.VarChar) { Value = _dict["First Name"] }, new SqlParameter("@NPI", SqlDbType.VarChar) { Value = (_dict["NPI"] as string).Substring(0,10) },
-                        new SqlParameter("@PROVIDER_LAST_NAME", SqlDbType.VarChar) { Value = _dict["Last Name"] },new SqlParameter("@PROVIDER_MIDDLE_NAME", SqlDbType.VarChar) { Value = _gender },
+                        new SqlParameter("@PROVIDER_LAST_NAME", SqlDbType.VarChar) { Value = _dict["Last Name"] },new SqlParameter("@PROVIDER_MIDDLE_NAME", SqlDbType.VarChar) { Value = _dict["MI"] },
                         new SqlParameter("@CSP_INDICATOR", SqlDbType.Int) { Value = 0 }, new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _effdate }
                     };
                     _pid = (int)dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams); //check result against query for whole set
@@ -2170,6 +2172,15 @@ namespace ProviderHubService
                     //string _fpr = "INSERT INTO dbo.FACILITY_PROVIDER_RELATIONSHIP(PROVIDER_ID,FACILITY_ID,EFFECTIVE_DATE) VALUES(" + __values+")";
                     //toReturn.db_transaction += _fpr + ";"; staging_row.fprquery=_fpr + ";";
                     //staging_row.queryResults.Add(dataLayer.ExecuteQuery(_fpr, CommandType.Text));
+                    if (!fid_phone_map.Contains(((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"] as string+"|"+_dict["Phone"] as string)) {
+                            sql = "providerhub.dbo.UpdatePhoneNumberForFacilityAddress";
+                            sqlParams = new SqlParameter[] {
+                                new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"]) },
+                                new SqlParameter("@PHONE", SqlDbType.VarChar) { Value = String.IsNullOrEmpty(_dict["Phone"] as string)? "" : new string((_dict["Phone"] as string).Where(c => char.IsDigit(c)).ToArray()) }
+                            };
+                            dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams);
+                            fid_phone_map.Add(((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"] as string + "|" + _dict["Phone"] as string);
+                    }
                     if (!pid_fid_map.Contains(_pid.ToString()+"|"+ ((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"])) {
                         sql = "providerhub.dbo.sp_InsertFacilityProviderRelationship"; //pid_fid_map
                         sqlParams = new SqlParameter[] {
@@ -2236,6 +2247,15 @@ namespace ProviderHubService
                             //string __fpr = "INSERT INTO dbo.FACILITY_PROVIDER_RELATIONSHIP(PROVIDER_ID,FACILITY_ID,EFFECTIVE_DATE) VALUES(" + ___values + ")";
                             //toReturn.db_transaction += __fpr + ";"; staging_row.fprquery_sub = __fpr + ";";
                             //staging_row.queryResults.Add(dataLayer.ExecuteQuery(__fpr, CommandType.Text));
+                            if (!fid_phone_map.Contains(((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"] as string+"|"+_dict["Phone"] as string)) {
+                                    sql = "providerhub.dbo.UpdatePhoneNumberForFacilityAddress";
+                                    sqlParams = new SqlParameter[] {
+                                        new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"]) },
+                                        new SqlParameter("@PHONE", SqlDbType.VarChar) { Value = String.IsNullOrEmpty(additional_row.Phone as string)? "" : new string((additional_row.Phone as string).Where(c => char.IsDigit(c)).ToArray()) }
+                                    };
+                                    dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams);
+                                    fid_phone_map.Add(((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"] as string + "|" + _dict["Phone"] as string);
+                            }
                             if (!pid_fid_map.Contains(_pid.ToString()+"|"+ ((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"])) {
                                 sql = "providerhub.dbo.sp_InsertFacilityProviderRelationship"; //pid_fid_map
                                 sqlParams = new SqlParameter[] {
@@ -2293,6 +2313,20 @@ namespace ProviderHubService
                                     pid_sid_map.Add(_pid.ToString()+"|"+ ((IDictionary<string, string>)additional_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]);
                                 }
                             }
+                            try{
+                                sql = "providerhub.dbo.sp_UpdateProviderPrimarySpecialtyFromId";
+                                string _isps = additional_row.PrimarySpecialty as string;//"Yes" SKPDICT
+                                int _specid = Convert.ToInt32(((IDictionary<string, string>)additional_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]);
+                                    sqlParams = new SqlParameter[] {
+                                    new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
+                                    new SqlParameter("@isPS", SqlDbType.VarChar) { Value = _isps },
+                                    new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = _specid }
+                                };
+                                ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+                            }
+                            catch (Exception e) { 
+                                /*SPEC NOT FOUND, "FATAL ERROR"*/ staging_row.spec_not_found_fatal_error = true;
+                            }
                         }
                     }
                     catch (Exception e) { }
@@ -2310,7 +2344,9 @@ namespace ProviderHubService
                         };
                         ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
                     }
-                    catch (Exception e) { /*SPEC NOT FOUND, "FATAL ERROR"*/ staging_row.spec_not_found_fatal_error = true; }
+                    catch (Exception e) { 
+                        /*SPEC NOT FOUND, "FATAL ERROR"*/ staging_row.spec_not_found_fatal_error = true;
+                    }
                 }
                 test_num_rows--;
             }
