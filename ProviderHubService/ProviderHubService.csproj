@@ -80,6 +80,7 @@
     <Compile Include="Credential.cs" />
     <Compile Include="DataLayer.cs" />
     <Compile Include="DataUtilityHelper.cs" />
+    <Compile Include="Employment.cs" />
     <Compile Include="Facility.cs" />
     <Compile Include="FacilityProviderRelationship.cs" />
     <Compile Include="Language.cs" />

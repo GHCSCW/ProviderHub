@@ -29,9 +29,10 @@ namespace ProviderHubServiceNew.Controllers
                 List<Specialty> s = dataLayer.GetSpecialtyList(true);
                 List<Facility> f = dataLayer.GetFacilityListForProviderTab(id);
                 List<ProviderHubService.Directory> n = dataLayer.GetNetworkTabByPID(id);
+                List<Employment> e = dataLayer.GetProviderEmployments(id);
                 string ha = dataLayer.GetHospitalAffiliationByPID(id);
                 var uname = User.Identity;
-                toReturn.p = provider; toReturn.l = l; toReturn.c = c; toReturn.n = uname; toReturn.s = s; toReturn.net = n; toReturn.ha = ha; toReturn.f = f;
+                toReturn.p = provider; toReturn.l = l; toReturn.c = c; toReturn.n = uname; toReturn.s = s; toReturn.net = n; toReturn.ha = ha; toReturn.f = f; toReturn.e = e;
             }
             var json = JsonConvert.SerializeObject(toReturn, new JsonSerializerSettings{ DateFormatHandling = DateFormatHandling.MicrosoftDateFormat, DateTimeZoneHandling = DateTimeZoneHandling.Unspecified });
             return Content(json, "application/json");

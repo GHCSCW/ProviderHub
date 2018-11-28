@@ -110,6 +110,30 @@ namespace ProviderHubService
         }
         #endregion
 
+        #region FUNCTION: GetProviderEmployments(int providerID)
+        public List<Employment> GetProviderEmployments(int providerID)
+        {
+            List<Employment> employmentList = new List<Employment>();
+            string sql = "providerhub.dbo.sp_GetProviderEmploymentsByID";
+            SqlParameter[] sqlParams = { new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = providerID } };
+            DataSet ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                employmentList = (from e in ds.Tables[0].AsEnumerable()
+                                  select new Employment()
+                                  {
+                                      ID = e.Field<int>("EMPLOYMENT_ID"),
+                                      FacilityName = e.Field<string>("FACILITY_NAME"),
+                                      SpecialtyName = e.Field<string>("SPECIALTY_NAME"),
+                                      SequenceNumber = e.Field<int>("SEQUENCE_NUMBER"),
+                                      EffectiveDate = e.Field<DateTime>("EFFECTIVE_DATE"),
+                                      TerminationDate = e.Field<DateTime>("TERMINATION_DATE")
+                                  }).ToList();
+            }
+            return employmentList;
+        }
+        #endregion
+
         #region FUNCTION: GetProviderFacilities(int providerID)
         public List<Facility> GetProviderFacilities(int providerID) {
             List<Facility> facilityList = new List<Facility>();
