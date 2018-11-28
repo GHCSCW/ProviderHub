@@ -1894,6 +1894,7 @@ namespace ProviderHubService
                     else if (add_to_staging_rows == false) { dynamic subRow = (_staging_row.provider_row.additional_matched_rows as List<dynamic>).Last(); subRow.addProvSpec = _addProvSpec; }
                 }
                 IDd_spec.spec_match = spec_match; IDd_spec.spec_match_type = spec_match_type; IDd_spec.matchedSpec = matchedSpec;
+                //If not IDd, log it (maybe mark for creation + mapping?)
                 //IDd_spec.linked_csv_record = record; IDd_spec.linked_csv_record_npi = record.NPI;
                 //WE check explicily because we use "add_to_staging_rows == null" as a third case for rows that shouldn't be processed (like blank NPI rows)
                 if (add_to_staging_rows==true) //again, since it's "bool?" (not just bool) and we use the bool?==null case we need ==true/false
@@ -1922,8 +1923,8 @@ namespace ProviderHubService
             dynamic toReturn = new ExpandoObject(); toReturn.db_transaction = "";
             //SP_UWPH_PREPARE now dynamically receives seed_ids
             //int seed_id = 458; int fpr_seed_id = 408; int alias_seed_id = 852; 
-            int seed_id=0, fpr_seed_id = 0, alias_seed_id = 0;
-            List<string> pid_cid_map = new List<string>(); List<string> pid_lid_map = new List<string>();
+            int seed_id=0, fpr_seed_id = 0, alias_seed_id = 0, emp_seed_id = 0;
+            List<string> pid_cid_map = new List<string>(); List<string> pid_lid_map = new List<string>(); List<string> pid_fid_map = new List<string>(); List<string> pid_sid_map = new List<string>();
             var test_num_rows = 10; var runFullJob = true; //only used to test subset (10 or any x < # import file rows) rows for validating basic syntax...
             //START TRANSACTION
             dataLayer.BeginTransaction();
@@ -1939,12 +1940,13 @@ namespace ProviderHubService
             DataSet ds = dataLayer.ExecuteDataSet("dbo.SP_UWPH_PREPARE", CommandType.StoredProcedure);//, sqlParams);
             if (ds.Tables[0].Rows.Count > 0)
             {
-                seed_id = ds.Tables[0].Rows[0].Field<int>("pSeedID");
+                /*seed_id = ds.Tables[0].Rows[0].Field<int>("pSeedID");
                 fpr_seed_id = ds.Tables[0].Rows[0].Field<int>("fprSeedID");
                 alias_seed_id = ds.Tables[0].Rows[0].Field<int>("aliasSeedID");
+                emp_seed_id = ds.Tables[0].Rows[0].Field<int>("empSeedID");*/
             }
             if (seed_id == 0 || fpr_seed_id == 0 | alias_seed_id == 0) {
-                throw new Exception("UWPH E01: ERROR_SP_UWPH_PREPARE: seed ids not defined");
+                //throw new Exception("UWPH E01: ERROR_SP_UWPH_PREPARE: seed ids not defined");
             }
 
             foreach (var staging_row in idResult.staging_rows)
@@ -1955,33 +1957,36 @@ namespace ProviderHubService
                 //***NOW WE HAVE IDd PROV FAC SPEC in vars x y z, respectively (or 0 if not IDd***\\
                 //3a. If any not IDd + 'toCreate', insert new (provider, fac, or spec), If IDd + 'toUpdate', update changed info
                 //PROVIDER 1. INSERT/UPDATE PROVIDER ROW
-                var valid_match = false; string _pid = "0"; string _set = "", _midname=""; string _query = ""; var _dict = (IDictionary<string, object>)staging_row.record;
-                string _gender="",_effdate = ""; //DataSet worker; int[] results;
+                var valid_match = false; int _pid = 0; string _set = "", _midname=""; string _query = ""; var _dict = (IDictionary<string, object>)staging_row.record;
+                int _gender = 3;  string _effdate = ""; //DataSet worker; int[] results;
                 if (staging_row.npi_match)
                 {
                     //generate UPDATE sql for parent row of this provider (i.e. not an 'additional row')
                     //UPDATE EXISTING RECORD for 'parent row' and store PROVIDER_ID as PROV_ID / _DBID
                     // get PROVIDER_ID from staging_row.matched_provider, which should always be populated for npi_match==true
                     /*--"mi_csv": "L.","gender_csv": "Female","tin_db": "","mi_db": "","gender_db": "Female",*/
-                    //REPLACED WITH UWPH_UpdateExistingProvider
+                    //REPLACED WITH UWPH_UpdateExistingProvider - update fields regardless of whether or not they match DB -- nothing to lose there
                         if (staging_row.provider_row.mi_csv != staging_row.provider_row.mi_db) {
                             //_set += "PROVIDER_MIDDLE_NAME='"+(staging_row.provider_row.mi_csv as string).Replace("'", "") + "'";
-                            _midname = staging_row.provider_row.mi_csv as string;
+                            //_midname = staging_row.provider_row.mi_csv as string;
                         }
+                        _midname = staging_row.provider_row.mi_csv as string;
                         if (staging_row.provider_row.gender_csv != staging_row.provider_row.gender_db) {
-                            _gender = (staging_row.provider_row.gender_csv == "Female") ? "1" : (staging_row.provider_row.gender_csv == "Male") ? "2" : "3";
+                            //_gender = (staging_row.provider_row.gender_csv == "Female") ? "1" : (staging_row.provider_row.gender_csv == "Male") ? "2" : "3";
                             //_set += (_set != "") ? "," : ""; _set += "PROVIDER_GENDER_ID='" + _gender + "'";
                         }
+                        _gender = (staging_row.provider_row.gender_csv == "Female") ? 1 : (staging_row.provider_row.gender_csv == "Male") ? 2 : 3;
                         if (((IDictionary<string,string>)staging_row.matched_provider)["EFFECTIVE_DATE"] as string != _dict["Start Date"] as string)
                         {
-                            _effdate = _dict["Start Date"] as string;
+                            //_effdate = _dict["Start Date"] as string;
                             //_set += (_set != "") ? "," : ""; _set += "EFFECTIVE_DATE='" + _effdate + "'";
                         }
-                        _pid = ((IDictionary<string, string>)staging_row.matched_provider)["PROVIDER_ID"];
+                        _effdate = (_dict["Start Date"] as string == "") ? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string;
+                        _pid = Convert.ToInt32(((IDictionary<string, string>)staging_row.matched_provider)["PROVIDER_ID"]);
                         //if (_set != "") { _query = "UPDATE dbo.PROVIDER SET " + _set + " WHERE PROVIDER_ID=" + _pid; }
                     //END REPLACED WITH UWPH_UpdateExsitingProvider
-                        string sql = "providerhub.dbo.sp_UWPH_UpdateExistingProvider";
-                        SqlParameter[] sqlParams = {
+                        string sql = "providerhub.dbo.SP_UWPH_UpdateExistingProvider";
+                        SqlParameter[] sqlParams = { //need to pass Integer.parseInt for string'd INT's?? check on 2nd run SECOND_RUN_ITEM
                             new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid }, new SqlParameter("@PROVIDER_GENDER_ID", SqlDbType.Int) { Value = _gender },
                             new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _effdate }, new SqlParameter("@PROVIDER_MIDDLE_NAME", SqlDbType.VarChar) { Value = _midname }
                         };
@@ -2005,19 +2010,21 @@ namespace ProviderHubService
                     //generate INSERT sql for parent row of provider (like above, i.e. not an 'additional row')
                         //INSERT NEW RECORD for 'parent row' and store LAST_INSERT_ID as PROV_ID / _DBID, _query, _pid
                         var _fields = "NATIONAL_PROVIDER_IDENTIFIER,PROVIDER_FIRST_NAME,PROVIDER_MIDDLE_NAME,PROVIDER_LAST_NAME,PROVIDER_GENDER_ID,CSP_INDICATOR,EFFECTIVE_DATE";
-                        _gender = (_dict["Gender"] as string == "Female") ? "1" : (_dict["Gender"] as string == "Male") ? "2" : "3";
+                        _gender = (_dict["Gender"] as string == "Female") ? 1 : (_dict["Gender"] as string == "Male") ? 2 : 3;
                         var _values = "'"+(_dict["NPI"] as string).Substring(0,10)+"','"+ (_dict["First Name"] as string).Replace("'","") + "','"+(_dict["MI"] as string).Replace("'", "") + "','"+(_dict["Last Name"] as string).Replace("'", "") + "',"+_gender+",0,'"+_dict["Start Date"] as string+"'";
                         //REPLACED WITH UWPH_CreateNewProvider, _fields and _vallues will go away too; keeping for testing/comparing SP to query & MAKE SURE SAME RESULT
                         //_query = "INSERT INTO dbo.PROVIDER("+_fields+") VALUES("+_values+")";
-                        _pid = seed_id.ToString();
-                    string sql = "providerhub.dbo.sp_UWPH_CreateNewProvider";
+                        //_pid = seed_id;//.ToString(); NOT NEEDED SINCE IT IS NOW A SQL PARAMETER OF TYPE INT FOR A SP, AND NOT PART OF A STRING FOR AN INLINE QUERY
+                        //If _dict["NPI"] string length > 10, mark as invalid/fatfingered NPI but just truncate
+                    string sql = "providerhub.dbo.SP_UWPH_CreateNewProvider";
+                    _effdate = (_dict["Start Date"] as string == "") ? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string;
                     SqlParameter[] sqlParams = {
-                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid }, new SqlParameter("@PROVIDER_GENDER_ID", SqlDbType.Int) { Value = _dict["Gender"] },
-                            new SqlParameter("@PROVIDER_FIRST_NAME", SqlDbType.VarChar) { Value = _dict["First Name"] }, new SqlParameter("@NPI", SqlDbType.VarChar) { Value = _dict["NPI"] },
-                            new SqlParameter("@PROVIDER_LAST_NAME", SqlDbType.VarChar) { Value = _dict["Last Name"] },new SqlParameter("@PROVIDER_MIDDLE_NAME", SqlDbType.VarChar) { Value = _gender },
-                            new SqlParameter("@CSP_INDICATOR", SqlDbType.Int) { Value =0 }, new SqlParameter("@EFFECTIVE_DATE", SqlDbType.VarChar) { Value = _dict["Start Date"] }
+                        new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value =_pid }, new SqlParameter("@PROVIDER_GENDER_ID", SqlDbType.Int) { Value = _gender },
+                        new SqlParameter("@PROVIDER_FIRST_NAME", SqlDbType.VarChar) { Value = _dict["First Name"] }, new SqlParameter("@NPI", SqlDbType.VarChar) { Value = (_dict["NPI"] as string).Substring(0,10) },
+                        new SqlParameter("@PROVIDER_LAST_NAME", SqlDbType.VarChar) { Value = _dict["Last Name"] },new SqlParameter("@PROVIDER_MIDDLE_NAME", SqlDbType.VarChar) { Value = _gender },
+                        new SqlParameter("@CSP_INDICATOR", SqlDbType.Int) { Value = 0 }, new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _effdate }
                     };
-                    ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //check result against query for whole set
+                    _pid = (int)dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams); //check result against query for whole set
                     //rowcheck level: keep when debugging
                     staging_row.queryOne = _query;
                     //manual db level: replaced with UWPH_CreateNewProvider
@@ -2026,7 +2033,7 @@ namespace ProviderHubService
 
                     //NOTE: we have both staging_row and _staging_row.provider_row.additional_matched_rows[x] to imply 3, 4 and 5 from...
                     //      as well as staging_row.record or _staging_row.record to base additional changes from...(if needed, prob not)
-                    valid_match = true; seed_id++;
+                    valid_match = true; //seed_id++;
                 }
 
                 if (valid_match)
@@ -2039,34 +2046,34 @@ namespace ProviderHubService
                         //var _aliasCreate = "INSERT INTO dbo.ALIAS(ALIAS,ALIAS_FIRST_NAME,ALIAS_LAST_NAME,ALIAS_CATEGORY_TYPE_ID) VALUES("+_aliasCreateValues+")";
                         //toReturn.db_transaction += _aliasCreate + ";"; toReturn.alias_query = _aliasCreate + ";";
                         //staging_row.queryResults.Add(dataLayer.ExecuteQuery(_aliasCreate, CommandType.Text));
-                        string _sql = "providerhub.dbo.sp_UWPH_CreateAlias";
+                        string _sql = "providerhub.dbo.sp_CreateAlias";
                         SqlParameter[] _sqlParams = {
                             new SqlParameter("@ALIAS", SqlDbType.VarChar) { Value = (_toI.newFN as string) + " " + (_toI.newLN as string) },
                             new SqlParameter("@ALIAS_FIRST_NAME", SqlDbType.VarChar) { Value = (_toI.newFN as string) },
                             new SqlParameter("@ALIAS_LAST_NAME", SqlDbType.VarChar) { Value = (_toI.newLN as string) },
                             new SqlParameter("@ALIAS_CATEGORY_TYPE_ID", SqlDbType.Int) { Value = 1 }
                         };
-                        ds = dataLayer.ExecuteDataSet(_sql, CommandType.StoredProcedure, 0, _sqlParams); //TODO: check result against aliasCreate for whole set
+                        alias_seed_id = (int)dataLayer.ExecuteScalar(_sql, CommandType.StoredProcedure, 0, _sqlParams); //TODO: check result against aliasCreate for whole set
 
                         var _aliasRCreatevalues = _toI.DBID+","+alias_seed_id+","+"0";
                         //var _aliasRCreate = "INSERT INTO dbo.PROVIDER_ALIAS_MAPPING(PROVIDER_ID,ALIAS_ID,Expired) VALUES("+_aliasRCreatevalues+")";
                         //toReturn.db_transaction += _aliasRCreate + ";"; toReturn.alias_r_query = _aliasRCreate+";";
                         //staging_row.queryResults.Add(dataLayer.ExecuteQuery(_aliasRCreate, CommandType.Text));
-                        _sql = "providerhub.dbo.sp_UWPH_CreateAliasRelationship";
+                        _sql = "providerhub.dbo.sp_CreateProviderAliasMapping";
                         _sqlParams = new SqlParameter[] {
-                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _toI.DBID },
+                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = Convert.ToInt32(_toI.DBID) },
                             new SqlParameter("@ALIAS_ID", SqlDbType.Int) { Value = alias_seed_id },
                             new SqlParameter("@Expired", SqlDbType.Bit) { Value = 0 }
                         };
                         ds = dataLayer.ExecuteDataSet(_sql, CommandType.StoredProcedure, 0, _sqlParams); //TODO: check result against aliasRCreate for whole set
 
-                        alias_seed_id++;
+                        //alias_seed_id++;
                     }
 
                     //PROVIDER 3. (Drop & Re)Create creds/languages mappings (and any other "based on prov data only" mappings), from parent row + PROV_ID / _DBID
                     /*    SELECT * FROM dbo.CREDENTIAL WHERE CREDENTIAL_VALUE='MD'; ds = dataLayer.ExecuteDataSet("select * from dbo.PROVIDER_LANGUAGE", CommandType.Text);
                           SELECT * FROM dbo.PROVIDER_LANGUAGE WHERE LANGUAGE_NAME='English';*/
-                    string _tmp; string _tmpid; string _lid="0"; string _cid="0"; int _seq = 0;
+                    string _tmp; string _tmpid; int _lid=0,_cid=0; int _seq = 0;
                     /*var _drop = "DELETE FROM dbo.PROVIDER_LANGUAGE_MAPPING WHERE PROVIDER_ID=" + _pid;
                     var _drop2 = "DELETE FROM dbo.PROVIDER_CREDENTIAL_MAPPING WHERE PROVIDER_ID=" + _pid;
                     toReturn.db_transaction += _drop + ";"; staging_row.queryTwo = _drop + ";";
@@ -2074,7 +2081,7 @@ namespace ProviderHubService
                     toReturn.db_transaction += _drop2 + ";"; staging_row.queryTwoB = _drop + ";";
                     staging_row.queryResults.Add(dataLayer.ExecuteQuery(_drop2, CommandType.Text));*/
                     //we do this for updating the UI, we don't have to if multiple vendors have different langs/creds listed...
-                    string sql = "providerhub.dbo.sp_UWPH_OptionalDropCredsLangsB4Import";
+                    string sql = "providerhub.dbo.sp_DropProviderCredsLangs";
                     SqlParameter [] sqlParams = new SqlParameter[] {
                         new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid }
                     };
@@ -2085,14 +2092,14 @@ namespace ProviderHubService
                         {
                             language.TryGetValue("LANGUAGE_NAME", out _tmp); language.TryGetValue("LANGUAGE_ID", out _tmpid);
                             if (String.Equals(_tmp, langName))
-                            { _lid = _tmpid; break; }
+                            { _lid = Convert.ToInt32(_tmpid); break; }
                         }
-                        string _fields2 = "PROVIDER_ID,LANGUAGE_ID,SEQUENCE_NUMBER"; string _values2 = _pid+","+_lid+","+_seq.ToString();
+                        string _fields2 = "PROVIDER_ID,LANGUAGE_ID,SEQUENCE_NUMBER"; string _values2 = _pid.ToString()+","+_lid.ToString()+","+_seq.ToString();
                         //var _reinsert = "INSERT INTO dbo.PROVIDER_LANGUAGE_MAPPING(" + _fields2 + ") VALUES (" + _values2 + ")";
                         //toReturn.db_transaction += _reinsert + ";"; staging_row.queryThree = _reinsert + ";";
-                        if(!pid_lid_map.Contains(_pid+"|"+_lid)) { 
+                        if(!pid_lid_map.Contains(_pid.ToString()+"|"+_lid.ToString())) { 
                             //staging_row.queryResults.Add(dataLayer.ExecuteQuery(_reinsert, CommandType.Text));
-                            sql = "providerhub.dbo.sp_UWPH_ImportLangs";
+                            sql = "providerhub.dbo.sp_AddProviderLanguage";
                             sqlParams = new SqlParameter[] {
                                 new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
                                 new SqlParameter("@LANGUAGE_ID", SqlDbType.Int) { Value = _lid },
@@ -2100,7 +2107,7 @@ namespace ProviderHubService
                             };
                             ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _reinsert for whole set
                         }
-                        pid_lid_map.Add(_pid+"|"+_lid);
+                        pid_lid_map.Add(_pid.ToString()+"|"+_lid.ToString());
                         _seq++;
                     }
                     _seq = 0;
@@ -2109,14 +2116,14 @@ namespace ProviderHubService
                         foreach (Dictionary<string, string> credential in idResult.baseTables.Credential) {
                             credential.TryGetValue("CREDENTIAL_VALUE", out _tmp); credential.TryGetValue("CREDENTIAL_ID", out _tmpid);
                             if (String.Equals(_tmp, credName))
-                            { _cid = _tmpid; break; }
+                            { _cid = Convert.ToInt32(_tmpid); break; }
                         }
-                        string _fields2 = "PROVIDER_ID,CREDENTIAL_ID,SEQUENCE_NUMBER"; string _values2 = _pid + "," + _cid + "," + _seq.ToString();
+                        string _fields2 = "PROVIDER_ID,CREDENTIAL_ID,SEQUENCE_NUMBER"; string _values2 = _pid.ToString() + "," + _cid.ToString() + "," + _seq.ToString();
                         //var _reinsert = "INSERT INTO dbo.PROVIDER_CREDENTIAL_MAPPING(" + _fields2 + ") VALUES (" + _values2 + ")";
                         //toReturn.db_transaction += _reinsert + ";"; staging_row.queryThree = _reinsert + ";";
-                        if (!pid_cid_map.Contains(_pid+"|"+_cid)) { 
+                        if (!pid_cid_map.Contains(_pid.ToString()+"|"+_cid.ToString())) { 
                             //staging_row.queryResults.Add(dataLayer.ExecuteQuery(_reinsert, CommandType.Text));
-                            sql = "providerhub.dbo.sp_UWPH_ImportCreds";
+                            sql = "providerhub.dbo.sp_AddProviderCredential";
                             sqlParams = new SqlParameter[] {
                                 new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
                                 new SqlParameter("@CREDENTIAL_ID", SqlDbType.Int) { Value = _cid },
@@ -2124,7 +2131,7 @@ namespace ProviderHubService
                             };
                             ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //check against _reinsert
                         }
-                        pid_cid_map.Add(_pid + "|" + _cid);
+                        pid_cid_map.Add(_pid.ToString() + "|" + _cid.ToString());
                         _seq++;
                     }
                     //PROVIDER 4. add FacProvSpec IDs to validFacProvSpec so they aren't mistakenly marked for removal in Terms
@@ -2139,39 +2146,62 @@ namespace ProviderHubService
                     //string _fpr = "INSERT INTO dbo.FACILITY_PROVIDER_RELATIONSHIP(PROVIDER_ID,FACILITY_ID,EFFECTIVE_DATE) VALUES(" + __values+")";
                     //toReturn.db_transaction += _fpr + ";"; staging_row.fprquery=_fpr + ";";
                     //staging_row.queryResults.Add(dataLayer.ExecuteQuery(_fpr, CommandType.Text));
-                    sql = "providerhub.dbo.sp_UWPH_InsertFPR";
-                    sqlParams = new SqlParameter[] {
-                        new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
-                        new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = ((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"] },
-                        new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _dict["Start Date"] as string }
-                    };
-                    ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _fpr for whole set
+                    if (!pid_fid_map.Contains(_pid.ToString()+"|"+ ((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"])) {
+                        sql = "providerhub.dbo.sp_InsertFacilityProviderRelationship"; //pid_fid_map
+                        sqlParams = new SqlParameter[] {
+                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
+                            new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"]) },
+                            new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = (_dict["Start Date"] as string =="")? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string }
+                        };
+                        fpr_seed_id = (int)dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _fpr for whole set
+                        pid_fid_map.Add(_pid.ToString()+"|"+ ((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"]);
+                    } else {
+                        sql = "providerhub.dbo.getFPRFromPIDandFID"; //pid_fid_map
+                        sqlParams = new SqlParameter[] {
+                            new SqlParameter("@PID", SqlDbType.Int) { Value = _pid },
+                            new SqlParameter("@FID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"]) }
+                        };
+                        ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+                        fpr_seed_id = ds.Tables[0].Rows[0].Field<int>("FPR_ID");
+                    }
                     __values= fpr_seed_id.ToString()+","+ ((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"] + ",'"+_dict["Start Date"] as string+"'";
                     //string _e = "INSERT INTO dbo.EMPLOYMENT(FACILITY_PROVIDER_RELATIONSHIP_ID,SPECIALTY_ID,EFFECTIVE_DATE) VALUES("+__values+")";
                     //toReturn.db_transaction += _e + ";"; fpr_seed_id++; staging_row.empquery = _e + ";";
                     //staging_row.queryResults.Add(dataLayer.ExecuteQuery(_e, CommandType.Text));
-                    sql = "providerhub.dbo.sp_UWPH_InsertEMPLOYMENT";
+                    sql = "providerhub.dbo.sp_InsertEmploymentRecord";
                     sqlParams = new SqlParameter[] {
                         new SqlParameter("@FACILITY_PROVIDER_RELATIONSHIP_ID", SqlDbType.Int) { Value = fpr_seed_id },
-                        new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = ((IDictionary<string, string>)staging_row.IDd_fac.matchedSpec)["SPECIALTY_ID"] },
-                        new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _dict["Start Date"] as string }
+                        new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]) },
+                        new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = (_dict["Start Date"] as string =="")? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string }
+                    };
+                    emp_seed_id = (int)dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _e for whole set
+                    //fpr_seed_id++;
+
+                    sql = "providerhub.dbo.sp_InsertDirectoryRecords";
+                    sqlParams = new SqlParameter[] {
+                        new SqlParameter("@EMPLOYMENT_ID", SqlDbType.Int) { Value = emp_seed_id },
+                        new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]) },
+                        new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"]) },
+                        new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = (_dict["Start Date"] as string =="")? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string }
                     };
                     ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _e for whole set
-                    fpr_seed_id++;
+                    //emp_seed_id++;
 
                     if (staging_row.addProvSpec == true) {
                         var aPS_values = _pid+","+ ((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"] + ",100,'"+_dict["Start Date"] as string+"'";
                         //string _addProvSpec = "INSERT INTO dbo.PROVIDER_SPECIALTY_MAPPING(PROVIDER_ID,SPECIALTY_ID,SEQUENCE_NUMBER,EFFECTIVE_DATE) VALUES("+aPS_values+")";
                         //staging_row.queryResults.Add(dataLayer.ExecuteQuery(_addProvSpec, CommandType.Text));
-                        sql = "providerhub.dbo.sp_UWPH_InsertPROVSPEC";
-                        sqlParams = new SqlParameter[] {
-                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = fpr_seed_id },
-                            new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = ((IDictionary<string, string>)staging_row.IDd_fac.matchedSpec)["SPECIALTY_ID"] },
-                            new SqlParameter("@PrimarySpecialtyFromFile", SqlDbType.VarChar) { Value = ((IDictionary<string,string>)staging_row)["Primary Specialty"] },
-                            // new SqlParameter("@SEQUENCE_NUMBER", SqlDbType.Int) { Value = fpr_seed_id }, SP takes care of SEQ_NUMBER based on existing ProvSpecs + "Primary Specialty" value
-                            new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _dict["Start Date"] as string }
-                        };
-                        ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _e for whole set
+                        if (!pid_sid_map.Contains(_pid.ToString()+"|"+ ((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"])) {
+                            sql = "providerhub.dbo.sp_InsertProviderSpecialty";//pid_sid_map
+                            sqlParams = new SqlParameter[] {
+                                new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
+                                new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]) },
+                                // new SqlParameter("@SEQUENCE_NUMBER", SqlDbType.Int) { Value = fpr_seed_id }, SP takes care of SEQ_NUMBER based on existing ProvSpecs + "Primary Specialty" value
+                                new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = (_dict["Start Date"] as string =="")? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string }
+                            };
+                            ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _e for whole set
+                            pid_sid_map.Add(_pid.ToString()+"|"+ ((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]);
+                        }
                     }
                     try
                     {
@@ -2182,44 +2212,81 @@ namespace ProviderHubService
                             //string __fpr = "INSERT INTO dbo.FACILITY_PROVIDER_RELATIONSHIP(PROVIDER_ID,FACILITY_ID,EFFECTIVE_DATE) VALUES(" + ___values + ")";
                             //toReturn.db_transaction += __fpr + ";"; staging_row.fprquery_sub = __fpr + ";";
                             //staging_row.queryResults.Add(dataLayer.ExecuteQuery(__fpr, CommandType.Text));
-                            sql = "providerhub.dbo.sp_UWPH_InsertFPR";
-                            sqlParams = new SqlParameter[] {
-                                new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
-                                new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = ((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"] },
-                                new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _dict["Start Date"] as string }
-                            };
-                            ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);//check vs __fpr
+                            if (!pid_fid_map.Contains(_pid.ToString()+"|"+ ((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"])) {
+                                sql = "providerhub.dbo.sp_InsertFacilityProviderRelationship"; //pid_fid_map
+                                sqlParams = new SqlParameter[] {
+                                    new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
+                                    new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"]) },
+                                    new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = (_dict["Start Date"] as string =="")? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string }
+                                };
+                                fpr_seed_id = (int)dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams);//check vs __fpr
+                                pid_fid_map.Add(_pid.ToString()+"|"+ ((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"]);
+                            } else {
+                                sql = "providerhub.dbo.getFPRFromPIDandFID"; //pid_fid_map
+                                sqlParams = new SqlParameter[] {
+                                    new SqlParameter("@PID", SqlDbType.Int) { Value = _pid },
+                                    new SqlParameter("@FID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)staging_row.IDd_fac.matchedFac)["FACILITY_ID"]) }
+                                };
+                                ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+                                fpr_seed_id = ds.Tables[0].Rows[0].Field<int>("FPR_ID");
+                            }
                             ___values = fpr_seed_id.ToString() + "," + ((IDictionary<string, string>)additional_row.IDd_spec.matchedSpec)["SPECIALTY_ID"] + ",'" + _dict["Start Date"] as string+"'";
                             //string __e = "INSERT INTO dbo.EMPLOYMENT(FACILITY_PROVIDER_RELATIONSHIP_ID,SPECIALTY_ID,EFFECTIVE_DATE) VALUES(" + ___values + ")";
                             //toReturn.db_transaction += __e + ";"; fpr_seed_id++; staging_row.empquery_sub = __e + ";";
                             //staging_row.queryResults.Add(dataLayer.ExecuteQuery(__e, CommandType.Text));
-                            sql = "providerhub.dbo.sp_UWPH_InsertEMPLOYMENT";
+                            sql = "providerhub.dbo.sp_InsertEmploymentRecord";
                             sqlParams = new SqlParameter[] {
                                 new SqlParameter("@FACILITY_PROVIDER_RELATIONSHIP_ID", SqlDbType.Int) { Value = fpr_seed_id },
-                                new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = ((IDictionary<string, string>)additional_row.IDd_fac.matchedSpec)["SPECIALTY_ID"] },
-                                new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _dict["Start Date"] as string }
+                                new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)additional_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]) },
+                                new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = (_dict["Start Date"] as string =="")? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string }
+                            };
+                            emp_seed_id = (int)dataLayer.ExecuteScalar(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _e for whole set
+                            //fpr_seed_id++;
+
+                            sql = "providerhub.dbo.sp_InsertDirectoryRecords";
+                            sqlParams = new SqlParameter[] {
+                                new SqlParameter("@EMPLOYMENT_ID", SqlDbType.Int) { Value = emp_seed_id },
+                                new SqlParameter("@FACILITY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)additional_row.IDd_fac.matchedFac)["FACILITY_ID"]) },
+                                new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)additional_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]) },
+                                new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = (_dict["Start Date"] as string =="")? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string }
                             };
                             ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _e for whole set
-                            fpr_seed_id++;
+                            //emp_seed_id++;
 
                             if (additional_row.addProvSpec == true) {
                                 var aPS_values = _pid+","+ ((IDictionary<string, string>)additional_row.IDd_spec.matchedSpec)["SPECIALTY_ID"] + ",100,'"+_dict["Start Date"] as string+"'";
                                 //string _addProvSpec = "INSERT INTO dbo.PROVIDER_SPECIALTY_MAPPING(PROVIDER_ID,SPECIALTY_ID,SEQUENCE_NUMBER,EFFECTIVE_DATE) VALUES("+aPS_values+")";
                                 //staging_row.queryResults.Add(dataLayer.ExecuteQuery(_addProvSpec, CommandType.Text));
-                                sql = "providerhub.dbo.sp_UWPH_InsertPROVSPEC";
-                                sqlParams = new SqlParameter[] {
-                                    new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = fpr_seed_id },
-                                    new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = ((IDictionary<string, string>)additional_row.IDd_fac.matchedSpec)["SPECIALTY_ID"] },
-                                    // ensure it's ok to take Primary Specialty in an additional_row from staging_row. it must be since we use that value for all of a given Provider's linked records...
-                                    new SqlParameter("@PrimarySpecialtyFromFile", SqlDbType.VarChar) { Value = ((IDictionary<string,string>)staging_row)["Primary Specialty"] },
-                                    // new SqlParameter("@SEQUENCE_NUMBER", SqlDbType.Int) { Value = fpr_seed_id }, SP takes care of SEQ_NUMBER based on existing ProvSpecs + "Primary Specialty" value
-                                    new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = _dict["Start Date"] as string }
-                                };
-                                ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _e for whole set
+                                if (!pid_sid_map.Contains(_pid.ToString()+"|"+ ((IDictionary<string, string>)additional_row.IDd_spec.matchedSpec)["SPECIALTY_ID"])) {
+                                    sql = "providerhub.dbo.sp_InsertProviderSpecialty";//pid_sid_map
+                                    sqlParams = new SqlParameter[] {
+                                        new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
+                                        new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = Convert.ToInt32(((IDictionary<string, string>)additional_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]) },
+                                        // new SqlParameter("@SEQUENCE_NUMBER", SqlDbType.Int) { Value = fpr_seed_id }, SP takes care of SEQ_NUMBER based on existing ProvSpecs + "Primary Specialty" value
+                                        new SqlParameter("@EFFECTIVE_DATE", SqlDbType.DateTime) { Value = (_dict["Start Date"] as string =="")? DateTime.Now.ToShortDateString() : _dict["Start Date"] as string }
+                                    };
+                                    ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams); //TODO: check result against _e for whole set
+                                    pid_sid_map.Add(_pid.ToString()+"|"+ ((IDictionary<string, string>)additional_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]);
+                                }
                             }
                         }
                     }
                     catch (Exception e) { }
+
+                    //ProvSpecs that had to be added are added, now apply "Primary Specialty" from CSV
+                    //new SqlParameter("@PrimarySpecialtyFromFile", SqlDbType.VarChar) { Value = ((IDictionary<string,string>)staging_row)["Primary Specialty"] },
+                    try{
+                        sql = "providerhub.dbo.sp_UpdateProviderPrimarySpecialtyFromId";
+                        string _isps = _dict["Primary Specialty"] as string;//"Yes"
+                        int _specid = Convert.ToInt32(((IDictionary<string, string>)staging_row.IDd_spec.matchedSpec)["SPECIALTY_ID"]);
+                            sqlParams = new SqlParameter[] {
+                            new SqlParameter("@PROVIDER_ID", SqlDbType.Int) { Value = _pid },
+                            new SqlParameter("@isPS", SqlDbType.VarChar) { Value = _isps },
+                            new SqlParameter("@SPECIALTY_ID", SqlDbType.Int) { Value = _specid }
+                        };
+                        ds = dataLayer.ExecuteDataSet(sql, CommandType.StoredProcedure, 0, sqlParams);
+                    }
+                    catch (Exception e) { /*SPEC NOT FOUND, "FATAL ERROR"*/ staging_row.spec_not_found_fatal_error = true; }
                 }
                 test_num_rows--;
             }

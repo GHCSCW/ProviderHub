@@ -213,6 +213,7 @@ export class ProviderComponent implements OnInit {
         let lSelect: any = $("#edit_ProviderDemo_Language"); let cSelect: any = $("#edit_Provider_Credentials"); let sSelect: any = $("#add_Provider_Specialty"); let fSelect: any = $("#add_Provider_Facility");
         for (var i = 0; i < credsList.length; i++) { var selected = (_credArr.includes(credsList[i].Value)) ? "selected" : ""; cSelectHTML += "<option value='" + credsList[i].ID + "' " + selected + ">" + credsList[i].Value + " - " + credsList[i].Description + "</option>"; }
         for (var i = 0; i < languagesList.length; i++) { var selected = (_langArr.includes(languagesList[i].Name)) ? "selected" : ""; lSelectHTML += "<option value='" + languagesList[i].ID + "' " + selected + ">" + languagesList[i].Name + "</option>"; }
+        //initializing blank versions of Specialty object for each Specialty ID (for use in Add Provider-Specialty dropdown)
         for (var i = 0; i < specsList.length; i++) {
           sSelectHTML += "<option value='" + specsList[i].ID + "'>" + specsList[i].Name + "</option>";
           var toAdd = specsList[i]; toAdd.SequenceNumber = this.Provider.ProviderSpecialties.length; toAdd.MappingID = 0; toAdd.ID =specsList[i].ID; toAdd.LastUpdatedBy = environment.authUser.username;
@@ -220,6 +221,7 @@ export class ProviderComponent implements OnInit {
           toAdd.Status = "ACTIVE"; toAdd.ParentName = ''; toAdd.ParentSpecialtyID = 0; this._specsList[toAdd.ID]=toAdd;
         }
         console.log(facsList);
+        //initializing blank versions of Facility object for each Facility ID (for use in Add Provider-Facility dropdown)
         for (var i = 0; i < facsList.length; i++){
           var toAdd = facsList[i];
           fSelectHTML += "<option value='"+facsList[i].ID + "'>" + facsList[i].FacilityName + "</option>";
@@ -458,6 +460,7 @@ export class ProviderComponent implements OnInit {
     alert("set sortable!");
   }
 
+  //$(getEditDivsSelector(type_of_edit_desired, optional_id_of_editable_object, optional_mapping_id_assoc_with_editable_objet)
   public getEditDivsSelector(type: number, ID?: number, MappingID?: number) {
     switch (type) {
       case 0:
@@ -662,10 +665,12 @@ export class ProviderComponent implements OnInit {
     if (type == 2) { //specialty-specific edit: show card if not expanded + init Datepickers if not already init
       let _effDate: any = document.getElementById("edit_ProviderSpec" + entityID + "_EffectiveDate"); let _termDate: any = document.getElementById("edit_ProviderSpec" + entityID + "_TerminationDate");
       if (_effDate.getAttribute("ph-initialized") == "false") {
-        let jQ_effDate: any = $(_effDate); jQ_effDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
+        let jQ_effDate: any = $(_effDate); jQ_effDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" });
+        _effDate.setAttribute("ph-initialized", "true");
       }
       if (_termDate.getAttribute("ph-initialized") == "false") {
-        let jQ_termDate: any = $(_termDate); jQ_termDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" }); _effDate.setAttribute("ph-initialized", "true");
+        let jQ_termDate: any = $(_termDate); jQ_termDate.datepicker({ showOtherMonths: true, selectOtherMonths: true, changeMonth: true, changeYear: true, dateFormat: "M d, yy", prevText: "<", nextText: ">" });
+        _effDate.setAttribute("ph-initialized", "true");
       }
       if (document.getElementById('specialtyTable_' + entityID).style.display == "" || document.getElementById('specialtyTable_'+entityID).style.display != "table") {
           //$(event.target).parent().parent().children("table.specTable").toggle();
@@ -693,13 +698,10 @@ export class ProviderComponent implements OnInit {
     $("#edit_Provider_EpicProviderID").val(this.Provider.EpicProviderID);
     $("#edit_Provider_NPI").val(this.Provider.NPI);
     $("#edit_Provider_Gender").val(this.Provider.Gender);
-    //$("#edit_Provider_Credentials").val(this.Provider.CredentialList);//NOT WORKING
-    //$("#edit_ProviderDemo_Language").val(this.Provider.LanguageList);//NOT WORKING
     $("#edit_ProviderDemo_MedicarePTAN").val(this.Provider.MedicarePTAN);
     var transformDate = new DatePipe('en-us');
     $("#edit_ProviderDemo_MedicareEffectiveDate").val(transformDate.transform(this.Provider.MedicareEffectiveDate));
     $("#edit_ProviderDemo_MedicareTerminationDate").val(transformDate.transform(this.Provider.MedicareTerminationDate));
-    
 
     let _editDivs: any = $(this.getEditDivsSelector(type, entityID, entityRelationshipID)); _editDivs.hide(); _editDivs = null;
     let _notEditDivs: any = $(this.getNotEditDivsSelector(type, entityID, entityRelationshipID)); _notEditDivs.show(); _notEditDivs = null;
