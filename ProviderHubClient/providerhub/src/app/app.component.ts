@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
           case "Vendor": this.selectedTab = "V"; break;
           default: this.selectedTab = "N"; console.log("a url in this app without a '/'? or something wrong"); break;
         }
-        this.compactDesign = (this.router.url.indexOf("Search") == -1);
+        this.compactDesign = (this.router.url.indexOf("Search") == -1 && this.router.url.indexOf("uwimport") == -1);
         if (this.compactDesign) {
           window.addEventListener('resize', function (event) {
             var desiredSidebarHeight = Math.max(document.getElementsByClassName('main-display')[0].clientHeight, (window.innerHeight - 50)); var defaultSidebarHeight = 410; var correctionalFactor = 10;
