@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Http.Cors;
 using ProviderHubService;
+using System.Web.Script.Serialization;
 
 namespace ProviderHubServiceNew.Controllers
 {
@@ -23,7 +24,15 @@ namespace ProviderHubServiceNew.Controllers
                 providers = dataLayer.GetProviderList(id,true);
             }
             string uname = User.Identity.Name;
-            return Json(providers, JsonRequestBehavior.AllowGet);
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            var result = new ContentResult
+            {
+                Content = serializer.Serialize(providers),
+                ContentType = "application/json"
+            };
+            return result;
+            //return Json(providers, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetVendorList(string id) {
