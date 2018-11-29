@@ -127,8 +127,8 @@
           <!--EACH FACILITY-->
           <div class="card specCard ui-sortable-handle" style="position: relative; left: 0px; top: 0px;width:100%;">
             <div class="card-body specCardBody">
-              <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)"><a href="../vendor/{{Facility.VID}}" style="color:#fff;">{{Facility.VendorName}}</a></h5>
-              <table id="facTable" class="card-text specTable">
+              <h5 class="card-title specTitle blu provFacTitle"><a href="../vendor/{{Facility.VID}}" style="color:#fff;">{{Facility.VendorName}}</a></h5>
+              <table id="facTable" class="card-text specTable" style="display:block!important;">
                 <tbody *ngFor="let v of Facility.VendorAddresses">
                   <tr>
                     <td colspan="4" class="midHead"><h5 class="card-title specTitle blu" (click)="onSpecClick($event)">{{v.AddressTypeName}}</h5></td>
@@ -163,7 +163,7 @@
                 </tbody>
               </table>
             </div>
-            <div class="card-footer provFacFooter">
+            <div class="card-footer provFacFooter" style="display:block!important;">
               <span>Last Updated By: {{Facility.VLastUpdatedBy}}</span><span>Last Updated On: {{Facility.VLastUpdatedDate}}</span>
             </div>
           </div>

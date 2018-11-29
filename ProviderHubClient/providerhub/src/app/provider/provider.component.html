@@ -228,50 +228,12 @@
           <!--EACH FACILITY-->
           <div *ngFor="let f of Provider.ProviderFacilities" class="card specCard indivFacWrapper ui-sortable-handle fac_status_{{f.FPRelationship.status}}" id="facWrapper_{{f.ID}}" style="position: relative; left: 0px; top: 0px;width:100%;">
             <span [hidden]="true">spec-id:{{f.ID}}</span>
-            <div class="card-body specCardBody">
-              <h5 class="card-title specTitle blu provFacTitle" (click)="onSpecClick($event)"><a href="../facility/{{f.ID}}" style="color:#fff;">{{f.FacilityName}}</a></h5>
+            <div class="card-body specCardBody"><!-- remove a if it interfers with firing of onSpecClick -- it shouldn't though -->
+              <h5 class="card-title specTitle blu provFacTitle" style="cursor:pointer;color:#fff;" (click)="onSpecClick($event)">{{f.FacilityName}}</h5>
               <table id="facTable" class="card-text specTable">
-                <!-- basically Facility Demographics (Facility + FacilityAddress)-->
+                <!-- switched order: FPR first, THEN Facility Demographics (Facility + FacilityAddress)-->
                 <tbody>
-                  <tr>
-                    <td>Address Type</td>
-                    <td>{{f.FacilityAddress.AddressTypeName}}</td><!-- class="rowHeader" id="rH" colspan="4"-->
-                  </tr>
-                  <tr>
-                    <td>NPI</td>
-                    <td>{{f.NPI}}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>Address</td>
-                    <td>
-                      {{f.FacilityAddress.AddressLine1}}&nbsp;&nbsp;{{f.FacilityAddress.AddressLine2}}<br />
-                      {{f.FacilityAddress.City}},&nbsp;{{f.FacilityAddress.State}}&nbsp;&nbsp;{{f.FacilityAddress.ZipCode}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Phone</td>
-                    <td>{{f.FacilityAddress.PhoneNumber | nullable}} <span *ngIf="!f.FacilityAddress.HidePhoneExtension">ext. {{f.FacilityAddress.PhoneExtension}}</span></td>
-                  </tr>
-                  <tr>
-                    <td>Fax</td>
-                    <td>{{f.FacilityAddress.FaxNumber | nullable}}</td>
-                  </tr>
-                  <tr *ngIf="!f.FacilityAddress.HideAlternatePhoneNumber">
-                    <td>Alt. Phone</td>
-                    <td>{{f.FacilityAddress.AlternatePhoneNumber}}</td>
-                  </tr>
-                  <tr>
-                    <td>Website</td>
-                    <td><a href="{{f.FacilityAddress.Website | nullable:''}}" target="_blank">{{f.FacilityAddress.Website | nullable:''}}</a></td>
-                  </tr>
-                  <!--
-                  <tr>
-                    <td>Hours</td>
-                    <td>Coming Soon</td>
-                  </tr>
-                  -->
+                  <!--FPR-->
                   <tr>
                     <td colspan="4" id="row0FP_{{f.FPRelationship.RelationshipID}}" class="midHead">
                       <!--the IDs let us efficiently toggle edit / notEdit states in FPRelationship -->
@@ -385,7 +347,53 @@
                       </span>
                     </td>
                   </tr>
-
+                  <!--Facility Address clicking header should go to ../facility/{{f.ID}}-->
+                  <tr>
+                    <td colspan="4" class="midHead">
+                      <h5 class="card-title specTitle blu">
+                        <a style="color:#fff;" href="../facility/{{f.ID}}">{{f.FacilityName}} - Click to View Facility</a>
+                      </h5>
+                     </td>
+                  </tr>
+                  <tr>
+                    <td>Address Type</td>
+                    <td>{{f.FacilityAddress.AddressTypeName}}</td><!-- class="rowHeader" id="rH" colspan="4"-->
+                  </tr>
+                  <tr>
+                    <td>NPI</td>
+                    <td>{{f.NPI}}</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>
+                      {{f.FacilityAddress.AddressLine1}}&nbsp;&nbsp;{{f.FacilityAddress.AddressLine2}}<br />
+                      {{f.FacilityAddress.City}},&nbsp;{{f.FacilityAddress.State}}&nbsp;&nbsp;{{f.FacilityAddress.ZipCode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Phone</td>
+                    <td>{{f.FacilityAddress.PhoneNumber | nullable}} <span *ngIf="!f.FacilityAddress.HidePhoneExtension">ext. {{f.FacilityAddress.PhoneExtension}}</span></td>
+                  </tr>
+                  <tr>
+                    <td>Fax</td>
+                    <td>{{f.FacilityAddress.FaxNumber | nullable}}</td>
+                  </tr>
+                  <tr *ngIf="!f.FacilityAddress.HideAlternatePhoneNumber">
+                    <td>Alt. Phone</td>
+                    <td>{{f.FacilityAddress.AlternatePhoneNumber}}</td>
+                  </tr>
+                  <tr>
+                    <td>Website</td>
+                    <td><a href="{{f.FacilityAddress.Website | nullable:''}}" target="_blank">{{f.FacilityAddress.Website | nullable:''}}</a></td>
+                  </tr>
+                  <!--
+  <tr>
+    <td>Hours</td>
+    <td>Coming Soon</td>
+  </tr>
+  -->
                 </tbody>
               </table>
             </div>

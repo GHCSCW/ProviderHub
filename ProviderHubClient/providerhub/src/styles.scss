@@ -16,7 +16,43 @@ a{
   color:#E6003E;
   text-decoration:underline;
 }
-a:hover{color:#E6003E}
+/*app.component styles*/
+.folderTab {
+  padding-left: 10px;
+  padding-right: 45px;
+  padding-top: 16px;
+  padding-bottom: 14px;
+  border-top-right-radius: 45px;
+}
+.folderTab:before {
+  -webkit-transform: skewX(40deg);
+  transform: skewX(40deg);
+  height: 53px;
+  width: 71px;
+  border-radius: 10px 10px 0px 0px;
+  background-color: #231f20;
+  content: "";
+  position: absolute;
+  left: 78px;
+  top: -3px;
+  z-index:-1;
+}
+.folderTab .dropdown-content[_ngcontent-c0] {
+  top:51px!important;
+}
+.folderTabSelected {
+  background: #E6003E !important;
+  color:#fff!important;
+}
+.folderTabSelected:before {
+  background: #E6003E !important;
+  height:54px;/*because font-size change below*/
+}
+.folderTabSelected a:first-child{font-size:18px!important;}
+/**/
+a:hover {
+  color: #E6003E
+}
 .navbar-right {
   float: right;
   color: #9d9d9d;
@@ -177,8 +213,10 @@ input[type='search'] {
   margin: 0;
   margin-left: 20px;
   margin-top: 14px;
-  opacity: 0.8;
-  color:rgb(238,238,238);
+  /*opacity: 0.8;
+  color: rgb(238,238,238);*//*subtle look, looks better but apparently hard to tell where u are??*/
+  opacity: 1;
+  color: #fff;
 }
 
 /*Provider View Styles (shared with most "single object" CRUD views aka Facility View, Vendor View, etc...*/

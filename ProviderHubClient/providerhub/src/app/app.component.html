@@ -1,27 +1,25 @@
 <div id="nav-bar">
   <a href="/" class="navbar-brand navbar-left">{{title}}</a>
 
-  <span class="dropdown">
-    <a [class.tabselected]="selectedTab=='P'" (click)="nav('/Provider/Search','P')">Provider</a>
-    <span class="dropdown-content">
-      <a href="#">Create Provider</a>
-    </span>
-  </span>
-
   <span class="navbar-left menu-links">
-    <span class="dropdown">
+    <span class="dropdown folderTab" [class.folderTabSelected]="selectedTab=='P'">
       <a [class.tabselected]="selectedTab=='P'" (click)="nav('/Provider/Search','P')">Provider</a>
       <span class="dropdown-content">
-        <a href="#">Create Provider</a>
+        <a href="/Provider/Demographics/0">Create Provider</a>
       </span>
     </span>
-    <span class="dropdown">
+    <span class="dropdown folderTab" [class.folderTabSelected]="selectedTab=='F'">
       <a [class.tabselected]="selectedTab=='F'" (click)="nav('/Facility/Search','F')">Facility</a>
       <span class="dropdown-content">
-        <a href="#">Create Facility</a>
+        <a href="/Facility/Demographics/0">Create Facility</a>
       </span>
     </span>
-    <a [class.tabselected]="selectedTab=='V'" (click)="nav('/Vendor/Search','V')">Vendor</a>
+    <span class="dropdown folderTab" [class.folderTabSelected]="selectedTab=='V'">
+      <a [class.tabselected]="selectedTab=='V'" (click)="nav('/Vendor/Search','V')">Vendor</a>
+      <span class="dropdown-content">
+        <a href="/Vendor/Addresses/0">Create Vendor</a>
+      </span>
+    </span>
 
   </span>
   <span class="navbar-right">{{username}}</span>
