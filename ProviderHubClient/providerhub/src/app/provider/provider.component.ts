@@ -53,7 +53,7 @@ export class ProviderComponent implements OnInit {
 
   public canEdit() {
     //SKP: Don't want to waste time: ask M$ why the fuck we have to make (or use) a custom JSON boolean serializer class, and it spits out "True" and "False" by default.
-    return (environment.authUser.isSuperUser == 'True' || environment.authUser.isEditor == 'True');  
+    return (environment.authUser.isSuperUser == 'True' || environment.authUser.isEditor == 'True');
   }
 
   ngOnInit() {
@@ -362,6 +362,18 @@ export class ProviderComponent implements OnInit {
             else { var evt = window.document.createEvent('UIEvents'); evt.initUIEvent('resize', true, false, window, 0); window.dispatchEvent(evt); }
           }
         });
+        this.employmentDT.on('select',
+          (e, dt, type, indexes) => {
+            console.log(this.employmentDT.rows(indexes).data().pluck("ID"));
+            this.onEmploymentsRowSelect(this.employmentDT.rows(indexes).data().pluck("ID"));
+          }
+        );
+        this.employmentDT.on('deselect',
+          (e, dt, type, indexes) => {
+            console.log(this.employmentDT.rows(indexes).data().pluck("ID"));
+            this.onEmploymentsRowSelect(this.employmentDT.rows(indexes).data().pluck("ID"));
+          }
+        );
         //3. Additional properties for UI conditionals ('novalue' pipe doesn't work in HTML. Not sure why so we use it here)
         //this.origFacOrder = ""; this.currentFacOrder = "";
         for (var i = 0; i < this.Provider.ProviderFacilities.length; i++) {
@@ -466,6 +478,25 @@ export class ProviderComponent implements OnInit {
         + "<td>Directory Termination Date <br/>" + new PHDatePipe().transform(d.DirectoryTerminationDate.replace(/\D/g, '').slice(0, -4)) + "</td>"
         + "<td>PCP Eligible <br/>" + new BoolPipe().transform(d.PCPEligibleIndicator) + "</td>" 
         + "<td>Float Provider <br/>" + new BoolPipe().transform(d.FPRelationship.FloatProviderIndicator) + "</td></tr>";
+    }
+  }
+  private onEmploymentsRowSelect(indexes: number[]): void {
+    var providerId = indexes[0];
+    console.log("Employment ID: " + providerId);
+    console.log($("tr#" + providerId));
+    var row = this.employmentDT.row($("tr#" + providerId)[0]);
+    if (row.child.isShown()) {
+      row.child.hide();
+    } else {
+      console.log(row.data());
+      row.child(format(row.data()), 'expandedFP').show();
+    }
+    function format(e) {
+      return "<table class='plainjane'><tr>"
+        + "<td><b>EMPLOYMENT ID:" + e.ID + "</b></td>"
+        + "<td><b>Effective Date</b><br/>" + new PHDatePipe().transform(e.EffectiveDate) + "</td>"
+        + "<td><b>Termination Date</b><br/>" + new PHDatePipe().transform(e.TerminationDate) + "</td>"
+        + "</tr></table>";
     }
   }
 
