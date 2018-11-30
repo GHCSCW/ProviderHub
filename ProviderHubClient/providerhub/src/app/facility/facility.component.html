@@ -3,15 +3,16 @@
     <h2>Facility</h2>
     <ul id="facility-nav">
       <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
-      <li tab-id="Vendor" tab-url="Vendor" [class.selected]="nav=='Vendor'">Vendor</li>
-      <li tab-id="Providers" tab-url="Providers" [class.selected]="nav=='Providers'">Providers</li>
-      <li tab-id="Specialties" tab-url="Specialties" [class.selected]="nav=='Specialties'">Specialties</li>
-      <li tab-id="Networks" tab-url="Networks" [class.selected]="nav=='Networks'">Networks</li>
+      <li tab-id="Vendor" tab-url="Vendor" [hidden]="facilityId==0" [class.selected]="nav=='Vendor'">Vendor</li>
+      <li tab-id="Providers" tab-url="Providers" [hidden]="facilityId==0" [class.selected]="nav=='Providers'">Providers</li>
+      <li tab-id="Specialties" tab-url="Specialties" [hidden]="facilityId==0" [class.selected]="nav=='Specialties'">Specialties</li>
+      <li tab-id="Networks" tab-url="Networks" [hidden]="facilityId==0" [class.selected]="nav=='Networks'">Networks</li>
     </ul>
   </div>
   <div class="facility-display main-display">
     <h2 id="facility-main-header" class="one red">
       {{Facility.FacilityName}}
+      <span [hidden]="facilityId!=0">Edit and then Save to Create a New Facility!</span>
       <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')">
         <i class="fa fa-edit is-editor not-editing"></i><i class="fa fa-save is-editor is-editing"></i><i class="fa fa-times is-editor is-editing"></i>
       </span>
@@ -43,7 +44,7 @@
       </tr>
     </table>
     <hr />
-    <div id="demo-card" class="card" [hidden]="nav!='Demographics'">
+    <div id="demo-card" class="card" [hidden]="nav!='Demographics' || facilityId==0">
       <div class="card-body">
         <h5 class="card-title red">
           Demographics
@@ -88,7 +89,8 @@
               <span class="is-editing"><input type="text" id="edit_FacilityDemo_FaxNumber" placeholder="Fax #" value="{{FacilityAddress.FaxNumber}}" /></span>
             </td>
           </tr>
-          <tr class="not-editing"><!-- SKP WE DECIDED NOT TO USE *ngIf="!FacilityAddress.HideAlternatePhoneNumber" HERE ANYMORE, BUT STILL AVAILABLE IF YOU WANT TO REAPPLY + FIX ALTERNATING CSS ISSUE -->
+          <tr class="not-editing">
+            <!-- SKP WE DECIDED NOT TO USE *ngIf="!FacilityAddress.HideAlternatePhoneNumber" HERE ANYMORE, BUT STILL AVAILABLE IF YOU WANT TO REAPPLY + FIX ALTERNATING CSS ISSUE -->
             <td>Alt. Phone</td>
             <td>
               <span class="not-editing">
@@ -109,8 +111,8 @@
             </td>
           </tr>
           <!--<tr> <!--CLAUDIA: recommend you just use [hidden]=Facility.HasHours here and set Facility.HasHours to false by default; and true when object loaded with non-null value-->
-            <!--<td>Hours</td>
-            <td>Coming Soon</td><!--Facility.Hours.DisplayValues-->
+          <!--<td>Hours</td>
+        <td>Coming Soon</td><!--Facility.Hours.DisplayValues-->
           <!--</tr> -->
           <tr class="footer">
             <td>Last Updated By: {{Facility.LastUpdatedBy}}</td>
@@ -120,6 +122,7 @@
       </div>
     </div>
     <!--VENDOR-->
+    <!--ADD_VENDOR_STUFF + VENDOR_EDIT_LOCKING STUFF HERE-->
     <div id="spec-card" class="card specWrapper" [hidden]="nav!='Vendor'">
       <div id="facVendorBody" class="card-body">
         <h5 class="card-title red">Vendor</h5>
@@ -149,17 +152,17 @@
                     <td>{{v.FaxNumber | nullable}}</td>
                   </tr>
                   <!--tr>
-                    <td>Alt. Phone</td>
-                    <td>{{v.AlternatePhoneNumber | nullable}}</td>
-                  </tr-->
+                  <td>Alt. Phone</td>
+                  <td>{{v.AlternatePhoneNumber | nullable}}</td>
+                </tr-->
                   <tr>
                     <td>Website</td>
                     <td><a href="{{v.Website | nullable:''}}" target="_blank">{{v.Website | nullable:''}}</a></td>
                   </tr>
                   <!--tr>
-                    <td>Hours</td>
-                    <td>Coming Soon</td>
-                  </tr-->
+                  <td>Hours</td>
+                  <td>Coming Soon</td>
+                </tr-->
                 </tbody>
               </table>
             </div>
@@ -175,8 +178,10 @@
     <div id="demo-card" class="card" [hidden]="nav!='Specialties'">
       <div class="card-body">
         <h5 class="card-title red">
-          Specialties <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')"><i class="fa fa-plus" [hidden]="specsEdited" id="addSpec"></i>
-          <i class="fa fa-save" [hidden]="!specsEdited" id="saveSpecs"></i><i class="fa fa-times" [hidden]="!specsEdited" id="resetSpecs"></i></span>
+          Specialties <span [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')">
+            <i class="fa fa-plus" [hidden]="specsEdited" id="addSpec"></i>
+            <i class="fa fa-save" [hidden]="!specsEdited" id="saveSpecs"></i><i class="fa fa-times" [hidden]="!specsEdited" id="resetSpecs"></i>
+          </span>
         </h5>
         <div id="specList" class="card-text ui-sortable">
           <h4 id="addSpecArea">
@@ -192,7 +197,7 @@
             <br /><input type="checkbox" (change)="toggleInactiveSpecialties()" /> Show Inactive Specialties
           </h4>
           <!--EACH SPECIALTY-->
-          <div *ngFor="let s of Facility.FacilitySpecialties" class="card specCard indivSpecWrapper ui-sortable-handlestatus_{{s.Status}}" id="specWrapper_{{s.ID}}"  style="position: relative; left: 0px; top: 0px;">
+          <div *ngFor="let s of Facility.FacilitySpecialties" class="card specCard indivSpecWrapper ui-sortable-handlestatus_{{s.Status}}" id="specWrapper_{{s.ID}}" style="position: relative; left: 0px; top: 0px;">
             <span [hidden]="true">spec-id:{{s.ID}}, seq-num:{{s.SequenceNumber}}</span>
             <div class="card-body specCardBody">
               <h5 class="card-title specTitle blu" (click)="onSpecClick($event)">

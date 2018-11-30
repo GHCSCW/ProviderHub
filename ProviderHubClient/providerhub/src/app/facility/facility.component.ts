@@ -290,6 +290,9 @@ export class FacilityComponent implements OnInit {
         + "<td><span class='childRowHeader'>Float Provider</span> <br/>" + new BoolPipe().transform(d.FPRelationship.FloatProviderIndicator) + "</td></tr>";
     }
   }
+  //ADD_VENDOR_STUFF
+
+  //END ADD_VENDOR_STUFF
   //save/edit Facility for Main/Demographics
   public saveFacility(type: number, event: any, specID?: number, specRelationshipID?: number) {
     if (!this.canEdit()) { alert("You think you smart?"); return; } //can only get here when inspect hacking, request hacking, network packet sniff/insert hacking, etc...
@@ -337,6 +340,7 @@ export class FacilityComponent implements OnInit {
     this.service.hitAPI(this.apiRoot + "Facility/Save/" + type + "/" + this.facilityId, JSON.stringify(body)).subscribe(
       data => {
         console.log(data); this.loading(false, data.POSTvars.type);//load finished, hide overlay
+        if (this.facilityId == 0) { document.location.href = "facility/" + data.result; }
         switch (data.POSTvars.type) {
           case 0:
             //header data to just transform over (replace with partial arr matching function)

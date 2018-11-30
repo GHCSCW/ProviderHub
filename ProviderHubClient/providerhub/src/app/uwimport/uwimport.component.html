@@ -2,4 +2,4 @@
   uwimport demo!
 </p>
 <input type="file" id="fileinput" />
-<input type="button" (click)="submit()" />
+<input *ngIf="(environment.authUser.isSuperUser=='True')" type="button" (click)="submit()" value="Run File!" />

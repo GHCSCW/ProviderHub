@@ -17,7 +17,7 @@
     <span class="dropdown folderTab" [class.folderTabSelected]="selectedTab=='V'">
       <a [class.tabselected]="selectedTab=='V'" (click)="nav('/Vendor/Search','V')">Vendor</a>
       <span class="dropdown-content">
-        <a href="/Vendor/Addresses/0">Create Vendor</a>
+        <a style="cursor:pointer" (click)="createvendor()">Create Vendor</a>
       </span>
     </span>
 

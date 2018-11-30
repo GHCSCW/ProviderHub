@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
         console.log(data); //{"result":"GHC-HMO\spillai","username":"spillai","isSuperUser":"True","isEditor":"False","isUser":"False"}
         this.username = data.username;
         environment.authUser = data;
-        //environment.authUser.isSuperUser = "False";
+        //environment.authUser.isEditor = 'False'; environment.authUser.isSuperUser = 'False';
         //GITHUB ISSUE XX - LOCKDOWN APPLICATION FOR ANONYMOUS USER if no result or no auth/user detected, lock down application here
       }
     );
@@ -66,5 +66,18 @@ export class AppComponent implements OnInit {
   public nav(route,tab): void {
     this.router.navigate([route]);
     this.selectedTab = tab; 
+  }
+
+  public createvendor(): void {
+    var vendorname = prompt("What is the desired Vendor Name?");
+    if (vendorname.trim() == "") { alert("Vendor Name can't be empty!"); }
+    else {
+      this.service.hitAPI(this.apiRoot + "Vendor/CreateFromName/" + vendorname).subscribe(
+        data => {
+          console.log(data);
+          document.location.href = "vendor/" + data.result;
+        }
+    }
+    );
   }
 }

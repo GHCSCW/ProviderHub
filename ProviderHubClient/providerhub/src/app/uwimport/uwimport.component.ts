@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-uwimport',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UwimportComponent implements OnInit {
 
+  public environment: any;
+
   constructor() { }
 
   ngOnInit() {
+    this.environment = environment;
   }
 
   public submit() {

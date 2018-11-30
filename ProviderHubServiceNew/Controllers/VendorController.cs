@@ -26,6 +26,19 @@ namespace ProviderHubServiceNew.Controllers
             //return Json(facility,JsonRequestBehavior.AllowGet);
         }
 
+        //"Vendor/CreateFromName/" + vendorname
+        public ActionResult CreateFromName(string id) {
+            string name = id; //Sree - i know, i know, but why create a new route config when we can use the default one as long as the param is named 'id', right??
+            string user = (User.Identity.IsAuthenticated) ? User.Identity.Name.Substring(8) : "system";
+            dynamic toReturn = new ExpandoObject();
+            using (DataLayer dataLayer = new DataLayer())
+            {
+                toReturn.result = dataLayer.PHInsertVendorFromName(name, user);
+            }
+            var json = JsonConvert.SerializeObject(toReturn, new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.MicrosoftDateFormat, DateTimeZoneHandling = DateTimeZoneHandling.Unspecified });
+            return Content(json, "application/json");
+        }
+
         public ActionResult Save(int type, int id)
         {
             //get raw POST body (json) as string, deserialize into object
