@@ -76,8 +76,7 @@ export class AppComponent implements OnInit {
         data => {
           console.log(data);
           document.location.href = "vendor/" + data.result;
-        }
+      });
     }
-    );
   }
 }
