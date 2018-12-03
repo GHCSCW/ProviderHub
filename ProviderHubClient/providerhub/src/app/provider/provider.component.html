@@ -3,7 +3,7 @@
     <h2>Provider</h2>
     <ul id="provider-nav">
       <li tab-id="Networks" tab-url="Network" [hidden]="providerId==0" [class.selected]="nav=='Networks'">Networks</li>
-      <li tab-id="Employments" tab-url="Employment" [hidden]="providerId==0" [class.selected]="nav=='Employment'">Employments</li>
+      <li [hidden]="!(environment.authUser.isEditor=='True'||environment.authUser.isSuperUser=='True')" tab-id="Employments" tab-url="Employments" [class.selected]="nav=='Employments'">Employments</li>
       <li tab-id="Demographics" tab-url="Demographics" [class.selected]="nav=='Demographics'">Demographics</li>
       <li tab-id="Specialties" tab-url="Specialties" [hidden]="providerId==0" [class.selected]="nav=='Specialties'">Specialties</li>
       <li tab-id="Facility" tab-url="Facility" [hidden]="providerId==0" [class.selected]="nav=='Facility'">Facilities</li>
@@ -411,7 +411,7 @@
       <div class="card-body">
         <h5 class="card-title red">Providers</h5>
         <span id="inactive-dir-checkbox"><input type="checkbox" (change)="toggleInactiveDirectories()" /> Show Inactive Directory Records</span>
-        <table id="networksTableDT" [hidden]="nav!='Networks'" class="table table-striped table-bordered" cellspacing="0">
+        <table id="networksTableDT" [hidden]="nav!='Networks'" class="table table-striped table-bordered" cellspacing="0" width="100%">
           <thead>
             <tr>
               <th></th>
@@ -434,7 +434,7 @@
         <!--
         <span id="inactive-dir-checkbox"><input type="checkbox" (change)="toggleInactiveDirectories()" /> Show Inactive Directory Records</span>
         -->
-        <table id="employmentTableDT" [hidden]="nav!='Employments'" class="table table-striped table-bordered" cellspacing="0">
+        <table id="employmentTableDT" [hidden]="nav!='Employments'" class="table table-striped table-bordered" cellspacing="0" width="100%">
           <thead>
             <tr>
               <th></th>
