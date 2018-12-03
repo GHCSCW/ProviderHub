@@ -1515,6 +1515,7 @@ namespace ProviderHubService
 
         #endregion
 
+        #region UW_DATA_IMPORT
         /*      toReturn.id_result = DataLayer.GetIDResult(records);
                 toReturn.map_result = DataLayer.GetMapResult(toReturn.id_result, records);
                 toReturn.term_result = DataLayer.GetTermResult(toReturn.id_result, toReturn.map_result, records);*/
@@ -2353,6 +2354,7 @@ namespace ProviderHubService
             }
             return toReturn;
         }
+        #endregion UW_DATA_IMPORT
 
         #region FUNCTION: IsProviderAndFacilityMapped(int providerID, facilityID)
 
